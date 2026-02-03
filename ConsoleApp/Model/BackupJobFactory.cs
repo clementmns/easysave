@@ -1,4 +1,6 @@
-﻿namespace EasySave.ConsoleApp.Model;
+﻿using EasySave.ConsoleApp.Ressources;
+
+namespace EasySave.ConsoleApp.Model;
 
 public class BackupJobFactory
 {
@@ -23,12 +25,12 @@ public class BackupJobFactory
     {
         if (string.IsNullOrWhiteSpace(name))
         {
-            throw new ArgumentNullException("The name cannot be null or empty.");
+            throw new ArgumentNullException(Errors.NameCantBeNull);
         }
 
         if (string.IsNullOrWhiteSpace(source) || string.IsNullOrWhiteSpace(destination))
         {
-            throw new ArgumentNullException("The source and destination cannot be null or empty.");            
+            throw new ArgumentNullException(Errors.SourceCantBeNull);            
         }
         
         return new BackupJob(0, name, source, destination, type); //Gérer l'id ???

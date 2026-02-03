@@ -6,6 +6,6 @@ internal class Program
 {
     private static void Main(string[] args)
     {
-        Console.WriteLine(Language.HelloWorld);
+        Console.WriteLine(Messages.HelloWorld);
     }
 }
