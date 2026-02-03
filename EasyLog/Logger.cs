@@ -6,7 +6,6 @@
 public class Logger
 {
     private static Logger? _instance;
-    private static readonly Lock Lock = new ();
     
     private List<ILoggerStrategy> _strategies = [];
     
@@ -16,16 +15,7 @@ public class Logger
     /// Get the singleton instance of the logger
     /// </summary>
     /// <exception cref="InvalidOperationException">You need to initialize the logger in the main program first</exception>
-    public static Logger Instance
-    {
-        get
-        {
-            lock(Lock)
-            {
-                return _instance ?? throw new InvalidOperationException("Logger not initialized. Call Logger.Init() first.");
-            }
-        }
-    }
+    public static Logger Instance => _instance ?? throw new InvalidOperationException("Logger not initialized. Call Logger.Init() first.");
 
     /// <summary>
     /// Initialize the logger with application name and logging strategies
@@ -34,14 +24,11 @@ public class Logger
     /// <param name="strategies">List of logging strategies</param>
     public static void Init(string appSaveDirectory, List<ILoggerStrategy> strategies)
     {
-        lock (Lock)
-        {
-            _instance ??= new Logger();
-            _instance._strategies = strategies;
-            _instance._logFilePath = Path.Combine(appSaveDirectory, "Logs");
+        _instance ??= new Logger();
+        _instance._strategies = strategies;
+        _instance._logFilePath = Path.Combine(appSaveDirectory, "Logs");
 
-            if (!Directory.Exists(_instance._logFilePath)) Directory.CreateDirectory(_instance._logFilePath);
-        }
+        if (!Directory.Exists(_instance._logFilePath)) Directory.CreateDirectory(_instance._logFilePath);
     }
     
     /// <summary>
