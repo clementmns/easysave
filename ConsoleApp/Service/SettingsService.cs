@@ -30,23 +30,6 @@ namespace EasySave.ConsoleApp.Service
         }
 
         /// <summary>
-        /// Settings service singleton instance
-        /// </summary>
-        /// <exception cref="InvalidOperationException">Settings service must be initialized first.</exception>
-        public static SettingsService Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    throw new InvalidOperationException(
-                        "SettingsService has not been initialized. Call Init() first.");
-                }
-                return _instance;
-            }
-        }
-
-        /// <summary>
         /// Initialize the settings service
         /// </summary>
         /// <param name="appDirectory">Application content directory</param>
