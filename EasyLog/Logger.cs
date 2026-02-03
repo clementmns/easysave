@@ -30,17 +30,15 @@ public class Logger
     /// <summary>
     /// Initialize the logger with application name and logging strategies
     /// </summary>
-    /// <param name="appName">Name of the application</param>
+    /// <param name="appSaveDirectory">Name of the application</param>
     /// <param name="strategies">List of logging strategies</param>
-    public static void Init(string appName, List<ILoggerStrategy> strategies)
+    public static void Init(string appSaveDirectory, List<ILoggerStrategy> strategies)
     {
         lock (Lock)
         {
             _instance ??= new Logger();
             _instance._strategies = strategies;
-            
-            var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            _instance._logFilePath = Path.Combine(appData, "ProSoft", appName, "Logs");
+            _instance._logFilePath = Path.Combine(appSaveDirectory, "Logs");
 
             if (!Directory.Exists(_instance._logFilePath)) Directory.CreateDirectory(_instance._logFilePath);
         }
