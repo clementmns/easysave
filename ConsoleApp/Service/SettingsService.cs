@@ -8,7 +8,6 @@ namespace EasySave.ConsoleApp.Service
     public class SettingsService
     {
         private static SettingsService? _instance;
-        private static readonly Lock Lock = new();
 
         private readonly string _settingsFilePath;
         private readonly Settings _settings;
@@ -54,7 +53,6 @@ namespace EasySave.ConsoleApp.Service
         public static void Init(string appDirectory)
         {
             if (_instance != null) return;
-            lock (Lock)
             {
                 _instance ??= new SettingsService(appDirectory);
             }
@@ -88,30 +86,38 @@ namespace EasySave.ConsoleApp.Service
             {
                 var json = File.ReadAllText(_settingsFilePath);
                 var settings = JsonSerializer.Deserialize<Settings>(json, JsonOptions);
-                if (settings != null) return settings;
+                if (settings != null)
+                {
+                    if (settings.Version == GetAppVersion()) return settings;
+                    var newSettings = CreateDefaultSettings();
+                    SaveSettings(newSettings);
+                    return newSettings;
+                }
             }
             catch
             {
                 // ignored because we want to create default settings if loading fails
             }
-
             return CreateDefaultSettings();
+        }
+
+        private static string GetAppVersion()
+        {
+            var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            return version is null ? "1.0.0" : $"{version.Major}.{version.Minor}.{version.Build}";
         }
 
         private Settings CreateDefaultSettings()
         {
-            var defaultSettings = new Settings(); // that uses default values
+            var defaultSettings = new Settings { Version = GetAppVersion() };
             SaveSettings(defaultSettings);
             return defaultSettings;
         }
 
         private void SaveSettings(Settings settings)
         {
-            lock (Lock)
-            {
-                var json = JsonSerializer.Serialize(settings, JsonOptions);
-                File.WriteAllText(_settingsFilePath, json);
-            }
+            var json = JsonSerializer.Serialize(settings, JsonOptions);
+            File.WriteAllText(_settingsFilePath, json);
         }
     }
 }
