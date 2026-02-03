@@ -2,7 +2,7 @@
 
 public class BackupJobFactory
 {
-    private static BackupJobFactory _instance;
+    private static BackupJobFactory? _instance;
 
     private BackupJobFactory()
     {
