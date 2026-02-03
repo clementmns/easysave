@@ -2,12 +2,12 @@
 
 public class BackupJob
 {
-    private int _id { get; set; }
-    private string _name { get; set; }
-    private string _sourcePath { get; set; }
-    private string _destinationPath { get; set; }
-    private BackupType _type { get; set; }
-    private RealTimeState _state { get; set; }
+    public int _id { get; set; }
+    public string _name { get; set; }
+    public string _sourcePath { get; set; }
+    public string _destinationPath { get; set; }
+    public BackupType _type { get; set; }
+    public RealTimeState _state { get; set; }
 
     public BackupJob(int id, string name, string sourcePath, string destinationPath, BackupType type)
     {
