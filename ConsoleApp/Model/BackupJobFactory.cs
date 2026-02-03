@@ -33,6 +33,4 @@ public class BackupJobFactory
         
         return new BackupJob(0, name, source, destination, type); //Gérer l'id ???
     }
-    
-    
 }

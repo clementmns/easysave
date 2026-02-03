@@ -12,5 +12,4 @@ public class RealTimeState
     private long _remainingFilesSize { get; set; }
     private string _sourceDirectory { get; set; }
     private string _destinationDirectory { get; set; }
-    
 }
