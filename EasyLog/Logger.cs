@@ -1,11 +1,14 @@
 ﻿namespace EasyLog;
 
+/// <summary>
+/// Singleton Logger class for logging messages using different strategies
+/// </summary>
 public class Logger
 {
     private static Logger? _instance;
     private static readonly Lock Lock = new ();
     
-    private List<ILoggerStrategy> _strategy = [];
+    private List<ILoggerStrategy> _strategies = [];
     
     private string? _logFilePath;
 
@@ -34,7 +37,7 @@ public class Logger
         lock (Lock)
         {
             _instance ??= new Logger();
-            _instance._strategy = strategies;
+            _instance._strategies = strategies;
             
             var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             _instance._logFilePath = Path.Combine(appData, "ProSoft", appName, "Logs");
@@ -50,11 +53,11 @@ public class Logger
     /// <typeparam name="T">Object to log</typeparam>
     public void Write<T>(T logEntry)
     {
-        if (_strategy.Count == 0 || _logFilePath is null) return;
+        if (_strategies.Count == 0 || _logFilePath is null) return;
         
         var fileName = $"{DateTime.Now:yyyy-MM-dd}.json";
         var fullPath = Path.Combine(_logFilePath, fileName);
-
-        foreach (var strategy in _strategy) strategy.Write(logEntry, fullPath);
+        
+        foreach (var strategy in _strategies) strategy.Write(logEntry, fullPath);
     }
 }
