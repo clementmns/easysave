@@ -41,6 +41,8 @@ namespace EasySave.ConsoleApp.Service
             }
         }
         
+        public static SettingsService GetInstance => _instance ?? throw new Exception();
+        
         public Settings Settings => _settings;
         
         /// <summary>

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using EasySave.ConsoleApp.Model;
+﻿using EasySave.ConsoleApp.Model;
+using EasySave.ConsoleApp.Service;
 using EasySave.ConsoleApp.ViewModel;
 
 namespace EasySave.ConsoleApp.View;
@@ -10,9 +8,9 @@ public class ConsoleAppView
 {
     private readonly BackupViewModel _viewModel;
 
-    public ConsoleAppView(BackupViewModel viewModel)
+    public ConsoleAppView(string appSaveDirectory)
     {
-        _viewModel = viewModel;
+        _viewModel = new BackupViewModel(appSaveDirectory);
     }
 
     public void ShowHeader()
@@ -24,7 +22,7 @@ public class ConsoleAppView
 
     public void Run()
     {
-        bool exit = false;
+        var exit = false;
 
         while (!exit)
         {
@@ -79,20 +77,25 @@ public class ConsoleAppView
 
     public void ViewSavedJobs()
     {
-        var jobs = _viewModel.GetJobs();
-        Console.WriteLine("Here the jobs : ");
+        if (_viewModel.Jobs != null)
+        {
+            var jobs = _viewModel.Jobs.ToList();
+            Console.WriteLine("Here the jobs : ");
         
-        if (jobs == null || jobs.Count == 0)
-        {
-            Console.WriteLine("No job available.");
-        }
-        else
-        {
-            foreach (var job in jobs)
+            if (jobs.Count == 0)
             {
-                Console.WriteLine($"- {job.name} ({job.sourcePath} -> {job.destinationPath}) - Type: {job.type}");
+                Console.WriteLine("No job available.");
             }
-        }Console.ReadLine();
+            else
+            {
+                foreach (var job in jobs)
+                {
+                    Console.WriteLine($"- {job.Name} ({job.SourcePath} -> {job.DestinationPath}) - Type: {job.Type}");
+                }
+            }
+        }
+
+        Console.ReadLine();
     }
 
     public void AddJob()
@@ -114,16 +117,9 @@ public class ConsoleAppView
             Console.WriteLine("Type invalid. Switch to complete by default.");
             backupType = BackupType.Full;
         }
-        var job = new BackupJob(name,sourcePath, destinationPath, backupType);
+        var job = BackupJobFactory.GetInstance().CreateJob(name, sourcePath, destinationPath, backupType);
 
-        if (_viewModel.AddJob(job))
-        {
-            Console.WriteLine("Job add with success.");
-        }
-        else
-        {
-            Console.WriteLine("Job add failed.");
-        }
+        Console.WriteLine(_viewModel.AddJob(job) ? "Job add with success." : "Job add failed.");
         Console.ReadLine();
     }
 
@@ -131,7 +127,7 @@ public class ConsoleAppView
     {
         Console.Write("Enter the job to remove : ");
         var name = Console.ReadLine() ?? string.Empty;
-        var jobs = _viewModel.GetJobs();
+        var jobs = _viewModel.Jobs?.ToList();
         var job = jobs?.Find(j => j.Name == name);
 
         if (job != null && _viewModel.DeleteJob(job))
@@ -150,11 +146,14 @@ public class ConsoleAppView
         Console.Write("Enter the name of the jobs to execute : ");
         var input = Console.ReadLine();
         var names = input?.Split(',').Select(n => n.Trim()).ToArray();
-        var jobs = _viewModel.GetJobs()?.FindAll(j => names?.Contains(j.Name) == true);
+        var jobs = _viewModel.Jobs?.ToList().FindAll(j => names?.Contains(j.Name) == true);
 
         if (jobs != null && jobs.Count > 0)
         {
-            _viewModel.RunJobs(jobs);
+            foreach (var job in jobs)
+            {
+                _viewModel.ExecuteJob(job);
+            }
             Console.WriteLine("Jobs successfully completed.");
         }
         else
@@ -166,25 +165,31 @@ public class ConsoleAppView
 
     private void ExecuteAllJobs()
     {
-        _viewModel.RunAllJobs();
+        if (_viewModel.Jobs != null)
+        {
+            foreach (var job in _viewModel.Jobs.ToList())
+            {
+                _viewModel.ExecuteJob(job);
+            }
+        }
+
         Console.WriteLine("All jobs have been successfully completed.");
         Console.ReadLine();
     }
 
     private void ChangeLanguage()
     {
-        Console.Write("Change the language (EN/FR) : ");
+        Console.WriteLine("Change the language : ");
+        Console.WriteLine("1. English");
+        Console.WriteLine("2. French");
         var langInput = Console.ReadLine() ?? string.Empty;
         
-        if (Enum.TryParse<Language>(langInput, true, out var language))
+        var language = langInput switch
         {
-            _viewModel.Settings.Language = language;
-            Console.WriteLine("Language modified.");
-        }
-        else
-        {
-            Console.WriteLine("Invalid language.");
-        }
-        Console.ReadLine();
+            "1" => "en-US",
+            "2" => "fr-FR",
+            _ => "en-US"
+        };
+        SettingsService.GetInstance.SetLanguage(language);
     }
 }

@@ -34,13 +34,14 @@ public class BackupJobService : IRealTimeStateObserver
         UpdateJob(job);
     }
 
-    public void CreateJob(BackupJob job)
+    public bool CreateJob(BackupJob job)
     {
         try
         {
             Jobs?.Add(job);
             job.State.Attach(this);
             if (Jobs != null) SaveJobs(Jobs);
+            return true;
         }
         catch (Exception e)
         {
