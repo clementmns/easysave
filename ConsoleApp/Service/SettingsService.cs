@@ -49,17 +49,13 @@ namespace EasySave.ConsoleApp.Service
         /// <param name="language">Language to set (ex: "en-US")</param>
         public void SetLanguage(string language)
         {
+            ApplyCulture(language);
             var culture = CultureInfo.GetCultureInfo(language);
-
-            _settings.Language = language;
-
-            // Change culture(lang) for all threads
-            CultureInfo.CurrentCulture = culture;
-            CultureInfo.CurrentUICulture = culture;
-            CultureInfo.DefaultThreadCurrentCulture = culture;
-            CultureInfo.DefaultThreadCurrentUICulture = culture;
-
-            SaveSettings(_settings);
+            if (_settings != null)
+            {
+                _settings.Language = language;
+                SaveSettings(_settings);
+            }
         }
         
         private Settings LoadOrCreateSettings()
@@ -71,7 +67,11 @@ namespace EasySave.ConsoleApp.Service
                 var settings = JsonSerializer.Deserialize<Settings>(json, JsonOptions);
                 if (settings != null)
                 {
-                    if (settings.Version == GetAppVersion()) return settings;
+                    if (settings.Version == GetAppVersion())
+                    {
+                        ApplyCulture(settings.Language);
+                        return settings;
+                    }
                     var newSettings = CreateDefaultSettings();
                     SaveSettings(newSettings);
                     return newSettings;
@@ -79,6 +79,7 @@ namespace EasySave.ConsoleApp.Service
             }
             catch
             {
+                throw new Exception();
                 // ignored because we want to create default settings if loading fails
             }
             return CreateDefaultSettings();
@@ -92,7 +93,7 @@ namespace EasySave.ConsoleApp.Service
 
         private Settings CreateDefaultSettings()
         {
-            var defaultSettings = new Settings { Version = GetAppVersion() };
+            var defaultSettings = new Settings { Language = "en-US", Version = GetAppVersion() };
             SaveSettings(defaultSettings);
             return defaultSettings;
         }
@@ -101,6 +102,22 @@ namespace EasySave.ConsoleApp.Service
         {
             var json = JsonSerializer.Serialize(settings, JsonOptions);
             File.WriteAllText(_settingsFilePath, json);
+        }
+
+        private void ApplyCulture(string language)
+        {
+            try
+            {
+                var culture = CultureInfo.GetCultureInfo(language);
+                CultureInfo.CurrentCulture = culture;
+                CultureInfo.CurrentUICulture = culture;
+                CultureInfo.DefaultThreadCurrentCulture = culture;
+                CultureInfo.DefaultThreadCurrentUICulture = culture;
+            }
+            catch
+            {
+                //ignored
+            }
         }
     }
 }
