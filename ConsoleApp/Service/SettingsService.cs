@@ -80,7 +80,6 @@ namespace EasySave.ConsoleApp.Service
             catch
             {
                 throw new Exception();
-                // ignored because we want to create default settings if loading fails
             }
             return CreateDefaultSettings();
         }
@@ -93,7 +92,7 @@ namespace EasySave.ConsoleApp.Service
 
         private Settings CreateDefaultSettings()
         {
-            var defaultSettings = new Settings { Language = "en-US", Version = GetAppVersion() };
+            var defaultSettings = new Settings { Language = CultureInfo.InstalledUICulture.Name, Version = GetAppVersion() };
             SaveSettings(defaultSettings);
             return defaultSettings;
         }
@@ -116,7 +115,7 @@ namespace EasySave.ConsoleApp.Service
             }
             catch
             {
-                //ignored
+                throw new Exception();
             }
         }
     }
