@@ -18,9 +18,17 @@ public class BackupViewModel
 
     public void AddJob(string name, string source, string destination, BackupType type)
     {
-        var factory = BackupJobFactory.GetInstance();
-        var newJob = factory.CreateJob(name, source, destination, type);
-        _jobService.CreateJob(newJob);
+        try
+        {
+            var currentJobs = Jobs?.ToList() ?? new List<BackupJob>();
+            var factory = BackupJobFactory.GetInstance();
+            var newJob = factory.CreateJob(name, source, destination, type, currentJobs);
+            _jobService.CreateJob(newJob);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
     }
     
     public void DeleteJob(BackupJob job) => _jobService.DeleteJob(job);
