@@ -111,39 +111,6 @@ public class FileUtils
         
     }
 
-    // On peut juste faire : File.Exists(path);
-    
-    // public static bool FileExists(string path)
-    // {
-    //     try
-    //     {
-    //         FileInfo fileInfo = new FileInfo(path);
-    //         bool fileExist = fileInfo.Exists;
-    //
-    //         return fileExist;
-    //     }
-    //     catch (Exception e)
-    //     {
-    //         // Logger: log l'erreur
-    //         return false;
-    //     }
-    // }
-    //
-    // public static bool DirectoryExists(string path)
-    // {
-    //     try
-    //     {
-    //         DirectoryInfo dirInfo = new DirectoryInfo(path);
-    //         bool dirExist = dirInfo.Exists;
-    //         return dirExist;
-    //     }
-    //     catch (Exception e)
-    //     {
-    //         // Logger: log l'erreur
-    //         return false;
-    //     }
-    // }
-
     public static long GetFileSize(string path)
     {
         try

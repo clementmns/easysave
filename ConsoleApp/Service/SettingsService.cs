@@ -20,7 +20,7 @@ namespace EasySave.ConsoleApp.Service
 
         private SettingsService(string appDirectory)
         {
-            if (!FileUtils.DirectoryExists(appDirectory))
+            if (!Directory.Exists(appDirectory))
             {
                 FileUtils.CreateDirectory(appDirectory);
             }
@@ -60,7 +60,7 @@ namespace EasySave.ConsoleApp.Service
         
         private Settings LoadOrCreateSettings()
         {
-            if (!FileUtils.FileExists(_settingsFilePath)) return CreateDefaultSettings();
+            if (!File.Exists(_settingsFilePath)) return CreateDefaultSettings();
             try
             {
                 var json = File.ReadAllText(_settingsFilePath);
