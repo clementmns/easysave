@@ -2,8 +2,8 @@
 
 public class FullBackupStrategy : IBackupStrategy
 {
-    public void Execute(BackupJob job)
+    public bool Execute(BackupJob job)
     {
-        
+        return true; // TODO
     }
 }

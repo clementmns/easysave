@@ -19,7 +19,7 @@ public class BackupJobService : IRealTimeStateObserver
     
     public BackupJobService(string appDirectory)
     {
-        if (!FileUtils.DirectoryExists(appDirectory)) FileUtils.CreateDirectory(appDirectory);
+        if (!Directory.Exists(appDirectory)) FileUtils.CreateDirectory(appDirectory);
 
         _stateFilePath = Path.Combine(appDirectory, "state.json");
         Jobs = LoadJobs();
@@ -91,7 +91,7 @@ public class BackupJobService : IRealTimeStateObserver
     {
         try
         {
-            if (!FileUtils.FileExists(_stateFilePath)) SaveJobs([]);
+            if (!File.Exists(_stateFilePath)) SaveJobs([]);
             var json = File.ReadAllText(_stateFilePath);
             return JsonSerializer.Deserialize<ObservableCollection<BackupJob>>(json, JsonOptions);
         }
