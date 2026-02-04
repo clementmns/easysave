@@ -1,4 +1,5 @@
-﻿namespace EasySave.ConsoleApp.Model;
+﻿using EasySave.ConsoleApp.Utils;
+namespace EasySave.ConsoleApp.Model;
 
 public class BackupJob
 {
