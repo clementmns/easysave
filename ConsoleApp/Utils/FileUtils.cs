@@ -10,7 +10,7 @@ public class FileUtils
         try
         {
             string fileName = Path.GetFileName(sourceFile);
-            string destinationFileName = Path.Combine(destinationDir, fileName);
+            string destinationFileName = Path.Combine(destinationDir, fileName, "_copy");
             
             // Use the Path.Combine method to safely append the file name to the path.
             File.Copy(sourceFile, destinationFileName, true); // true if the destination file should be replaced if it already exists; otherwise, false

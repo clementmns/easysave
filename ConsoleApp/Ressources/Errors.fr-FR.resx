@@ -24,4 +24,10 @@
     <data name="SourceCantBeNull" xml:space="preserve">
         <value>La source et la destination ne peuvent pas être vide.</value>
     </data>
+    <data name="ProcessingError" xml:space="preserve">
+        <value>Le chemin du fichier ne peut pas être traité.</value>
+    </data>
+    <data name="FileCantBeCopied" xml:space="preserve">
+        <value>Le fichier ne peut pas être copié.</value>
+    </data>
 </root>

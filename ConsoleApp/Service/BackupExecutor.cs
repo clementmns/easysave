@@ -6,11 +6,9 @@ public class BackupExecutor
 {
     public void ExecuteJob(BackupJob job)
     {
-        if (!Directory.Exists(job.SourcePath))
-        {
-            Console.WriteLine($"The source path {job.SourcePath} don't exist");
-            return;
-        }
+        
+        
+        
         string[] files = Directory.GetFiles(job.SourcePath, "*", SearchOption.AllDirectories); // Find all the files even in the subfolders
         job.State.TotalFiles = files.Length;
         job.State.RemainingFiles = files.Length;

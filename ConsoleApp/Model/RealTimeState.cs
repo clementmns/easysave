@@ -34,7 +34,7 @@ public class RealTimeState
         set => SetField(ref field, value);
     }
 
-    public int RemainingFiles
+    public long RemainingFiles
     {
         get;
         set => SetField(ref field, value);
