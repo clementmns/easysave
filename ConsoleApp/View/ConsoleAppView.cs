@@ -16,28 +16,28 @@ public class ConsoleAppView
 
     private static void ShowHeader()
     {
-       Console.WriteLine("""
-          ______                 _____                 
-         |  ____|               / ____|                
-         | |__   __ _ ___ _   _| (___   __ ___   _____ 
-         |  __| / _` / __| | | |\___ \ / _` \ \ / / _ \
-         | |___| (_| \__ \ |_| |____) | (_| |\ V /  __/
-         |______\__,_|___/\__, |_____/ \__,_| \_/ \___|
-                           __/ |                       
-                          |___/                        
-         """);
+        Console.WriteLine("""
+                           ______                 _____                 
+                          |  ____|               / ____|                
+                          | |__   __ _ ___ _   _| (___   __ ___   _____ 
+                          |  __| / _` / __| | | |\___ \ / _` \ \ / / _ \
+                          | |___| (_| \__ \ |_| |____) | (_| |\ V /  __/
+                          |______\__,_|___/\__, |_____/ \__,_| \_/ \___|
+                                            __/ |                       
+                                           |___/                        
+                          """);
     }
 
     private static void ShowMenu()
     {
         Console.WriteLine(@" 1. " + Messages.ResourceManager.GetString("ConsoleMenuViewJobs"));
-        Console.WriteLine(" 2. Add Job");
-        Console.WriteLine(" 3. Delete Job");
-        Console.WriteLine(" 4. Execute one or more jobs");
-        Console.WriteLine(" 5. Execute all jobs");
-        Console.WriteLine(" 6. Change Language");
-        Console.WriteLine(" Q. Quit");
-        Console.WriteLine("Choose an Option : ");
+        Console.WriteLine(@" 2. " + Messages.ResourceManager.GetString("ConsoleMenuAddJob"));
+        Console.WriteLine(@" 3. " + Messages.ResourceManager.GetString("ConsoleMenuDeleteJob"));
+        Console.WriteLine(@" 4. " + Messages.ResourceManager.GetString("ConsoleMenuExecuteJob"));
+        Console.WriteLine(@" 5. " + Messages.ResourceManager.GetString("ConsoleMenuExecuteAllJobs"));
+        Console.WriteLine(@" 6. " + Messages.ResourceManager.GetString("ConsoleMenuLanguage"));
+        Console.WriteLine(@" Q. " + Messages.ResourceManager.GetString("ConsoleMenuQuit"));
+        Console.WriteLine(Messages.ResourceManager.GetString("ConsoleMenuOption"));
     }
 
     public void Run()
@@ -86,7 +86,7 @@ public class ConsoleAppView
                     exit = true;
                     break;
             }
-            
+
             if (exit) break;
             Console.WriteLine();
             Console.WriteLine("Press any key to continue...");
@@ -100,7 +100,7 @@ public class ConsoleAppView
         if (_viewModel.Jobs == null) return;
         var jobs = _viewModel.Jobs.ToList();
         Console.WriteLine("Here the jobs : ");
-        
+
         if (jobs.Count == 0)
         {
             Console.WriteLine("No job available.");
@@ -110,7 +110,8 @@ public class ConsoleAppView
             for (var i = 0; i < jobs.Count; i++)
             {
                 var job = jobs[i];
-                Console.WriteLine($"{i + 1}. {job.Name} ({job.SourcePath} -> {job.DestinationPath}) - Type: {job.Type}");
+                Console.WriteLine(
+                    $"{i + 1}. {job.Name} ({job.SourcePath} -> {job.DestinationPath}) - Type: {job.Type}");
             }
         }
     }
@@ -119,24 +120,27 @@ public class ConsoleAppView
     {
         Console.WriteLine("Add a job name :");
         var name = Console.ReadLine() ?? string.Empty;
-        
+
         Console.WriteLine("Add a Path (source) :");
         var sourcePath = Console.ReadLine() ?? string.Empty;
-        
+
         Console.WriteLine("Add a Path (destination) :");
         var destinationPath = Console.ReadLine() ?? string.Empty;
-        
-        Console.WriteLine("Define the type of save that you want  : Differential | Complete"); 
-        var typeInput = Console.ReadLine() ?? string.Empty;
-        
-        // TODO: Use Switch for available backup types (Differential, Complete for the moment)
 
-        if (!Enum.TryParse<BackupType>(typeInput, true, out var backupType))
+        Console.WriteLine("Define the type of save that you want  : );");
+        Console.WriteLine("1. Differential");
+        Console.WriteLine("2. Complete");
+
+        var saveTypeInput = Console.ReadKey().KeyChar.ToString().ToUpper();
+
+        var saveType = saveTypeInput switch
         {
-            Console.WriteLine("Type invalid. Switch to complete by default.");
-            backupType = BackupType.Full;
-        }
-        var job = BackupJobFactory.GetInstance().CreateJob(name, sourcePath, destinationPath, backupType);
+            "1" => BackupType.Differential,
+            "2" => BackupType.Full,
+            _ => BackupType.Full,
+        };
+
+        var job = BackupJobFactory.GetInstance().CreateJob(name, sourcePath, destinationPath, saveType);
 
         Console.WriteLine(_viewModel.AddJob(job) ? "Job add with success." : "Job add failed.");
     }
@@ -161,30 +165,63 @@ public class ConsoleAppView
 
     private void ExecuteJobs()
     {
-        Console.Write("Enter the name of the jobs to execute : ");
-        
-        // TODO: Use ViewJobs() to get the list of jobs and select one or more jobs to execute (1,3 = 1 to 3) (1;3 = 1 and 3)
+        Console.WriteLine("Enter the numbers of the jobs to execute (separated by commas like 1,3 or 1-3):");
+        ViewJobs();
         var input = Console.ReadLine();
-        var names = input?.Split(',').Select(n => n.Trim()).ToArray();
-        var jobs = _viewModel.Jobs?.ToList().FindAll(j => names?.Contains(j.Name) == true);
+        var jobsList = _viewModel.Jobs?.ToList();
 
-        if (jobs != null && jobs.Count > 0)
+        if (jobsList == null || jobsList.Count == 0)
         {
-            foreach (var job in jobs)
+            Console.WriteLine("No jobs available.");
+            return;
+        }
+
+        var selectedJobs = new List<BackupJob>();
+        var parts = input?.Split(',').Select(p => p.Trim()).ToArray();
+
+        if (parts != null)
+        {
+            foreach (var part in parts)
+            {
+                if (part.Contains('-'))
+                {
+                    var range = part.Split('-');
+                    if (int.TryParse(range[0], out int start) && int.TryParse(range[1], out int end))
+                    {
+                        for (int i = start; i <= end && i <= jobsList.Count; i++)
+                        {
+                            selectedJobs.Add(jobsList[i - 1]);
+                        }
+                    }
+                }
+                else if (int.TryParse(part, out int jobNumber) && jobNumber > 0 && jobNumber <= jobsList.Count)
+                {
+                    selectedJobs.Add(jobsList[jobNumber - 1]);
+                }
+            }
+        }
+
+        if (selectedJobs.Count > 0)
+        {
+            foreach (var job in selectedJobs)
             {
                 _viewModel.ExecuteJob(job);
             }
+
             Console.WriteLine("Jobs successfully completed.");
         }
         else
         {
-            Console.WriteLine("No jobs found with these names.");
+            Console.WriteLine("No valid jobs selected.");
         }
     }
 
+
     private void ExecuteAllJobs()
     {
-        if (_viewModel.Jobs != null) foreach (var job in _viewModel.Jobs.ToList()) _viewModel.ExecuteJob(job);
+        if (_viewModel.Jobs != null)
+            foreach (var job in _viewModel.Jobs.ToList())
+                _viewModel.ExecuteJob(job);
         Console.WriteLine("All jobs have been successfully completed.");
     }
 
@@ -193,14 +230,27 @@ public class ConsoleAppView
         Console.WriteLine("Change the language : ");
         Console.WriteLine("1. English");
         Console.WriteLine("2. French");
+
+
         var langInput = Console.ReadKey().KeyChar.ToString();
+        Console.WriteLine();
         
-        var language = langInput switch
+        string language;
+        switch (langInput)
         {
-            "1" => "en-US",
-            "2" => "fr-FR",
-            _ => "en-US" // TODO: Tell that in default case, because the Input var undefined, we used English
-        };
+            case "1":
+                language = "fr-FR";
+                break;
+            case "2":
+                language = "en-US";
+                break;
+            default:
+                Console.WriteLine("Invalid input. Defaulting to English.");
+                language = "en-US";
+                break;
+        }
+
+
         SettingsService.GetInstance.SetLanguage(language);
     }
 }

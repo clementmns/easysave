@@ -24,4 +24,25 @@
     <data name="ConsoleMenuViewJobs" xml:space="preserve">
         <value>Voir les travaux de sauvegarde</value>
     </data>
+    <data name="ConsoleMenuAddJob" xml:space="preserve">
+        <value>Ajouter un espace de sauvegarde</value>
+    </data>
+    <data name="ConsoleMenuDeleteJob" xml:space="preserve">
+        <value>Supprimer un espace de sauvegarde</value>
+    </data>
+    <data name="ConsoleMenuExecuteJob" xml:space="preserve">
+        <value>Exécuter un ou plusieurs espaces</value>
+    </data>
+    <data name="ConsoleMenuExecuteAllJobs" xml:space="preserve">
+        <value>Exécuter tous les espaces</value>
+    </data>
+    <data name="ConsoleMenuLanguage" xml:space="preserve">
+        <value>Changer la langue</value>
+    </data>
+    <data name="ConsoleMenuQuit" xml:space="preserve">
+        <value>Quitter</value>
+    </data>
+    <data name="ConsoleMenuOption" xml:space="preserve">
+        <value>Choisissez une option :</value>
+    </data>
 </root>

@@ -24,4 +24,25 @@
     <data name="ConsoleMenuViewJobs" xml:space="preserve">
         <value>View saved jobs</value>
     </data>
+    <data name="ConsoleMenuAddJob" xml:space="preserve">
+        <value>Add a job</value>
+    </data>
+    <data name="ConsoleMenuDeleteJob" xml:space="preserve">
+        <value>Delete job</value>
+    </data>
+    <data name="ConsoleMenuExecuteJob" xml:space="preserve">
+        <value>Execute one or more jobs</value>
+    </data>
+    <data name="ConsoleMenuExecuteAllJobs" xml:space="preserve">
+        <value>Execute all jobs</value>
+    </data>
+    <data name="ConsoleMenuLanguage" xml:space="preserve">
+        <value>Change Language</value>
+    </data>
+    <data name="ConsoleMenuQuit" xml:space="preserve">
+        <value>Quit</value>
+    </data>
+    <data name="ConsoleMenuOption" xml:space="preserve">
+        <value>Choose an Option :</value>
+    </data>
 </root>
