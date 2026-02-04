@@ -26,10 +26,12 @@ public class BackupJobService
 
         _stateFilePath = Path.Combine(appDirectory, "state.json");
         Jobs = LoadJobs();
+        SubscribeToJobStates();
     }
     
     public void ExecuteJob(BackupJob job)
     {
+        EnsureStateSubscription(job);
         var executor = new BackupExecutor();
         executor.ExecuteJob(job);
         UpdateJob(job);
@@ -40,6 +42,7 @@ public class BackupJobService
         try
         {
             Jobs?.Add(job);
+            EnsureStateSubscription(job);
             if (Jobs != null) SaveJobs(Jobs);
             return true;
         }
@@ -54,6 +57,7 @@ public class BackupJobService
     {
         try
         {
+            RemoveStateSubscription(job);
             Jobs?.Remove(job);
             if (Jobs != null) SaveJobs(Jobs);
             return true;
@@ -70,9 +74,14 @@ public class BackupJobService
         try
         {
             var oldJob = Jobs?.FirstOrDefault(j => j.Id == job.Id);
-            if (oldJob != null) Jobs?.Remove(oldJob);
+            if (oldJob != null)
+            {
+                RemoveStateSubscription(oldJob);
+                Jobs?.Remove(oldJob);
+            }
 
             Jobs?.Add(job);
+            EnsureStateSubscription(job);
             if (Jobs != null) SaveJobs(Jobs);
             return true;
         }
@@ -113,8 +122,35 @@ public class BackupJobService
         }
     }
 
-    private void OnBackupUpdateEvent()
+    private void SubscribeToJobStates()
     {
-        
+        if (Jobs == null)
+        {
+            return;
+        }
+
+        foreach (var job in Jobs)
+        {
+            EnsureStateSubscription(job);
+        }
+    }
+
+    private void EnsureStateSubscription(BackupJob job)
+    {
+        job.State.PropertyChanged -= OnStateChanged;
+        job.State.PropertyChanged += OnStateChanged;
+    }
+
+    private void RemoveStateSubscription(BackupJob job)
+    {
+        job.State.PropertyChanged -= OnStateChanged;
+    }
+
+    private void OnStateChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+        if (Jobs != null)
+        {
+            SaveJobs(Jobs);
+        }
     }
 }
