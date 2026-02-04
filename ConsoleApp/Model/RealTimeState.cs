@@ -45,6 +45,17 @@ public class RealTimeState
         get;
         set => SetField(ref field, value);
     }
+
+    public void Reset()
+    {
+        LastUpdate = DateTime.Now;
+        IsActive = false;
+        TotalFiles = 0;
+        FileSize = 0;
+        Progression = 0;
+        RemainingFiles = 0;
+        RemainingFilesSize = 0;
+    }
     
     private void NotifyObservers()
     {

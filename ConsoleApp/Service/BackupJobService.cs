@@ -19,10 +19,7 @@ public class BackupJobService : IRealTimeStateObserver
     
     public BackupJobService(string appDirectory)
     {
-        if (!FileUtils.DirectoryExists(appDirectory))
-        {
-            FileUtils.CreateDirectory(appDirectory);
-        }
+        if (!FileUtils.DirectoryExists(appDirectory)) FileUtils.CreateDirectory(appDirectory);
 
         _stateFilePath = Path.Combine(appDirectory, "state.json");
         Jobs = LoadJobs();
@@ -37,14 +34,13 @@ public class BackupJobService : IRealTimeStateObserver
         UpdateJob(job);
     }
 
-    public bool CreateJob(BackupJob job)
+    public void CreateJob(BackupJob job)
     {
         try
         {
             Jobs?.Add(job);
             job.State.Attach(this);
             if (Jobs != null) SaveJobs(Jobs);
-            return true;
         }
         catch (Exception e)
         {
