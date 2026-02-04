@@ -1,10 +1,11 @@
 ﻿using System.Security.Cryptography;
+using EasyLog;
 
 namespace EasySave.ConsoleApp.Utils;
 
 public class FileUtils
 {
-    public bool CopyFile(string sourceFile, string destinationDir) // path/to/text.txt -> path/to/dir 
+    public static bool CopyFile(string sourceFile, string destinationDir) // path/to/text.txt -> path/to/dir 
     {
         try
         {
@@ -17,7 +18,7 @@ public class FileUtils
         }
         catch (Exception e)
         {
-            // Logger: log l'erreur
+            Logger.Instance.Write(e.ToString());
             return false;
         }
     }
@@ -32,7 +33,7 @@ public class FileUtils
         }
         catch (Exception e)
         {
-            // Logger: log l'erreur
+            Logger.Instance.Write(e.ToString());
             return new List<FileInfo>();
         }
         
@@ -54,8 +55,7 @@ public class FileUtils
             // Si la racine n'est pas un lecteur (pas de ":"), on ne peut pas convertir simplement
             if (string.IsNullOrEmpty(root) || !root.Contains(":"))
             {
-                // Logger: log l'erreur
-                return null;
+                throw new ArgumentException("The path is not a valid absolute");
             }
 
             string driveLetter = root.Replace(":", "$").TrimEnd('\\');
@@ -66,7 +66,7 @@ public class FileUtils
         }
         catch (Exception e)
         {
-            // Logger: log l'erreur
+            Logger.Instance.Write(e.ToString());
             return null;
         }
         
@@ -82,7 +82,7 @@ public class FileUtils
         }
         catch (Exception e)
         {
-            // Logger: log l'erreur
+            Logger.Instance.Write(e.ToString());
             return null;
         }
         
@@ -105,44 +105,46 @@ public class FileUtils
         }
         catch (Exception e)
         {
-            // Logger: log l'erreur
+            Logger.Instance.Write(e.ToString());
             return false;
         }
         
     }
 
-    public static bool FileExists(string path)
-    {
-        try
-        {
-            FileInfo fileInfo = new FileInfo(path);
-            bool fileExist = fileInfo.Exists;
+    // On peut juste faire : File.Exists(path);
+    
+    // public static bool FileExists(string path)
+    // {
+    //     try
+    //     {
+    //         FileInfo fileInfo = new FileInfo(path);
+    //         bool fileExist = fileInfo.Exists;
+    //
+    //         return fileExist;
+    //     }
+    //     catch (Exception e)
+    //     {
+    //         // Logger: log l'erreur
+    //         return false;
+    //     }
+    // }
+    //
+    // public static bool DirectoryExists(string path)
+    // {
+    //     try
+    //     {
+    //         DirectoryInfo dirInfo = new DirectoryInfo(path);
+    //         bool dirExist = dirInfo.Exists;
+    //         return dirExist;
+    //     }
+    //     catch (Exception e)
+    //     {
+    //         // Logger: log l'erreur
+    //         return false;
+    //     }
+    // }
 
-            return fileExist;
-        }
-        catch (Exception e)
-        {
-            // Logger: log l'erreur
-            return false;
-        }
-    }
-
-    public static bool DirectoryExists(string path)
-    {
-        try
-        {
-            DirectoryInfo dirInfo = new DirectoryInfo(path);
-            bool dirExist = dirInfo.Exists;
-            return dirExist;
-        }
-        catch (Exception e)
-        {
-            // Logger: log l'erreur
-            return false;
-        }
-    }
-
-    public static long? GetFileSize(string path)
+    public static long GetFileSize(string path)
     {
         try
         {
@@ -152,7 +154,21 @@ public class FileUtils
         }
         catch (Exception e)
         {
-            // Logger: log l'erreur
+            Logger.Instance.Write(e.ToString());
+            return 0;
+        }
+    }
+    
+    public static bool? IsDirectory(string path)
+    {
+        try
+        {
+            FileAttributes attrs = File.GetAttributes(path);
+            return (attrs & FileAttributes.Directory) == FileAttributes.Directory;
+        }
+        catch (Exception e)
+        {
+            Logger.Instance.Write(e.ToString());
             return null;
         }
     }

@@ -2,5 +2,5 @@
 
 public interface IBackupStrategy
 {
-    void Execute(BackupJob job);
+    bool Execute(BackupJob job);
 }
