@@ -1,8 +1,10 @@
-﻿namespace EasySave.ConsoleApp.Utils;
+﻿using System.Security.Cryptography;
 
-public static class FileUtils
+namespace EasySave.ConsoleApp.Utils;
+
+public class FileUtils
 {
-    public static bool CopyFile(string sourceFile, string destinationDir) // path/to/text.txt -> path/to/dir 
+    public bool CopyFile(string sourceFile, string destinationDir) // path/to/text.txt -> path/to/dir 
     {
         try
         {
