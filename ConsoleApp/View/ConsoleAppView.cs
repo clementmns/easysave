@@ -13,11 +13,30 @@ public class ConsoleAppView
         _viewModel = new BackupViewModel(appSaveDirectory);
     }
 
-    public void ShowHeader()
+    private static void ShowHeader()
     {
-        Console.WriteLine("===================================");
-        Console.WriteLine("        Easy Save Application      ");
-        Console.WriteLine("===================================");
+       Console.WriteLine("""
+          ______                 _____                 
+         |  ____|               / ____|                
+         | |__   __ _ ___ _   _| (___   __ ___   _____ 
+         |  __| / _` / __| | | |\___ \ / _` \ \ / / _ \
+         | |___| (_| \__ \ |_| |____) | (_| |\ V /  __/
+         |______\__,_|___/\__, |_____/ \__,_| \_/ \___|
+                           __/ |                       
+                          |___/                        
+         """);
+    }
+
+    private static void ShowMenu()
+    {
+        Console.WriteLine(" 1. View saved jobs");
+        Console.WriteLine(" 2. Add Job");
+        Console.WriteLine(" 3. Delete Job");
+        Console.WriteLine(" 4. Execute one or more jobs");
+        Console.WriteLine(" 5. Execute all jobs");
+        Console.WriteLine(" 6. Change Language");
+        Console.WriteLine(" Q. Quit");
+        Console.WriteLine("Choose an Option : ");
     }
 
     public void Run()
@@ -27,90 +46,89 @@ public class ConsoleAppView
         while (!exit)
         {
             ShowHeader();
-            Console.WriteLine(" 1. View saved jobs");
-            Console.WriteLine(" 2. Add Job");
-            Console.WriteLine(" 3. Delete Job");
-            Console.WriteLine(" 4. Execute one or more jobs");
-            Console.WriteLine(" 5. Execute all jobs");
-            Console.WriteLine(" 6. Change Language");
-            Console.WriteLine(" Q. Quit");
-            Console.WriteLine("Choose an Option : ");
+            ShowMenu();
 
-            var choice = Console.ReadLine()?.ToUpper();
+            var choice = Console.ReadKey().KeyChar.ToString().ToUpper();
             switch (choice)
             {
                 case "1":
-                    ViewSavedJobs();
+                    Console.Clear();
+                    ViewJobs();
                     break;
 
                 case "2":
+                    Console.Clear();
                     AddJob();
                     break;
 
                 case "3":
+                    Console.Clear();
                     DeleteJob();
                     break;
 
                 case "4":
+                    Console.Clear();
                     ExecuteJobs();
                     break;
 
                 case "5":
+                    Console.Clear();
                     ExecuteAllJobs();
                     break;
 
                 case "6":
+                    Console.Clear();
                     ChangeLanguage();
                     break;
 
                 case "Q":
                     exit = true;
                     break;
-
-                default:
-                    Console.WriteLine("Invalid option.");
-                    Console.ReadLine();
-                    break;
             }
+            
+            if (exit) break;
+            Console.WriteLine();
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+            Console.Clear();
         }
     }
 
-    public void ViewSavedJobs()
+    private void ViewJobs()
     {
-        if (_viewModel.Jobs != null)
-        {
-            var jobs = _viewModel.Jobs.ToList();
-            Console.WriteLine("Here the jobs : ");
+        if (_viewModel.Jobs == null) return;
+        var jobs = _viewModel.Jobs.ToList();
+        Console.WriteLine("Here the jobs : ");
         
-            if (jobs.Count == 0)
+        if (jobs.Count == 0)
+        {
+            Console.WriteLine("No job available.");
+        }
+        else
+        {
+            for (var i = 0; i < jobs.Count; i++)
             {
-                Console.WriteLine("No job available.");
-            }
-            else
-            {
-                foreach (var job in jobs)
-                {
-                    Console.WriteLine($"- {job.Name} ({job.SourcePath} -> {job.DestinationPath}) - Type: {job.Type}");
-                }
+                var job = jobs[i];
+                Console.WriteLine($"{i + 1}. {job.Name} ({job.SourcePath} -> {job.DestinationPath}) - Type: {job.Type}");
             }
         }
-
-        Console.ReadLine();
     }
 
-    public void AddJob()
+    private void AddJob()
     {
-        Console.WriteLine("Add a job");
+        Console.WriteLine("Add a job name :");
         var name = Console.ReadLine() ?? string.Empty;
         
-        Console.WriteLine("Add a Path (source)");
+        Console.WriteLine("Add a Path (source) :");
         var sourcePath = Console.ReadLine() ?? string.Empty;
         
-        Console.WriteLine("Add a Path (destination)");
+        Console.WriteLine("Add a Path (destination) :");
         var destinationPath = Console.ReadLine() ?? string.Empty;
         
-        Console.WriteLine("Define the type of save that you want  : Differential | Complete");
+        Console.WriteLine("Define the type of save that you want  : Differential | Complete"); 
         var typeInput = Console.ReadLine() ?? string.Empty;
+        
+        // TODO: Use Switch for available backup types (Differential, Complete for the moment)
 
         if (!Enum.TryParse<BackupType>(typeInput, true, out var backupType))
         {
@@ -120,12 +138,12 @@ public class ConsoleAppView
         var job = BackupJobFactory.GetInstance().CreateJob(name, sourcePath, destinationPath, backupType);
 
         Console.WriteLine(_viewModel.AddJob(job) ? "Job add with success." : "Job add failed.");
-        Console.ReadLine();
     }
 
     private void DeleteJob()
     {
         Console.Write("Enter the job to remove : ");
+        ViewJobs();
         var name = Console.ReadLine() ?? string.Empty;
         var jobs = _viewModel.Jobs?.ToList();
         var job = jobs?.Find(j => j.Name == name);
@@ -138,12 +156,13 @@ public class ConsoleAppView
         {
             Console.WriteLine("Remove of the job failed.");
         }
-        Console.ReadLine();
     }
 
     private void ExecuteJobs()
     {
         Console.Write("Enter the name of the jobs to execute : ");
+        
+        // TODO: Use ViewJobs() to get the list of jobs and select one or more jobs to execute (1,3 = 1 to 3) (1;3 = 1 and 3)
         var input = Console.ReadLine();
         var names = input?.Split(',').Select(n => n.Trim()).ToArray();
         var jobs = _viewModel.Jobs?.ToList().FindAll(j => names?.Contains(j.Name) == true);
@@ -160,21 +179,12 @@ public class ConsoleAppView
         {
             Console.WriteLine("No jobs found with these names.");
         }
-        Console.ReadLine();
     }
 
     private void ExecuteAllJobs()
     {
-        if (_viewModel.Jobs != null)
-        {
-            foreach (var job in _viewModel.Jobs.ToList())
-            {
-                _viewModel.ExecuteJob(job);
-            }
-        }
-
+        if (_viewModel.Jobs != null) foreach (var job in _viewModel.Jobs.ToList()) _viewModel.ExecuteJob(job);
         Console.WriteLine("All jobs have been successfully completed.");
-        Console.ReadLine();
     }
 
     private void ChangeLanguage()
@@ -182,13 +192,13 @@ public class ConsoleAppView
         Console.WriteLine("Change the language : ");
         Console.WriteLine("1. English");
         Console.WriteLine("2. French");
-        var langInput = Console.ReadLine() ?? string.Empty;
+        var langInput = Console.ReadKey().KeyChar.ToString();
         
         var language = langInput switch
         {
             "1" => "en-US",
             "2" => "fr-FR",
-            _ => "en-US"
+            _ => "en-US" // TODO: Tell that in default case, because the Input var undefined, we used English
         };
         SettingsService.GetInstance.SetLanguage(language);
     }
