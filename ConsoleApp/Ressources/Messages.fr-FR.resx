@@ -21,4 +21,7 @@
     <data name="HelloWorld" xml:space="preserve">
         <value>Bonjour le monde</value>
     </data>
+    <data name="ConsoleMenuViewJobs" xml:space="preserve">
+        <value>Voir les travaux de sauvegarde</value>
+    </data>
 </root>

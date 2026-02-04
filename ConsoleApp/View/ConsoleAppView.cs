@@ -1,4 +1,5 @@
 ﻿using EasySave.ConsoleApp.Model;
+using EasySave.ConsoleApp.Ressources;
 using EasySave.ConsoleApp.Service;
 using EasySave.ConsoleApp.ViewModel;
 
@@ -29,7 +30,7 @@ public class ConsoleAppView
 
     private static void ShowMenu()
     {
-        Console.WriteLine(" 1. View saved jobs");
+        Console.WriteLine(@" 1. " + Messages.ResourceManager.GetString("ConsoleMenuViewJobs"));
         Console.WriteLine(" 2. Add Job");
         Console.WriteLine(" 3. Delete Job");
         Console.WriteLine(" 4. Execute one or more jobs");
