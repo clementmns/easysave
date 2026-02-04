@@ -14,11 +14,7 @@ public class BackupJobFactory
 
     public static BackupJobFactory GetInstance()
     {
-        if (_instance == null)
-        {
-            _instance = new BackupJobFactory();
-        }
-
+        _instance ??= new BackupJobFactory();
         return _instance;
     }
 
