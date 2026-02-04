@@ -2,7 +2,6 @@
 
 public class RealTimeState
 {
-    public string? Name { get; set; }
     public DateTime LastUpdate { get; set; }
     public bool IsActive { get; set; }
     public int TotalFiles { get; set; }
@@ -10,26 +9,9 @@ public class RealTimeState
     public int Progression { get; set; }
     public int RemainingFiles { get; set; }
     public long RemainingFilesSize { get; set; }
-    public string? SourceDirectory { get; set; }
-    public string? DestinationDirectory { get; set; }
 
-    private List<IBackupUpdatedEvent> _observers = new List<IBackupUpdatedEvent>();
-    
-    public void Attach(IBackupUpdatedEvent observer)
+    public override string ToString()
     {
-        _observers.Add(observer);
-    }
-
-    public void Detach(IBackupUpdatedEvent observer)
-    {
-        _observers.Remove(observer);
-    }
-
-    public void Notify()
-    {
-        foreach (var observer in _observers)
-        {
-            observer.Update(this);
-        }
+        return $"RealTimeState(LastUpdate={LastUpdate}, IsActive={IsActive}, TotalFiles={TotalFiles}, FileSize={FileSize}, Progression={Progression}, RemainingFiles={RemainingFiles}, RemainingFilesSize={RemainingFilesSize})";
     }
 }

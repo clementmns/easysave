@@ -6,46 +6,48 @@ public class BackupExecutor
 {
     public void ExecuteJob(BackupJob job)
     {
-        if (!Directory.Exists(job._sourcePath))
-        {
-            Console.WriteLine($"The source path {job._sourcePath} don't exist");
-            return;
-        }
-        string[] files = Directory.GetFiles(job._sourcePath, "*", SearchOption.AllDirectories); // Find all the files even in the subfolders
-        job._state.TotalFiles = files.Length;
-        job._state.RemainingFiles = files.Length;
-        job._state.IsActive = true;
-        job._state.Progression = 0;
-
-        long totalSize = 0;
-        foreach (string file in files)
-        {
-            totalSize += new FileInfo(file).Length;
-        }
-        job._state.Notify();
-        
-        // Add copy of files
-
-        foreach (string file in files)
-        {
-            long currentFileSize = new FileInfo(job._sourcePath).Length;
-            job._state.RemainingFiles--;
-            job._state.FileSize -= currentFileSize;
-
-            if (job._state.FileSize > 0)
-            {
-                double percent = 100.0 * (1.0 - ((double)job._state.RemainingFilesSize / job._state.FileSize));
-                job._state.Progression = (int)percent;
-            }
-            else
-            {
-                job._state.Progression = 100;
-            }
-            job._state.Notify();
-        }
-
-        job._state.IsActive = false; 
-        job._state.Notify();
-
+        job.State.IsActive = true;
+        Thread.Sleep(3000);
+        job.State.LastUpdate = DateTime.Now;
+        job.State.IsActive = false;
+        // if (!Directory.Exists(job.SourcePath))
+        // {
+        //     Console.WriteLine($"The source path {job.SourcePath} don't exist");
+        //     return;
+        // }
+        // string[] files = Directory.GetFiles(job.SourcePath, "*", SearchOption.AllDirectories); // Find all the files even in the subfolders
+        // job.State.TotalFiles = files.Length;
+        // job.State.RemainingFiles = files.Length;
+        // job.State.IsActive = true;
+        // job.State.Progression = 0;
+        //
+        // long totalSize = 0;
+        // foreach (string file in files)
+        // {
+        //     totalSize += new FileInfo(file).Length;
+        // }
+        // job.State.Notify();
+        //
+        // // Add copy of files
+        //
+        // foreach (string file in files)
+        // {
+        //     long currentFileSize = new FileInfo(job.SourcePath).Length;
+        //     job.State.RemainingFiles--;
+        //     job.State.FileSize -= currentFileSize;
+        //
+        //     if (job.State.FileSize > 0)
+        //     {
+        //         double percent = 100.0 * (1.0 - ((double)job.State.RemainingFilesSize / job.State.FileSize));
+        //         job.State.Progression = (int)percent;
+        //     }
+        //     else
+        //     {
+        //         job.State.Progression = 100;
+        //     }
+        //     job.State.Notify();
+        // }
+        //
+        // job.State.IsActive = false; 
     }
 }
