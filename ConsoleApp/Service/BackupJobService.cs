@@ -5,7 +5,7 @@ using EasySave.ConsoleApp.Utils;
 
 namespace EasySave.ConsoleApp.Service;
 
-public class BackupJobService
+public class BackupJobService : IRealTimeStateObserver
 {
     public ObservableCollection<BackupJob>? Jobs { get; set; }
     
@@ -31,7 +31,7 @@ public class BackupJobService
     
     public void ExecuteJob(BackupJob job)
     {
-        EnsureStateSubscription(job);
+        job.State.Attach(this);
         var executor = new BackupExecutor();
         executor.ExecuteJob(job);
         UpdateJob(job);
@@ -42,7 +42,7 @@ public class BackupJobService
         try
         {
             Jobs?.Add(job);
-            EnsureStateSubscription(job);
+            job.State.Attach(this);
             if (Jobs != null) SaveJobs(Jobs);
             return true;
         }
@@ -69,7 +69,7 @@ public class BackupJobService
         }
     }
 
-    public bool UpdateJob(BackupJob job)
+    public void UpdateJob(BackupJob job)
     {
         try
         {
@@ -81,9 +81,8 @@ public class BackupJobService
             }
 
             Jobs?.Add(job);
-            EnsureStateSubscription(job);
+            job.State.Attach(this);
             if (Jobs != null) SaveJobs(Jobs);
-            return true;
         }
         catch (Exception e)
         {
@@ -92,7 +91,7 @@ public class BackupJobService
         }
     }
 
-    public ObservableCollection<BackupJob>? LoadJobs()
+    private ObservableCollection<BackupJob>? LoadJobs()
     {
         try
         {
@@ -107,13 +106,12 @@ public class BackupJobService
         }
     }
 
-    private bool SaveJobs(ObservableCollection<BackupJob> jobs)
+    private void SaveJobs(ObservableCollection<BackupJob> jobs)
     {
         try
         {
             var json = JsonSerializer.Serialize(jobs, JsonOptions);
             File.WriteAllText(_stateFilePath, json);
-            return true;
         }
         catch (Exception e)
         {
@@ -124,33 +122,17 @@ public class BackupJobService
 
     private void SubscribeToJobStates()
     {
-        if (Jobs == null)
-        {
-            return;
-        }
-
-        foreach (var job in Jobs)
-        {
-            EnsureStateSubscription(job);
-        }
-    }
-
-    private void EnsureStateSubscription(BackupJob job)
-    {
-        job.State.PropertyChanged -= OnStateChanged;
-        job.State.PropertyChanged += OnStateChanged;
+        if (Jobs == null) return;
+        foreach (var job in Jobs) job.State.Attach(this);
     }
 
     private void RemoveStateSubscription(BackupJob job)
     {
-        job.State.PropertyChanged -= OnStateChanged;
+        job.State.Detach(this);
     }
 
-    private void OnStateChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+    public void OnStateUpdated(RealTimeState state)
     {
-        if (Jobs != null)
-        {
-            SaveJobs(Jobs);
-        }
+        if (Jobs != null) SaveJobs(Jobs);
     }
 }
