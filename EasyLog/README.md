@@ -18,9 +18,19 @@ class Program
 {
     static void Main(string[] args)
     {
-        Logger.Init("EasySave", [ new JsonLoggerStrategy() ]);
-        
+        // Suggested directory for storing logs and config, e.g.:
+        string appSaveDirectory = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+            "ProSoft",
+            "EasySave"
+        );
+        Logger.Init(appSaveDirectory, [ new JsonLoggerStrategy() ]);
+
         Logger.Instance.Write("log");
+
+        // Note:
+        // The first parameter to Logger.Init is now the directory path where logs and config files will be stored.
+        // Be sure to create the parent directory if it does not exist. See documentation for more details.
     }
 }
 ```
