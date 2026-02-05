@@ -1,5 +1,7 @@
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Text.Json;
+using EasyLog;
 using EasySave.ConsoleApp.Model;
 using EasySave.ConsoleApp.Utils;
 
@@ -28,48 +30,68 @@ public class BackupJobService : IRealTimeStateObserver
     
     public void ExecuteJob(BackupJob job)
     {
-        job.State.Attach(this);
-        var executor = new BackupExecutor();
-        executor.ExecuteJob(job);
-        UpdateJob(job);
+        Logger.Instance.Write(new LogEntry("Going to execute job", job));
+        try
+        {
+            // get execution time
+            Stopwatch sw = new();
+            sw.Start();
+            
+            job.State.Attach(this);
+            var executor = new BackupExecutor();
+            executor.ExecuteJob(job);
+            sw.Stop();
+            Logger.Instance.Write(new LogEntry("Job executed", job, false, sw.ElapsedMilliseconds));
+            UpdateJob(job);
+        }
+        catch (Exception e)
+        {
+            Logger.Instance.Write(new LogEntry($"Failed to execute job: {e.Message}", job, true));
+            throw;
+        }
     }
 
     public bool CreateJob(BackupJob job)
     {
+        Logger.Instance.Write(new LogEntry("Going to create job", job));
         try
         {
             Jobs?.Add(job);
             job.State.Attach(this);
             SortJobsById();
             if (Jobs != null) SaveJobs(Jobs);
+            Logger.Instance.Write(new LogEntry("Job created", job));
             return true;
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            Console.WriteLine(e);
+            Logger.Instance.Write(new LogEntry("Failed to create job", job, true));
             throw;
         }
     }
 
     public bool DeleteJob(BackupJob job)
     {
+        Logger.Instance.Write(new LogEntry("Going to delete job", job));
         try
         {
             RemoveStateSubscription(job);
             Jobs?.Remove(job);
             SortJobsById();
             if (Jobs != null) SaveJobs(Jobs);
+            Logger.Instance.Write(new LogEntry("Job deleted", job));
             return true;
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            Console.WriteLine(e);
+            Logger.Instance.Write(new LogEntry("Failed to delete job", job, true));
             throw;
         }
     }
 
     public void UpdateJob(BackupJob job)
     {
+        Logger.Instance.Write(new LogEntry("Going to update job", job));
         try
         {
             var oldJob = Jobs?.FirstOrDefault(j => j.Id == job.Id);
@@ -83,46 +105,31 @@ public class BackupJobService : IRealTimeStateObserver
             job.State.Attach(this);
             SortJobsById();
             if (Jobs != null) SaveJobs(Jobs);
+            Logger.Instance.Write(new LogEntry("Job updated", job));
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            Console.WriteLine(e);
+            Logger.Instance.Write(new LogEntry("Failed to update job", job, true));
             throw;
         }
     }
 
     private ObservableCollection<BackupJob>? LoadJobs()
     {
-        try
-        {
-            if (!File.Exists(_stateFilePath)) SaveJobs([]);
-            var json = File.ReadAllText(_stateFilePath);
-            var jobs = JsonSerializer.Deserialize<ObservableCollection<BackupJob>>(json, JsonOptions);
-            if (jobs == null) return jobs;
-            var sorted = jobs.OrderBy(j => j.Id).ToList();
-            jobs = new ObservableCollection<BackupJob>(sorted);
-            return jobs;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+        if (!File.Exists(_stateFilePath)) SaveJobs([]);
+        var json = File.ReadAllText(_stateFilePath);
+        var jobs = JsonSerializer.Deserialize<ObservableCollection<BackupJob>>(json, JsonOptions);
+        if (jobs == null) return jobs;
+        var sorted = jobs.OrderBy(j => j.Id).ToList();
+        jobs = new ObservableCollection<BackupJob>(sorted);
+        return jobs;
     }
 
     private void SaveJobs(ObservableCollection<BackupJob> jobs)
     {
-        try
-        {
-            var orderedJobs = jobs.OrderBy(j => j.Id).ToList();
-            var json = JsonSerializer.Serialize(orderedJobs, JsonOptions);
-            File.WriteAllText(_stateFilePath, json);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+        var orderedJobs = jobs.OrderBy(j => j.Id).ToList();
+        var json = JsonSerializer.Serialize(orderedJobs, JsonOptions);
+        File.WriteAllText(_stateFilePath, json);
     }
 
     private void SubscribeToJobStates()

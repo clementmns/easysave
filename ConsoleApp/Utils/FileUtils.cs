@@ -1,5 +1,3 @@
-﻿using EasyLog;
-
 namespace EasySave.ConsoleApp.Utils;
 
 /// <summary>
@@ -35,7 +33,6 @@ public static class FileUtils
         }
         catch (Exception e)
         {
-            Logger.Instance.Write(e.ToString());
             return false;
         }
     }
@@ -55,7 +52,6 @@ public static class FileUtils
         }
         catch (Exception e)
         {
-            Logger.Instance.Write(e.ToString());
             return [];
         }
         
@@ -94,7 +90,6 @@ public static class FileUtils
         }
         catch (Exception e)
         {
-            Logger.Instance.Write(e.ToString());
             return null;
         }
         
@@ -115,7 +110,6 @@ public static class FileUtils
         }
         catch (Exception e)
         {
-            Logger.Instance.Write(e.ToString());
             return null;
         }
         
@@ -138,7 +132,6 @@ public static class FileUtils
         }
         catch (Exception e)
         {
-            Logger.Instance.Write(e.ToString());
             return false;
         }
         
@@ -159,7 +152,6 @@ public static class FileUtils
         }
         catch (Exception e)
         {
-            Logger.Instance.Write(e.ToString());
             return 0;
         }
     }
@@ -178,7 +170,6 @@ public static class FileUtils
         }
         catch (Exception e)
         {
-            Logger.Instance.Write(e.ToString());
             return null;
         }
     }
