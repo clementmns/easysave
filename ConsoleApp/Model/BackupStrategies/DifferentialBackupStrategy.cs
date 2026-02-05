@@ -10,10 +10,9 @@ public class DifferentialBackupStrategy : IBackupStrategy
         job.State.IsActive = true;
         job.State.Progression = 0;
 
-        var result = (File.Exists(job.SourcePath), Directory.Exists(job.DestinationPath)) switch
+        var result = (File.Exists(job.SourcePath), Directory.Exists(job.SourcePath)) switch
         {
-            (true, false) => throw new FileNotFoundException(Ressources.Errors.ProcessingError),
-            (true, true) => ProcessFile(job),
+            (true, false) => ProcessFile(job),
             (false, true) => ProcessDirectory(job),
             _ => throw new FileNotFoundException(Ressources.Errors.ProcessingError)
         };

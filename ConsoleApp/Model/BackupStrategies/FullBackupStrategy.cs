@@ -10,7 +10,7 @@ public class FullBackupStrategy : IBackupStrategy
         job.State.IsActive = true;
         job.State.Progression = 0;
         
-        var result = (File.Exists(job.SourcePath), Directory.Exists(job.DestinationPath)) switch
+        var result = (File.Exists(job.SourcePath), Directory.Exists(job.SourcePath)) switch
         {
             (true, false) => ProcessFile(job),
             (false, true) => ProcessDirectory(job),
