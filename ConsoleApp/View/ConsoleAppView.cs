@@ -19,69 +19,22 @@ public class ConsoleAppView
     private static void ShowHeader()
     {
         Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine("""
-                           ______                 _____
-                          |  ____|               / ____|
-                          | |__   __ _ ___ _   _| (___   __ ___   _____
-                          |  __| / _` / __| | | |\___ \ / _` \ \ / / _ \
-                          | |___| (_| \__ \ |_| |____) | (_| |\ V /  __/
-                          |______\__,_|___/\__, |_____/ \__,_| \_/ \___|
-                                            __/ |
-                                           |___/
-                          """);
+        string[] logo = {
+            "███████╗ █████╗ ███████╗██╗   ██╗███████╗ █████╗ ██╗   ██╗███████╗",
+            "██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝██╔════╝██╔══██╗██║   ██║██╔════╝",
+            "█████╗  ███████║███████╗ ╚████╔╝ ███████╗███████║██║   ██║█████╗  ",
+            "██╔══╝  ██╔══██║╚════██║  ╚██╔╝  ╚════██║██╔══██║╚██╗ ██╔╝██╔══╝  ",
+            "███████╗██║  ██║███████║   ██║   ███████║██║  ██║ ╚████╔╝ ███████╗",
+            "╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚══════╝"
+        };
+        foreach (string line in logo)
+        {
+            Console.WriteLine(line);
+        }
+        
         Console.ResetColor();
     }
-
-    private static int ShowMenu()
-    {
-        string[] options =
-        {
-            Messages.ResourceManager.GetString("ConsoleMenuViewJobs"), 
-            Messages.ResourceManager.GetString("ConsoleMenuAddJob"), 
-            Messages.ResourceManager.GetString("ConsoleMenuDeleteJob"), 
-            Messages.ResourceManager.GetString("ConsoleMenuExecuteJob"), 
-            Messages.ResourceManager.GetString("ConsoleMenuExecuteAllJobs"), 
-            Messages.ResourceManager.GetString("ConsoleMenuLanguage"), 
-            Messages.ResourceManager.GetString("ConsoleMenuQuit")
-        };
-        int selection = 0;
-        Console.CursorVisible = false;
-        while (true)
-        {
-            Console.Clear();
-            ShowHeader();
-             
-            
-            for (int i = 0; i < options.Length; i++)
-            {
-                if (i == selection)
-                {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine($"-> {options[i]}");
-                    Console.ResetColor();
-                }
-                else
-                {
-                    Console.WriteLine($"{options[i]}");
-                }
-            }
-            var key = Console.ReadKey(true).Key;
-            if (key == ConsoleKey.DownArrow && selection < options.Length)
-            {
-                selection++;
-            }
-            else if (key == ConsoleKey.UpArrow && selection > 0)
-            {
-                selection--;
-            }
-            else if (key == ConsoleKey.Enter)
-            {
-                return selection;
-            }
-        }
-
-    }
-
+    
     public void Run()
     {
         var exit = false;
@@ -89,7 +42,18 @@ public class ConsoleAppView
 
         while (!exit)
         {
-            int choice = ShowMenu();
+            string[] options =
+            {
+                Messages.ResourceManager.GetString("ConsoleMenuViewJobs"), 
+                Messages.ResourceManager.GetString("ConsoleMenuAddJob"), 
+                Messages.ResourceManager.GetString("ConsoleMenuDeleteJob"), 
+                Messages.ResourceManager.GetString("ConsoleMenuExecuteJob"), 
+                Messages.ResourceManager.GetString("ConsoleMenuExecuteAllJobs"), 
+                Messages.ResourceManager.GetString("ConsoleMenuLanguage"), 
+                Messages.ResourceManager.GetString("ConsoleMenuQuit")
+            };
+            
+            int choice = NavigateMenu(options);
             Console.Clear();
             
             switch (choice)
@@ -180,20 +144,15 @@ public class ConsoleAppView
 
         Console.WriteLine(Messages.ResourceManager.GetString("AddJobDestinationPath"));
         var destinationPath = Console.ReadLine() ?? string.Empty;
-
-        Console.WriteLine(Messages.ResourceManager.GetString("AddJobSaveType"));
-        Console.WriteLine(Messages.ResourceManager.GetString("AddJobTypeDifferential"));
-        Console.WriteLine(Messages.ResourceManager.GetString("AddJobTypeFull"));
-
-        var saveTypeInput = Console.ReadKey().KeyChar.ToString().ToUpper();
-
-        var saveType = saveTypeInput switch
-        {
-            "1" => BackupType.Differential,
-            "2" => BackupType.Full,
-            _ => BackupType.Full,
+        
+        string[] options = {
+            Messages.ResourceManager.GetString("AddJobTypeDifferential"),
+            Messages.ResourceManager.GetString("AddJobTypeFull")
         };
-
+        string question = Messages.ResourceManager.GetString("AddJobSaveType");
+        int selection = NavigateMenu(options, question);
+        var saveType = selection == 0 ? BackupType.Differential : BackupType.Full;       
+        
         BackupJob job;
         var currentJobs = _viewModel.Jobs?.ToList() ?? [];
         try
@@ -319,32 +278,73 @@ public class ConsoleAppView
 
     private void ChangeLanguage()
     {
-        Console.WriteLine(Messages.ResourceManager.GetString("ChangeLanguageTitle"));
-        Console.WriteLine(Messages.ResourceManager.GetString("ChangeLanguageEnglish"));
-        Console.WriteLine(Messages.ResourceManager.GetString("ChangeLanguageFrench"));
-
-        var langInput = Console.ReadKey().KeyChar.ToString();
-        
+        string[] options = {
+            Messages.ResourceManager.GetString("ChangeLanguageEnglish"),
+            Messages.ResourceManager.GetString("ChangeLanguageFrench")   
+        };
+        string title = Messages.ResourceManager.GetString("ChangeLanguageTitle");
+        int selection = NavigateMenu(options, title);
         string language;
-        Console.Clear();
-        switch (langInput)
+        switch (selection)
 
         {
-            case "1": 
+            case 0: 
                 language = "en-US";
-                Console.WriteLine(Messages.ResourceManager.GetString("ChangeLanguageSuccess"));
                 break;
-            case "2":
+            case 1:
                 language = "fr-FR";
-                Console.WriteLine(Messages.ResourceManager.GetString("ChangeLanguageSuccess"));
                 break;
             default:
-                Console.WriteLine(Messages.ResourceManager.GetString("ChangeLanguageInvalid"));
                 language = "en-US";
                 break;
         }
-        
-
         SettingsService.GetInstance.SetLanguage(language);
+        Console.WriteLine(Messages.ResourceManager.GetString("ChangeLanguageSuccess"));
+    }
+
+    private int NavigateMenu(string[] options, string? question = null)
+    {
+        
+        int selection = 0;
+        Console.CursorVisible = false;
+
+        while (true)
+        {
+            Console.Clear();
+            ShowHeader();
+
+            if (!string.IsNullOrWhiteSpace(question))
+            {
+                Console.WriteLine(question);
+                Console.WriteLine();
+            }
+            for (int i = 0; i < options.Length; i++)
+            {
+                if (i == selection)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"-> {options[i]}");
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.WriteLine($"{options[i]}");
+                }
+            }
+            var key = Console.ReadKey(true).Key;
+            if (key == ConsoleKey.DownArrow && selection < options.Length - 1)
+            {
+                selection++;
+            }
+            else if (key == ConsoleKey.UpArrow && selection > 0)
+            {
+                selection--;
+            }
+            else if (key == ConsoleKey.Enter)
+            {
+                Console.CursorVisible = true;
+                return selection;
+            }
+        }
     }
 }
