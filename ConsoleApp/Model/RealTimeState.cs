@@ -50,8 +50,6 @@ public class RealTimeState
     {
         LastUpdate = DateTime.Now;
         IsActive = false;
-        TotalFiles = 0;
-        FileSize = 0;
         Progression = 0;
         RemainingFiles = 0;
         RemainingFilesSize = 0;
