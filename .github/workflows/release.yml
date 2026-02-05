@@ -2,6 +2,7 @@ name: Release on tag
 
 on:
   push:
+    # v1.0 etc.
     tags:
       - "v*.*"
 
@@ -66,4 +67,5 @@ jobs:
         with:
           files: artifacts/**/*.zip
         env:
+          # set in repo environment variables
           GITHUB_TOKEN: ${{ secrets.RELEASE_SECRET }}
