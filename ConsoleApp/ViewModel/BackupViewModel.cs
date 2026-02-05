@@ -16,22 +16,9 @@ public class BackupViewModel
         _backupExecutor = new BackupExecutor();
     }
 
-    public void AddJob(string name, string source, string destination, BackupType type)
-    {
-        try
-        {
-            var currentJobs = Jobs?.ToList() ?? new List<BackupJob>();
-            var factory = BackupJobFactory.GetInstance();
-            var newJob = factory.CreateJob(name, source, destination, type, currentJobs);
-            _jobService.CreateJob(newJob);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-        }
-    }
+    public bool AddJob(BackupJob job) => _jobService.CreateJob(job);
     
-    public void DeleteJob(BackupJob job) => _jobService.DeleteJob(job);
+    public bool DeleteJob(BackupJob job) => _jobService.DeleteJob(job);
     
     public void ExecuteJob(BackupJob job) => _jobService.ExecuteJob(job);
     
