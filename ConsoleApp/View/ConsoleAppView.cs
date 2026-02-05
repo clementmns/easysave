@@ -198,9 +198,8 @@ public class ConsoleAppView
 
     private void ExecuteJobs()
     {
-        Console.WriteLine(Messages.ResourceManager.GetString("ExecuteJobsPrompt"));
         ViewJobs();
-        var input = Console.ReadLine();
+        Console.WriteLine(Messages.ResourceManager.GetString("ExecuteJobsPrompt"));
         var jobsList = _viewModel.Jobs?.ToList();
         
         Console.Clear();
@@ -209,6 +208,8 @@ public class ConsoleAppView
             Console.WriteLine(Messages.ResourceManager.GetString("ExecuteJobsNoJobs"));
             return;
         }
+        
+        var input = Console.ReadLine();
 
         var selectedJobs = new List<BackupJob>();
         var parts = input?.Split(';').Select(p => p.Trim()).ToArray();
