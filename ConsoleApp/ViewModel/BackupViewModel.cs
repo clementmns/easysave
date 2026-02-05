@@ -23,4 +23,36 @@ public class BackupViewModel
     public void ExecuteJob(BackupJob job) => _jobService.ExecuteJob(job);
     
     public void UpdateJob(BackupJob job) => _jobService.UpdateJob(job);
+    
+    public bool ExecuteJobsFromArgs(string? args)
+    {
+        var selectedJobs = new List<BackupJob>();
+        var parts = args?.Split(';').Select(p => p.Trim()).ToArray();
+
+        if (parts != null)
+        {
+            foreach (var part in parts)
+            {
+                if (part.Contains('-'))
+                {
+                    var range = part.Split('-');
+                    if (!int.TryParse(range[0], out var start) || !int.TryParse(range[1], out var end)) continue;
+                    if (Jobs == null) continue;
+                    for (var i = start; i <= end && i <= Jobs.Count; i++)
+                    {
+                        selectedJobs.Add(Jobs[i - 1]);
+                    }
+                }
+                else if (int.TryParse(part, out var jobNumber) && jobNumber > 0 && Jobs != null && jobNumber <= Jobs.Count)
+                {
+                    selectedJobs.Add(Jobs[jobNumber - 1]);
+                }
+            }
+        }
+        foreach (var job in selectedJobs)
+        {
+            ExecuteJob(job);
+        }
+        return true;
+    }
 }

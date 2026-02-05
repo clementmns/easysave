@@ -7,11 +7,19 @@ namespace EasySave.ConsoleApp.View;
 
 public class ConsoleAppView
 {
-    private readonly BackupViewModel _viewModel;
+    private readonly BackupViewModel _backupViewModel;
 
     public ConsoleAppView(string appSaveDirectory)
     {
-        _viewModel = new BackupViewModel(appSaveDirectory);
+        _backupViewModel = new BackupViewModel(appSaveDirectory);
+    }
+
+    public void RunWithArgs(string[] args)
+    {
+        var executed = _backupViewModel.ExecuteJobsFromArgs(args[0]);
+        Console.WriteLine(executed
+            ? Messages.ResourceManager.GetString("ExecuteJobsSuccess")
+            : Messages.ResourceManager.GetString("ExecuteJobsNoValid"));
     }
 
     private static void ShowHeader()
@@ -96,8 +104,8 @@ public class ConsoleAppView
 
     private void ViewJobs()
     {
-        if (_viewModel.Jobs == null) return;
-        var jobs = _viewModel.Jobs.ToList();
+        if (_backupViewModel.Jobs == null) return;
+        var jobs = _backupViewModel.Jobs.ToList();
         Console.WriteLine(Messages.ResourceManager.GetString("ViewJobsTitle"));
 
         if (jobs.Count == 0)
@@ -140,7 +148,7 @@ public class ConsoleAppView
         };
 
         BackupJob job;
-        var currentJobs = _viewModel.Jobs?.ToList() ?? [];
+        var currentJobs = _backupViewModel.Jobs?.ToList() ?? [];
         try
         {
             job = BackupJobFactory.GetInstance().CreateJob(name, sourcePath, destinationPath, saveType, currentJobs);
@@ -153,7 +161,7 @@ public class ConsoleAppView
         }
 
         Console.Clear();
-        Console.WriteLine(_viewModel.AddJob(job) 
+        Console.WriteLine(_backupViewModel.AddJob(job) 
             ? Messages.ResourceManager.GetString("AddJobSuccess") 
             : Messages.ResourceManager.GetString("AddJobFailed"));
     }
@@ -163,7 +171,7 @@ public class ConsoleAppView
         Console.WriteLine(Messages.ResourceManager.GetString("DeleteJobPrompt"));
         ViewJobs();
     
-        var jobs = _viewModel.Jobs?.ToList();
+        var jobs = _backupViewModel.Jobs?.ToList();
     
         if (jobs == null || jobs.Count == 0)
         {
@@ -179,7 +187,7 @@ public class ConsoleAppView
             var job = jobs[jobNumber - 1];
             Console.Clear();
 
-            Console.WriteLine(_viewModel.DeleteJob(job)
+            Console.WriteLine(_backupViewModel.DeleteJob(job)
                 ? Messages.ResourceManager.GetString("DeleteJobSuccess")
                 : Messages.ResourceManager.GetString("DeleteJobFailed"));
         }
@@ -195,7 +203,7 @@ public class ConsoleAppView
     {
         ViewJobs();
         Console.WriteLine(Messages.ResourceManager.GetString("ExecuteJobsPrompt"));
-        var jobsList = _viewModel.Jobs?.ToList();
+        var jobsList = _backupViewModel.Jobs?.ToList();
         
         if (jobsList == null || jobsList.Count == 0)
         {
@@ -204,59 +212,25 @@ public class ConsoleAppView
             return;
         }
         
-        var input = Console.ReadLine();
+        var executed = _backupViewModel.ExecuteJobsFromArgs(Console.ReadLine());
 
-        var selectedJobs = new List<BackupJob>();
-        var parts = input?.Split(';').Select(p => p.Trim()).ToArray();
-
-        if (parts != null)
-        {
-            foreach (var part in parts)
-            {
-                if (part.Contains('-'))
-                {
-                    var range = part.Split('-');
-                    if (!int.TryParse(range[0], out var start) || !int.TryParse(range[1], out var end)) continue;
-                    for (var i = start; i <= end && i <= jobsList.Count; i++)
-                    {
-                        selectedJobs.Add(jobsList[i - 1]);
-                    }
-                }
-                else if (int.TryParse(part, out var jobNumber) && jobNumber > 0 && jobNumber <= jobsList.Count)
-                {
-                    selectedJobs.Add(jobsList[jobNumber - 1]);
-                }
-            }
-        }
-
-        Console.Clear();
-        if (selectedJobs.Count > 0)
-        {
-            foreach (var job in selectedJobs)
-            {
-                _viewModel.ExecuteJob(job);
-            }
-
-            Console.WriteLine(Messages.ResourceManager.GetString("ExecuteJobsSuccess"));
-        }
-        else
-        {
-            Console.WriteLine(Messages.ResourceManager.GetString("ExecuteJobsNoValid"));
-        }
+        Console.WriteLine(executed
+            ? Messages.ResourceManager.GetString("ExecuteJobsSuccess")
+            : Messages.ResourceManager.GetString("ExecuteJobsNoValid"));
     }
 
     private void ExecuteAllJobs()
     {
-        if (_viewModel.Jobs != null && _viewModel.Jobs.Count == 0) 
+        if (_backupViewModel.Jobs != null && _backupViewModel.Jobs.Count == 0) 
         {
             Console.Clear();
             Console.WriteLine(Messages.ResourceManager.GetString("ExecuteJobsNoJobs"));
             return;
         }
         
-        if (_viewModel.Jobs != null)
-            foreach (var job in _viewModel.Jobs.ToList())
-                _viewModel.ExecuteJob(job);
+        if (_backupViewModel.Jobs != null)
+            foreach (var job in _backupViewModel.Jobs.ToList())
+                _backupViewModel.ExecuteJob(job);
         
         Console.Clear();
         Console.WriteLine(Messages.ResourceManager.GetString("ExecuteAllJobsSuccess"));
