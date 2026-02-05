@@ -38,11 +38,12 @@ A console application that demonstrates the usage of the EasySave library. It pr
 # Architecture
 
 ```
-EasySave/                                # Root directory
+EasySave/
 │
-├── ConsoleApp/                          # Console application
+├── ConsoleApp/
 │   ├── Program.cs                       # Entry point
 │   ├── Model/
+│   │   ├── BackupStrategies/            # Backup strategies
 │   │   ├── BackupJob.cs                 # Backup job class
 │   │   ├── BackupType.cs                # Backup type enum
 │   │   ├── IRealTimeStateObserver.cs    # Observer interface
