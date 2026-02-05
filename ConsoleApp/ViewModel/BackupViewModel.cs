@@ -20,8 +20,13 @@ public class BackupViewModel
     
     public bool DeleteJob(BackupJob job) => _jobService.DeleteJob(job);
     
-    public void ExecuteJob(BackupJob job) => _jobService.ExecuteJob(job);
-    
+    public void ExecuteJob(BackupJob job)
+    {
+        job.State.Attach(_jobService);
+        _jobService.ExecuteJob(job);
+        job.State.Detach(_jobService);
+    }
+
     public void UpdateJob(BackupJob job) => _jobService.UpdateJob(job);
     
     public bool ExecuteJobsFromArgs(string? args)

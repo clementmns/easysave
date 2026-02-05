@@ -1,4 +1,6 @@
-﻿using EasySave.ConsoleApp.Model;
+﻿using static System.FormattableString;
+
+using EasySave.ConsoleApp.Model;
 using EasySave.ConsoleApp.Ressources;
 using EasySave.ConsoleApp.Service;
 using EasySave.ConsoleApp.ViewModel;
@@ -24,16 +26,14 @@ public class ConsoleAppView
 
     private static void ShowHeader()
     {
-        Console.WriteLine("""
-                           ______                 _____
-                          |  ____|               / ____|
-                          | |__   __ _ ___ _   _| (___   __ ___   _____
-                          |  __| / _` / __| | | |\___ \ / _` \ \ / / _ \
-                          | |___| (_| \__ \ |_| |____) | (_| |\ V /  __/
-                          |______\__,_|___/\__, |_____/ \__,_| \_/ \___|
-                                            __/ |
-                                           |___/
-                          """);
+        Console.WriteLine(@" ______                 _____
+|  ____|               / ____|
+| |__   __ _ ___ _   _| (___   __ ___   _____
+|  __| / _` / __| | | |\___ \ / _` \ \ / / _ \
+| |___| (_| \__ \ |_| |____) | (_| |\ V /  __/
+|______\__,_|___/\__, |_____/ \__,_| \_/ \___|
+                  __/ |
+                 |___/");
     }
 
     private static void ShowMenu()
@@ -118,7 +118,7 @@ public class ConsoleAppView
             {
                 var job = jobs[i];
                 Console.WriteLine(
-                    $"{i + 1}. {job.Name} ({job.SourcePath} -> {job.DestinationPath}) - Type: {job.Type}");
+                    $@"{i + 1}. {job.Name} ({job.SourcePath} -> {job.DestinationPath}) - Type: {job.Type}");
             }
         }
     }
@@ -143,8 +143,7 @@ public class ConsoleAppView
         var saveType = saveTypeInput switch
         {
             "1" => BackupType.Differential,
-            "2" => BackupType.Full,
-            _ => BackupType.Full,
+            _ => BackupType.Full
         };
 
         BackupJob job;
@@ -153,7 +152,7 @@ public class ConsoleAppView
         {
             job = BackupJobFactory.GetInstance().CreateJob(name, sourcePath, destinationPath, saveType, currentJobs);
         }
-        catch (Exception e)
+        catch
         {
             Console.Clear();
             Console.WriteLine(Messages.ResourceManager.GetString("AddJobFailed"));
@@ -212,11 +211,46 @@ public class ConsoleAppView
             return;
         }
         
-        var executed = _backupViewModel.ExecuteJobsFromArgs(Console.ReadLine());
+        string? input = Console.ReadLine();
+        
+        if (!int.TryParse(input, out int userInput) || userInput < 1 || userInput > jobsList.Count)
+        {
+            Console.WriteLine(Messages.ResourceManager.GetString("ExecuteJobsNoValid"));
+            return;
+        }
 
-        Console.WriteLine(executed
-            ? Messages.ResourceManager.GetString("ExecuteJobsSuccess")
-            : Messages.ResourceManager.GetString("ExecuteJobsNoValid"));
+        int index = userInput - 1;
+        var selectedJob = jobsList[index];
+
+        Console.Clear();
+    
+        try
+        {
+            // Appeler la méthode du ViewModel qui gère tout
+            _backupViewModel.ExecuteJob(selectedJob);
+    
+            Console.WriteLine(@"");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine(Invariant($"\r ✓ Sauvegarde complétée!"));
+            Console.ResetColor();
+        }
+        catch (Exception ex)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(Invariant($"\r ✗ Erreur: {ex.Message}"));
+            Console.ResetColor();
+        }
+        finally
+        {
+            Console.WriteLine(@"Appuyez sur une touche pour continuer...");
+            Console.ReadKey();
+        }
+        
+        // var executed = _backupViewModel.ExecuteJobsFromArgs(Console.ReadLine());
+        //
+        // Console.WriteLine(executed
+        //     ? Messages.ResourceManager.GetString("ExecuteJobsSuccess")
+        //     : Messages.ResourceManager.GetString("ExecuteJobsNoValid"));
     }
 
     private void ExecuteAllJobs()

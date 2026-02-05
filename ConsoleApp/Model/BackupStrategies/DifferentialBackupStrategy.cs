@@ -47,14 +47,14 @@ public class DifferentialBackupStrategy : IBackupStrategy
             job.State.RemainingFiles = 1;
             job.State.FileSize = sourceFile.Length;
             job.State.RemainingFilesSize = sourceFile.Length;
+            job.State.Progression = 0;
 
             if (!FileUtils.CopyFile(sourceFile.FullName, job.DestinationPath, Path.GetDirectoryName(sourceFile.FullName)))
             {
                 throw new Exception(Ressources.Errors.FileCantBeCopied);
             }
-
-            job.State.RemainingFiles = 0;
-            job.State.RemainingFilesSize = 0;
+            
+            job.State.Progression = 100;
 
             return true;
         }
@@ -71,7 +71,7 @@ public class DifferentialBackupStrategy : IBackupStrategy
             var directoryInfo = new DirectoryInfo(job.SourcePath);
             var files = directoryInfo.GetFiles("*", SearchOption.AllDirectories);
             
-            string destinationBackupFolder = Path.Combine(job.DestinationPath, Path.GetFileName(job.SourcePath) + "_copy");
+            var destinationBackupFolder = Path.Combine(job.DestinationPath, Path.GetFileName(job.SourcePath) + "_copy");
             
             Directory.CreateDirectory(destinationBackupFolder);
 
@@ -91,23 +91,35 @@ public class DifferentialBackupStrategy : IBackupStrategy
             job.State.FileSize = filesToCopy.Sum(f => f.Length);
             job.State.RemainingFiles = filesToCopy.Count;
             job.State.RemainingFilesSize = job.State.FileSize;
+            job.State.Progression = 0;
 
             foreach (var file in filesToCopy)
             {
                 var relativePath = Path.GetRelativePath(job.SourcePath, file.FullName);
                 var destinationFilePath = Path.Combine(destinationBackupFolder, relativePath);
             
-                Directory.CreateDirectory(Path.GetDirectoryName(destinationFilePath));
+                var dirName = Path.GetDirectoryName(destinationFilePath);
+
+                if (string.IsNullOrEmpty(dirName))
+                {
+                    throw new Exception();
+                }
+
+                Directory.CreateDirectory(dirName);
                 
                 if (!FileUtils.CopyFile(file.FullName, destinationBackupFolder, job.SourcePath))
                 {
                     throw new Exception(Ressources.Errors.FileCantBeCopied);
                 }
-
+                
+                
                 job.State.RemainingFiles -= 1;
                 job.State.RemainingFilesSize -= file.Length;
+                job.State.Progression = (int)(100.0 * (1.0 - ((double)job.State.RemainingFilesSize / job.State.FileSize)));
             }
-
+            
+            job.State.Progression = 100;
+            
             return true;
         }
         catch (Exception)
