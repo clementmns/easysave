@@ -1,4 +1,6 @@
-﻿using EasySave.ConsoleApp.Model;
+﻿using System.Reflection;
+using System.Runtime.Versioning;
+using EasySave.ConsoleApp.Model;
 using EasySave.ConsoleApp.Ressources;
 using EasySave.ConsoleApp.Service;
 using EasySave.ConsoleApp.ViewModel;
@@ -43,6 +45,7 @@ public class ConsoleAppView
     public void Run()
     {
         var exit = false;
+        int maxFiles = 5;
 
         while (!exit)
         {
@@ -59,7 +62,20 @@ public class ConsoleAppView
 
                 case "2":
                     Console.Clear();
-                    AddJob();
+                    var currentJobs = _viewModel.Jobs?.ToList() ?? [];
+                    if (currentJobs.Count == maxFiles)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine(Messages.ResourceManager.GetString("MaxFileWarning"));
+                        Console.ResetColor();
+                        
+                        DeleteJob();
+                        AddJob();
+                    }
+                    else
+                    {
+                        AddJob();
+                    }
                     break;
 
                 case "3":

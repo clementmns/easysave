@@ -120,4 +120,7 @@
     <data name="DeleteJobInvalid" xml:space="preserve">
         <value>Numéro de travail invalide.</value>
     </data>
+    <data name="MaxFileWarning" xml:space="preserve">
+        <value>Vous avez atteint le nombre maximum de jobs, pour continuer veuillez en supprimer un existant. </value>
+    </data>
 </root>
