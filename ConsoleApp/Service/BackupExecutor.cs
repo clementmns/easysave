@@ -1,47 +1,36 @@
 ﻿using EasySave.ConsoleApp.Model;
+using EasySave.ConsoleApp.Model.BackupStrategies;
 
 namespace EasySave.ConsoleApp.Service;
 
 public class BackupExecutor
 {
-    public void ExecuteJob(BackupJob job)
+    public bool ExecuteJob(BackupJob job)
     {
-        if (!Directory.Exists(job.SourcePath))
+        try
         {
-            Console.WriteLine($"The source path {job.SourcePath} don't exist");
-            return;
+            // temps d'exécution
+            IBackupStrategy strategy = GetStrategy(job);
+
+            return strategy.Execute(job);
+            
+            // logger le temps d'execution
         }
-        string[] files = Directory.GetFiles(job.SourcePath, "*", SearchOption.AllDirectories); // Find all the files even in the subfolders
-        job.State.TotalFiles = files.Length;
-        job.State.RemainingFiles = files.Length;
-        job.State.IsActive = true;
-        job.State.Progression = 0;
-        
-        long totalSize = 0;
-        foreach (string file in files)
+        catch (Exception e)
         {
-            totalSize += new FileInfo(file).Length;
+            // logger
+            return false;
         }
         
-        // Add copy of files
-        
-        foreach (string file in files)
+    }
+
+    public IBackupStrategy GetStrategy(BackupJob job)
+    {
+        return job.Type switch
         {
-            long currentFileSize = new FileInfo(job.SourcePath).Length;
-            job.State.RemainingFiles--;
-            job.State.FileSize -= currentFileSize;
-        
-            if (job.State.FileSize > 0)
-            {
-                double percent = 100.0 * (1.0 - ((double)job.State.RemainingFilesSize / job.State.FileSize));
-                job.State.Progression = (int)percent;
-            }
-            else
-            {
-                job.State.Progression = 100;
-            }
-        }
-        
-        job.State.IsActive = false; 
+            BackupType.Full => new FullBackupStrategy(),
+            BackupType.Differential => new DifferentialBackupStrategy(),
+            _ => throw new InvalidOperationException("Backup type not supported")
+        };
     }
 }
