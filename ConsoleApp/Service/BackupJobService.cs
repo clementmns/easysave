@@ -40,6 +40,7 @@ public class BackupJobService : IRealTimeStateObserver
         {
             Jobs?.Add(job);
             job.State.Attach(this);
+            SortJobsById();
             if (Jobs != null) SaveJobs(Jobs);
             return true;
         }
@@ -56,6 +57,7 @@ public class BackupJobService : IRealTimeStateObserver
         {
             RemoveStateSubscription(job);
             Jobs?.Remove(job);
+            SortJobsById();
             if (Jobs != null) SaveJobs(Jobs);
             return true;
         }
@@ -79,6 +81,7 @@ public class BackupJobService : IRealTimeStateObserver
 
             Jobs?.Add(job);
             job.State.Attach(this);
+            SortJobsById();
             if (Jobs != null) SaveJobs(Jobs);
         }
         catch (Exception e)
@@ -94,7 +97,11 @@ public class BackupJobService : IRealTimeStateObserver
         {
             if (!File.Exists(_stateFilePath)) SaveJobs([]);
             var json = File.ReadAllText(_stateFilePath);
-            return JsonSerializer.Deserialize<ObservableCollection<BackupJob>>(json, JsonOptions);
+            var jobs = JsonSerializer.Deserialize<ObservableCollection<BackupJob>>(json, JsonOptions);
+            if (jobs == null) return jobs;
+            var sorted = jobs.OrderBy(j => j.Id).ToList();
+            jobs = new ObservableCollection<BackupJob>(sorted);
+            return jobs;
         }
         catch (Exception e)
         {
@@ -107,7 +114,8 @@ public class BackupJobService : IRealTimeStateObserver
     {
         try
         {
-            var json = JsonSerializer.Serialize(jobs, JsonOptions);
+            var orderedJobs = jobs.OrderBy(j => j.Id).ToList();
+            var json = JsonSerializer.Serialize(orderedJobs, JsonOptions);
             File.WriteAllText(_stateFilePath, json);
         }
         catch (Exception e)
@@ -128,8 +136,17 @@ public class BackupJobService : IRealTimeStateObserver
         job.State.Detach(this);
     }
 
+    private void SortJobsById()
+    {
+        if (Jobs == null) return;
+        var sorted = Jobs.OrderBy(j => j.Id).ToList();
+        Jobs.Clear();
+        foreach (var job in sorted) Jobs.Add(job);
+    }
+
     public void OnStateUpdated(RealTimeState state)
     {
+        SortJobsById();
         if (Jobs != null) SaveJobs(Jobs);
     }
 }
