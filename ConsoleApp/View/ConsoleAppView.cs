@@ -139,8 +139,19 @@ public class ConsoleAppView
             _ => BackupType.Full,
         };
 
-        var job = BackupJobFactory.GetInstance().CreateJob(name, sourcePath, destinationPath, saveType);
-        
+        BackupJob job;
+        var currentJobs = _viewModel.Jobs?.ToList() ?? [];
+        try
+        {
+            job = BackupJobFactory.GetInstance().CreateJob(name, sourcePath, destinationPath, saveType, currentJobs);
+        }
+        catch (Exception e)
+        {
+            Console.Clear();
+            Console.WriteLine(Messages.ResourceManager.GetString("AddJobFailed"));
+            return;
+        }
+
         Console.Clear();
         Console.WriteLine(_viewModel.AddJob(job) 
             ? Messages.ResourceManager.GetString("AddJobSuccess") 
@@ -163,19 +174,14 @@ public class ConsoleAppView
 
         var input = Console.ReadKey().KeyChar.ToString();
     
-        if (int.TryParse(input, out int jobNumber) && jobNumber > 0 && jobNumber <= jobs.Count)
+        if (int.TryParse(input, out var jobNumber) && jobNumber > 0 && jobNumber <= jobs.Count)
         {
             var job = jobs[jobNumber - 1];
             Console.Clear();
-        
-            if (_viewModel.DeleteJob(job))
-            {
-                Console.WriteLine(Messages.ResourceManager.GetString("DeleteJobSuccess"));
-            }
-            else
-            {
-                Console.WriteLine(Messages.ResourceManager.GetString("DeleteJobFailed"));
-            }
+
+            Console.WriteLine(_viewModel.DeleteJob(job)
+                ? Messages.ResourceManager.GetString("DeleteJobSuccess")
+                : Messages.ResourceManager.GetString("DeleteJobFailed"));
         }
         else
         {
@@ -187,17 +193,18 @@ public class ConsoleAppView
 
     private void ExecuteJobs()
     {
-        Console.WriteLine(Messages.ResourceManager.GetString("ExecuteJobsPrompt"));
         ViewJobs();
-        var input = Console.ReadLine();
+        Console.WriteLine(Messages.ResourceManager.GetString("ExecuteJobsPrompt"));
         var jobsList = _viewModel.Jobs?.ToList();
         
-        Console.Clear();
         if (jobsList == null || jobsList.Count == 0)
         {
+            Console.Clear();
             Console.WriteLine(Messages.ResourceManager.GetString("ExecuteJobsNoJobs"));
             return;
         }
+        
+        var input = Console.ReadLine();
 
         var selectedJobs = new List<BackupJob>();
         var parts = input?.Split(';').Select(p => p.Trim()).ToArray();
@@ -221,7 +228,7 @@ public class ConsoleAppView
                 }
             }
         }
-        
+
         Console.Clear();
         if (selectedJobs.Count > 0)
         {
@@ -240,7 +247,7 @@ public class ConsoleAppView
 
     private void ExecuteAllJobs()
     {
-        if (_viewModel.Jobs.Count == 0) 
+        if (_viewModel.Jobs != null && _viewModel.Jobs.Count == 0) 
         {
             Console.Clear();
             Console.WriteLine(Messages.ResourceManager.GetString("ExecuteJobsNoJobs"));
@@ -267,7 +274,6 @@ public class ConsoleAppView
         Console.Clear();
         switch (langInput)
 
-        
         {
             case "1": 
                 language = "en-US";
