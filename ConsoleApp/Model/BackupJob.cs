@@ -9,7 +9,6 @@ public class BackupJob
     public string DestinationPath { get; set; }
     public BackupType Type { get; set; }
     public RealTimeState State { get; set; }
-    public bool? IsDir { get; set; }
 
     public BackupJob(int id, string name, string sourcePath, string destinationPath, BackupType type)
     {

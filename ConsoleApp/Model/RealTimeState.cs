@@ -8,7 +8,7 @@ public class RealTimeState
     {
         get;
         set => SetField(ref field, value);
-    }
+    } = DateTime.Now;
 
     public bool IsActive
     {
