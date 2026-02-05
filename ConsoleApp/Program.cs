@@ -1,7 +1,7 @@
 ﻿using EasyLog;
 using EasyLog.Strategies;
-using EasySave.ConsoleApp.Ressources;
 using EasySave.ConsoleApp.Service;
+using EasySave.ConsoleApp.View;
 
 namespace EasySave.ConsoleApp;
 
@@ -13,9 +13,8 @@ internal class Program
         var appSaveDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/ProSoft/EasySave";
         Logger.Init(appSaveDirectory, [new JsonLoggerStrategy()]);
         SettingsService.Init(appSaveDirectory);
-        
-        Console.WriteLine(Messages.HelloWorld);
-        
-        // call view and view call BackupViewModel
+
+        var consoleAppView = new ConsoleAppView(appSaveDirectory);
+        consoleAppView.Run();
     }
 }
