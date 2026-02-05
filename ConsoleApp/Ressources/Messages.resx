@@ -45,4 +45,79 @@
     <data name="ConsoleMenuOption" xml:space="preserve">
         <value>Choose an Option :</value>
     </data>
+    <data name="ViewJobsTitle" xml:space="preserve">
+        <value>Here are the jobs :</value>
+    </data>
+    <data name="ViewJobsNoJob" xml:space="preserve">
+        <value>No job available.</value>
+    </data>
+    <data name="AddJobName" xml:space="preserve">
+        <value>Add a job name :</value>
+    </data>
+    <data name="AddJobSourcePath" xml:space="preserve">
+        <value>Add a Path (source) :</value>
+    </data>
+    <data name="AddJobDestinationPath" xml:space="preserve">
+        <value>Add a Path (destination) :</value>
+    </data>
+    <data name="AddJobSaveType" xml:space="preserve">
+        <value>Define the type of backup that you want :</value>
+    </data>
+    <data name="AddJobTypeDifferential" xml:space="preserve">
+        <value>1. Differential</value>
+    </data>
+    <data name="AddJobTypeFull" xml:space="preserve">
+        <value>2. Complete</value>
+    </data>
+    <data name="AddJobSuccess" xml:space="preserve">
+        <value>Job add with success.</value>
+    </data>
+    <data name="AddJobFailed" xml:space="preserve">
+        <value>Job add failed.</value>
+    </data>
+    <data name="DeleteJobPrompt" xml:space="preserve">
+        <value>Enter the job to remove :</value>
+    </data>
+    <data name="DeleteJobSuccess" xml:space="preserve">
+        <value>Job removed with success</value>
+    </data>
+    <data name="DeleteJobFailed" xml:space="preserve">
+        <value>Remove of the job failed.</value>
+    </data>
+    <data name="ExecuteJobsPrompt" xml:space="preserve">
+        <value>Enter the numbers of the jobs to execute (separated by commas like 1;3 or 1-3):</value>
+    </data>
+    <data name="ExecuteJobsNoJobs" xml:space="preserve">
+        <value>No jobs available.</value>
+    </data>
+    <data name="ExecuteJobsSuccess" xml:space="preserve">
+        <value>Jobs successfully completed.</value>
+    </data>
+    <data name="ExecuteJobsNoValid" xml:space="preserve">
+        <value>No valid jobs selected.</value>
+    </data>
+    <data name="ExecuteAllJobsSuccess" xml:space="preserve">
+        <value>All jobs have been successfully completed.</value>
+    </data>
+    <data name="ChangeLanguageTitle" xml:space="preserve">
+        <value>Change the language : </value>
+    </data>
+    <data name="ChangeLanguageEnglish" xml:space="preserve">
+        <value>1. English</value>
+    </data>
+    <data name="ChangeLanguageFrench" xml:space="preserve">
+        <value>2. French</value>
+    </data>
+    <data name="ChangeLanguageInvalid" xml:space="preserve">
+        <value>Invalid input. Defaulting to English.</value>
+    </data>
+    <data name="PressKeyToContinue" xml:space="preserve">
+        <value>Press any key to continue...</value>
+    </data>
+    <data name="ChangeLanguageSuccess" xml:space="preserve">
+        <value>Language changed successfully.</value>
+    </data>
+    <data name="DeleteJobInvalid" xml:space="preserve">
+        <value>Invalid job number</value>
+    </data>
 </root>
