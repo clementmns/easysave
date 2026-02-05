@@ -28,7 +28,7 @@ jobs:
       # publish self-contained for each runtime 
       - name: Publish
         run: |
-          dotnet publish ./ConsoleApp.csproj \
+          dotnet publish ./ConsoleApp/ConsoleApp.csproj \
             -c Release \
             -r ${{ matrix.runtime }} \
             --self-contained true \
@@ -39,14 +39,14 @@ jobs:
         run: |
           mkdir -p artifacts
           cd out
-          zip -r ../artifacts/app-${{ matrix.runtime }}.zip ${{ matrix.runtime }}
+          zip -r ../artifacts/easysave-${{ matrix.runtime }}.zip ${{ matrix.runtime }}
 
       # upload artifacts
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: app-${{ matrix.runtime }}
-          path: artifacts/app-${{ matrix.runtime }}.zip
+          name: easysave-${{ matrix.runtime }}
+          path: artifacts/easysave-${{ matrix.runtime }}.zip
 
   create-release:
     needs: build-and-release
