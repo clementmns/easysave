@@ -174,9 +174,6 @@ public class ConsoleAppView
 
     private void DeleteJob() 
     {
-        Console.WriteLine(Messages.ResourceManager.GetString("DeleteJobPrompt"));
-        ViewJobs();
-    
         var jobs = _viewModel.Jobs?.ToList();
     
         if (jobs == null || jobs.Count == 0)
@@ -186,22 +183,35 @@ public class ConsoleAppView
             return;
         }
 
-        var input = Console.ReadKey().KeyChar.ToString();
-    
-        if (int.TryParse(input, out var jobNumber) && jobNumber > 0 && jobNumber <= jobs.Count)
+        var deleteOptions = new List<string>();
+        foreach (var job in jobs)
         {
-            var job = jobs[jobNumber - 1];
-            Console.Clear();
-
-            Console.WriteLine(_viewModel.DeleteJob(job)
-                ? Messages.ResourceManager.GetString("DeleteJobSuccess")
-                : Messages.ResourceManager.GetString("DeleteJobFailed"));
+            deleteOptions.Add($"{job.Name} ({job.Type})");
+        }
+        deleteOptions.Add(Messages.ResourceManager.GetString("ConsoleMenuQuit") ?? "Cancel");
+        string title = Messages.ResourceManager.GetString("DeleteJobPrompt");
+        int selection = NavigateMenu(deleteOptions.ToArray(), title);
+        
+        if (selection == deleteOptions.Count - 1)
+        {
+            return; 
+        }
+        var jobToDelete = jobs[selection];
+        Console.Clear();
+        
+        bool success = _viewModel.DeleteJob(jobToDelete);
+        
+        if (success)
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine(Messages.ResourceManager.GetString("DeleteJobSuccess"));
         }
         else
         {
-            Console.Clear();
-            Console.WriteLine(Messages.ResourceManager.GetString("DeleteJobInvalid"));
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(Messages.ResourceManager.GetString("DeleteJobFailed"));
         }
+        Console.ResetColor();
     }
 
 
