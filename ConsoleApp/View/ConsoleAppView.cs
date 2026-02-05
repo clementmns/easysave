@@ -18,6 +18,7 @@ public class ConsoleAppView
 
     private static void ShowHeader()
     {
+        Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine("""
                            ______                 _____
                           |  ____|               / ____|
@@ -28,18 +29,57 @@ public class ConsoleAppView
                                             __/ |
                                            |___/
                           """);
+        Console.ResetColor();
     }
 
-    private static void ShowMenu()
+    private static int ShowMenu()
     {
-        Console.WriteLine(@" 1. " + Messages.ResourceManager.GetString("ConsoleMenuViewJobs"));
-        Console.WriteLine(@" 2. " + Messages.ResourceManager.GetString("ConsoleMenuAddJob"));
-        Console.WriteLine(@" 3. " + Messages.ResourceManager.GetString("ConsoleMenuDeleteJob"));
-        Console.WriteLine(@" 4. " + Messages.ResourceManager.GetString("ConsoleMenuExecuteJob"));
-        Console.WriteLine(@" 5. " + Messages.ResourceManager.GetString("ConsoleMenuExecuteAllJobs"));
-        Console.WriteLine(@" 6. " + Messages.ResourceManager.GetString("ConsoleMenuLanguage"));
-        Console.WriteLine(@" Q. " + Messages.ResourceManager.GetString("ConsoleMenuQuit"));
-        Console.WriteLine(Messages.ResourceManager.GetString("ConsoleMenuOption"));
+        string[] options =
+        {
+            Messages.ResourceManager.GetString("ConsoleMenuViewJobs"), 
+            Messages.ResourceManager.GetString("ConsoleMenuAddJob"), 
+            Messages.ResourceManager.GetString("ConsoleMenuDeleteJob"), 
+            Messages.ResourceManager.GetString("ConsoleMenuExecuteJob"), 
+            Messages.ResourceManager.GetString("ConsoleMenuExecuteAllJobs"), 
+            Messages.ResourceManager.GetString("ConsoleMenuLanguage"), 
+            Messages.ResourceManager.GetString("ConsoleMenuQuit")
+        };
+        int selection = 0;
+        Console.CursorVisible = false;
+        while (true)
+        {
+            Console.Clear();
+            ShowHeader();
+             
+            
+            for (int i = 0; i < options.Length; i++)
+            {
+                if (i == selection)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"-> {options[i]}");
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.WriteLine($"{options[i]}");
+                }
+            }
+            var key = Console.ReadKey(true).Key;
+            if (key == ConsoleKey.DownArrow && selection < options.Length)
+            {
+                selection++;
+            }
+            else if (key == ConsoleKey.UpArrow && selection > 0)
+            {
+                selection--;
+            }
+            else if (key == ConsoleKey.Enter)
+            {
+                return selection;
+            }
+        }
+
     }
 
     public void Run()
@@ -49,18 +89,17 @@ public class ConsoleAppView
 
         while (!exit)
         {
-            ShowHeader();
-            ShowMenu();
-
-            var choice = Console.ReadKey().KeyChar.ToString().ToUpper();
+            int choice = ShowMenu();
+            Console.Clear();
+            
             switch (choice)
             {
-                case "1":
+                case 0:
                     Console.Clear();
                     ViewJobs();
                     break;
 
-                case "2":
+                case 1:
                     Console.Clear();
                     var currentJobs = _viewModel.Jobs?.ToList() ?? [];
                     if (currentJobs.Count == maxFiles)
@@ -78,27 +117,27 @@ public class ConsoleAppView
                     }
                     break;
 
-                case "3":
+                case 2:
                     Console.Clear();
                     DeleteJob();
                     break;
 
-                case "4":
+                case 3:
                     Console.Clear();
                     ExecuteJobs();
                     break;
 
-                case "5":
+                case 4:
                     Console.Clear();
                     ExecuteAllJobs();
                     break;
 
-                case "6":
+                case 5:
                     Console.Clear();
                     ChangeLanguage();
                     break;
 
-                case "Q":
+                case 6:
                     exit = true;
                     break;}
 
