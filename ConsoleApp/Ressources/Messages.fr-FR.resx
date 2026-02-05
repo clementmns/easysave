@@ -21,4 +21,103 @@
     <data name="HelloWorld" xml:space="preserve">
         <value>Bonjour le monde</value>
     </data>
+    <data name="ConsoleMenuViewJobs" xml:space="preserve">
+        <value>Voir les travaux de sauvegarde</value>
+    </data>
+    <data name="ConsoleMenuAddJob" xml:space="preserve">
+        <value>Ajouter un espace de sauvegarde</value>
+    </data>
+    <data name="ConsoleMenuDeleteJob" xml:space="preserve">
+        <value>Supprimer un espace de sauvegarde</value>
+    </data>
+    <data name="ConsoleMenuExecuteJob" xml:space="preserve">
+        <value>Exécuter un ou plusieurs espaces</value>
+    </data>
+    <data name="ConsoleMenuExecuteAllJobs" xml:space="preserve">
+        <value>Exécuter tous les espaces</value>
+    </data>
+    <data name="ConsoleMenuLanguage" xml:space="preserve">
+        <value>Changer la langue</value>
+    </data>
+    <data name="ConsoleMenuQuit" xml:space="preserve">
+        <value>Quitter</value>
+    </data>
+    <data name="ConsoleMenuOption" xml:space="preserve">
+        <value>Choisissez une option :</value>
+    </data>
+    <data name="PressKeyToContinue" xml:space="preserve">
+        <value>Appuyez sur n'importe quelle touche pour continuer...</value>
+    </data>
+    <data name="ViewJobsNoJob" xml:space="preserve">
+        <value>Aucun espace de sauvegarde disponible.</value>
+    </data>
+    <data name="ViewJobsTitle" xml:space="preserve">
+        <value>Voici les travaux de sauvegarde :</value>
+    </data>
+    <data name="AddJobName" xml:space="preserve">
+        <value>Ajouter un nom : </value>
+    </data>
+    <data name="AddJobSourcePath" xml:space="preserve">
+        <value>Ajouter un chemin (source) :</value>
+    </data>
+    <data name="AddJobDestinationPath" xml:space="preserve">
+        <value>Ajouter un chemin (destination) :</value>
+    </data>
+    <data name="AddJobSaveType" xml:space="preserve">
+        <value>Définir le type de sauvegarde que vous souhaitez :</value>
+    </data>
+    <data name="AddJobTypeDifferential" xml:space="preserve">
+        <value>1. Differentielle</value>
+    </data>
+    <data name="AddJobTypeFull" xml:space="preserve">
+        <value>2. Complète</value>
+    </data>
+    <data name="ChangeLanguageEnglish" xml:space="preserve">
+        <value>1. Anglais</value>
+    </data>
+    <data name="AddJobSuccess" xml:space="preserve">
+        <value>Travail ajouté avec succès</value>
+    </data>
+    <data name="AddJobFailed" xml:space="preserve">
+        <value>L'ajout du travail a échoué.</value>
+    </data>
+    <data name="DeleteJobFailed" xml:space="preserve">
+        <value>La suppression du travail a échoué.</value>
+    </data>
+    <data name="DeleteJobPrompt" xml:space="preserve">
+        <value>Entrez le travail à supprimer :</value>
+    </data>
+    <data name="DeleteJobSuccess" xml:space="preserve">
+        <value>Travail supprimé avec succès</value>
+    </data>
+    <data name="ExecuteJobsPrompt" xml:space="preserve">
+        <value>Entrez les numéros des travaux à exécuter (séparés par des virgules comme 1;3 ou 1-3) </value>
+    </data>
+    <data name="ExecuteJobsSuccess" xml:space="preserve">
+        <value>Travaux terminés avec succès.</value>
+    </data>
+    <data name="ExecuteJobsNoValid" xml:space="preserve">
+        <value>Aucun travail valide sélectionné.</value>
+    </data>
+    <data name="ExecuteJobsNoJobs" xml:space="preserve">
+        <value>Aucun travail disponible.</value>
+    </data>
+    <data name="ExecuteAllJobsSuccess" xml:space="preserve">
+        <value>Tous les travaux ont été terminés avec succès.</value>
+    </data>
+    <data name="ChangeLanguageInvalid" xml:space="preserve">
+        <value>Entrée Invalide. Passage en "Anglais" (EN) par défaut.</value>
+    </data>
+    <data name="ChangeLanguageTitle" xml:space="preserve">
+        <value>Changer la langue :</value>
+    </data>
+    <data name="ChangeLanguageSuccess" xml:space="preserve">
+        <value>Langue changée avec succès.</value>
+    </data>
+    <data name="ChangeLanguageFrench" xml:space="preserve">
+        <value>2. Français</value>
+    </data>
+    <data name="DeleteJobInvalid" xml:space="preserve">
+        <value>Numéro de travail invalide.</value>
+    </data>
 </root>
