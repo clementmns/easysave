@@ -26,14 +26,14 @@ public class FullBackupStrategy : IBackupStrategy
     {
         try
         {
-            FileInfo fileInfo = new FileInfo(job.SourcePath);
+            var fileInfo = new FileInfo(job.SourcePath);
 
             job.State.TotalFiles = 1;
             job.State.RemainingFiles = 1;
             job.State.FileSize = fileInfo.Length;
             job.State.RemainingFilesSize = fileInfo.Length;
 
-            if (!FileUtils.CopyFile(fileInfo.FullName, job.DestinationPath))
+            if (!FileUtils.CopyFile(fileInfo.FullName, job.DestinationPath, Path.GetDirectoryName(fileInfo.FullName)))
             {
                 throw new Exception(Ressources.Errors.FileCantBeCopied);
             }
@@ -54,18 +54,18 @@ public class FullBackupStrategy : IBackupStrategy
     {
         try
         {
-            DirectoryInfo directoryInfo = new DirectoryInfo(job.SourcePath);
+            var directoryInfo = new DirectoryInfo(job.SourcePath);
             // Find all the files even in the subfolders
-            FileInfo[] files = directoryInfo.GetFiles("*", SearchOption.AllDirectories); 
+            var files = directoryInfo.GetFiles("*", SearchOption.AllDirectories); 
 
             job.State.TotalFiles = files.Length;
             job.State.FileSize = job.State.FileSize = files.Sum(f => f.Length);
             job.State.RemainingFiles = files.Length;
             job.State.RemainingFilesSize = job.State.FileSize = files.Sum(f => f.Length);
 
-            foreach (FileInfo f in files)
+            foreach (var f in files)
             {
-                if (!FileUtils.CopyFile(f.FullName, job.DestinationPath)) // Attention : cette méthode peut tout enregistrer dans le même dossier et ne pas prendre en compte les sous-dossiers. en gros ne pas reproduire l'arborescence => copy
+                if (!FileUtils.CopyFile(f.FullName, job.DestinationPath, job.SourcePath))
                 {
                     throw new Exception(Ressources.Errors.FileCantBeCopied);
                 }
