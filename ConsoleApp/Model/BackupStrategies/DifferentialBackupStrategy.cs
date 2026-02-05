@@ -1,4 +1,3 @@
-using EasyLog;
 using EasySave.ConsoleApp.Utils;
 
 namespace EasySave.ConsoleApp.Model.BackupStrategies;
@@ -59,9 +58,8 @@ public class DifferentialBackupStrategy : IBackupStrategy
 
             return true;
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            Logger.Instance.Write(e.ToString());
             return false;
         }
     }
@@ -112,9 +110,8 @@ public class DifferentialBackupStrategy : IBackupStrategy
 
             return true;
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            Logger.Instance.Write(e.ToString());
             return false;
         }
     }
