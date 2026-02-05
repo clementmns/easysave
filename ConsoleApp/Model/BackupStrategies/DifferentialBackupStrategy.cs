@@ -72,13 +72,17 @@ public class DifferentialBackupStrategy : IBackupStrategy
         {
             var directoryInfo = new DirectoryInfo(job.SourcePath);
             var files = directoryInfo.GetFiles("*", SearchOption.AllDirectories);
+            
+            string destinationBackupFolder = Path.Combine(job.DestinationPath, Path.GetFileName(job.SourcePath) + "_copy");
+            
+            Directory.CreateDirectory(destinationBackupFolder);
 
             List<FileInfo> filesToCopy = [];
 
             foreach (var file in files)
             {
                 var relativePath = Path.GetRelativePath(job.SourcePath, file.FullName);
-                var destinationFilePath = Path.Combine(job.DestinationPath, relativePath);
+                var destinationFilePath = Path.Combine(destinationBackupFolder, relativePath);
                 if (!File.Exists(destinationFilePath) || file.LastWriteTime > File.GetLastWriteTime(destinationFilePath))
                 {
                     filesToCopy.Add(file);
@@ -90,15 +94,20 @@ public class DifferentialBackupStrategy : IBackupStrategy
             job.State.RemainingFiles = filesToCopy.Count;
             job.State.RemainingFilesSize = job.State.FileSize;
 
-            foreach (var f in filesToCopy)
+            foreach (var file in filesToCopy)
             {
-                if (!FileUtils.CopyFile(f.FullName, job.DestinationPath, job.SourcePath))
+                var relativePath = Path.GetRelativePath(job.SourcePath, file.FullName);
+                var destinationFilePath = Path.Combine(destinationBackupFolder, relativePath);
+            
+                Directory.CreateDirectory(Path.GetDirectoryName(destinationFilePath));
+                
+                if (!FileUtils.CopyFile(file.FullName, destinationBackupFolder, job.SourcePath))
                 {
                     throw new Exception(Ressources.Errors.FileCantBeCopied);
                 }
 
                 job.State.RemainingFiles -= 1;
-                job.State.RemainingFilesSize -= f.Length;
+                job.State.RemainingFilesSize -= file.Length;
             }
 
             return true;

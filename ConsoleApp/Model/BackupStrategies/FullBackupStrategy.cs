@@ -54,7 +54,11 @@ public class FullBackupStrategy : IBackupStrategy
     {
         try
         {
-            var directoryInfo = new DirectoryInfo(job.SourcePath);
+            var directoryInfo = new DirectoryInfo(job.SourcePath + "");
+            string destinationBackupFolder = Path.Combine(job.DestinationPath, Path.GetFileName(job.SourcePath) + "_copy");
+            
+            Directory.CreateDirectory(destinationBackupFolder);
+            
             // Find all the files even in the subfolders
             var files = directoryInfo.GetFiles("*", SearchOption.AllDirectories); 
 
@@ -63,15 +67,20 @@ public class FullBackupStrategy : IBackupStrategy
             job.State.RemainingFiles = files.Length;
             job.State.RemainingFilesSize = job.State.FileSize = files.Sum(f => f.Length);
 
-            foreach (var f in files)
+            foreach (var file in files)
             {
-                if (!FileUtils.CopyFile(f.FullName, job.DestinationPath, directoryInfo.FullName))
+                var relativePath = Path.GetRelativePath(job.SourcePath, file.FullName);
+                var destinationFilePath = Path.Combine(destinationBackupFolder, relativePath);
+                
+                Directory.CreateDirectory(Path.GetDirectoryName(destinationFilePath));
+                
+                if (!FileUtils.CopyFile(file.FullName, destinationBackupFolder, directoryInfo.FullName))
                 {
                     throw new Exception(Ressources.Errors.FileCantBeCopied);
                 }
 
                 job.State.RemainingFiles -= 1;
-                job.State.RemainingFilesSize -= f.Length;
+                job.State.RemainingFilesSize -= file.Length;
             }
 
             return true;
@@ -81,6 +90,5 @@ public class FullBackupStrategy : IBackupStrategy
             Logger.Instance.Write(e.ToString());
             return false;
         }
-        
     }
 }
