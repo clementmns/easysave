@@ -174,19 +174,14 @@ public class ConsoleAppView
 
         var input = Console.ReadKey().KeyChar.ToString();
     
-        if (int.TryParse(input, out int jobNumber) && jobNumber > 0 && jobNumber <= jobs.Count)
+        if (int.TryParse(input, out var jobNumber) && jobNumber > 0 && jobNumber <= jobs.Count)
         {
             var job = jobs[jobNumber - 1];
             Console.Clear();
-        
-            if (_viewModel.DeleteJob(job))
-            {
-                Console.WriteLine(Messages.ResourceManager.GetString("DeleteJobSuccess"));
-            }
-            else
-            {
-                Console.WriteLine(Messages.ResourceManager.GetString("DeleteJobFailed"));
-            }
+
+            Console.WriteLine(_viewModel.DeleteJob(job)
+                ? Messages.ResourceManager.GetString("DeleteJobSuccess")
+                : Messages.ResourceManager.GetString("DeleteJobFailed"));
         }
         else
         {
@@ -202,9 +197,9 @@ public class ConsoleAppView
         Console.WriteLine(Messages.ResourceManager.GetString("ExecuteJobsPrompt"));
         var jobsList = _viewModel.Jobs?.ToList();
         
-        Console.Clear();
         if (jobsList == null || jobsList.Count == 0)
         {
+            Console.Clear();
             Console.WriteLine(Messages.ResourceManager.GetString("ExecuteJobsNoJobs"));
             return;
         }
@@ -233,6 +228,7 @@ public class ConsoleAppView
                 }
             }
         }
+
         
         Console.Clear();
         if (selectedJobs.Count > 0)
@@ -252,7 +248,7 @@ public class ConsoleAppView
 
     private void ExecuteAllJobs()
     {
-        if (_viewModel.Jobs.Count == 0) 
+        if (_viewModel.Jobs != null && _viewModel.Jobs.Count == 0) 
         {
             Console.Clear();
             Console.WriteLine(Messages.ResourceManager.GetString("ExecuteJobsNoJobs"));
@@ -279,7 +275,6 @@ public class ConsoleAppView
         Console.Clear();
         switch (langInput)
 
-        
         {
             case "1": 
                 language = "en-US";
