@@ -10,11 +10,11 @@ public class LogEntry
     public long FileSize { get; set; }
     public int TransferDuration { get; set; }
     
-    public LogEntry(string message, string backupName, DateTime timestamp, string sourcePath, string destinationPath, long fileSize, int transferDuration)
+    public LogEntry(string message, string backupName, string sourcePath, string destinationPath, long fileSize, int transferDuration)
     {
         Message = message;
         BackupName = backupName;
-        Timestamp = timestamp;
+        Timestamp = DateTime.Now;
         SourcePath = sourcePath;
         DestinationPath = destinationPath;
         FileSize = fileSize;

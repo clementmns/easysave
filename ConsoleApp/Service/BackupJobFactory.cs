@@ -6,6 +6,7 @@ namespace EasySave.ConsoleApp.Service;
 public class BackupJobFactory
 {
     private static BackupJobFactory? _instance;
+    private const int MaxJobs = 5;
 
     private BackupJobFactory()
     {
@@ -18,7 +19,7 @@ public class BackupJobFactory
         return _instance;
     }
 
-    public BackupJob CreateJob(string name, string source, string destination, BackupType type)
+    public BackupJob CreateJob(string name, string source, string destination, BackupType type, List<BackupJob> existingJobs)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -29,7 +30,25 @@ public class BackupJobFactory
         {
             throw new ArgumentNullException(Errors.SourceCantBeNull);            
         }
+
+        if (existingJobs == null)
+        {
+            existingJobs = [];
+        }
         
-        return new BackupJob(0, name, source, destination, type); //Gérer l'id ???
+        if (existingJobs.Count >= MaxJobs)
+        {
+            throw new Exception();
+        }
+        
+        var newId = 0;
+        for (var i = 1; i <= MaxJobs; i++)
+        {
+            var isTaken = existingJobs.Any(job => job.Id == i);
+            if (isTaken) continue;
+            newId = i;
+            break;
+        }
+        return new BackupJob(newId, name, source, destination, type); 
     }
 }
