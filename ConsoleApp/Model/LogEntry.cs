@@ -8,9 +8,11 @@ public class LogEntry
     public string SourcePath { get; set; }
     public string DestinationPath { get; set; }
     public long FileSize { get; set; }
-    public int TransferDuration { get; set; }
+    public long? TransferDuration { get; set; }
     
-    public LogEntry(string message, string backupName, string sourcePath, string destinationPath, long fileSize, int transferDuration)
+    public bool? IsError { get; set; }
+    
+    public LogEntry(string message, string backupName, string sourcePath, string destinationPath, long fileSize, bool? isError = false, long? transferDuration = null)
     {
         Message = message;
         BackupName = backupName;
@@ -18,6 +20,9 @@ public class LogEntry
         SourcePath = sourcePath;
         DestinationPath = destinationPath;
         FileSize = fileSize;
+        IsError = isError;
         TransferDuration = transferDuration;
     }
+    
+    public LogEntry( string message, BackupJob job, bool? isError = false, long? transferDuration = null) : this(message, job.Name, job.SourcePath, job.DestinationPath, job.State.FileSize, isError, transferDuration) { }
 }

@@ -5,26 +5,13 @@ namespace EasySave.ConsoleApp.Service;
 
 public class BackupExecutor
 {
-    public bool ExecuteJob(BackupJob job)
+    public void ExecuteJob(BackupJob job)
     {
-        try
-        {
-            // temps d'exécution
-            IBackupStrategy strategy = GetStrategy(job);
-
-            return strategy.Execute(job);
-            
-            // logger le temps d'execution
-        }
-        catch (Exception e)
-        {
-            // logger
-            return false;
-        }
-        
+        IBackupStrategy strategy = GetStrategy(job);
+        strategy.Execute(job);
     }
 
-    public IBackupStrategy GetStrategy(BackupJob job)
+    private static IBackupStrategy GetStrategy(BackupJob job)
     {
         return job.Type switch
         {

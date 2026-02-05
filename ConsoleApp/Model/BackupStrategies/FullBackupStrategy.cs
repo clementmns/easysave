@@ -1,5 +1,4 @@
 ﻿using EasySave.ConsoleApp.Utils;
-using EasyLog;
 
 namespace EasySave.ConsoleApp.Model.BackupStrategies;
 
@@ -43,9 +42,8 @@ public class FullBackupStrategy : IBackupStrategy
             
             return true;
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            Logger.Instance.Write(e.ToString());
             return false;
         }
     }
@@ -85,9 +83,8 @@ public class FullBackupStrategy : IBackupStrategy
 
             return true;
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            Logger.Instance.Write(e.ToString());
             return false;
         }
     }
