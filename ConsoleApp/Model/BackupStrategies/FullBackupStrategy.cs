@@ -65,7 +65,7 @@ public class FullBackupStrategy : IBackupStrategy
 
             foreach (var f in files)
             {
-                if (!FileUtils.CopyFile(f.FullName, job.DestinationPath, job.SourcePath))
+                if (!FileUtils.CopyFile(f.FullName, job.DestinationPath, directoryInfo.FullName))
                 {
                     throw new Exception(Ressources.Errors.FileCantBeCopied);
                 }

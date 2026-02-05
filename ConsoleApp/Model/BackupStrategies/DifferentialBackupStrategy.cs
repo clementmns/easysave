@@ -27,7 +27,11 @@ public class DifferentialBackupStrategy : IBackupStrategy
         try
         {
             var sourceFile = new FileInfo(job.SourcePath);
-            var destinationFilePath = Path.Combine(job.DestinationPath, sourceFile.Name);
+            var sourceRoot = Path.GetDirectoryName(sourceFile.FullName);
+            var relativePath = string.IsNullOrWhiteSpace(sourceRoot)
+                ? sourceFile.Name
+                : Path.GetRelativePath(sourceRoot, sourceFile.FullName);
+            var destinationFilePath = Path.Combine(job.DestinationPath, relativePath);
 
             var shouldCopy = !File.Exists(destinationFilePath) || sourceFile.LastWriteTime > File.GetLastWriteTime(destinationFilePath);
 
@@ -73,7 +77,8 @@ public class DifferentialBackupStrategy : IBackupStrategy
 
             foreach (var file in files)
             {
-                var destinationFilePath = Path.Combine(job.DestinationPath, file.Name);
+                var relativePath = Path.GetRelativePath(job.SourcePath, file.FullName);
+                var destinationFilePath = Path.Combine(job.DestinationPath, relativePath);
                 if (!File.Exists(destinationFilePath) || file.LastWriteTime > File.GetLastWriteTime(destinationFilePath))
                 {
                     filesToCopy.Add(file);
