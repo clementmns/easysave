@@ -229,7 +229,6 @@ public class ConsoleAppView
             }
         }
 
-        
         Console.Clear();
         if (selectedJobs.Count > 0)
         {

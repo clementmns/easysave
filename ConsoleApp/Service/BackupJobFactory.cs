@@ -33,7 +33,7 @@ public class BackupJobFactory
 
         if (existingJobs == null)
         {
-            existingJobs = new List<BackupJob>();
+            existingJobs = [];
         }
         
         if (existingJobs.Count >= MaxJobs)
@@ -41,15 +41,13 @@ public class BackupJobFactory
             throw new Exception();
         }
         
-        int newId = 0;
-        for (int i = 1; i <= MaxJobs; i++)
+        var newId = 0;
+        for (var i = 1; i <= MaxJobs; i++)
         {
-            bool isTaken = existingJobs.Any(job => job.Id == i);
-            if (!isTaken)
-            {
-                newId = i;
-                break;
-            }
+            var isTaken = existingJobs.Any(job => job.Id == i);
+            if (isTaken) continue;
+            newId = i;
+            break;
         }
         return new BackupJob(newId, name, source, destination, type); 
     }
