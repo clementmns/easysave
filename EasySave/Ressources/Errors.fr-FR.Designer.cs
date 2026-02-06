@@ -78,6 +78,15 @@ namespace EasySave.Ressources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Une erreur est survenue en ajoutant au path..
+        /// </summary>
+        internal static string PathAddError {
+            get {
+                return ResourceManager.GetString("PathAddError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Le chemin du fichier ne peut pas être traité..
         /// </summary>
         internal static string ProcessingError {

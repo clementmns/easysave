@@ -67,6 +67,7 @@ public class ConsoleAppView : IProgressionObserver
                 Messages.ResourceManager.GetString("ConsoleMenuExecuteJob"),
                 Messages.ResourceManager.GetString("ConsoleMenuExecuteAllJobs"),
                 Messages.ResourceManager.GetString("ConsoleMenuLanguage"),
+                Messages.ResourceManager.GetString("ConsoleMenuPath"),
                 Messages.ResourceManager.GetString("ConsoleMenuQuit")
             ];
 
@@ -113,19 +114,26 @@ public class ConsoleAppView : IProgressionObserver
                 case 5:
                     ChangeLanguage();
                     break;
-
+                
                 case 6:
+                    Console.Clear();
+                    ShowHeader();
+                    AddToPath();
+                    break;
+
+                case 7:
+                    Console.WriteLine(Messages.ResourceManager.GetString("ThankYouForUsing"));
                     exit = true;
                     break;
             }
 
             if (exit) break;
             Console.WriteLine();
+            Console.ForegroundColor = ConsoleTheme.InstructionColor;
             Console.WriteLine(Messages.ResourceManager.GetString("PressKeyToContinue"));
+            Console.ResetColor();
             Console.ReadKey();
             Console.Clear();
-            ShowHeader();
-            Console.WriteLine(Messages.ResourceManager.GetString("ThankYouForUsing"));
         }
     }
 
@@ -181,7 +189,9 @@ public class ConsoleAppView : IProgressionObserver
         {
             Console.Clear();
             ShowHeader();
+            Console.ForegroundColor = ConsoleTheme.ErrorColor;
             Console.WriteLine(Messages.ResourceManager.GetString("AddJobFailed"));
+            Console.ResetColor();
             return;
         }
 
@@ -256,8 +266,7 @@ public class ConsoleAppView : IProgressionObserver
         {
             options[i] = $"{jobsList[i].Name} ({jobsList[i].Type})";
         }
-        var prompt = Messages.ResourceManager.GetString("ExecuteJobsPrompt");
-        List<int> selectedIndices = NavigateMultiSelect(options, prompt);
+        List<int> selectedIndices = NavigateMultiSelect(options);
 
         Console.Clear();
         ShowHeader();
@@ -393,7 +402,7 @@ public class ConsoleAppView : IProgressionObserver
         }
     }
 
-    private List<int> NavigateMultiSelect(string[] options, string question)
+    private List<int> NavigateMultiSelect(string[] options, string? question = null)
     {
         int selection = 0;
         List<int> selectedIndexes = [];
@@ -450,5 +459,40 @@ public class ConsoleAppView : IProgressionObserver
                     return selectedIndexes;
             }
         }
+    }
+
+    private void AddToPath()
+    {
+        var pathExe = Path.GetDirectoryName(Environment.ProcessPath);
+
+        if (string.IsNullOrWhiteSpace(pathExe))
+        {
+            Console.WriteLine(Ressources.Errors.PathAddError);
+            return;
+        }
+        
+        var pathActuel = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.User);
+        if (string.IsNullOrWhiteSpace(pathActuel))
+        {
+            Console.WriteLine(Ressources.Errors.PathAddError);
+            return;
+        }
+        
+        if (pathActuel.Contains(pathExe))
+        {
+            Console.ForegroundColor = ConsoleTheme.ErrorColor;
+            Console.WriteLine(Messages.ResourceManager.GetString("AlreadyInPath"));
+            Console.ResetColor();  
+            return;
+        }
+        
+        string nouveauPath = pathActuel + ";" + pathExe;
+        Environment.SetEnvironmentVariable("PATH", nouveauPath, EnvironmentVariableTarget.User);
+    
+        Console.ForegroundColor = ConsoleTheme.MainColor;
+        Console.WriteLine(Messages.ResourceManager.GetString("AddToPathSucces"));
+        Console.ForegroundColor = ConsoleTheme.InstructionColor;
+        Console.WriteLine(Messages.ResourceManager.GetString("Restart"));
+        Console.ResetColor();
     }
 }
