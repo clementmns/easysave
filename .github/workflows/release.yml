@@ -25,11 +25,14 @@ jobs:
 
       - name: Restore
         run: dotnet restore
+        
+      - name: Run tests
+        run: dotnet test --configuration Release --no-build
 
       # publish self-contained for each runtime 
       - name: Publish
         run: |
-          dotnet publish ./ConsoleApp/ConsoleApp.csproj \
+          dotnet publish ./EasySave/EasySave.csproj \
             -c Release \
             -r ${{ matrix.runtime }} \
             --self-contained true \

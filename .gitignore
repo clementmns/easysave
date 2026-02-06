@@ -272,6 +272,8 @@ Generated_Code/
 # because we have git ;-)
 _UpgradeReport_Files/
 Backup*/
+!EasySave/Model/BackupStrategies/
+!EasySave/Model/BackupStrategies/*.cs
 UpgradeLog*.XML
 UpgradeLog*.htm
 ServiceFabricBackup/
