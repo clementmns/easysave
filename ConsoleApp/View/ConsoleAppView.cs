@@ -226,7 +226,6 @@ public class ConsoleAppView
     
         try
         {
-            // Appeler la méthode du ViewModel qui gère tout
             _backupViewModel.ExecuteJob(selectedJob);
     
             Console.WriteLine(@"");
@@ -245,12 +244,6 @@ public class ConsoleAppView
             Console.WriteLine(@"Appuyez sur une touche pour continuer...");
             Console.ReadKey();
         }
-        
-        // var executed = _backupViewModel.ExecuteJobsFromArgs(Console.ReadLine());
-        //
-        // Console.WriteLine(executed
-        //     ? Messages.ResourceManager.GetString("ExecuteJobsSuccess")
-        //     : Messages.ResourceManager.GetString("ExecuteJobsNoValid"));
     }
 
     private void ExecuteAllJobs()
