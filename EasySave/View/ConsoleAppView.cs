@@ -5,6 +5,9 @@ using EasySave.ViewModel;
 
 namespace EasySave.View;
 
+/// <summary>
+/// Console view for managing backup jobs. Implement IProgressionObserver to be notified of backup progression.
+/// </summary>
 public class ConsoleAppView : IProgressionObserver
 {
     private readonly BackupViewModel _backupViewModel;
@@ -14,6 +17,10 @@ public class ConsoleAppView : IProgressionObserver
         _backupViewModel = new BackupViewModel(appSaveDirectory);
     }
 
+    /// <summary>
+    /// Called when backup progression changes.
+    /// </summary>
+    /// <param name="progression">percentage of progression</param>
     public void OnProgressionUpdated(int progression)
     {
         Console.Clear();
@@ -29,7 +36,11 @@ public class ConsoleAppView : IProgressionObserver
         Console.WriteLine();
         Console.ResetColor();
     }
-
+    
+    /// <summary>
+    /// Execute jobs from command line arguments.
+    /// </summary>
+    /// <param name="args">1-3 for 1 to 3 or 1;3 for 1 and 3</param>
     public void RunWithArgs(string[] args)
     {
         var executed = _backupViewModel.ExecuteJobsFromArgs(args[0]);
@@ -41,6 +52,9 @@ public class ConsoleAppView : IProgressionObserver
         }
     }
 
+    /// <summary>
+    /// Displays the application header with logo.
+    /// </summary>
     private static void ShowHeader()
     {
         Console.ForegroundColor = ConsoleTheme.MainColor;
@@ -53,6 +67,9 @@ public class ConsoleAppView : IProgressionObserver
         Console.ResetColor();
     }
 
+    /// <summary>
+    /// Main loop of the console application, displaying the menu and handling user input.
+    /// </summary>
     public void Run()
     {
         var exit = false;
@@ -60,6 +77,7 @@ public class ConsoleAppView : IProgressionObserver
 
         while (!exit)
         {
+            // menu of the application
             string?[] options =
             [
                 Messages.ResourceManager.GetString("ConsoleMenuViewJobs"),
@@ -83,6 +101,7 @@ public class ConsoleAppView : IProgressionObserver
                     break;
 
                 case 1:
+                    // Add a new job
                     var currentJobs = _backupViewModel.Jobs?.ToList() ?? [];
                     if (currentJobs.Count == maxFiles)
                     {
@@ -163,6 +182,7 @@ public class ConsoleAppView : IProgressionObserver
 
     private void AddJob()
     {
+        // check all fields
         Console.WriteLine(Messages.ResourceManager.GetString("AddJobName"));
         var name = Console.ReadLine() ?? string.Empty;
 
@@ -185,6 +205,7 @@ public class ConsoleAppView : IProgressionObserver
         var currentJobs = _backupViewModel.Jobs?.ToList() ?? [];
         try
         {
+            // create the job using the singleton factory
             job = BackupJobFactory.GetInstance().CreateJob(name, sourcePath, destinationPath, saveType, currentJobs);
         }
         catch (Exception e)
@@ -395,6 +416,7 @@ public class ConsoleAppView : IProgressionObserver
                 }
             }
 
+            // handle user input for navigation
             var key = Console.ReadKey(true).Key;
             switch (key)
             {
@@ -449,6 +471,7 @@ public class ConsoleAppView : IProgressionObserver
 
             var key = Console.ReadKey(true).Key;
 
+            // handle user input for navigation
             switch (key)
             {
                 case ConsoleKey.DownArrow when selection < options.Length - 1:
@@ -470,6 +493,10 @@ public class ConsoleAppView : IProgressionObserver
         }
     }
 
+    /// <summary>
+    /// Add the application directory to the user PATH environment variable.
+    /// Allows to use the application from any terminal without specifying the full path. 
+    /// </summary>
     private void AddToPath()
     {
         var pathExe = Path.GetDirectoryName(Environment.ProcessPath);
@@ -480,14 +507,14 @@ public class ConsoleAppView : IProgressionObserver
             return;
         }
         
-        var pathActuel = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.User);
-        if (string.IsNullOrWhiteSpace(pathActuel))
+        var actualPath = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.User);
+        if (string.IsNullOrWhiteSpace(actualPath))
         {
             Console.WriteLine(Ressources.Errors.PathAddError);
             return;
         }
         
-        if (pathActuel.Contains(pathExe))
+        if (actualPath.Contains(pathExe))
         {
             Console.ForegroundColor = ConsoleTheme.ErrorColor;
             Console.WriteLine(Messages.ResourceManager.GetString("AlreadyInPath"));
@@ -495,8 +522,8 @@ public class ConsoleAppView : IProgressionObserver
             return;
         }
         
-        string nouveauPath = pathActuel + ";" + pathExe;
-        Environment.SetEnvironmentVariable("PATH", nouveauPath, EnvironmentVariableTarget.User);
+        string newPath = actualPath + ";" + pathExe;
+        Environment.SetEnvironmentVariable("PATH", newPath, EnvironmentVariableTarget.User);
     
         Console.ForegroundColor = ConsoleTheme.MainColor;
         Console.WriteLine(Messages.ResourceManager.GetString("AddToPathSucces"));

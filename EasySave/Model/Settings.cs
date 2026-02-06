@@ -1,5 +1,8 @@
 namespace EasySave.Model;
 
+/// <summary>
+/// Application settings.
+/// </summary>
 public class Settings
 {
     /// <summary>

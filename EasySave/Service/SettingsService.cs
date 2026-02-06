@@ -60,6 +60,11 @@ namespace EasySave.Service
             }
         }
         
+        /// <summary>
+        /// Load or create the settings file
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception">Can't load</exception>
         private Settings LoadOrCreateSettings()
         {
             if (!File.Exists(_settingsFilePath)) return CreateDefaultSettings();
@@ -86,6 +91,10 @@ namespace EasySave.Service
             return CreateDefaultSettings();
         }
 
+        /// <summary>
+        /// Get the application version from the assembly
+        /// </summary>
+        /// <returns>app version</returns>
         private static string GetAppVersion()
         {
             var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
