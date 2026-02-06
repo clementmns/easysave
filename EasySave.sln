@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasySave", "EasySave\EasySave.csproj", "{33866353-15C6-4231-878A-6D9985F37E8D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyLog", "EasyLog\EasyLog.csproj", "{A24E8612-8BED-4D53-B97D-B0EB865ED13C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasySave.Tests", "EasySave.Tests\EasySave.Tests.csproj", "{70E2D957-70C0-4282-9841-697C094654C5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{33866353-15C6-4231-878A-6D9985F37E8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33866353-15C6-4231-878A-6D9985F37E8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33866353-15C6-4231-878A-6D9985F37E8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33866353-15C6-4231-878A-6D9985F37E8D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A24E8612-8BED-4D53-B97D-B0EB865ED13C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A24E8612-8BED-4D53-B97D-B0EB865ED13C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A24E8612-8BED-4D53-B97D-B0EB865ED13C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A24E8612-8BED-4D53-B97D-B0EB865ED13C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70E2D957-70C0-4282-9841-697C094654C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70E2D957-70C0-4282-9841-697C094654C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70E2D957-70C0-4282-9841-697C094654C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70E2D957-70C0-4282-9841-697C094654C5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
