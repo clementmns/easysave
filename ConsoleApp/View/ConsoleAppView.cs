@@ -20,20 +20,11 @@ public class ConsoleAppView
     private static void ShowHeader()
     {
         Console.ForegroundColor = ConsoleTheme.MainColor;
-        string[] logo =
-        {
-            "███████╗ █████╗ ███████╗██╗   ██╗███████╗ █████╗ ██╗   ██╗███████╗",
-            "██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝██╔════╝██╔══██╗██║   ██║██╔════╝",
-            "█████╗  ███████║███████╗ ╚████╔╝ ███████╗███████║██║   ██║█████╗  ",
-            "██╔══╝  ██╔══██║╚════██║  ╚██╔╝  ╚════██║██╔══██║╚██╗ ██╔╝██╔══╝  ",
-            "███████╗██║  ██║███████║   ██║   ███████║██║  ██║ ╚████╔╝ ███████╗",
-            "╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚══════╝"
-        };
+        string[] logo = AppLogo.Logo;
         foreach (string line in logo)
         {
             Console.WriteLine(line);
         }
-
         Console.ResetColor();
     }
 
