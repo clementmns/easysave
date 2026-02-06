@@ -122,17 +122,18 @@ public class ConsoleAppView : IProgressionObserver
                     break;
 
                 case 7:
+                    Console.WriteLine(Messages.ResourceManager.GetString("ThankYouForUsing"));
                     exit = true;
                     break;
             }
 
             if (exit) break;
             Console.WriteLine();
+            Console.ForegroundColor = ConsoleTheme.InstructionColor;
             Console.WriteLine(Messages.ResourceManager.GetString("PressKeyToContinue"));
+            Console.ResetColor();
             Console.ReadKey();
             Console.Clear();
-            ShowHeader();
-            Console.WriteLine(Messages.ResourceManager.GetString("ThankYouForUsing"));
         }
     }
 
@@ -188,7 +189,9 @@ public class ConsoleAppView : IProgressionObserver
         {
             Console.Clear();
             ShowHeader();
+            Console.ForegroundColor = ConsoleTheme.ErrorColor;
             Console.WriteLine(Messages.ResourceManager.GetString("AddJobFailed"));
+            Console.ResetColor();
             return;
         }
 
@@ -263,8 +266,7 @@ public class ConsoleAppView : IProgressionObserver
         {
             options[i] = $"{jobsList[i].Name} ({jobsList[i].Type})";
         }
-        var prompt = Messages.ResourceManager.GetString("ExecuteJobsPrompt");
-        List<int> selectedIndices = NavigateMultiSelect(options, prompt);
+        List<int> selectedIndices = NavigateMultiSelect(options);
 
         Console.Clear();
         ShowHeader();
@@ -400,7 +402,7 @@ public class ConsoleAppView : IProgressionObserver
         }
     }
 
-    private List<int> NavigateMultiSelect(string[] options, string question)
+    private List<int> NavigateMultiSelect(string[] options, string? question = null)
     {
         int selection = 0;
         List<int> selectedIndexes = [];
