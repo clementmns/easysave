@@ -64,10 +64,10 @@
         <value>Define the type of backup that you want :</value>
     </data>
     <data name="AddJobTypeDifferential" xml:space="preserve">
-        <value>1. Differential</value>
+        <value>Differential</value>
     </data>
     <data name="AddJobTypeFull" xml:space="preserve">
-        <value>2. Complete</value>
+        <value>Complete</value>
     </data>
     <data name="AddJobSuccess" xml:space="preserve">
         <value>Job add with success.</value>
@@ -103,10 +103,10 @@
         <value>Change the language : </value>
     </data>
     <data name="ChangeLanguageEnglish" xml:space="preserve">
-        <value>1. English</value>
+        <value>English</value>
     </data>
     <data name="ChangeLanguageFrench" xml:space="preserve">
-        <value>2. French</value>
+        <value>French</value>
     </data>
     <data name="ChangeLanguageInvalid" xml:space="preserve">
         <value>Invalid input. Defaulting to English.</value>
@@ -119,5 +119,8 @@
     </data>
     <data name="DeleteJobInvalid" xml:space="preserve">
         <value>Invalid job number</value>
+    </data>
+    <data name="MaxFileWarning" xml:space="preserve">
+        <value>You have reached the maximum number of jobs. To continue, please delete an existing job. </value>
     </data>
 </root>

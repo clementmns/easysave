@@ -1,6 +1,6 @@
-﻿using EasySave.Model;
-using EasySave.Ressources;
+using EasySave.Model;
 using EasySave.Service;
+using EasySave.Ressources;
 using EasySave.ViewModel;
 
 namespace EasySave.View;
@@ -24,75 +24,86 @@ public class ConsoleAppView
 
     private static void ShowHeader()
     {
-        Console.WriteLine("""
-                           ______                 _____
-                          |  ____|               / ____|
-                          | |__   __ _ ___ _   _| (___   __ ___   _____
-                          |  __| / _` / __| | | |\___ \ / _` \ \ / / _ \
-                          | |___| (_| \__ \ |_| |____) | (_| |\ V /  __/
-                          |______\__,_|___/\__, |_____/ \__,_| \_/ \___|
-                                            __/ |
-                                           |___/
-                          """);
-    }
-
-    private static void ShowMenu()
-    {
-        Console.WriteLine(@" 1. " + Messages.ResourceManager.GetString("ConsoleMenuViewJobs"));
-        Console.WriteLine(@" 2. " + Messages.ResourceManager.GetString("ConsoleMenuAddJob"));
-        Console.WriteLine(@" 3. " + Messages.ResourceManager.GetString("ConsoleMenuDeleteJob"));
-        Console.WriteLine(@" 4. " + Messages.ResourceManager.GetString("ConsoleMenuExecuteJob"));
-        Console.WriteLine(@" 5. " + Messages.ResourceManager.GetString("ConsoleMenuExecuteAllJobs"));
-        Console.WriteLine(@" 6. " + Messages.ResourceManager.GetString("ConsoleMenuLanguage"));
-        Console.WriteLine(@" Q. " + Messages.ResourceManager.GetString("ConsoleMenuQuit"));
-        Console.WriteLine(Messages.ResourceManager.GetString("ConsoleMenuOption"));
+        Console.ForegroundColor = ConsoleTheme.MainColor;
+        string[] logo = AppLogo.Logo;
+        foreach (string line in logo)
+        {
+            Console.WriteLine(line);
+        }
+        Console.ResetColor();
     }
 
     public void Run()
     {
         var exit = false;
+        int maxFiles = 5;
 
         while (!exit)
         {
-            ShowHeader();
-            ShowMenu();
+            string[] options =
+            {
+                Messages.ResourceManager.GetString("ConsoleMenuViewJobs"),
+                Messages.ResourceManager.GetString("ConsoleMenuAddJob"),
+                Messages.ResourceManager.GetString("ConsoleMenuDeleteJob"),
+                Messages.ResourceManager.GetString("ConsoleMenuExecuteJob"),
+                Messages.ResourceManager.GetString("ConsoleMenuExecuteAllJobs"),
+                Messages.ResourceManager.GetString("ConsoleMenuLanguage"),
+                Messages.ResourceManager.GetString("ConsoleMenuQuit")
+            };
 
-            var choice = Console.ReadKey().KeyChar.ToString().ToUpper();
+            int choice = NavigateMenu(options);
+            Console.Clear();
+
             switch (choice)
             {
-                case "1":
+                case 0:
                     Console.Clear();
                     ViewJobs();
                     break;
 
-                case "2":
+                case 1:
                     Console.Clear();
-                    AddJob();
+                    var currentJobs = _backupViewModel.Jobs?.ToList() ?? [];
+                    if (currentJobs.Count == maxFiles)
+                    {
+                        Console.ForegroundColor = ConsoleTheme.WarningColor;
+                        Console.WriteLine(Messages.ResourceManager.GetString("MaxFileWarning"));
+                        Console.ResetColor();
+
+                        DeleteJob();
+                        AddJob();
+                    }
+                    else
+                    {
+                        AddJob();
+                    }
+
                     break;
 
-                case "3":
+                case 2:
                     Console.Clear();
                     DeleteJob();
                     break;
 
-                case "4":
+                case 3:
                     Console.Clear();
                     ExecuteJobs();
                     break;
 
-                case "5":
+                case 4:
                     Console.Clear();
                     ExecuteAllJobs();
                     break;
 
-                case "6":
+                case 5:
                     Console.Clear();
                     ChangeLanguage();
                     break;
 
-                case "Q":
+                case 6:
                     exit = true;
-                    break;}
+                    break;
+            }
 
             if (exit) break;
             Console.WriteLine();
@@ -134,18 +145,14 @@ public class ConsoleAppView
         Console.WriteLine(Messages.ResourceManager.GetString("AddJobDestinationPath"));
         var destinationPath = Console.ReadLine() ?? string.Empty;
 
-        Console.WriteLine(Messages.ResourceManager.GetString("AddJobSaveType"));
-        Console.WriteLine(Messages.ResourceManager.GetString("AddJobTypeDifferential"));
-        Console.WriteLine(Messages.ResourceManager.GetString("AddJobTypeFull"));
-
-        var saveTypeInput = Console.ReadKey().KeyChar.ToString().ToUpper();
-
-        var saveType = saveTypeInput switch
+        string[] options =
         {
-            "1" => BackupType.Differential,
-            "2" => BackupType.Full,
-            _ => BackupType.Full,
+            Messages.ResourceManager.GetString("AddJobTypeDifferential"),
+            Messages.ResourceManager.GetString("AddJobTypeFull")
         };
+        string question = Messages.ResourceManager.GetString("AddJobSaveType");
+        int selection = NavigateMenu(options, question);
+        var saveType = selection == 0 ? BackupType.Differential : BackupType.Full;
 
         BackupJob job;
         var currentJobs = _backupViewModel.Jobs?.ToList() ?? [];
@@ -161,18 +168,15 @@ public class ConsoleAppView
         }
 
         Console.Clear();
-        Console.WriteLine(_backupViewModel.AddJob(job) 
-            ? Messages.ResourceManager.GetString("AddJobSuccess") 
+        Console.WriteLine(_backupViewModel.AddJob(job)
+            ? Messages.ResourceManager.GetString("AddJobSuccess")
             : Messages.ResourceManager.GetString("AddJobFailed"));
     }
 
     private void DeleteJob() 
     {
-        Console.WriteLine(Messages.ResourceManager.GetString("DeleteJobPrompt"));
-        ViewJobs();
-    
         var jobs = _backupViewModel.Jobs?.ToList();
-    
+
         if (jobs == null || jobs.Count == 0)
         {
             Console.Clear();
@@ -180,90 +184,233 @@ public class ConsoleAppView
             return;
         }
 
-        var input = Console.ReadKey().KeyChar.ToString();
-    
-        if (int.TryParse(input, out var jobNumber) && jobNumber > 0 && jobNumber <= jobs.Count)
+        var deleteOptions = new List<string>();
+        foreach (var job in jobs)
         {
-            var job = jobs[jobNumber - 1];
-            Console.Clear();
+            deleteOptions.Add($"{job.Name} ({job.Type})");
+        }
 
-            Console.WriteLine(_backupViewModel.DeleteJob(job)
-                ? Messages.ResourceManager.GetString("DeleteJobSuccess")
-                : Messages.ResourceManager.GetString("DeleteJobFailed"));
+        deleteOptions.Add(Messages.ResourceManager.GetString("ConsoleMenuQuit"));
+        string title = Messages.ResourceManager.GetString("DeleteJobPrompt");
+        int selection = NavigateMenu(deleteOptions.ToArray(), title);
+
+        if (selection == deleteOptions.Count - 1)
+        {
+            return;
+        }
+
+        var jobToDelete = jobs[selection];
+        Console.Clear();
+
+        bool success = _backupViewModel.DeleteJob(jobToDelete);
+
+        if (success)
+        {
+            Console.ForegroundColor = ConsoleTheme.MainColor;
+            Console.WriteLine(Messages.ResourceManager.GetString("DeleteJobSuccess"));
         }
         else
         {
-            Console.Clear();
-            Console.WriteLine(Messages.ResourceManager.GetString("DeleteJobInvalid"));
+            Console.ForegroundColor = ConsoleTheme.ErrorColor;
+            Console.WriteLine(Messages.ResourceManager.GetString("DeleteJobFailed"));
         }
+        Console.ResetColor();
     }
 
 
     private void ExecuteJobs()
     {
-        ViewJobs();
-        Console.WriteLine(Messages.ResourceManager.GetString("ExecuteJobsPrompt"));
         var jobsList = _backupViewModel.Jobs?.ToList();
-        
+
         if (jobsList == null || jobsList.Count == 0)
         {
             Console.Clear();
             Console.WriteLine(Messages.ResourceManager.GetString("ExecuteJobsNoJobs"));
             return;
         }
-        
-        var executed = _backupViewModel.ExecuteJobsFromArgs(Console.ReadLine());
 
-        Console.WriteLine(executed
-            ? Messages.ResourceManager.GetString("ExecuteJobsSuccess")
-            : Messages.ResourceManager.GetString("ExecuteJobsNoValid"));
-    }
+        string[] options = new string[jobsList.Count];
+        for (int i = 0; i < jobsList.Count; i++)
+        {
+            options[i] = $"{jobsList[i].Name} ({jobsList[i].Type})";
+        }
+        string prompt = Messages.ResourceManager.GetString("ExecuteJobsPrompt");
+        List<int> selectedIndices = NavigateMultiSelect(options, prompt);
+
+        Console.Clear();
+        
+        if (selectedIndices.Count == 0)
+        {
+            Console.WriteLine(Messages.ResourceManager.GetString("ExecuteJobsNoValid"));
+            return;
+        }
+        
+        foreach (int index in selectedIndices)
+        {
+            var job = jobsList[index];
+            _backupViewModel.ExecuteJob(job);
+        }
+
+        Console.ForegroundColor = ConsoleTheme.MainColor;
+        Console.WriteLine(Messages.ResourceManager.GetString("ExecuteJobsSuccess"));
+        Console.ResetColor();
+        
+        }
+        
 
     private void ExecuteAllJobs()
     {
-        if (_backupViewModel.Jobs != null && _backupViewModel.Jobs.Count == 0) 
+        if (_backupViewModel.Jobs != null && _backupViewModel.Jobs.Count == 0)
         {
             Console.Clear();
             Console.WriteLine(Messages.ResourceManager.GetString("ExecuteJobsNoJobs"));
             return;
         }
-        
+
         if (_backupViewModel.Jobs != null)
             foreach (var job in _backupViewModel.Jobs.ToList())
                 _backupViewModel.ExecuteJob(job);
-        
+
         Console.Clear();
         Console.WriteLine(Messages.ResourceManager.GetString("ExecuteAllJobsSuccess"));
     }
 
     private void ChangeLanguage()
     {
-        Console.WriteLine(Messages.ResourceManager.GetString("ChangeLanguageTitle"));
-        Console.WriteLine(Messages.ResourceManager.GetString("ChangeLanguageEnglish"));
-        Console.WriteLine(Messages.ResourceManager.GetString("ChangeLanguageFrench"));
-
-        var langInput = Console.ReadKey().KeyChar.ToString();
-        
-        string language;
-        Console.Clear();
-        switch (langInput)
-
+        var availableLanguages = new[] 
         {
-            case "1": 
-                language = "en-US";
-                Console.WriteLine(Messages.ResourceManager.GetString("ChangeLanguageSuccess"));
-                break;
-            case "2":
-                language = "fr-FR";
-                Console.WriteLine(Messages.ResourceManager.GetString("ChangeLanguageSuccess"));
-                break;
-            default:
-                Console.WriteLine(Messages.ResourceManager.GetString("ChangeLanguageInvalid"));
-                language = "en-US";
-                break;
-        }
+            (Name: Messages.ResourceManager.GetString("ChangeLanguageEnglish"), Code: "en-US"),
+            (Name: Messages.ResourceManager.GetString("ChangeLanguageFrench"),  Code: "fr-FR")
+        };
+        string[] options = availableLanguages.Select(l => l.Name).ToArray();
+        string title = Messages.ResourceManager.GetString("ChangeLanguageTitle");
+        int selection = NavigateMenu(options, title);
+        string selectedLanguage = availableLanguages[selection].Code;
+        string currentLanguage = SettingsService.GetInstance.Settings.Language;
         
-
-        SettingsService.GetInstance.SetLanguage(language);
+        if (selectedLanguage == currentLanguage)
+        {
+            Console.ForegroundColor = ConsoleTheme.WarningColor;
+            Console.WriteLine();
+            Console.WriteLine("Language already active.");
+            Console.ResetColor();
+        }
+        else
+        {
+            SettingsService.GetInstance.SetLanguage(selectedLanguage);
+            Console.WriteLine(Messages.ResourceManager.GetString("ChangeLanguageSuccess"));
+        }
     }
-}
+
+    private int NavigateMenu(string[] options, string? question = null)
+    {
+
+        int selection = 0;
+        Console.CursorVisible = false;
+
+        while (true)
+        {
+            Console.Clear();
+            ShowHeader();
+
+            if (!string.IsNullOrWhiteSpace(question))
+            {
+                Console.WriteLine(question);
+                Console.WriteLine();
+            }
+
+            for (int i = 0; i < options.Length; i++)
+            {
+                if (i == selection)
+                {
+                    Console.ForegroundColor = ConsoleTheme.MainColor;
+                    Console.WriteLine($"-> {options[i]}");
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.WriteLine($"{options[i]}");
+                }
+            }
+
+            var key = Console.ReadKey(true).Key;
+            if (key == ConsoleKey.DownArrow && selection < options.Length - 1)
+            {
+                selection++;
+            }
+            else if (key == ConsoleKey.UpArrow && selection > 0)
+            {
+                selection--;
+            }
+            else if (key == ConsoleKey.Enter)
+            {
+                Console.CursorVisible = true;
+                return selection;
+            }
+        }
+    }
+
+    private List<int> NavigateMultiSelect(string[] options, string question)
+    {
+        int selection = 0;
+        List<int> selectedIndexes = new List<int>();
+        Console.CursorVisible = false;
+
+        while (true)
+        {
+            Console.Clear();
+            ShowHeader();
+            Console.WriteLine(question);
+            Console.ForegroundColor = ConsoleTheme.InstructionColor;
+            Console.WriteLine("(Espace = Cocher/Décocher, Entrée = Valider)");
+            Console.ResetColor();
+            Console.WriteLine();
+
+            for (int i = 0; i < options.Length; i++)
+            {
+                bool isChecked = selectedIndexes.Contains(i);
+                string checkbox = isChecked ? "[X]" : "[ ]";
+
+                if (i == selection)
+                {
+                    Console.ForegroundColor = ConsoleTheme.MainColor;
+                    Console.WriteLine($"-> {checkbox} {options[i]}");
+                    Console.ResetColor();
+                }
+                else
+                {
+                    if (isChecked) Console.ForegroundColor = ConsoleTheme.SecondaryColor;
+                    Console.WriteLine($"   {checkbox} {options[i]}");
+                    Console.ResetColor();
+                }
+            }
+
+            var key = Console.ReadKey(true).Key;
+
+                if (key == ConsoleKey.DownArrow && selection < options.Length - 1)
+                {
+                    selection++;
+                }
+                else if (key == ConsoleKey.UpArrow && selection > 0)
+                {
+                    selection--;
+                }
+                else if (key == ConsoleKey.Spacebar)
+                {
+                    if (selectedIndexes.Contains(selection))
+                    {
+                        selectedIndexes.Remove(selection);
+                    }
+                    else
+                    {
+                        selectedIndexes.Add(selection);
+                    }
+                }
+                else if (key == ConsoleKey.Enter)
+                {
+                    Console.CursorVisible = true;
+                    return selectedIndexes;
+                }
+            }
+        }
+    }
