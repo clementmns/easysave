@@ -11,30 +11,12 @@ namespace EasySave.View;
 public class ConsoleAppView : IProgressionObserver
 {
     private readonly BackupViewModel _backupViewModel;
+    private int _consoleWidth;
 
     public ConsoleAppView(string appSaveDirectory)
     {
         _backupViewModel = new BackupViewModel(appSaveDirectory);
-    }
-
-    /// <summary>
-    /// Called when backup progression changes.
-    /// </summary>
-    /// <param name="progression">percentage of progression</param>
-    public void OnProgressionUpdated(int progression)
-    {
-        Console.Clear();
-        ShowHeader();
-        Console.WriteLine(@"Sauvegarde en cours...");
-        
-        const int barLength = 100;
-        var filledLength = progression;
-        var bar = new string('█', filledLength) + new string('░', barLength - filledLength);
-        
-        Console.ForegroundColor = ConsoleTheme.MainColor;
-        Console.WriteLine($@"[{bar}] {progression}%");
-        Console.WriteLine();
-        Console.ResetColor();
+        _consoleWidth = Console.WindowWidth;
     }
     
     /// <summary>
@@ -51,22 +33,7 @@ public class ConsoleAppView : IProgressionObserver
                 : requestedIndex + " :" + Messages.ResourceManager.GetString("ExecuteJobsSuccess"));
         }
     }
-
-    /// <summary>
-    /// Displays the application header with logo.
-    /// </summary>
-    private static void ShowHeader()
-    {
-        Console.ForegroundColor = ConsoleTheme.MainColor;
-        string[] logo = AppLogo.Logo;
-        foreach (string line in logo)
-        {
-            Console.WriteLine(line);
-        }
-        Console.WriteLine();
-        Console.ResetColor();
-    }
-
+    
     /// <summary>
     /// Main loop of the console application, displaying the menu and handling user input.
     /// </summary>
@@ -155,6 +122,129 @@ public class ConsoleAppView : IProgressionObserver
             Console.ResetColor();
             Console.ReadKey();
             Console.Clear();
+        }
+    }
+    
+    /// <summary>
+    /// Displays the application header with logo.
+    /// </summary>
+    private static void ShowHeader()
+    {
+        Console.ForegroundColor = ConsoleTheme.MainColor;
+        string[] logo = AppLogo.Logo;
+        foreach (string line in logo)
+        {
+            Console.WriteLine(line);
+        }
+        Console.WriteLine();
+        Console.ResetColor();
+    }
+    
+    private int NavigateMenu(string?[] options, string? question = null)
+    {
+
+        int selection = 0;
+        Console.CursorVisible = false;
+
+        while (true)
+        {
+            Console.Clear();
+            ShowHeader();
+
+            if (!string.IsNullOrWhiteSpace(question))
+            {
+                Console.WriteLine(question);
+                Console.WriteLine();
+            }
+
+            for (int i = 0; i < options.Length; i++)
+            {
+                if (i == selection)
+                {
+                    Console.ForegroundColor = ConsoleTheme.MainColor;
+                    Console.WriteLine($"> {options[i]}");
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.WriteLine($"{options[i]}");
+                }
+            }
+
+            // handle user input for navigation
+            var key = Console.ReadKey(true).Key;
+            switch (key)
+            {
+                case ConsoleKey.DownArrow when selection < options.Length - 1:
+                    selection++;
+                    break;
+                case ConsoleKey.UpArrow when selection > 0:
+                    selection--;
+                    break;
+                case ConsoleKey.Enter:
+                    Console.CursorVisible = true;
+                    return selection;
+            }
+        }
+    }
+
+    private List<int> NavigateMultiSelect(string[] options, string? question = null)
+    {
+        int selection = 0;
+        List<int> selectedIndexes = [];
+        Console.CursorVisible = false;
+
+        while (true)
+        {
+            Console.Clear();
+            ShowHeader();
+            Console.WriteLine(question);
+            Console.ForegroundColor = ConsoleTheme.InstructionColor;
+            Console.WriteLine(Messages.ResourceManager.GetString("MultipleSelectionAdvice"));
+            Console.ResetColor();
+            Console.WriteLine();
+
+            for (int i = 0; i < options.Length; i++)
+            {
+                bool isChecked = selectedIndexes.Contains(i);
+                string checkbox = isChecked ? "[X]" : "[ ]";
+
+                if (i == selection)
+                {
+                    Console.ForegroundColor = ConsoleTheme.MainColor;
+                    Console.WriteLine($"> {checkbox} {options[i]}");
+                    Console.ResetColor();
+                }
+                else
+                {
+                    if (isChecked) Console.ForegroundColor = ConsoleTheme.SecondaryColor;
+                    Console.WriteLine($"   {checkbox} {options[i]}");
+                }
+
+                Console.ResetColor();
+            }
+
+            var key = Console.ReadKey(true).Key;
+
+            // handle user input for navigation
+            switch (key)
+            {
+                case ConsoleKey.DownArrow when selection < options.Length - 1:
+                    selection++;
+                    break;
+                case ConsoleKey.UpArrow when selection > 0:
+                    selection--;
+                    break;
+                case ConsoleKey.Spacebar when selectedIndexes.Contains(selection):
+                    selectedIndexes.Remove(selection);
+                    break;
+                case ConsoleKey.Spacebar:
+                    selectedIndexes.Add(selection);
+                    break;
+                case ConsoleKey.Enter:
+                    Console.CursorVisible = true;
+                    return selectedIndexes;
+            }
         }
     }
 
@@ -385,114 +475,6 @@ public class ConsoleAppView : IProgressionObserver
         }
     }
 
-    private int NavigateMenu(string?[] options, string? question = null)
-    {
-
-        int selection = 0;
-        Console.CursorVisible = false;
-
-        while (true)
-        {
-            Console.Clear();
-            ShowHeader();
-
-            if (!string.IsNullOrWhiteSpace(question))
-            {
-                Console.WriteLine(question);
-                Console.WriteLine();
-            }
-
-            for (int i = 0; i < options.Length; i++)
-            {
-                if (i == selection)
-                {
-                    Console.ForegroundColor = ConsoleTheme.MainColor;
-                    Console.WriteLine($"> {options[i]}");
-                    Console.ResetColor();
-                }
-                else
-                {
-                    Console.WriteLine($"{options[i]}");
-                }
-            }
-
-            // handle user input for navigation
-            var key = Console.ReadKey(true).Key;
-            switch (key)
-            {
-                case ConsoleKey.DownArrow when selection < options.Length - 1:
-                    selection++;
-                    break;
-                case ConsoleKey.UpArrow when selection > 0:
-                    selection--;
-                    break;
-                case ConsoleKey.Enter:
-                    Console.CursorVisible = true;
-                    return selection;
-            }
-        }
-    }
-
-    private List<int> NavigateMultiSelect(string[] options, string? question = null)
-    {
-        int selection = 0;
-        List<int> selectedIndexes = [];
-        Console.CursorVisible = false;
-
-        while (true)
-        {
-            Console.Clear();
-            ShowHeader();
-            Console.WriteLine(question);
-            Console.ForegroundColor = ConsoleTheme.InstructionColor;
-            Console.WriteLine(Messages.ResourceManager.GetString("MultipleSelectionAdvice"));
-            Console.ResetColor();
-            Console.WriteLine();
-
-            for (int i = 0; i < options.Length; i++)
-            {
-                bool isChecked = selectedIndexes.Contains(i);
-                string checkbox = isChecked ? "[X]" : "[ ]";
-
-                if (i == selection)
-                {
-                    Console.ForegroundColor = ConsoleTheme.MainColor;
-                    Console.WriteLine($"> {checkbox} {options[i]}");
-                    Console.ResetColor();
-                }
-                else
-                {
-                    if (isChecked) Console.ForegroundColor = ConsoleTheme.SecondaryColor;
-                    Console.WriteLine($"   {checkbox} {options[i]}");
-                }
-
-                Console.ResetColor();
-            }
-
-            var key = Console.ReadKey(true).Key;
-
-            // handle user input for navigation
-            switch (key)
-            {
-                case ConsoleKey.DownArrow when selection < options.Length - 1:
-                    selection++;
-                    break;
-                case ConsoleKey.UpArrow when selection > 0:
-                    selection--;
-                    break;
-                case ConsoleKey.Spacebar when selectedIndexes.Contains(selection):
-                    selectedIndexes.Remove(selection);
-                    break;
-                case ConsoleKey.Spacebar:
-                    selectedIndexes.Add(selection);
-                    break;
-                case ConsoleKey.Enter:
-                    Console.CursorVisible = true;
-                    return selectedIndexes;
-            }
-        }
-    }
-
     /// <summary>
     /// Add the application directory to the user PATH environment variable.
     /// Allows to use the application from any terminal without specifying the full path. 
@@ -529,6 +511,26 @@ public class ConsoleAppView : IProgressionObserver
         Console.WriteLine(Messages.ResourceManager.GetString("AddToPathSucces"));
         Console.ForegroundColor = ConsoleTheme.InstructionColor;
         Console.WriteLine(Messages.ResourceManager.GetString("Restart"));
+        Console.ResetColor();
+    }
+    
+    /// <summary>
+    /// Called when backup progression changes.
+    /// </summary>
+    /// <param name="progression">percentage of progression</param>
+    public void OnProgressionUpdated(int progression)
+    {
+        Console.Clear();
+        ShowHeader();
+        Console.WriteLine(@"Sauvegarde en cours...");
+        
+        const int barLength = 100;
+        var filledLength = progression;
+        var bar = new string('█', filledLength) + new string('░', barLength - filledLength);
+        
+        Console.ForegroundColor = ConsoleTheme.MainColor;
+        Console.WriteLine($@"[{bar}] {progression}%");
+        Console.WriteLine();
         Console.ResetColor();
     }
 }
