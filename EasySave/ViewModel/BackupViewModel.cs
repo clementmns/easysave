@@ -89,7 +89,7 @@ public class BackupViewModel
 
             foreach (var idx in requestedIndices)
             {
-                int jobIdx = idx - 1;
+                var jobIdx = idx - 1;
                 if (Jobs != null && jobIdx >= 0 && jobIdx < Jobs.Count)
                 {
                     // execute job and store result in the map
