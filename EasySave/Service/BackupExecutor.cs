@@ -1,4 +1,4 @@
-﻿using EasySave.Model;
+using EasySave.Model;
 using EasySave.Model.BackupStrategies;
 
 namespace EasySave.Service;
