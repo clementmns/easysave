@@ -132,4 +132,7 @@
     <data name="ExecuteJobsFailed" xml:space="preserve">
         <value>Jobs execution failed</value>
     </data>
+    <data name="ThankYouForUsing" xml:space="preserve">
+        <value>Thank you for using EasySave</value>
+    </data>
 </root>

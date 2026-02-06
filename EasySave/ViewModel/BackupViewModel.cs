@@ -35,38 +35,52 @@ public class BackupViewModel
 
     public void UpdateJob(BackupJob job) => _jobService.UpdateJob(job);
     
-    public bool ExecuteJobsFromArgs(string? args, IProgressionObserver? progressionObserver = null)
+    public Dictionary<int, bool> ExecuteJobsFromArgs(string? args)
     {
-        var selectedJobs = new List<BackupJob>();
-        var parts = args?.Split(';').Select(p => p.Trim()).ToArray();
-
-        if (parts != null)
+        var resultMap = new Dictionary<int, bool>();
+        try
         {
+            if (string.IsNullOrWhiteSpace(args)) return resultMap;
+
+            var requestedIndices = new List<int>();
+            var parts = args.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
             foreach (var part in parts)
             {
                 if (part.Contains('-'))
                 {
                     var range = part.Split('-');
-                    if (!int.TryParse(range[0], out var start) || !int.TryParse(range[1], out var end)) continue;
-                    if (Jobs == null) continue;
-                    for (var i = start; i <= end && i <= Jobs.Count; i++)
+                    if (range.Length == 2 && int.TryParse(range[0], out var start) && int.TryParse(range[1], out var end))
                     {
-                        selectedJobs.Add(Jobs[i - 1]);
+                        for (var i = start; i <= end; i++)
+                        {
+                            if (i > 0) requestedIndices.Add(i);
+                        }
                     }
                 }
-                else if (int.TryParse(part, out var jobNumber) && jobNumber > 0 && Jobs != null && jobNumber <= Jobs.Count)
+                else if (int.TryParse(part, out var jobNumber) && jobNumber > 0)
                 {
-                    selectedJobs.Add(Jobs[jobNumber - 1]);
+                    requestedIndices.Add(jobNumber);
                 }
             }
-        }
 
-        var isExecuted = true;
-        foreach (var job in selectedJobs)
-        {
-            var result = ExecuteJob(job, progressionObserver);
-            isExecuted &= result;
+            foreach (var idx in requestedIndices)
+            {
+                int jobIdx = idx - 1;
+                if (Jobs != null && jobIdx >= 0 && jobIdx < Jobs.Count)
+                {
+                    resultMap[idx] = ExecuteJob(Jobs[jobIdx]);
+                }
+                else
+                {
+                    resultMap[idx] = false;
+                }
+            }
+            return resultMap;
         }
-        return isExecuted;
+        catch (Exception)
+        {
+            return resultMap;
+        }
     }
 }
