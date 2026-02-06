@@ -1,4 +1,4 @@
-﻿namespace EasySave.ConsoleApp.Model;
+﻿namespace EasySave.Model;
 
 public enum BackupType
 {

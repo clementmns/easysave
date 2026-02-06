@@ -1,9 +1,9 @@
 using System.Globalization;
 using System.Text.Json;
-using EasySave.ConsoleApp.Model;
-using EasySave.ConsoleApp.Utils;
+using EasySave.Model;
+using EasySave.Utils;
 
-namespace EasySave.ConsoleApp.Service
+namespace EasySave.Service
 {
     public class SettingsService
     {

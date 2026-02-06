@@ -1,9 +1,9 @@
-﻿using EasySave.ConsoleApp.Model;
-using EasySave.ConsoleApp.Ressources;
-using EasySave.ConsoleApp.Service;
-using EasySave.ConsoleApp.ViewModel;
+﻿using EasySave.Model;
+using EasySave.Ressources;
+using EasySave.Service;
+using EasySave.ViewModel;
 
-namespace EasySave.ConsoleApp.View;
+namespace EasySave.View;
 
 public class ConsoleAppView
 {

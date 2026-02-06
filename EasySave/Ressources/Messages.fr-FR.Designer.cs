@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace EasySave.ConsoleApp.Ressources {
+namespace EasySave.Ressources {
     using System;
     
     
@@ -28,7 +28,7 @@ namespace EasySave.ConsoleApp.Ressources {
         internal static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("EasySave.EasySave.Ressources.Messages_fr_FR", typeof(Messages_fr_FR).Assembly);
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("EasySave.Ressources.Messages_fr_FR", typeof(Messages_fr_FR).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

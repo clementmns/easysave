@@ -1,8 +1,8 @@
 ﻿using System.Collections.ObjectModel;
-using EasySave.ConsoleApp.Model;
-using EasySave.ConsoleApp.Service;
+using EasySave.Model;
+using EasySave.Service;
 
-namespace EasySave.ConsoleApp.ViewModel;
+namespace EasySave.ViewModel;
 
 public class BackupViewModel
 {

@@ -1,9 +1,9 @@
 using EasyLog;
 using EasyLog.Strategies;
-using EasySave.ConsoleApp.Service;
-using EasySave.ConsoleApp.View;
+using EasySave.Service;
+using EasySave.View;
 
-namespace EasySave.ConsoleApp;
+namespace EasySave;
 
 internal class Program
 {

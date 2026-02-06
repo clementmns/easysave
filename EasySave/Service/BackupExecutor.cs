@@ -1,7 +1,7 @@
-﻿using EasySave.ConsoleApp.Model;
-using EasySave.ConsoleApp.Model.BackupStrategies;
+﻿using EasySave.Model;
+using EasySave.Model.BackupStrategies;
 
-namespace EasySave.ConsoleApp.Service;
+namespace EasySave.Service;
 
 public class BackupExecutor
 {

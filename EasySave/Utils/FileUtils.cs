@@ -1,4 +1,4 @@
-namespace EasySave.ConsoleApp.Utils;
+namespace EasySave.Utils;
 
 /// <summary>
 /// Utility class for file operations.

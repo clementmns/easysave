@@ -2,10 +2,10 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Text.Json;
 using EasyLog;
-using EasySave.ConsoleApp.Model;
-using EasySave.ConsoleApp.Utils;
+using EasySave.Model;
+using EasySave.Utils;
 
-namespace EasySave.ConsoleApp.Service;
+namespace EasySave.Service;
 
 public class BackupJobService : IRealTimeStateObserver
 {

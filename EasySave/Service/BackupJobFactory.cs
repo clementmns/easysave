@@ -1,7 +1,7 @@
-﻿using EasySave.ConsoleApp.Model;
-using EasySave.ConsoleApp.Ressources;
+﻿using EasySave.Model;
+using EasySave.Ressources;
 
-namespace EasySave.ConsoleApp.Service;
+namespace EasySave.Service;
 
 public class BackupJobFactory
 {

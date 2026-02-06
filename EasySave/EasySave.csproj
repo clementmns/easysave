@@ -7,7 +7,7 @@
         <Nullable>enable</Nullable>
         <PublishSingleFile>true</PublishSingleFile>
         <SelfContained>true</SelfContained>
-        <RootNamespace>EasySave.ConsoleApp</RootNamespace>
+        <RootNamespace>EasySave</RootNamespace>
         <Version>1.0.0</Version>
     </PropertyGroup>
 
