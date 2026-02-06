@@ -64,7 +64,8 @@ public class ConsoleAppView : IProgressionObserver
                 Messages.ResourceManager.GetString("ConsoleMenuExecuteJob"),
                 Messages.ResourceManager.GetString("ConsoleMenuExecuteAllJobs"),
                 Messages.ResourceManager.GetString("ConsoleMenuLanguage"),
-                Messages.ResourceManager.GetString("ConsoleMenuQuit")
+                Messages.ResourceManager.GetString("ConsoleMenuQuit"),
+                Messages.ResourceManager.GetString("ConsoleMenuPath")
             ];
 
             int choice = NavigateMenu(options);
@@ -123,6 +124,12 @@ public class ConsoleAppView : IProgressionObserver
 
                 case 6:
                     exit = true;
+                    break;
+                
+                case 7:
+                    Console.Clear();
+                    ShowHeader();
+                    AddToPath();
                     break;
             }
 
@@ -449,5 +456,35 @@ public class ConsoleAppView : IProgressionObserver
                     return selectedIndexes;
             }
         }
+    }
+
+    private void AddToPath()
+    {
+        var pathExe = Path.GetDirectoryName(Environment.ProcessPath);
+
+        if (string.IsNullOrWhiteSpace(pathExe))
+        {
+            Console.WriteLine(@"Erreur lors de l'ajout dans le path");
+            return;
+        }
+        
+        var pathActuel = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.User);
+        if (string.IsNullOrWhiteSpace(pathActuel))
+        {
+            Console.WriteLine(@"Erreur lors de l'ajout dans le path");
+            return;
+        }
+        
+        if (pathActuel.Contains(pathExe))
+        {
+            Console.WriteLine(@"Déjà dans le PATH !");
+            return;
+        }
+        
+        string nouveauPath = pathActuel + ";" + pathExe;
+        Environment.SetEnvironmentVariable("PATH", nouveauPath, EnvironmentVariableTarget.User);
+    
+        Console.WriteLine(@"Ajouté au PATH avec succès !");
+        Console.WriteLine(@"Redémarrez votre terminal pour que ça prenne effet.");
     }
 }

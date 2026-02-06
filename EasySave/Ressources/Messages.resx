@@ -132,4 +132,7 @@
     <data name="ExecuteJobsFailed" xml:space="preserve">
         <value>Jobs execution failed</value>
     </data>
+    <data name="ConsoleMenuPath" xml:space="preserve">
+        <value>Add EasySave to PATH</value>
+    </data>
 </root>
