@@ -298,7 +298,6 @@ public class ConsoleAppView
             Console.WriteLine();
             Console.WriteLine("Language already active.");
             Console.ResetColor();
-            Console.ReadKey();
         }
         else
         {
