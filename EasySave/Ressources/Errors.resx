@@ -30,4 +30,7 @@
     <data name="FileCantBeCopied" xml:space="preserve">
         <value>The file can't be copied.</value>
     </data>
+    <data name="PathAddError" xml:space="preserve">
+        <value>Error when adding to the path</value>
+    </data>
 </root>

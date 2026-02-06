@@ -138,4 +138,13 @@
     <data name="ThankYouForUsing" xml:space="preserve">
         <value>Merci d'avoir utilisé EasySave</value>
     </data>
+    <data name="AlreadyInPath" xml:space="preserve">
+        <value>Déja dans le Path !</value>
+    </data>
+    <data name="AddToPathSucces" xml:space="preserve">
+        <value>Ajouté au PATH avec succès !</value>
+    </data>
+    <data name="Restart" xml:space="preserve">
+        <value>Redémarrez votre terminal pour que ça prenne effet.</value>
+    </data>
 </root>

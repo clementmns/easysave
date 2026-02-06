@@ -67,8 +67,8 @@ public class ConsoleAppView : IProgressionObserver
                 Messages.ResourceManager.GetString("ConsoleMenuExecuteJob"),
                 Messages.ResourceManager.GetString("ConsoleMenuExecuteAllJobs"),
                 Messages.ResourceManager.GetString("ConsoleMenuLanguage"),
-                Messages.ResourceManager.GetString("ConsoleMenuQuit"),
-                Messages.ResourceManager.GetString("ConsoleMenuPath")
+                Messages.ResourceManager.GetString("ConsoleMenuPath"),
+                Messages.ResourceManager.GetString("ConsoleMenuQuit")
             ];
 
             int choice = NavigateMenu(options);
@@ -114,15 +114,15 @@ public class ConsoleAppView : IProgressionObserver
                 case 5:
                     ChangeLanguage();
                     break;
-
-                case 6:
-                    exit = true;
-                    break;
                 
-                case 7:
+                case 6:
                     Console.Clear();
                     ShowHeader();
                     AddToPath();
+                    break;
+
+                case 7:
+                    exit = true;
                     break;
             }
 
@@ -465,27 +465,32 @@ public class ConsoleAppView : IProgressionObserver
 
         if (string.IsNullOrWhiteSpace(pathExe))
         {
-            Console.WriteLine(@"Erreur lors de l'ajout dans le path");
+            Console.WriteLine(Ressources.Errors.PathAddError);
             return;
         }
         
         var pathActuel = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.User);
         if (string.IsNullOrWhiteSpace(pathActuel))
         {
-            Console.WriteLine(@"Erreur lors de l'ajout dans le path");
+            Console.WriteLine(Ressources.Errors.PathAddError);
             return;
         }
         
         if (pathActuel.Contains(pathExe))
         {
-            Console.WriteLine(@"Déjà dans le PATH !");
+            Console.ForegroundColor = ConsoleTheme.ErrorColor;
+            Console.WriteLine(Messages.ResourceManager.GetString("AlreadyInPath"));
+            Console.ResetColor();  
             return;
         }
         
         string nouveauPath = pathActuel + ";" + pathExe;
         Environment.SetEnvironmentVariable("PATH", nouveauPath, EnvironmentVariableTarget.User);
     
-        Console.WriteLine(@"Ajouté au PATH avec succès !");
-        Console.WriteLine(@"Redémarrez votre terminal pour que ça prenne effet.");
+        Console.ForegroundColor = ConsoleTheme.MainColor;
+        Console.WriteLine(Messages.ResourceManager.GetString("AddToPathSucces"));
+        Console.ForegroundColor = ConsoleTheme.InstructionColor;
+        Console.WriteLine(Messages.ResourceManager.GetString("Restart"));
+        Console.ResetColor();
     }
 }
