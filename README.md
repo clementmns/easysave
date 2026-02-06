@@ -32,10 +32,6 @@ EasySave is a simple tool for saving and loading data.
 - BOUZJALLIKHT Yanis
 - OMNÈS Clément
 
-<a href="https://github.com/clementmns/prosoft-easysave/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=clementmns/prosoft-easysave" />
-</a>
-
 
 ## License
 
