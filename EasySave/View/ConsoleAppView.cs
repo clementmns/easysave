@@ -49,6 +49,7 @@ public class ConsoleAppView : IProgressionObserver
         {
             Console.WriteLine(line);
         }
+        Console.WriteLine();
         Console.ResetColor();
     }
 
@@ -88,15 +89,16 @@ public class ConsoleAppView : IProgressionObserver
                         Console.ForegroundColor = ConsoleTheme.WarningColor;
                         Console.WriteLine(Messages.ResourceManager.GetString("MaxFileWarning"));
                         Console.ResetColor();
-                        
-                        DeleteJob();
-                        AddJob();
+
+                        if (DeleteJob())
+                        {
+                            AddJob();
+                        }
                     }
                     else
                     {
                         AddJob();
                     }
-
                     break;
 
                 case 2:
@@ -197,12 +199,15 @@ public class ConsoleAppView : IProgressionObserver
 
         Console.Clear();
         ShowHeader();
-        Console.WriteLine(_backupViewModel.AddJob(job)
-            ? Messages.ResourceManager.GetString("AddJobSuccess")
+        bool success = _backupViewModel.AddJob(job);
+        Console.ForegroundColor = success ? ConsoleTheme.MainColor : ConsoleTheme.ErrorColor;
+        Console.WriteLine(success 
+            ? Messages.ResourceManager.GetString("AddJobSuccess") 
             : Messages.ResourceManager.GetString("AddJobFailed"));
+        Console.ResetColor();
     }
 
-    private void DeleteJob() 
+    private bool DeleteJob() 
     {
         var jobs = _backupViewModel.Jobs?.ToList();
 
@@ -211,7 +216,7 @@ public class ConsoleAppView : IProgressionObserver
             Console.Clear();
             ShowHeader();
             Console.WriteLine(Messages.ResourceManager.GetString("ViewJobsNoJob"));
-            return;
+            return false;
         }
 
         var deleteOptions = new List<string>();
@@ -226,7 +231,7 @@ public class ConsoleAppView : IProgressionObserver
 
         if (selection == deleteOptions.Count - 1)
         {
-            return;
+            return false;
         }
 
         var jobToDelete = jobs[selection];
@@ -246,6 +251,7 @@ public class ConsoleAppView : IProgressionObserver
             Console.WriteLine(Messages.ResourceManager.GetString("DeleteJobFailed"));
         }
         Console.ResetColor();
+        return success;
     }
 
 
@@ -351,7 +357,10 @@ public class ConsoleAppView : IProgressionObserver
         else
         {
             SettingsService.GetInstance.SetLanguage(selectedLanguage);
+            Console.ForegroundColor = ConsoleTheme.MainColor;
+            Console.WriteLine();
             Console.WriteLine(Messages.ResourceManager.GetString("ChangeLanguageSuccess"));
+            Console.ResetColor();
         }
     }
 

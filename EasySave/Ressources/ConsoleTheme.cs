@@ -2,7 +2,7 @@
 
 public static class ConsoleTheme
 {
-    public static ConsoleColor MainColor => ConsoleColor.Green;
+    public static ConsoleColor MainColor => ConsoleColor.DarkMagenta;
     public static ConsoleColor SecondaryColor => ConsoleColor.Cyan;
     public static ConsoleColor ErrorColor => ConsoleColor.Red;
     public static ConsoleColor WarningColor => ConsoleColor.Yellow;
