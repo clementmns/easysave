@@ -32,10 +32,13 @@ public class ConsoleAppView : IProgressionObserver
 
     public void RunWithArgs(string[] args)
     {
-        var executed = _backupViewModel.ExecuteJobsFromArgs(args[0], this);
-        Console.WriteLine(executed
-            ? Messages.ResourceManager.GetString("ExecuteJobsSuccess")
-            : Messages.ResourceManager.GetString("ExecuteJobsNoValid"));
+        var executed = _backupViewModel.ExecuteJobsFromArgs(args[0]);
+        foreach (var (requestedIndex, result) in executed)
+        {
+            Console.WriteLine(!result
+                ? requestedIndex + " :" + Messages.ResourceManager.GetString("ExecuteJobsFailed")
+                : requestedIndex + " :" + Messages.ResourceManager.GetString("ExecuteJobsSuccess"));
+        }
     }
 
     private static void ShowHeader()
@@ -70,25 +73,21 @@ public class ConsoleAppView : IProgressionObserver
 
             int choice = NavigateMenu(options);
             Console.Clear();
+            ShowHeader();
 
             switch (choice)
             {
                 case 0:
-                    Console.Clear();
-                    ShowHeader();
                     ViewJobs();
                     break;
 
                 case 1:
-                    Console.Clear();
-                    ShowHeader();
                     var currentJobs = _backupViewModel.Jobs?.ToList() ?? [];
                     if (currentJobs.Count == maxFiles)
                     {
                         Console.ForegroundColor = ConsoleTheme.WarningColor;
                         Console.WriteLine(Messages.ResourceManager.GetString("MaxFileWarning"));
                         Console.ResetColor();
-
                         
                         DeleteJob();
                         AddJob();
@@ -101,24 +100,18 @@ public class ConsoleAppView : IProgressionObserver
                     break;
 
                 case 2:
-                    Console.Clear();
-                    ShowHeader();
                     DeleteJob();
                     break;
 
                 case 3:
-                    Console.Clear();
                     ExecuteJobs();
                     break;
 
                 case 4:
-                    Console.Clear();
                     ExecuteAllJobs();
                     break;
 
                 case 5:
-                    Console.Clear();
-                    ShowHeader();
                     ChangeLanguage();
                     break;
 
@@ -138,6 +131,8 @@ public class ConsoleAppView : IProgressionObserver
             Console.WriteLine(Messages.ResourceManager.GetString("PressKeyToContinue"));
             Console.ReadKey();
             Console.Clear();
+            ShowHeader();
+            Console.WriteLine(Messages.ResourceManager.GetString("ThankYouForUsing"));
         }
     }
 
@@ -192,11 +187,13 @@ public class ConsoleAppView : IProgressionObserver
         catch (Exception e)
         {
             Console.Clear();
+            ShowHeader();
             Console.WriteLine(Messages.ResourceManager.GetString("AddJobFailed"));
             return;
         }
 
         Console.Clear();
+        ShowHeader();
         Console.WriteLine(_backupViewModel.AddJob(job)
             ? Messages.ResourceManager.GetString("AddJobSuccess")
             : Messages.ResourceManager.GetString("AddJobFailed"));
@@ -209,6 +206,7 @@ public class ConsoleAppView : IProgressionObserver
         if (jobs == null || jobs.Count == 0)
         {
             Console.Clear();
+            ShowHeader();
             Console.WriteLine(Messages.ResourceManager.GetString("ViewJobsNoJob"));
             return;
         }
@@ -230,6 +228,7 @@ public class ConsoleAppView : IProgressionObserver
 
         var jobToDelete = jobs[selection];
         Console.Clear();
+        ShowHeader();
 
         bool success = _backupViewModel.DeleteJob(jobToDelete);
 
@@ -254,6 +253,7 @@ public class ConsoleAppView : IProgressionObserver
         if (jobsList == null || jobsList.Count == 0)
         {
             Console.Clear();
+            ShowHeader();
             Console.WriteLine(Messages.ResourceManager.GetString("ExecuteJobsNoJobs"));
             return;
         }
@@ -267,6 +267,7 @@ public class ConsoleAppView : IProgressionObserver
         List<int> selectedIndices = NavigateMultiSelect(options, prompt);
 
         Console.Clear();
+        ShowHeader();
         
         if (selectedIndices.Count == 0)
         {
@@ -296,11 +297,11 @@ public class ConsoleAppView : IProgressionObserver
         Console.ResetColor();
         
     }
-        
 
     private void ExecuteAllJobs()
     {
         Console.Clear();
+        ShowHeader();
         if (_backupViewModel.Jobs != null && _backupViewModel.Jobs.Count == 0)
         {
             Console.WriteLine(Messages.ResourceManager.GetString("ExecuteJobsNoJobs"));
