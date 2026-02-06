@@ -123,4 +123,10 @@
     <data name="MaxFileWarning" xml:space="preserve">
         <value>Vous avez atteint le nombre maximum de jobs, pour continuer veuillez en supprimer un existant. </value>
     </data>
+    <data name="WarningLanguageActive" xml:space="preserve">
+        <value>Cette langue est déja appliquée</value>
+    </data>
+    <data name="MultipleSelectionAdvice" xml:space="preserve">
+        <value>(Espace = Cocher/Décocher, Entrée = Valider)</value>
+    </data>
 </root>

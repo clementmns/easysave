@@ -1,4 +1,4 @@
-using EasySave.Model;
+﻿using EasySave.Model;
 using EasySave.Service;
 using EasySave.Ressources;
 using EasySave.ViewModel;
@@ -107,7 +107,9 @@ public class ConsoleAppView
 
             if (exit) break;
             Console.WriteLine();
+            Console.ForegroundColor = ConsoleTheme.InstructionColor;
             Console.WriteLine(Messages.ResourceManager.GetString("PressKeyToContinue"));
+            Console.ResetColor();
             Console.ReadKey();
             Console.Clear();
         }
@@ -163,7 +165,9 @@ public class ConsoleAppView
         catch (Exception e)
         {
             Console.Clear();
+            Console.ForegroundColor = ConsoleTheme.ErrorColor;
             Console.WriteLine(Messages.ResourceManager.GetString("AddJobFailed"));
+            Console.ResetColor();
             return;
         }
 
@@ -234,14 +238,15 @@ public class ConsoleAppView
         {
             options[i] = $"{jobsList[i].Name} ({jobsList[i].Type})";
         }
-        string prompt = Messages.ResourceManager.GetString("ExecuteJobsPrompt");
-        List<int> selectedIndices = NavigateMultiSelect(options, prompt);
+        List<int> selectedIndices = NavigateMultiSelect(options);
 
         Console.Clear();
         
         if (selectedIndices.Count == 0)
         {
+            Console.ForegroundColor = ConsoleTheme.WarningColor;
             Console.WriteLine(Messages.ResourceManager.GetString("ExecuteJobsNoValid"));
+            Console.ResetColor();
             return;
         }
         
@@ -292,7 +297,7 @@ public class ConsoleAppView
         {
             Console.ForegroundColor = ConsoleTheme.WarningColor;
             Console.WriteLine();
-            Console.WriteLine("Language already active.");
+            Console.WriteLine(Messages.ResourceManager.GetString("WarningLanguageActive"));
             Console.ResetColor();
         }
         else
@@ -324,7 +329,7 @@ public class ConsoleAppView
                 if (i == selection)
                 {
                     Console.ForegroundColor = ConsoleTheme.MainColor;
-                    Console.WriteLine($"-> {options[i]}");
+                    Console.WriteLine($"> {options[i]}");
                     Console.ResetColor();
                 }
                 else
@@ -350,7 +355,7 @@ public class ConsoleAppView
         }
     }
 
-    private List<int> NavigateMultiSelect(string[] options, string question)
+    private List<int> NavigateMultiSelect(string[] options, string? question = null)
     {
         int selection = 0;
         List<int> selectedIndexes = new List<int>();
@@ -362,7 +367,7 @@ public class ConsoleAppView
             ShowHeader();
             Console.WriteLine(question);
             Console.ForegroundColor = ConsoleTheme.InstructionColor;
-            Console.WriteLine("(Espace = Cocher/Décocher, Entrée = Valider)");
+            Console.WriteLine(Messages.ResourceManager.GetString("MultipleSelectionAdvice"));
             Console.ResetColor();
             Console.WriteLine();
 
@@ -374,7 +379,7 @@ public class ConsoleAppView
                 if (i == selection)
                 {
                     Console.ForegroundColor = ConsoleTheme.MainColor;
-                    Console.WriteLine($"-> {checkbox} {options[i]}");
+                    Console.WriteLine($"> {checkbox} {options[i]}");
                     Console.ResetColor();
                 }
                 else
