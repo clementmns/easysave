@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using EasySave.Model;
 using EasySave.Service;
 
@@ -9,7 +9,7 @@ public class BackupViewModel
     private BackupJobService _jobService { get; set; }
     private BackupExecutor _backupExecutor { get; set; }
     public ObservableCollection<BackupJob>? Jobs => _jobService.Jobs;
-
+    
     public BackupViewModel(string appDirectory)
     {
         _jobService = new BackupJobService(appDirectory);
@@ -20,16 +20,22 @@ public class BackupViewModel
     
     public bool DeleteJob(BackupJob job) => _jobService.DeleteJob(job);
     
-    public void ExecuteJob(BackupJob job)
+    public bool ExecuteJob(BackupJob job, IProgressionObserver? progressionObserver = null)
     {
-        job.State.Attach(_jobService);
-        _jobService.ExecuteJob(job);
-        job.State.Detach(_jobService);
+        job.State.AttachStateObserver(_jobService);
+        if (progressionObserver != null) job.State.AttachProgressionObserver(progressionObserver);
+        
+        var result = _jobService.ExecuteJob(job);
+        
+        job.State.DetachStateObserver(_jobService);
+        if (progressionObserver != null) job.State.DetachProgressionObserver(progressionObserver);
+
+        return result;
     }
 
     public void UpdateJob(BackupJob job) => _jobService.UpdateJob(job);
     
-    public bool ExecuteJobsFromArgs(string? args)
+    public bool ExecuteJobsFromArgs(string? args, IProgressionObserver? progressionObserver = null)
     {
         var selectedJobs = new List<BackupJob>();
         var parts = args?.Split(';').Select(p => p.Trim()).ToArray();
@@ -54,10 +60,13 @@ public class BackupViewModel
                 }
             }
         }
+
+        var isExecuted = true;
         foreach (var job in selectedJobs)
         {
-            ExecuteJob(job);
+            var result = ExecuteJob(job, progressionObserver);
+            isExecuted &= result;
         }
-        return true;
+        return isExecuted;
     }
 }
