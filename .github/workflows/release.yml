@@ -25,6 +25,9 @@ jobs:
 
       - name: Restore
         run: dotnet restore
+        
+      - name: Run tests
+        run: dotnet test --no-build
 
       # publish self-contained for each runtime 
       - name: Publish

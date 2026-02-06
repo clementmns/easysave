@@ -22,7 +22,7 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
         
-      - name: Run Unit Tests
+      - name: Run tests 
         run: dotnet test --no-build
 
       - name: Build
