@@ -27,7 +27,7 @@ jobs:
         run: dotnet restore
         
       - name: Run tests
-        run: dotnet test --configuration Release --no-build
+        run: dotnet test EasySave.Tests/EasySave.Tests.csproj --configuration Release --no-build
 
       # publish self-contained for each runtime 
       - name: Publish
