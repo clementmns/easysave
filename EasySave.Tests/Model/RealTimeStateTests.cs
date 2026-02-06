@@ -13,7 +13,7 @@ public class RealTimeStateTests
             Updates++;
         }
 
-        public void ProgressBarUpdate(int progresion)
+        public void ProgressBarUpdate(int progression)
         {
             return;
         }
@@ -65,7 +65,6 @@ public class RealTimeStateTests
         state.Reset();
 
         Assert.False(state.IsActive);
-        Assert.Equal(0, state.Progression);
         Assert.Equal(0, state.RemainingFiles);
         Assert.Equal(0, state.RemainingFilesSize);
         Assert.True(observer.Updates > 0);

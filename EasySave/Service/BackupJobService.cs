@@ -157,17 +157,17 @@ public class BackupJobService : IRealTimeStateObserver
         if (Jobs != null) SaveJobs(Jobs);
     }
     
-    public void ProgressBarUpdate(int progresion)
+    public void ProgressBarUpdate(int progression)
     {
         Console.Clear();
         Console.WriteLine(@"Sauvegarde en cours...");
         
         const int barLength = 50;
-        var filledLength = (progresion * barLength) / 100;
+        var filledLength = (progression * barLength) / 100;
         var bar = new string('█', filledLength) + new string('░', barLength - filledLength);
         
         Console.ForegroundColor = Ressources.ConsoleTheme.MainColor;
-        Console.WriteLine($@"[{bar}] {progresion}%");
+        Console.WriteLine($@"[{bar}] {progression}%");
         Console.ResetColor();
     }
 }
