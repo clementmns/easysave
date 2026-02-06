@@ -4,7 +4,7 @@ public class RealTimeState
 {
     private readonly List<IRealTimeStateObserver> _observers = [];
 
-    public DateTime LastUpdate
+    private DateTime LastUpdate
     {
         get;
         set => SetField(ref field, value);
@@ -31,7 +31,7 @@ public class RealTimeState
     public int Progression
     {
         get;
-        set => SetField(ref field, value);
+        set => SetFieldProgressBar(ref field, value);
     }
 
     public long RemainingFiles
@@ -61,6 +61,14 @@ public class RealTimeState
             observer.OnStateUpdated(this);
         }
     }
+    
+    private void ProgressNotifyObservers()
+    {
+        foreach (var observer in _observers)
+        {
+            observer.ProgressBarUpdate(this.Progression);
+        }
+    }
 
     private void SetField<T>(ref T field, T value)
     {
@@ -86,5 +94,14 @@ public class RealTimeState
     public override string ToString()
     {
         return $"RealTimeState(LastUpdate={LastUpdate}, IsActive={IsActive}, TotalFiles={TotalFiles}, FileSize={FileSize}, Progression={Progression}, RemainingFiles={RemainingFiles}, RemainingFilesSize={RemainingFilesSize})";
+    }
+    
+    private void SetFieldProgressBar<T>(ref T field, T value)
+    {
+        if (!EqualityComparer<T>.Default.Equals(field, value))
+        {
+            field = value;
+            ProgressNotifyObservers();
+        }
     }
 }
