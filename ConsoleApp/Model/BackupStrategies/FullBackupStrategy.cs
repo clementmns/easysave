@@ -39,7 +39,6 @@ public class FullBackupStrategy : IBackupStrategy
             }
 
             job.State.Progression = 100;
-            job.State.Reset();
             
             return true;
         }
@@ -92,7 +91,6 @@ public class FullBackupStrategy : IBackupStrategy
             }
             
             job.State.Progression = 100;
-            job.State.Reset();
             
             return true;
         }
