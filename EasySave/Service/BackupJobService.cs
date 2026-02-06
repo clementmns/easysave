@@ -166,7 +166,7 @@ public class BackupJobService : IRealTimeStateObserver
         var filledLength = (progresion * barLength) / 100;
         var bar = new string('█', filledLength) + new string('░', barLength - filledLength);
         
-        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.ForegroundColor = Ressources.ConsoleTheme.MainColor;
         Console.WriteLine($@"[{bar}] {progresion}%");
         Console.ResetColor();
     }

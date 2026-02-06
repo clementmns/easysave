@@ -4,7 +4,7 @@ public class RealTimeState
 {
     private readonly List<IRealTimeStateObserver> _observers = [];
 
-    private DateTime LastUpdate
+    public DateTime LastUpdate
     {
         get;
         set => SetField(ref field, value);

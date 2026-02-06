@@ -12,6 +12,11 @@ public class RealTimeStateTests
         {
             Updates++;
         }
+
+        public void ProgressBarUpdate(int progresion)
+        {
+            return;
+        }
     }
 
     [Fact]
