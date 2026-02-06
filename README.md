@@ -22,7 +22,7 @@ EasySave is a simple tool for saving and loading data.
 - Clone the repository
 - Open the solution in Visual Studio or Rider
 - Build the solution : `dotnet build`
-- Run the project you want: `dotnet run --project EasySave/ConsoleApp`
+- Run the project you want: `dotnet run --project EasySave`
 
 
 ## Contributors
