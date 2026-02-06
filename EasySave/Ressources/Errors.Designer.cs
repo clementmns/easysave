@@ -21,14 +21,14 @@ namespace EasySave.ConsoleApp.Ressources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Errors_fr_FR {
+    internal class Errors {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Errors_fr_FR() {
+        internal Errors() {
         }
         
         /// <summary>
@@ -38,7 +38,7 @@ namespace EasySave.ConsoleApp.Ressources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EasySave.ConsoleApp.Ressources.Errors.fr-FR", typeof(Errors_fr_FR).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EasySave.EasySave.Ressources.Errors", typeof(Errors).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -60,7 +60,7 @@ namespace EasySave.ConsoleApp.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Le fichier ne peut pas être copié..
+        ///   Looks up a localized string similar to The file can&apos;t be copied..
         /// </summary>
         internal static string FileCantBeCopied {
             get {
@@ -69,7 +69,7 @@ namespace EasySave.ConsoleApp.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Le nom ne peut pas être vide..
+        ///   Looks up a localized string similar to The name cannot be null or empty..
         /// </summary>
         internal static string NameCantBeNull {
             get {
@@ -78,7 +78,7 @@ namespace EasySave.ConsoleApp.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Le chemin du fichier ne peut pas être traité..
+        ///   Looks up a localized string similar to The path can&apos;t be processed..
         /// </summary>
         internal static string ProcessingError {
             get {
@@ -87,7 +87,7 @@ namespace EasySave.ConsoleApp.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to La source et la destination ne peuvent pas être vide..
+        ///   Looks up a localized string similar to The source and destination cannot be null or empty..
         /// </summary>
         internal static string SourceCantBeNull {
             get {
