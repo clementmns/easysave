@@ -44,6 +44,7 @@ public class BackupJobFactory
         var newId = 0;
         for (var i = 1; i <= MaxJobs; i++)
         {
+            // check if the id is already taken
             var isTaken = existingJobs.Any(job => job.Id == i);
             if (isTaken) continue;
             newId = i;

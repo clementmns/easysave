@@ -1,5 +1,8 @@
 namespace EasySave.Model;
 
+/// <summary>
+/// Log entry for a backup job.
+/// </summary>
 public class LogEntry
 {
     public string Message { get; set; }
@@ -12,7 +15,7 @@ public class LogEntry
     
     public bool? IsError { get; set; }
     
-    public LogEntry(string message, string backupName, string sourcePath, string destinationPath, long fileSize, bool? isError = false, long? transferDuration = null)
+    private LogEntry(string message, string backupName, string sourcePath, string destinationPath, long fileSize, bool? isError = false, long? transferDuration = null)
     {
         Message = message;
         BackupName = backupName;

@@ -2,6 +2,9 @@ using EasySave.Utils;
 
 namespace EasySave.Model.BackupStrategies;
 
+/// <summary>
+/// Strategy for backing up a directory or a file recursively using differential copy.
+/// </summary>
 public class DifferentialBackupStrategy : IBackupStrategy
 {
     public bool Execute(BackupJob job)

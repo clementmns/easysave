@@ -1,5 +1,8 @@
 namespace EasySave.Model;
 
+/// <summary>
+/// Real time state of a backup job.
+/// </summary>
 public class RealTimeState
 {
     private readonly List<IRealTimeStateObserver> _stateObservers = [];

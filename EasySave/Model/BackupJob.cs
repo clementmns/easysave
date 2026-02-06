@@ -1,5 +1,8 @@
 ﻿namespace EasySave.Model;
 
+/// <summary>
+/// Backup job model.
+/// </summary>
 public class BackupJob
 {
     public int Id { get; set; }
