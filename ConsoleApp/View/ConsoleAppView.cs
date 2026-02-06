@@ -281,30 +281,30 @@ public class ConsoleAppView
 
     private void ChangeLanguage()
     {
-        string[] options =
+        var availableLanguages = new[] 
         {
-            Messages.ResourceManager.GetString("ChangeLanguageEnglish"),
-            Messages.ResourceManager.GetString("ChangeLanguageFrench")
+            (Name: Messages.ResourceManager.GetString("ChangeLanguageEnglish"), Code: "en-US"),
+            (Name: Messages.ResourceManager.GetString("ChangeLanguageFrench"),  Code: "fr-FR")
         };
+        string[] options = availableLanguages.Select(l => l.Name).ToArray();
         string title = Messages.ResourceManager.GetString("ChangeLanguageTitle");
         int selection = NavigateMenu(options, title);
-        string language;
-        switch (selection)
-
+        string selectedLanguage = availableLanguages[selection].Code;
+        string currentLanguage = SettingsService.GetInstance.Settings.Language;
+        
+        if (selectedLanguage == currentLanguage)
         {
-            case 0:
-                language = "en-US";
-                break;
-            case 1:
-                language = "fr-FR";
-                break;
-            default:
-                language = "en-US";
-                break;
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine();
+            Console.WriteLine("Language already active.");
+            Console.ResetColor();
+            Console.ReadKey();
         }
-
-        SettingsService.GetInstance.SetLanguage(language);
-        Console.WriteLine(Messages.ResourceManager.GetString("ChangeLanguageSuccess"));
+        else
+        {
+            SettingsService.GetInstance.SetLanguage(selectedLanguage);
+            Console.WriteLine(Messages.ResourceManager.GetString("ChangeLanguageSuccess"));
+        }
     }
 
     private int NavigateMenu(string[] options, string? question = null)
