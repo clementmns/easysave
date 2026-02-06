@@ -4,7 +4,7 @@ namespace EasySave.Tests.Model;
 
 public class RealTimeStateTests
 {
-    private sealed class RecordingObserver : IRealTimeStateObserver
+    private sealed class RecordingStateObserver : IRealTimeStateObserver
     {
         public int Updates { get; private set; }
 
@@ -14,12 +14,24 @@ public class RealTimeStateTests
         }
     }
 
+    private sealed class RecordingProgressionObserver : IProgressionObserver
+    {
+        public int ProgressionUpdates { get; private set; }
+        public int LastProgression { get; private set; }
+
+        public void OnProgressionUpdated(int progression)
+        {
+            ProgressionUpdates++;
+            LastProgression = progression;
+        }
+    }
+
     [Fact]
     public void SetProperty_NotifiesObserversOncePerChange()
     {
         var state = new RealTimeState();
-        var observer = new RecordingObserver();
-        state.Attach(observer);
+        var observer = new RecordingStateObserver();
+        state.AttachStateObserver(observer);
 
         var start = observer.Updates;
         state.TotalFiles += 1;
@@ -29,17 +41,43 @@ public class RealTimeStateTests
     }
 
     [Fact]
+    public void SetProgression_NotifiesProgressionObservers()
+    {
+        var state = new RealTimeState();
+        var progressionObserver = new RecordingProgressionObserver();
+        state.AttachProgressionObserver(progressionObserver);
+
+        state.Progression = 50;
+        
+        Assert.Equal(1, progressionObserver.ProgressionUpdates);
+        Assert.Equal(50, progressionObserver.LastProgression);
+    }
+
+    [Fact]
+    public void SetProgression_DoesNotNotifyStateObservers()
+    {
+        var state = new RealTimeState();
+        var stateObserver = new RecordingStateObserver();
+        state.AttachStateObserver(stateObserver);
+
+        var initialUpdates = stateObserver.Updates;
+        state.Progression = 50;
+        
+        Assert.Equal(initialUpdates, stateObserver.Updates);
+    }
+
+    [Fact]
     public void SetSameValue_DoesNotNotifyObservers()
     {
         var state = new RealTimeState();
-        var observer = new RecordingObserver();
-        state.Attach(observer);
+        var observer = new RecordingProgressionObserver();
+        state.AttachProgressionObserver(observer);
 
         state.Progression = 10;
-        var countAfterChange = observer.Updates;
+        var countAfterChange = observer.ProgressionUpdates;
         state.Progression = 10;
 
-        Assert.Equal(countAfterChange, observer.Updates);
+        Assert.Equal(countAfterChange, observer.ProgressionUpdates);
     }
 
     [Fact]
@@ -54,13 +92,12 @@ public class RealTimeStateTests
             TotalFiles = 7,
             FileSize = 200
         };
-        var observer = new RecordingObserver();
-        state.Attach(observer);
+        var observer = new RecordingStateObserver();
+        state.AttachStateObserver(observer);
 
         state.Reset();
 
         Assert.False(state.IsActive);
-        Assert.Equal(0, state.Progression);
         Assert.Equal(0, state.RemainingFiles);
         Assert.Equal(0, state.RemainingFilesSize);
         Assert.True(observer.Updates > 0);
@@ -70,14 +107,14 @@ public class RealTimeStateTests
     public void Detach_StopsNotifications()
     {
         var state = new RealTimeState();
-        var observer = new RecordingObserver();
-        state.Attach(observer);
+        var observer = new RecordingProgressionObserver();
+        state.AttachProgressionObserver(observer);
         state.Progression = 1;
-        var countAfterAttach = observer.Updates;
+        var countAfterAttach = observer.ProgressionUpdates;
 
-        state.Detach(observer);
+        state.DetachProgressionObserver(observer);
         state.Progression = 2;
 
-        Assert.Equal(countAfterAttach, observer.Updates);
+        Assert.Equal(countAfterAttach, observer.ProgressionUpdates);
     }
 }

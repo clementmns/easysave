@@ -5,10 +5,11 @@ namespace EasySave.Service;
 
 public class BackupExecutor
 {
-    public void ExecuteJob(BackupJob job)
+    public bool ExecuteJob(BackupJob job)
     {
-        IBackupStrategy strategy = GetStrategy(job);
+        var strategy = GetStrategy(job);
         strategy.Execute(job);
+        return true;
     }
 
     private static IBackupStrategy GetStrategy(BackupJob job)

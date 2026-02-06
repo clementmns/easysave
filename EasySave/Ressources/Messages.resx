@@ -129,4 +129,7 @@
     <data name="MultipleSelectionAdvice" xml:space="preserve">
         <value>(Space = Check/Uncheck, Enter = Confirm)</value>
     </data>
+    <data name="ExecuteJobsFailed" xml:space="preserve">
+        <value>Jobs execution failed</value>
+    </data>
 </root>

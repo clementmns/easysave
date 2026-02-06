@@ -129,4 +129,7 @@
     <data name="MultipleSelectionAdvice" xml:space="preserve">
         <value>(Espace = Cocher/Décocher, Entrée = Valider)</value>
     </data>
+    <data name="ExecuteJobsFailed" xml:space="preserve">
+        <value>L'exécution des travaux a échoué</value>
+    </data>
 </root>

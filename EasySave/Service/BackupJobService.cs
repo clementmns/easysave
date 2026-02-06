@@ -28,7 +28,7 @@ public class BackupJobService : IRealTimeStateObserver
         SubscribeToJobStates();
     }
     
-    public void ExecuteJob(BackupJob job)
+    public bool ExecuteJob(BackupJob job)
     {
         Logger.Instance.Write(new LogEntry("Going to execute job", job));
         try
@@ -37,17 +37,18 @@ public class BackupJobService : IRealTimeStateObserver
             Stopwatch sw = new();
             sw.Start();
             
-            job.State.Attach(this);
+            job.State.AttachStateObserver(this);
             var executor = new BackupExecutor();
             executor.ExecuteJob(job);
             sw.Stop();
             Logger.Instance.Write(new LogEntry("Job executed", job, false, sw.ElapsedMilliseconds));
             UpdateJob(job);
+            return true;
         }
         catch (Exception e)
         {
             Logger.Instance.Write(new LogEntry($"Failed to execute job: {e.Message}", job, true));
-            throw;
+            return false;
         }
     }
 
@@ -57,7 +58,7 @@ public class BackupJobService : IRealTimeStateObserver
         try
         {
             Jobs?.Add(job);
-            job.State.Attach(this);
+            job.State.AttachStateObserver(this);
             SortJobsById();
             if (Jobs != null) SaveJobs(Jobs);
             Logger.Instance.Write(new LogEntry("Job created", job));
@@ -102,7 +103,7 @@ public class BackupJobService : IRealTimeStateObserver
             }
 
             Jobs?.Add(job);
-            job.State.Attach(this);
+            job.State.AttachStateObserver(this);
             SortJobsById();
             if (Jobs != null) SaveJobs(Jobs);
             Logger.Instance.Write(new LogEntry("Job updated", job));
@@ -135,12 +136,12 @@ public class BackupJobService : IRealTimeStateObserver
     private void SubscribeToJobStates()
     {
         if (Jobs == null) return;
-        foreach (var job in Jobs) job.State.Attach(this);
+        foreach (var job in Jobs) job.State.AttachStateObserver(this);
     }
 
     private void RemoveStateSubscription(BackupJob job)
     {
-        job.State.Detach(this);
+        job.State.DetachStateObserver(this);
     }
 
     private void SortJobsById()

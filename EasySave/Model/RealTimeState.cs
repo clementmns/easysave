@@ -2,7 +2,8 @@ namespace EasySave.Model;
 
 public class RealTimeState
 {
-    private readonly List<IRealTimeStateObserver> _observers = [];
+    private readonly List<IRealTimeStateObserver> _stateObservers = [];
+    private readonly List<IProgressionObserver> _progressionObservers = [];
 
     public DateTime LastUpdate
     {
@@ -31,7 +32,7 @@ public class RealTimeState
     public int Progression
     {
         get;
-        set => SetField(ref field, value);
+        set => SetFieldProgression(ref field, value);
     }
 
     public long RemainingFiles
@@ -50,16 +51,23 @@ public class RealTimeState
     {
         LastUpdate = DateTime.Now;
         IsActive = false;
-        Progression = 0;
         RemainingFiles = 0;
         RemainingFilesSize = 0;
     }
     
-    private void NotifyObservers()
+    private void NotifyStateObservers()
     {
-        foreach (var observer in _observers)
+        foreach (var observer in _stateObservers)
         {
             observer.OnStateUpdated(this);
+        }
+    }
+    
+    private void NotifyProgressionObservers()
+    {
+        foreach (var observer in _progressionObservers)
+        {
+            observer.OnProgressionUpdated(Progression);
         }
     }
 
@@ -68,20 +76,41 @@ public class RealTimeState
         if (EqualityComparer<T>.Default.Equals(field, value)) return;
 
         field = value;
-        NotifyObservers();
+        NotifyStateObservers();
+    }
+    
+    private void SetFieldProgression<T>(ref T field, T value)
+    {
+        if (EqualityComparer<T>.Default.Equals(field, value)) return;
+        
+        field = value;
+        NotifyProgressionObservers();
     }
 
-    public void Attach(IRealTimeStateObserver observer)
+    public void AttachStateObserver(IRealTimeStateObserver observer)
     {
-        if (!_observers.Contains(observer))
+        if (!_stateObservers.Contains(observer))
         {
-            _observers.Add(observer);
+            _stateObservers.Add(observer);
         }
     }
 
-    public void Detach(IRealTimeStateObserver observer)
+    public void DetachStateObserver(IRealTimeStateObserver observer)
     {
-        _observers.Remove(observer);
+        _stateObservers.Remove(observer);
+    }
+
+    public void AttachProgressionObserver(IProgressionObserver observer)
+    {
+        if (!_progressionObservers.Contains(observer))
+        {
+            _progressionObservers.Add(observer);
+        }
+    }
+
+    public void DetachProgressionObserver(IProgressionObserver observer)
+    {
+        _progressionObservers.Remove(observer);
     }
 
     public override string ToString()

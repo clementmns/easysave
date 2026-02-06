@@ -2,38 +2,101 @@ using EasySave.Utils;
 
 namespace EasySave.Model.BackupStrategies;
 
-public sealed class FullBackupStrategy : IBackupStrategy
+public class FullBackupStrategy : IBackupStrategy
 {
     public bool Execute(BackupJob job)
     {
-        if (job == null) throw new ArgumentNullException(nameof(job));
-
-        var files = FileUtils.GetAllFiles(job.SourcePath);
-        job.State.TotalFiles = files.Count;
-        job.State.FileSize = files.Sum(file => file.Length);
-        job.State.RemainingFiles = job.State.TotalFiles;
-        job.State.RemainingFilesSize = job.State.FileSize;
-        job.State.Progression = 0;
         job.State.IsActive = true;
-
-        var copiedFiles = 0;
-        var remainingSize = job.State.FileSize;
-
-        foreach (var file in files)
+        job.State.Progression = 0;
+        
+        var result = (File.Exists(job.SourcePath), Directory.Exists(job.SourcePath)) switch
         {
-            FileUtils.CopyFile(file.FullName, job.DestinationPath, job.SourcePath);
-            copiedFiles++;
-            remainingSize -= file.Length;
+            (true, false) => ProcessFile(job),
+            (false, true) => ProcessDirectory(job),
+            _ => throw new FileNotFoundException(Ressources.Errors.ProcessingError)
+        };
+        
+        job.State.Reset();
+        
+        return result;
+    }
 
-            job.State.RemainingFiles = job.State.TotalFiles - copiedFiles;
-            job.State.RemainingFilesSize = Math.Max(0, remainingSize);
-            job.State.Progression = job.State.TotalFiles == 0
-                ? 100
-                : (int)Math.Round(copiedFiles * 100.0 / job.State.TotalFiles);
-            job.State.LastUpdate = DateTime.Now;
+    private static bool ProcessFile(BackupJob job)
+    {
+        try
+        {
+            var fileInfo = new FileInfo(job.SourcePath);
+
+            job.State.TotalFiles = 1;
+            job.State.RemainingFiles = 1;
+            job.State.FileSize = fileInfo.Length;
+            job.State.RemainingFilesSize = fileInfo.Length;
+            job.State.Progression = 0;
+
+            if (!FileUtils.CopyFile(fileInfo.FullName, job.DestinationPath, Path.GetDirectoryName(fileInfo.FullName)))
+            {
+                throw new Exception(Ressources.Errors.FileCantBeCopied);
+            }
+
+            job.State.Progression = 100;
+            
+            return true;
         }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
 
-        job.State.IsActive = false;
-        return true;
+    private bool ProcessDirectory(BackupJob job)
+    {
+        try
+        {
+            var directoryInfo = new DirectoryInfo(job.SourcePath + "");
+            string destinationBackupFolder = Path.Combine(job.DestinationPath, Path.GetFileName(job.SourcePath) + "_copy");
+            
+            Directory.CreateDirectory(destinationBackupFolder);
+            
+            // Find all the files even in the subfolders
+            var files = directoryInfo.GetFiles("*", SearchOption.AllDirectories); 
+
+            job.State.TotalFiles = files.Length;
+            job.State.FileSize = job.State.FileSize = files.Sum(f => f.Length);
+            job.State.RemainingFiles = files.Length;
+            job.State.RemainingFilesSize = job.State.FileSize = files.Sum(f => f.Length);
+            job.State.Progression = 0;
+
+            foreach (var file in files)
+            {
+                var relativePath = Path.GetRelativePath(job.SourcePath, file.FullName);
+                var destinationFilePath = Path.Combine(destinationBackupFolder, relativePath);
+                
+                var dirName = Path.GetDirectoryName(destinationFilePath);
+
+                if (string.IsNullOrEmpty(dirName))
+                {
+                    throw new Exception();
+                }
+
+                Directory.CreateDirectory(dirName);
+                
+                if (!FileUtils.CopyFile(file.FullName, destinationBackupFolder, directoryInfo.FullName))
+                {
+                    throw new Exception(Ressources.Errors.FileCantBeCopied);
+                }
+
+                job.State.RemainingFiles -= 1;
+                job.State.RemainingFilesSize -= file.Length;
+                job.State.Progression = (int)(100.0 * (1.0 - ((double)job.State.RemainingFilesSize / job.State.FileSize)));
+            }
+            
+            job.State.Progression = 100;
+            
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
     }
 }
