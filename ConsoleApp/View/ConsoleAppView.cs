@@ -4,6 +4,7 @@ using EasySave.ConsoleApp.Model;
 using EasySave.ConsoleApp.Ressources;
 using EasySave.ConsoleApp.Service;
 using EasySave.ConsoleApp.ViewModel;
+using EasySave.ConsoleApp.Ressources;
 
 namespace EasySave.ConsoleApp.View;
 
@@ -18,7 +19,7 @@ public class ConsoleAppView
 
     private static void ShowHeader()
     {
-        Console.ForegroundColor = ConsoleColor.Green;
+        Console.ForegroundColor = ConsoleTheme.MainColor;
         string[] logo =
         {
             "███████╗ █████╗ ███████╗██╗   ██╗███████╗ █████╗ ██╗   ██╗███████╗",
@@ -69,7 +70,7 @@ public class ConsoleAppView
                     var currentJobs = _viewModel.Jobs?.ToList() ?? [];
                     if (currentJobs.Count == maxFiles)
                     {
-                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.ForegroundColor = ConsoleTheme.WarningColor;
                         Console.WriteLine(Messages.ResourceManager.GetString("MaxFileWarning"));
                         Console.ResetColor();
 
@@ -209,15 +210,14 @@ public class ConsoleAppView
 
         if (success)
         {
-            Console.ForegroundColor = ConsoleColor.Green;
+            Console.ForegroundColor = ConsoleTheme.MainColor;
             Console.WriteLine(Messages.ResourceManager.GetString("DeleteJobSuccess"));
         }
         else
         {
-            Console.ForegroundColor = ConsoleColor.Red;
+            Console.ForegroundColor = ConsoleTheme.ErrorColor;
             Console.WriteLine(Messages.ResourceManager.GetString("DeleteJobFailed"));
         }
-
         Console.ResetColor();
     }
 
@@ -255,7 +255,7 @@ public class ConsoleAppView
             _viewModel.ExecuteJob(job);
         }
 
-        Console.ForegroundColor = ConsoleColor.Green;
+        Console.ForegroundColor = ConsoleTheme.MainColor;
         Console.WriteLine(Messages.ResourceManager.GetString("ExecuteJobsSuccess"));
         Console.ResetColor();
         
@@ -294,7 +294,7 @@ public class ConsoleAppView
         
         if (selectedLanguage == currentLanguage)
         {
-            Console.ForegroundColor = ConsoleColor.Red;
+            Console.ForegroundColor = ConsoleTheme.WarningColor;
             Console.WriteLine();
             Console.WriteLine("Language already active.");
             Console.ResetColor();
@@ -327,7 +327,7 @@ public class ConsoleAppView
             {
                 if (i == selection)
                 {
-                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.ForegroundColor = ConsoleTheme.MainColor;
                     Console.WriteLine($"-> {options[i]}");
                     Console.ResetColor();
                 }
@@ -365,7 +365,7 @@ public class ConsoleAppView
             Console.Clear();
             ShowHeader();
             Console.WriteLine(question);
-            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.ForegroundColor = ConsoleTheme.InstructionColor;
             Console.WriteLine("(Espace = Cocher/Décocher, Entrée = Valider)");
             Console.ResetColor();
             Console.WriteLine();
@@ -377,13 +377,13 @@ public class ConsoleAppView
 
                 if (i == selection)
                 {
-                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.ForegroundColor = ConsoleTheme.MainColor;
                     Console.WriteLine($"-> {checkbox} {options[i]}");
                     Console.ResetColor();
                 }
                 else
                 {
-                    if (isChecked) Console.ForegroundColor = ConsoleColor.Cyan;
+                    if (isChecked) Console.ForegroundColor = ConsoleTheme.SecondaryColor;
                     Console.WriteLine($"   {checkbox} {options[i]}");
                     Console.ResetColor();
                 }
