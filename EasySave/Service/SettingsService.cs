@@ -52,12 +52,8 @@ namespace EasySave.Service
         public void SetLanguage(string language)
         {
             ApplyCulture(language);
-            var culture = CultureInfo.GetCultureInfo(language);
-            if (_settings != null)
-            {
-                _settings.Language = language;
-                SaveSettings(_settings);
-            }
+            _settings.Language = language;
+            SaveSettings(_settings);
         }
         
         /// <summary>

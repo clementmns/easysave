@@ -58,7 +58,7 @@ public class BackupViewModel
     /// <returns></returns>
     public Dictionary<int, bool> ExecuteJobsFromArgs(string? args)
     {
-        // use a dictionnary to return the result of each job
+        // use a dictionary to return the result of each job
         var resultMap = new Dictionary<int, bool>();
         try
         {
