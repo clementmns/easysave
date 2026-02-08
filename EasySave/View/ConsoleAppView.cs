@@ -1,9 +1,15 @@
-﻿using EasySave.Model;
+﻿using System.Diagnostics.Tracing;
+using EasySave.Model;
 using EasySave.Service;
 using EasySave.Ressources;
 using EasySave.ViewModel;
+using static EasySave.Service.SettingsService;
 
 namespace EasySave.View;
+
+// TODO : changer les ressources françaises -> travaux de sauvegarde
+// TODO : changer le full lorsqu'on affiche les travaux en fonction de la langue
+
 
 /// <summary>
 /// Console view for managing backup jobs. Implement IProgressionObserver to be notified of backup progression.
@@ -12,11 +18,17 @@ public class ConsoleAppView : IProgressionObserver
 {
     private readonly BackupViewModel _backupViewModel;
     private int _consoleWidth;
+    private int _consoleHeight;
+    private const int _maxContentWidth = 120;
+    private int _contentPadding;
+    private readonly string _version = GetInstance.Settings.Version ;
 
     public ConsoleAppView(string appSaveDirectory)
     {
         _backupViewModel = new BackupViewModel(appSaveDirectory);
         _consoleWidth = Console.WindowWidth;
+        _consoleHeight = Console.WindowHeight;
+        _contentPadding = Math.Min(60, _consoleWidth - 4);
     }
     
     /// <summary>
@@ -57,7 +69,7 @@ public class ConsoleAppView : IProgressionObserver
                 Messages.ResourceManager.GetString("ConsoleMenuQuit")
             ];
 
-            int choice = NavigateMenu(options);
+            var choice = NavigateMenu(options);
             Console.Clear();
             ShowHeader();
 
@@ -116,58 +128,118 @@ public class ConsoleAppView : IProgressionObserver
             }
 
             if (exit) break;
+            Console.CursorVisible = false;
+            Console.WriteLine();
             Console.WriteLine();
             Console.ForegroundColor = ConsoleTheme.InstructionColor;
-            Console.WriteLine(Messages.ResourceManager.GetString("PressKeyToContinue"));
+            WriteCentered(Messages.ResourceManager.GetString("PressKeyToContinue"));
             Console.ResetColor();
             Console.ReadKey();
             Console.Clear();
         }
     }
+    /// <summary>
+    /// Calcul the left padding for center
+    /// </summary>
+    /// <param name="contentWidth"></param>
+    /// <returns></returns>
+    private int GetLeftPadding(int contentWidth)
+    {
+        return Math.Max(0, (_consoleWidth - contentWidth) / 2);
+    }
+
+    private int GetTopPadding(int contentHeight)
+    {
+        return Math.Max(0, (_consoleHeight - contentHeight) / 2);
+    }
+
+    /// <summary>
+    /// Write centered line in console
+    /// </summary>
+    /// <param name="text"></param>
+    private void WriteCentered(string? text)
+    {
+        if (string.IsNullOrEmpty(text)) return;
+        
+        var padding = GetLeftPadding(text.Length);
+        Console.WriteLine(new string(' ', padding) + text);
+    }
+
+    private void WriteSeparator(int width = 60)
+    {
+        var effectiveWidth = Math.Min(width, _consoleWidth - 4);
+        var separator = new string('─', effectiveWidth);
+        WriteCentered(separator);
+    }
     
     /// <summary>
     /// Displays the application header with logo.
     /// </summary>
-    private static void ShowHeader()
+    private void ShowHeader()
     {
         Console.ForegroundColor = ConsoleTheme.MainColor;
-        string[] logo = AppLogo.Logo;
-        foreach (string line in logo)
+        var logo = AppLogo.Logo;
+        
+        Console.WriteLine();
+        Console.WriteLine();
+        
+        // write the logo (ascii art)
+        foreach (var line in logo)
         {
-            Console.WriteLine(line);
+            WriteCentered(line);
         }
         Console.WriteLine();
+        
+        // write version
+        Console.ForegroundColor = ConsoleTheme.SecondaryColor;
+        WriteCentered("v" + _version);
         Console.ResetColor();
+        Console.WriteLine();
+        
+        WriteSeparator();
+        Console.WriteLine();
+        Console.WriteLine();
     }
     
     private int NavigateMenu(string?[] options, string? question = null)
     {
 
-        int selection = 0;
+        var selection = 0;
         Console.CursorVisible = false;
 
         while (true)
         {
             Console.Clear();
+            
+            // TODO: calculer dynamiquement la largeur & hauteur pour ajuster
+            
             ShowHeader();
 
             if (!string.IsNullOrWhiteSpace(question))
             {
-                Console.WriteLine(question);
+                Console.ForegroundColor = ConsoleTheme.InstructionColor;
+                WriteCentered(question);
+                Console.ResetColor();
                 Console.WriteLine();
             }
+            
+            var separatorWidth = Math.Min(60, _consoleWidth - 4);
+            var contentPadding = GetLeftPadding(separatorWidth);
 
-            for (int i = 0; i < options.Length; i++)
+            for (var i = 0; i < options.Length; i++)
             {
+                var prefix = i == selection ? "> " : "  ";
+                var line = prefix + options[i];
+                
                 if (i == selection)
                 {
                     Console.ForegroundColor = ConsoleTheme.MainColor;
-                    Console.WriteLine($"> {options[i]}");
+                    Console.WriteLine(new string(' ', contentPadding) + line);
                     Console.ResetColor();
                 }
                 else
                 {
-                    Console.WriteLine($"{options[i]}");
+                    Console.WriteLine(new string(' ', contentPadding) + line);
                 }
             }
 
@@ -187,10 +259,10 @@ public class ConsoleAppView : IProgressionObserver
             }
         }
     }
-
+    
     private List<int> NavigateMultiSelect(string[] options, string? question = null)
     {
-        int selection = 0;
+        var selection = 0;
         List<int> selectedIndexes = [];
         Console.CursorVisible = false;
 
@@ -198,27 +270,36 @@ public class ConsoleAppView : IProgressionObserver
         {
             Console.Clear();
             ShowHeader();
-            Console.WriteLine(question);
+            
+            
             Console.ForegroundColor = ConsoleTheme.InstructionColor;
-            Console.WriteLine(Messages.ResourceManager.GetString("MultipleSelectionAdvice"));
+            WriteCentered(question);
+            Console.WriteLine();
+            Console.WriteLine();
+            WriteCentered(Messages.ResourceManager.GetString("MultipleSelectionAdvice"));
             Console.ResetColor();
             Console.WriteLine();
+            
+            var separatorWidth = Math.Min(60, _consoleWidth - 4);
+            var leftPadding = GetLeftPadding(separatorWidth);
 
-            for (int i = 0; i < options.Length; i++)
+            for (var i = 0; i < options.Length; i++)
             {
-                bool isChecked = selectedIndexes.Contains(i);
-                string checkbox = isChecked ? "[X]" : "[ ]";
+                var isChecked = selectedIndexes.Contains(i);
+                var checkbox = isChecked ? "[X]" : "[ ]";
+                var prefix = i == selection ? "> " : "  ";
+                var line = $"{prefix}{checkbox} {options[i]}";
 
                 if (i == selection)
                 {
                     Console.ForegroundColor = ConsoleTheme.MainColor;
-                    Console.WriteLine($"> {checkbox} {options[i]}");
+                    Console.WriteLine(new string(' ', leftPadding) + line);
                     Console.ResetColor();
                 }
                 else
                 {
                     if (isChecked) Console.ForegroundColor = ConsoleTheme.SecondaryColor;
-                    Console.WriteLine($"   {checkbox} {options[i]}");
+                    Console.WriteLine(new string(' ', leftPadding) + line);
                 }
 
                 Console.ResetColor();
@@ -235,14 +316,13 @@ public class ConsoleAppView : IProgressionObserver
                 case ConsoleKey.UpArrow when selection > 0:
                     selection--;
                     break;
-                case ConsoleKey.Spacebar when selectedIndexes.Contains(selection):
-                    selectedIndexes.Remove(selection);
-                    break;
                 case ConsoleKey.Spacebar:
-                    selectedIndexes.Add(selection);
+                    if (!selectedIndexes.Remove(selection))
+                    {
+                        selectedIndexes.Add(selection);
+                    }
                     break;
                 case ConsoleKey.Enter:
-                    Console.CursorVisible = true;
                     return selectedIndexes;
             }
         }
@@ -250,29 +330,42 @@ public class ConsoleAppView : IProgressionObserver
 
     private void ViewJobs()
     {
-        
-        if (_backupViewModel.Jobs == null) return;
-        var jobs = _backupViewModel.Jobs.ToList();
-        Console.WriteLine(Messages.ResourceManager.GetString("ViewJobsTitle"));
-
-        if (jobs.Count == 0)
+        var jobs = _backupViewModel.Jobs?.ToList();
+        if (jobs == null || jobs.Count == 0)
         {
-            Console.WriteLine(Messages.ResourceManager.GetString("ViewJobsNoJob"));
+            WriteCentered(Messages.ResourceManager.GetString("ViewJobsNoJob"));
+            return;
         }
-        else
+        
+        var separatorWidth = Math.Min(60, _consoleWidth - 4);
+        var leftPadding = GetLeftPadding(separatorWidth);
+        
+        Console.WriteLine();
+        WriteCentered(Messages.ResourceManager.GetString("ViewJobsTitle"));
+        Console.WriteLine();
+        Console.WriteLine();
+        
+        foreach (var job in jobs)
         {
-            for (var i = 0; i < jobs.Count; i++)
-            {
-                var job = jobs[i];
-                Console.WriteLine(
-                    $"{i + 1}. {job.Name} ({job.SourcePath} -> {job.DestinationPath}) - Type: {job.Type}");
-            }
+            var jobInfo = $"{job.Name} - {job.Type}";
+            Console.WriteLine(new string(' ', leftPadding) + jobInfo);
+            
+            Console.ForegroundColor = ConsoleTheme.SecondaryColor;
+            var sourcePath = $"  source: {job.SourcePath}"; // TODO: mettre dans les ressources
+            var destPath = $"  destination: {job.DestinationPath}"; // TODO: mettre dans les ressources
+            
+            Console.WriteLine(new string(' ', leftPadding) + sourcePath);
+            Console.WriteLine(new string(' ', leftPadding) + destPath);
+            
+            Console.ResetColor();
+            Console.WriteLine();
         }
     }
 
+    // TODO: faire cette méthode
     private void AddJob()
     {
-        // check all fields
+        Console.ForegroundColor = ConsoleTheme.InstructionColor;
         Console.WriteLine(Messages.ResourceManager.GetString("AddJobName"));
         var name = Console.ReadLine() ?? string.Empty;
 
@@ -283,12 +376,12 @@ public class ConsoleAppView : IProgressionObserver
         var destinationPath = Console.ReadLine() ?? string.Empty;
 
         string?[] options =
-        {
+        [
             Messages.ResourceManager.GetString("AddJobTypeDifferential"),
             Messages.ResourceManager.GetString("AddJobTypeFull")
-        };
-        string question = Messages.ResourceManager.GetString("AddJobSaveType");
-        int selection = NavigateMenu(options, question);
+        ];
+        var question = Messages.ResourceManager.GetString("AddJobSaveType");
+        var selection = NavigateMenu(options, question);
         var saveType = selection == 0 ? BackupType.Differential : BackupType.Full;
 
         BackupJob job;
@@ -310,7 +403,7 @@ public class ConsoleAppView : IProgressionObserver
 
         Console.Clear();
         ShowHeader();
-        bool success = _backupViewModel.AddJob(job);
+        var success = _backupViewModel.AddJob(job);
         Console.ForegroundColor = success ? ConsoleTheme.MainColor : ConsoleTheme.ErrorColor;
         Console.WriteLine(success 
             ? Messages.ResourceManager.GetString("AddJobSuccess") 
@@ -326,19 +419,20 @@ public class ConsoleAppView : IProgressionObserver
         {
             Console.Clear();
             ShowHeader();
-            Console.WriteLine(Messages.ResourceManager.GetString("ViewJobsNoJob"));
+            WriteCentered(Messages.ResourceManager.GetString("ViewJobsNoJob"));
             return false;
         }
 
+        // TODO : ajouter des infos sur les jobs pour supprimer (source / dest path) 
         var deleteOptions = new List<string>();
         foreach (var job in jobs)
         {
             deleteOptions.Add($"{job.Name} ({job.Type})");
         }
 
-        deleteOptions.Add(Messages.ResourceManager.GetString("ConsoleMenuQuit"));
-        string title = Messages.ResourceManager.GetString("DeleteJobPrompt");
-        int selection = NavigateMenu(deleteOptions.ToArray(), title);
+        deleteOptions.Add(Messages.ResourceManager.GetString("ConsoleMenuQuit")!);
+        var title = Messages.ResourceManager.GetString("DeleteJobPrompt");
+        var selection = NavigateMenu(deleteOptions.ToArray(), title);
 
         if (selection == deleteOptions.Count - 1)
         {
@@ -349,23 +443,23 @@ public class ConsoleAppView : IProgressionObserver
         Console.Clear();
         ShowHeader();
 
-        bool success = _backupViewModel.DeleteJob(jobToDelete);
+        var success = _backupViewModel.DeleteJob(jobToDelete);
 
         if (success)
         {
-            Console.ForegroundColor = ConsoleTheme.MainColor;
-            Console.WriteLine(Messages.ResourceManager.GetString("DeleteJobSuccess"));
+            Console.ForegroundColor = ConsoleTheme.SecondaryColor;
+            WriteCentered(Messages.ResourceManager.GetString("DeleteJobSuccess"));
         }
         else
         {
             Console.ForegroundColor = ConsoleTheme.ErrorColor;
-            Console.WriteLine(Messages.ResourceManager.GetString("DeleteJobFailed"));
+            WriteCentered(Messages.ResourceManager.GetString("DeleteJobFailed"));
         }
         Console.ResetColor();
         return success;
     }
 
-
+    // TODO: ajouter l'option quitter
     private void ExecuteJobs()
     {
         var jobsList = _backupViewModel.Jobs?.ToList();
@@ -378,12 +472,12 @@ public class ConsoleAppView : IProgressionObserver
             return;
         }
 
-        string[] options = new string[jobsList.Count];
+        var options = new string[jobsList.Count];
         for (var i = 0; i < jobsList.Count; i++)
         {
             options[i] = $"{jobsList[i].Name} ({jobsList[i].Type})";
         }
-        List<int> selectedIndices = NavigateMultiSelect(options);
+        var selectedIndices = NavigateMultiSelect(options);
 
         Console.Clear();
         ShowHeader();
@@ -391,13 +485,13 @@ public class ConsoleAppView : IProgressionObserver
         if (selectedIndices.Count == 0)
         {
             Console.ForegroundColor = ConsoleTheme.WarningColor;
-            Console.WriteLine(Messages.ResourceManager.GetString("ExecuteJobsNoValid"));
+            WriteCentered(Messages.ResourceManager.GetString("ExecuteJobsNoValid"));
             Console.ResetColor();
             return;
         }
 
         var success = true;
-        foreach (int index in selectedIndices)
+        foreach (var index in selectedIndices)
         {
             var job = jobsList[index];
             success &= _backupViewModel.ExecuteJob(job, this);
@@ -406,12 +500,12 @@ public class ConsoleAppView : IProgressionObserver
         if (success)
         {
             Console.ForegroundColor = ConsoleTheme.MainColor;
-            Console.WriteLine(Messages.ResourceManager.GetString("ExecuteJobsSuccess")); 
+            WriteCentered(Messages.ResourceManager.GetString("ExecuteJobsSuccess")); 
         }
         else
         {
             Console.ForegroundColor = ConsoleTheme.ErrorColor;
-            Console.WriteLine(Messages.ResourceManager.GetString("ExecuteJobsFailed"));
+            WriteCentered(Messages.ResourceManager.GetString("ExecuteJobsFailed"));
         }
         Console.ResetColor();
         
@@ -421,9 +515,9 @@ public class ConsoleAppView : IProgressionObserver
     {
         Console.Clear();
         ShowHeader();
-        if (_backupViewModel.Jobs != null && _backupViewModel.Jobs.Count == 0)
+        if (_backupViewModel.Jobs is { Count: 0 })
         {
-            Console.WriteLine(Messages.ResourceManager.GetString("ExecuteJobsNoJobs"));
+            WriteCentered(Messages.ResourceManager.GetString("ExecuteJobsNoJobs"));
             return;
         }
 
@@ -434,17 +528,17 @@ public class ConsoleAppView : IProgressionObserver
 
         if (success)
         {
-            Console.ForegroundColor = ConsoleTheme.MainColor;
-            Console.WriteLine(Messages.ResourceManager.GetString("ExecuteJobsSuccess")); 
+            Console.ForegroundColor = ConsoleTheme.SecondaryColor;
+            WriteCentered(Messages.ResourceManager.GetString("ExecuteJobsSuccess")); 
         }
         else
         {
             Console.ForegroundColor = ConsoleTheme.ErrorColor;
-            Console.WriteLine(Messages.ResourceManager.GetString("ExecuteJobsFailed"));
+            WriteCentered(Messages.ResourceManager.GetString("ExecuteJobsFailed"));
         }
         Console.ResetColor();
     }
-
+    
     private void ChangeLanguage()
     {
         var availableLanguages = new[] 
@@ -452,27 +546,27 @@ public class ConsoleAppView : IProgressionObserver
             (Name: Messages.ResourceManager.GetString("ChangeLanguageEnglish"), Code: "en-US"),
             (Name: Messages.ResourceManager.GetString("ChangeLanguageFrench"),  Code: "fr-FR")
         };
-        string?[] options = availableLanguages.Select(l => l.Name).ToArray();
-        string? title = Messages.ResourceManager.GetString("ChangeLanguageTitle");
-        int selection = NavigateMenu(options, title);
-        string selectedLanguage = availableLanguages[selection].Code;
-        string currentLanguage = SettingsService.GetInstance.Settings.Language;
+        var options = availableLanguages.Select(l => l.Name).ToArray();
+        var title = Messages.ResourceManager.GetString("ChangeLanguageTitle");
+        var selection = NavigateMenu(options, title);
+        var selectedLanguage = availableLanguages[selection].Code;
+        var currentLanguage = GetInstance.Settings.Language;
         
         if (selectedLanguage == currentLanguage)
         {
             Console.ForegroundColor = ConsoleTheme.WarningColor;
             Console.WriteLine();
-            Console.WriteLine(Messages.ResourceManager.GetString("WarningLanguageActive"));
-            Console.ResetColor();
+            WriteCentered(Messages.ResourceManager.GetString("WarningLanguageActive"));
         }
         else
         {
-            SettingsService.GetInstance.SetLanguage(selectedLanguage);
+            GetInstance.SetLanguage(selectedLanguage);
             Console.ForegroundColor = ConsoleTheme.MainColor;
             Console.WriteLine();
-            Console.WriteLine(Messages.ResourceManager.GetString("ChangeLanguageSuccess"));
-            Console.ResetColor();
+            WriteCentered(Messages.ResourceManager.GetString("ChangeLanguageSuccess"));
         }
+
+        Console.ResetColor();
     }
 
     /// <summary>
@@ -485,35 +579,41 @@ public class ConsoleAppView : IProgressionObserver
 
         if (string.IsNullOrWhiteSpace(pathExe))
         {
-            Console.WriteLine(Ressources.Errors.PathAddError);
+            Console.ForegroundColor = ConsoleTheme.ErrorColor;
+            WriteCentered(Errors.PathAddError);
+            Console.ResetColor();
             return;
         }
         
         var actualPath = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.User);
         if (string.IsNullOrWhiteSpace(actualPath))
         {
-            Console.WriteLine(Ressources.Errors.PathAddError);
+            Console.ForegroundColor = ConsoleTheme.ErrorColor;
+            WriteCentered(Errors.PathAddError);
+            Console.ResetColor();
             return;
         }
         
         if (actualPath.Contains(pathExe))
         {
             Console.ForegroundColor = ConsoleTheme.ErrorColor;
-            Console.WriteLine(Messages.ResourceManager.GetString("AlreadyInPath"));
+            WriteCentered(Messages.ResourceManager.GetString("AlreadyInPath"));
             Console.ResetColor();  
             return;
         }
         
-        string newPath = actualPath + ";" + pathExe;
+        var newPath = actualPath + ";" + pathExe;
         Environment.SetEnvironmentVariable("PATH", newPath, EnvironmentVariableTarget.User);
     
-        Console.ForegroundColor = ConsoleTheme.MainColor;
-        Console.WriteLine(Messages.ResourceManager.GetString("AddToPathSucces"));
+        Console.ForegroundColor = ConsoleTheme.SecondaryColor;
+        WriteCentered(Messages.ResourceManager.GetString("AddToPathSucces"));
+        Console.WriteLine();
         Console.ForegroundColor = ConsoleTheme.InstructionColor;
-        Console.WriteLine(Messages.ResourceManager.GetString("Restart"));
+        WriteCentered(Messages.ResourceManager.GetString("Restart"));
         Console.ResetColor();
     }
     
+    // TODO : faire que les barres de progressions se superposent 
     /// <summary>
     /// Called when backup progression changes.
     /// </summary>
@@ -522,14 +622,16 @@ public class ConsoleAppView : IProgressionObserver
     {
         Console.Clear();
         ShowHeader();
-        Console.WriteLine(@"Sauvegarde en cours...");
+        WriteCentered(@"Sauvegarde en cours...");
+        Console.WriteLine();
         
-        const int barLength = 100;
-        var filledLength = progression;
+        var barLength = Math.Min(100, Math.Max(40, _consoleWidth - 20));
+        var filledLength = (int)((progression / 100.0) * barLength);
         var bar = new string('█', filledLength) + new string('░', barLength - filledLength);
         
         Console.ForegroundColor = ConsoleTheme.MainColor;
-        Console.WriteLine($@"[{bar}] {progression}%");
+        var progressBar = $"[{bar}] {progression}%";
+        WriteCentered(progressBar);
         Console.WriteLine();
         Console.ResetColor();
     }
