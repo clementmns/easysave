@@ -365,16 +365,33 @@ public class ConsoleAppView : IProgressionObserver
     // TODO: faire cette méthode
     private void AddJob()
     {
+        var separatorWidth = Math.Min(60, _consoleWidth - 4);
+        var contentPadding = GetLeftPadding(separatorWidth);
+        
+        // job's name
         Console.ForegroundColor = ConsoleTheme.InstructionColor;
-        Console.WriteLine(Messages.ResourceManager.GetString("AddJobName"));
+        Console.WriteLine(new string(' ', contentPadding) + Messages.ResourceManager.GetString("AddJobName"));
+        Console.ResetColor();
+        Console.Write(new string(' ', contentPadding));
         var name = Console.ReadLine() ?? string.Empty;
-
-        Console.WriteLine(Messages.ResourceManager.GetString("AddJobSourcePath"));
+        Console.WriteLine();
+        
+        // job's source path
+        Console.ForegroundColor = ConsoleTheme.InstructionColor;
+        Console.WriteLine(new string(' ', contentPadding) + Messages.ResourceManager.GetString("AddJobSourcePath"));
+        Console.ResetColor();
+        Console.Write(new string(' ', contentPadding));
         var sourcePath = Console.ReadLine() ?? string.Empty;
-
-        Console.WriteLine(Messages.ResourceManager.GetString("AddJobDestinationPath"));
+        Console.WriteLine();
+        
+        // job's destination path
+        Console.ForegroundColor = ConsoleTheme.InstructionColor;
+        Console.WriteLine(new string(' ', contentPadding) + Messages.ResourceManager.GetString("AddJobDestinationPath"));
+        Console.ResetColor();
+        Console.Write(new string(' ', contentPadding));
         var destinationPath = Console.ReadLine() ?? string.Empty;
-
+        Console.WriteLine();
+        
         string?[] options =
         [
             Messages.ResourceManager.GetString("AddJobTypeDifferential"),
@@ -391,12 +408,12 @@ public class ConsoleAppView : IProgressionObserver
             // create the job using the singleton factory
             job = BackupJobFactory.GetInstance().CreateJob(name, sourcePath, destinationPath, saveType, currentJobs);
         }
-        catch (Exception e)
+        catch
         {
             Console.Clear();
             ShowHeader();
             Console.ForegroundColor = ConsoleTheme.ErrorColor;
-            Console.WriteLine(Messages.ResourceManager.GetString("AddJobFailed"));
+            WriteCentered(Messages.ResourceManager.GetString("AddJobFailed"));
             Console.ResetColor();
             return;
         }
@@ -405,7 +422,7 @@ public class ConsoleAppView : IProgressionObserver
         ShowHeader();
         var success = _backupViewModel.AddJob(job);
         Console.ForegroundColor = success ? ConsoleTheme.MainColor : ConsoleTheme.ErrorColor;
-        Console.WriteLine(success 
+        WriteCentered(success 
             ? Messages.ResourceManager.GetString("AddJobSuccess") 
             : Messages.ResourceManager.GetString("AddJobFailed"));
         Console.ResetColor();
