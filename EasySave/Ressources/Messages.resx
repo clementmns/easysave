@@ -18,9 +18,6 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="HelloWorld" xml:space="preserve">
-        <value>hello-world</value>
-    </data>
     <data name="ConsoleMenuViewJobs" xml:space="preserve">
         <value>View saved jobs</value>
     </data>
@@ -67,7 +64,7 @@
         <value>Differential</value>
     </data>
     <data name="AddJobTypeFull" xml:space="preserve">
-        <value>Complete</value>
+        <value>Full</value>
     </data>
     <data name="AddJobSuccess" xml:space="preserve">
         <value>Job add with success.</value>
@@ -146,5 +143,17 @@
     </data>
     <data name="Restart" xml:space="preserve">
         <value>Restart your terminal for this to take effect.</value>
+    </data>
+    <data name="SourcePath" xml:space="preserve">
+        <value>Source Path</value>
+    </data>
+    <data name="DestinationPath" xml:space="preserve">
+        <value>Destination Path</value>
+    </data>
+    <data name="SaveFullType" xml:space="preserve">
+        <value>Full Backup</value>
+    </data>
+    <data name="SaveDifferentialType" xml:space="preserve">
+        <value>Differential Backup</value>
     </data>
 </root>

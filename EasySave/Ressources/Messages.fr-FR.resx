@@ -18,23 +18,20 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="HelloWorld" xml:space="preserve">
-        <value>Bonjour le monde</value>
-    </data>
     <data name="ConsoleMenuViewJobs" xml:space="preserve">
         <value>Voir les travaux de sauvegarde</value>
     </data>
     <data name="ConsoleMenuAddJob" xml:space="preserve">
-        <value>Ajouter un espace de sauvegarde</value>
+        <value>Ajouter un travail de sauvegarde</value>
     </data>
     <data name="ConsoleMenuDeleteJob" xml:space="preserve">
-        <value>Supprimer un espace de sauvegarde</value>
+        <value>Supprimer un travail de sauvegarde</value>
     </data>
     <data name="ConsoleMenuExecuteJob" xml:space="preserve">
-        <value>Exécuter un ou plusieurs espaces</value>
+        <value>Exécuter un ou plusieurs travaux</value>
     </data>
     <data name="ConsoleMenuExecuteAllJobs" xml:space="preserve">
-        <value>Exécuter tous les espaces</value>
+        <value>Exécuter tous les travaux</value>
     </data>
     <data name="ConsoleMenuLanguage" xml:space="preserve">
         <value>Changer la langue</value>
@@ -49,7 +46,7 @@
         <value>Appuyez sur n'importe quelle touche pour continuer...</value>
     </data>
     <data name="ViewJobsNoJob" xml:space="preserve">
-        <value>Aucun espace de sauvegarde disponible.</value>
+        <value>Aucun travail de sauvegarde disponible.</value>
     </data>
     <data name="ViewJobsTitle" xml:space="preserve">
         <value>Voici les travaux de sauvegarde :</value>
@@ -124,7 +121,7 @@
         <value>Vous avez atteint le nombre maximum de jobs, pour continuer veuillez en supprimer un existant. </value>
     </data>
     <data name="WarningLanguageActive" xml:space="preserve">
-        <value>Cette langue est déja appliquée</value>
+        <value>Cette langue est déjà appliquée</value>
     </data>
     <data name="MultipleSelectionAdvice" xml:space="preserve">
         <value>(Espace = Cocher/Décocher, Entrée = Valider)</value>
@@ -139,12 +136,24 @@
         <value>Merci d'avoir utilisé EasySave</value>
     </data>
     <data name="AlreadyInPath" xml:space="preserve">
-        <value>Déja dans le Path !</value>
+        <value>Déjà dans le Path !</value>
     </data>
     <data name="AddToPathSucces" xml:space="preserve">
         <value>Ajouté au PATH avec succès !</value>
     </data>
     <data name="Restart" xml:space="preserve">
         <value>Redémarrez votre terminal pour que ça prenne effet.</value>
+    </data>
+    <data name="DestinationPath" xml:space="preserve">
+        <value>Chemin de Destination</value>
+    </data>
+    <data name="SourcePath" xml:space="preserve">
+        <value>Chemin Source</value>
+    </data>
+    <data name="SaveDifferentialType" xml:space="preserve">
+        <value>Sauvegarde Différentielle</value>
+    </data>
+    <data name="SaveFullType" xml:space="preserve">
+        <value>Sauvegarde Complète</value>
     </data>
 </root>
