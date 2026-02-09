@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Tracing;
-using EasySave.Model;
+﻿using EasySave.Model;
 using EasySave.Service;
 using EasySave.Ressources;
 using EasySave.ViewModel;
@@ -13,9 +12,8 @@ namespace EasySave.View;
 public class ConsoleAppView : IProgressionObserver
 {
     private readonly BackupViewModel _backupViewModel;
-    private int _consoleWidth;
+    private readonly int _consoleWidth;
     private int _consoleHeight;
-    private const int _maxContentWidth = 120;
     private int _contentPadding;
     private readonly string _version = GetInstance.Settings.Version;
     private readonly List<string> _completedJobs = new List<string>();
@@ -138,7 +136,7 @@ public class ConsoleAppView : IProgressionObserver
         }
     }
     
-    private string TruncatePath(string path, int maxLength = 40)
+    private static string TruncatePath(string path, int maxLength = 40)
     {
         if (string.IsNullOrEmpty(path) || path.Length <= maxLength)
             return path;
@@ -559,8 +557,8 @@ public class ConsoleAppView : IProgressionObserver
         if (_backupViewModel.Jobs != null)
             foreach (var job in _backupViewModel.Jobs.ToList())
             {
-                success &= _backupViewModel.ExecuteJob(job, this);
                 _currentJobName = job.Name;
+                success &= _backupViewModel.ExecuteJob(job, this);
             }
 
         if (success)
@@ -651,7 +649,6 @@ public class ConsoleAppView : IProgressionObserver
         Console.ResetColor();
     }
     
-    // TODO : faire que les barres de progressions se superposent 
     /// <summary>
     /// Called when backup progression changes.
     /// </summary>
@@ -675,22 +672,20 @@ public class ConsoleAppView : IProgressionObserver
             Console.WriteLine();
         
             // Barre de progression
-            int barLength = Math.Min(100, Math.Max(40, _consoleWidth - 20));
+            var barLength = Math.Min(100, Math.Max(40, _consoleWidth - 20));
             var filledLength = (int)((progression / 100.0) * barLength);
             var bar = new string('█', filledLength) + new string('░', barLength - filledLength);
         
             Console.ForegroundColor = ConsoleTheme.MainColor;
-            string progressBar = $"[{bar}] {progression}%";
+            var progressBar = $"[{bar}] {progression}%";
             WriteCentered(progressBar);
             Console.WriteLine();
             Console.ResetColor();
         }
     
-        // Quand la progression atteint 100%, marquer comme terminé
-        if (progression >= 100 && !string.IsNullOrEmpty(_currentJobName))
-        {
-            _completedJobs.Add($"✓ {_currentJobName} - Terminé");
-            _currentJobName = "";
-        }
+        // Quand la progression atteint 100%, marqué comme terminer.
+        if (progression < 100 || string.IsNullOrEmpty(_currentJobName)) return;
+        _completedJobs.Add($"✓ {_currentJobName} - Terminé");
+        _currentJobName = "";
     }
 }

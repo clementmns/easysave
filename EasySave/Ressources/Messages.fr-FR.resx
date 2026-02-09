@@ -25,7 +25,7 @@
         <value>Ajouter un travail de sauvegarde</value>
     </data>
     <data name="ConsoleMenuDeleteJob" xml:space="preserve">
-        <value>Supprimer un travil de sauvegarde</value>
+        <value>Supprimer un travail de sauvegarde</value>
     </data>
     <data name="ConsoleMenuExecuteJob" xml:space="preserve">
         <value>Exécuter un ou plusieurs travaux</value>
