@@ -58,7 +58,7 @@ public class BackupViewModel
     /// <returns></returns>
     public Dictionary<int, bool> ExecuteJobsFromArgs(string? args)
     {
-        // use a dictionnary to return the result of each job
+        // use a dictionary to return the result of each job
         var resultMap = new Dictionary<int, bool>();
         try
         {
@@ -89,7 +89,7 @@ public class BackupViewModel
 
             foreach (var idx in requestedIndices)
             {
-                int jobIdx = idx - 1;
+                var jobIdx = idx - 1;
                 if (Jobs != null && jobIdx >= 0 && jobIdx < Jobs.Count)
                 {
                     // execute job and store result in the map

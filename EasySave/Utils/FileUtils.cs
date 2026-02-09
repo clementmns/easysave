@@ -31,7 +31,7 @@ public static class FileUtils
             File.Copy(sourceFile, destinationFileName, true); // true if the destination file should be replaced if it already exists; otherwise, false
             return true;
         }
-        catch (Exception e)
+        catch
         {
             return false;
         }
@@ -50,7 +50,7 @@ public static class FileUtils
             var filesInDir = dirInfo.GetFiles("*", SearchOption.AllDirectories).ToList();
             return filesInDir;
         }
-        catch (Exception e)
+        catch
         {
             return [];
         }
@@ -76,19 +76,19 @@ public static class FileUtils
 
             var root = Path.GetPathRoot(fullPath);
 
-            // Si la racine n'est pas un lecteur (pas de ":"), on ne peut pas convertir simplement
-            if (string.IsNullOrEmpty(root) || !root.Contains(":"))
+            // If the root is not a drive (no “:”), it cannot be converted simply.
+            if (string.IsNullOrEmpty(root) || !root.Contains(':'))
             {
                 throw new ArgumentException("The path is not a valid absolute");
             }
 
             var driveLetter = root.Replace(":", "$").TrimEnd('\\');
-            var pathWithoutRoot = fullPath.Substring(root.Length); // Récupérer le reste du chemin (sans la racine)
-            var machineName = Environment.MachineName; // Combiner avec le nom de la machine
+            var pathWithoutRoot = fullPath.Substring(root.Length); // Retrieve the rest of the path (without the root)
+            var machineName = Environment.MachineName;
 
             return $@"\\{machineName}\{driveLetter}\{pathWithoutRoot}";
         }
-        catch (Exception e)
+        catch
         {
             return null;
         }
@@ -108,7 +108,7 @@ public static class FileUtils
             var lastModifiedDate = fileInfo.LastWriteTime;
             return lastModifiedDate;
         }
-        catch (Exception e)
+        catch
         {
             return null;
         }
@@ -125,12 +125,9 @@ public static class FileUtils
         try
         {
             Directory.CreateDirectory(path);
-
-            // Checking Directory is created
-            // Successfully or not
             return Directory.Exists(path);
         }
-        catch (Exception e)
+        catch
         {
             return false;
         }
@@ -147,10 +144,10 @@ public static class FileUtils
         try
         {
             var fileInfo = new FileInfo(path);
-            var fileSize =  fileInfo.Length; // en bits
+            var fileSize =  fileInfo.Length; // In bytes
             return fileSize;
         }
-        catch (Exception e)
+        catch
         {
             return 0;
         }
@@ -168,7 +165,7 @@ public static class FileUtils
             var attrs = File.GetAttributes(path);
             return (attrs & FileAttributes.Directory) == FileAttributes.Directory;
         }
-        catch (Exception e)
+        catch
         {
             return null;
         }

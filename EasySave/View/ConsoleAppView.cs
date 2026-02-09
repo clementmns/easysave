@@ -58,8 +58,8 @@ public class ConsoleAppView : IProgressionObserver
     private static void ShowHeader()
     {
         Console.ForegroundColor = ConsoleTheme.MainColor;
-        string[] logo = AppLogo.Logo;
-        foreach (string line in logo)
+        var logo = AppLogo.Logo;
+        foreach (var line in logo)
         {
             Console.WriteLine(line);
         }
@@ -90,7 +90,7 @@ public class ConsoleAppView : IProgressionObserver
                 Messages.ResourceManager.GetString("ConsoleMenuQuit")
             ];
 
-            int choice = NavigateMenu(options);
+            var choice = NavigateMenu(options);
             Console.Clear();
             ShowHeader();
 
@@ -175,7 +175,7 @@ public class ConsoleAppView : IProgressionObserver
             {
                 var job = jobs[i];
                 Console.WriteLine(
-                    $"{i + 1}. {job.Name} ({job.SourcePath} -> {job.DestinationPath}) - Type: {job.Type}");
+                    $@"{i + 1}. {job.Name} ({job.SourcePath} -> {job.DestinationPath}) - Type: {job.Type}");
             }
         }
     }
@@ -193,12 +193,12 @@ public class ConsoleAppView : IProgressionObserver
         var destinationPath = Console.ReadLine() ?? string.Empty;
 
         string?[] options =
-        {
+        [
             Messages.ResourceManager.GetString("AddJobTypeDifferential"),
             Messages.ResourceManager.GetString("AddJobTypeFull")
-        };
-        string question = Messages.ResourceManager.GetString("AddJobSaveType");
-        int selection = NavigateMenu(options, question);
+        ];
+        var question = Messages.ResourceManager.GetString("AddJobSaveType");
+        var selection = NavigateMenu(options, question);
         var saveType = selection == 0 ? BackupType.Differential : BackupType.Full;
 
         BackupJob job;
@@ -208,7 +208,7 @@ public class ConsoleAppView : IProgressionObserver
             // create the job using the singleton factory
             job = BackupJobFactory.GetInstance().CreateJob(name, sourcePath, destinationPath, saveType, currentJobs);
         }
-        catch (Exception e)
+        catch
         {
             Console.Clear();
             ShowHeader();
@@ -220,7 +220,7 @@ public class ConsoleAppView : IProgressionObserver
 
         Console.Clear();
         ShowHeader();
-        bool success = _backupViewModel.AddJob(job);
+        var success = _backupViewModel.AddJob(job);
         Console.ForegroundColor = success ? ConsoleTheme.MainColor : ConsoleTheme.ErrorColor;
         Console.WriteLine(success 
             ? Messages.ResourceManager.GetString("AddJobSuccess") 
@@ -240,15 +240,15 @@ public class ConsoleAppView : IProgressionObserver
             return false;
         }
 
-        var deleteOptions = new List<string>();
+        var deleteOptions = new List<string?>();
         foreach (var job in jobs)
         {
             deleteOptions.Add($"{job.Name} ({job.Type})");
         }
 
         deleteOptions.Add(Messages.ResourceManager.GetString("ConsoleMenuQuit"));
-        string title = Messages.ResourceManager.GetString("DeleteJobPrompt");
-        int selection = NavigateMenu(deleteOptions.ToArray(), title);
+        var title = Messages.ResourceManager.GetString("DeleteJobPrompt");
+        var selection = NavigateMenu(deleteOptions.ToArray(), title);
 
         if (selection == deleteOptions.Count - 1)
         {
@@ -259,7 +259,7 @@ public class ConsoleAppView : IProgressionObserver
         Console.Clear();
         ShowHeader();
 
-        bool success = _backupViewModel.DeleteJob(jobToDelete);
+        var success = _backupViewModel.DeleteJob(jobToDelete);
 
         if (success)
         {
@@ -288,12 +288,12 @@ public class ConsoleAppView : IProgressionObserver
             return;
         }
 
-        string[] options = new string[jobsList.Count];
+        var options = new string[jobsList.Count];
         for (var i = 0; i < jobsList.Count; i++)
         {
             options[i] = $"{jobsList[i].Name} ({jobsList[i].Type})";
         }
-        List<int> selectedIndices = NavigateMultiSelect(options);
+        var selectedIndices = NavigateMultiSelect(options);
 
         Console.Clear();
         ShowHeader();
@@ -307,7 +307,7 @@ public class ConsoleAppView : IProgressionObserver
         }
 
         var success = true;
-        foreach (int index in selectedIndices)
+        foreach (var index in selectedIndices)
         {
             var job = jobsList[index];
             success &= _backupViewModel.ExecuteJob(job, this);
@@ -331,7 +331,7 @@ public class ConsoleAppView : IProgressionObserver
     {
         Console.Clear();
         ShowHeader();
-        if (_backupViewModel.Jobs != null && _backupViewModel.Jobs.Count == 0)
+        if (_backupViewModel.Jobs is { Count: 0 })
         {
             Console.WriteLine(Messages.ResourceManager.GetString("ExecuteJobsNoJobs"));
             return;
@@ -362,11 +362,11 @@ public class ConsoleAppView : IProgressionObserver
             (Name: Messages.ResourceManager.GetString("ChangeLanguageEnglish"), Code: "en-US"),
             (Name: Messages.ResourceManager.GetString("ChangeLanguageFrench"),  Code: "fr-FR")
         };
-        string?[] options = availableLanguages.Select(l => l.Name).ToArray();
-        string? title = Messages.ResourceManager.GetString("ChangeLanguageTitle");
-        int selection = NavigateMenu(options, title);
-        string selectedLanguage = availableLanguages[selection].Code;
-        string currentLanguage = SettingsService.GetInstance.Settings.Language;
+        var options = availableLanguages.Select(l => l.Name).ToArray();
+        var title = Messages.ResourceManager.GetString("ChangeLanguageTitle");
+        var selection = NavigateMenu(options, title);
+        var selectedLanguage = availableLanguages[selection].Code;
+        var currentLanguage = SettingsService.GetInstance.Settings.Language;
         
         if (selectedLanguage == currentLanguage)
         {
@@ -388,7 +388,7 @@ public class ConsoleAppView : IProgressionObserver
     private int NavigateMenu(string?[] options, string? question = null)
     {
 
-        int selection = 0;
+        var selection = 0;
         Console.CursorVisible = false;
 
         while (true)
@@ -402,17 +402,17 @@ public class ConsoleAppView : IProgressionObserver
                 Console.WriteLine();
             }
 
-            for (int i = 0; i < options.Length; i++)
+            for (var i = 0; i < options.Length; i++)
             {
                 if (i == selection)
                 {
                     Console.ForegroundColor = ConsoleTheme.MainColor;
-                    Console.WriteLine($"> {options[i]}");
+                    Console.WriteLine(@$"> {options[i]}");
                     Console.ResetColor();
                 }
                 else
                 {
-                    Console.WriteLine($"{options[i]}");
+                    Console.WriteLine(@$"{options[i]}");
                 }
             }
 
@@ -435,7 +435,7 @@ public class ConsoleAppView : IProgressionObserver
 
     private List<int> NavigateMultiSelect(string[] options, string? question = null)
     {
-        int selection = 0;
+        var selection = 0;
         List<int> selectedIndexes = [];
         Console.CursorVisible = false;
 
@@ -449,21 +449,21 @@ public class ConsoleAppView : IProgressionObserver
             Console.ResetColor();
             Console.WriteLine();
 
-            for (int i = 0; i < options.Length; i++)
+            for (var i = 0; i < options.Length; i++)
             {
-                bool isChecked = selectedIndexes.Contains(i);
-                string checkbox = isChecked ? "[X]" : "[ ]";
+                var isChecked = selectedIndexes.Contains(i);
+                var checkbox = isChecked ? "[X]" : "[ ]";
 
                 if (i == selection)
                 {
                     Console.ForegroundColor = ConsoleTheme.MainColor;
-                    Console.WriteLine($"> {checkbox} {options[i]}");
+                    Console.WriteLine(@$"> {checkbox} {options[i]}");
                     Console.ResetColor();
                 }
                 else
                 {
                     if (isChecked) Console.ForegroundColor = ConsoleTheme.SecondaryColor;
-                    Console.WriteLine($"   {checkbox} {options[i]}");
+                    Console.WriteLine(@$"   {checkbox} {options[i]}");
                 }
 
                 Console.ResetColor();
@@ -503,26 +503,26 @@ public class ConsoleAppView : IProgressionObserver
 
         if (string.IsNullOrWhiteSpace(pathExe))
         {
-            Console.WriteLine(Ressources.Errors.PathAddError);
+            Console.WriteLine(Errors.PathAddError);
             return;
         }
         
         var actualPath = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.User);
         if (string.IsNullOrWhiteSpace(actualPath))
         {
-            Console.WriteLine(Ressources.Errors.PathAddError);
+            Console.WriteLine(Errors.PathAddError);
             return;
         }
         
         if (actualPath.Contains(pathExe))
         {
-            Console.ForegroundColor = ConsoleTheme.ErrorColor;
+            Console.ForegroundColor = ConsoleTheme.SecondaryColor;
             Console.WriteLine(Messages.ResourceManager.GetString("AlreadyInPath"));
             Console.ResetColor();  
             return;
         }
         
-        string newPath = actualPath + ";" + pathExe;
+        var newPath = actualPath + ";" + pathExe;
         Environment.SetEnvironmentVariable("PATH", newPath, EnvironmentVariableTarget.User);
     
         Console.ForegroundColor = ConsoleTheme.MainColor;
