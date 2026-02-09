@@ -19,7 +19,7 @@ public class BackupJobFactory
         return _instance;
     }
 
-    public BackupJob CreateJob(string name, string source, string destination, BackupType type, List<BackupJob> existingJobs)
+    public BackupJob CreateJob(string name, string source, string destination, BackupType type, List<BackupJob>? existingJobs)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -31,10 +31,7 @@ public class BackupJobFactory
             throw new ArgumentNullException(Errors.SourceCantBeNull);            
         }
 
-        if (existingJobs == null)
-        {
-            existingJobs = [];
-        }
+        existingJobs ??= [];
         
         if (existingJobs.Count >= MaxJobs)
         {
