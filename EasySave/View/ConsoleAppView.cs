@@ -7,10 +7,6 @@ using static EasySave.Service.SettingsService;
 
 namespace EasySave.View;
 
-// TODO : changer les ressources françaises -> travaux de sauvegarde
-// TODO : changer le full lorsqu'on affiche les travaux en fonction de la langue
-
-
 /// <summary>
 /// Console view for managing backup jobs. Implement IProgressionObserver to be notified of backup progression.
 /// </summary>
@@ -21,7 +17,10 @@ public class ConsoleAppView : IProgressionObserver
     private int _consoleHeight;
     private const int _maxContentWidth = 120;
     private int _contentPadding;
-    private readonly string _version = GetInstance.Settings.Version ;
+    private readonly string _version = GetInstance.Settings.Version;
+    private readonly List<string> _completedJobs = new List<string>();
+    private string _currentJobName = "";
+    
 
     public ConsoleAppView(string appSaveDirectory)
     {
@@ -138,6 +137,18 @@ public class ConsoleAppView : IProgressionObserver
             Console.Clear();
         }
     }
+    
+    private string TruncatePath(string path, int maxLength = 40)
+    {
+        if (string.IsNullOrEmpty(path) || path.Length <= maxLength)
+            return path;
+    
+        var startLength = maxLength / 2 - 2;
+        var endLength = maxLength / 2 - 2;
+    
+        return string.Concat(path.AsSpan(0, startLength), "...", path.AsSpan(path.Length - endLength));
+    }
+    
     /// <summary>
     /// Calcul the left padding for center
     /// </summary>
@@ -146,11 +157,6 @@ public class ConsoleAppView : IProgressionObserver
     private int GetLeftPadding(int contentWidth)
     {
         return Math.Max(0, (_consoleWidth - contentWidth) / 2);
-    }
-
-    private int GetTopPadding(int contentHeight)
-    {
-        return Math.Max(0, (_consoleHeight - contentHeight) / 2);
     }
 
     /// <summary>
@@ -203,15 +209,12 @@ public class ConsoleAppView : IProgressionObserver
     
     private int NavigateMenu(string?[] options, string? question = null)
     {
-
         var selection = 0;
         Console.CursorVisible = false;
 
         while (true)
         {
             Console.Clear();
-            
-            // TODO: calculer dynamiquement la largeur & hauteur pour ajuster
             
             ShowHeader();
 
@@ -347,12 +350,17 @@ public class ConsoleAppView : IProgressionObserver
         
         foreach (var job in jobs)
         {
-            var jobInfo = $"{job.Name} - {job.Type}";
+            var jobType = job.Type == BackupType.Full
+                ? Messages.ResourceManager.GetString("SaveFullType") 
+                : Messages.ResourceManager.GetString("SaveDifferentialType");
+            var jobInfo = $"{job.Name} - {jobType}";
+            
+            
             Console.WriteLine(new string(' ', leftPadding) + jobInfo);
             
             Console.ForegroundColor = ConsoleTheme.SecondaryColor;
-            var sourcePath = $"  source: {job.SourcePath}"; // TODO: mettre dans les ressources
-            var destPath = $"  destination: {job.DestinationPath}"; // TODO: mettre dans les ressources
+            var sourcePath = $"  {Messages.ResourceManager.GetString("SourcePath")}: {job.SourcePath}";
+            var destPath = $"  {Messages.ResourceManager.GetString("DestinationPath")}: {job.DestinationPath}";
             
             Console.WriteLine(new string(' ', leftPadding) + sourcePath);
             Console.WriteLine(new string(' ', leftPadding) + destPath);
@@ -361,8 +369,7 @@ public class ConsoleAppView : IProgressionObserver
             Console.WriteLine();
         }
     }
-
-    // TODO: faire cette méthode
+    
     private void AddJob()
     {
         var separatorWidth = Math.Min(60, _consoleWidth - 4);
@@ -439,12 +446,20 @@ public class ConsoleAppView : IProgressionObserver
             WriteCentered(Messages.ResourceManager.GetString("ViewJobsNoJob"));
             return false;
         }
-
-        // TODO : ajouter des infos sur les jobs pour supprimer (source / dest path) 
+        
         var deleteOptions = new List<string>();
         foreach (var job in jobs)
         {
-            deleteOptions.Add($"{job.Name} ({job.Type})");
+            var jobType = job.Type == BackupType.Full 
+                ? Messages.ResourceManager.GetString("SaveFullType") 
+                : Messages.ResourceManager.GetString("SaveDifferentialType");
+            var source = Messages.ResourceManager.GetString("SourcePath");
+            var target = Messages.ResourceManager.GetString("DestinationPath");
+            
+            var truncatedSource = TruncatePath(job.SourcePath, 30);
+            var truncatedDestination = TruncatePath(job.DestinationPath, 30);
+            
+            deleteOptions.Add($"{job.Name} ({jobType}) | {truncatedSource} -> {truncatedDestination}");
         }
 
         deleteOptions.Add(Messages.ResourceManager.GetString("ConsoleMenuQuit")!);
@@ -476,7 +491,6 @@ public class ConsoleAppView : IProgressionObserver
         return success;
     }
 
-    // TODO: ajouter l'option quitter
     private void ExecuteJobs()
     {
         var jobsList = _backupViewModel.Jobs?.ToList();
@@ -511,6 +525,7 @@ public class ConsoleAppView : IProgressionObserver
         foreach (var index in selectedIndices)
         {
             var job = jobsList[index];
+            _currentJobName = job.Name;
             success &= _backupViewModel.ExecuteJob(job, this);
         }
 
@@ -524,6 +539,8 @@ public class ConsoleAppView : IProgressionObserver
             Console.ForegroundColor = ConsoleTheme.ErrorColor;
             WriteCentered(Messages.ResourceManager.GetString("ExecuteJobsFailed"));
         }
+
+        _completedJobs.Clear();
         Console.ResetColor();
         
     }
@@ -541,7 +558,10 @@ public class ConsoleAppView : IProgressionObserver
         var success = true;
         if (_backupViewModel.Jobs != null)
             foreach (var job in _backupViewModel.Jobs.ToList())
+            {
                 success &= _backupViewModel.ExecuteJob(job, this);
+                _currentJobName = job.Name;
+            }
 
         if (success)
         {
@@ -553,6 +573,7 @@ public class ConsoleAppView : IProgressionObserver
             Console.ForegroundColor = ConsoleTheme.ErrorColor;
             WriteCentered(Messages.ResourceManager.GetString("ExecuteJobsFailed"));
         }
+        _completedJobs.Clear();
         Console.ResetColor();
     }
     
@@ -639,17 +660,37 @@ public class ConsoleAppView : IProgressionObserver
     {
         Console.Clear();
         ShowHeader();
-        WriteCentered(@"Sauvegarde en cours...");
-        Console.WriteLine();
         
-        var barLength = Math.Min(100, Math.Max(40, _consoleWidth - 20));
-        var filledLength = (int)((progression / 100.0) * barLength);
-        var bar = new string('█', filledLength) + new string('░', barLength - filledLength);
+        foreach (var completedJob in _completedJobs)
+        {
+            Console.ForegroundColor = ConsoleTheme.MainColor;
+            WriteCentered(completedJob);
+            Console.ResetColor();
+        }
         
-        Console.ForegroundColor = ConsoleTheme.MainColor;
-        var progressBar = $"[{bar}] {progression}%";
-        WriteCentered(progressBar);
-        Console.WriteLine();
-        Console.ResetColor();
+        if (!string.IsNullOrEmpty(_currentJobName))
+        {
+            Console.WriteLine();
+            WriteCentered($"Sauvegarde en cours : {_currentJobName}");
+            Console.WriteLine();
+        
+            // Barre de progression
+            int barLength = Math.Min(100, Math.Max(40, _consoleWidth - 20));
+            var filledLength = (int)((progression / 100.0) * barLength);
+            var bar = new string('█', filledLength) + new string('░', barLength - filledLength);
+        
+            Console.ForegroundColor = ConsoleTheme.MainColor;
+            string progressBar = $"[{bar}] {progression}%";
+            WriteCentered(progressBar);
+            Console.WriteLine();
+            Console.ResetColor();
+        }
+    
+        // Quand la progression atteint 100%, marquer comme terminé
+        if (progression >= 100 && !string.IsNullOrEmpty(_currentJobName))
+        {
+            _completedJobs.Add($"✓ {_currentJobName} - Terminé");
+            _currentJobName = "";
+        }
     }
 }
