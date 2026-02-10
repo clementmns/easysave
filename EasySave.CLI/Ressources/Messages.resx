@@ -159,4 +159,22 @@
     <data name="PathAddError" xml:space="preserve">
         <value>Error when adding to the path</value>
     </data>
+    <data name="ChangeLogFormatJson" xml:space="preserve">
+        <value>JSON</value>
+    </data>
+    <data name="ChangeLogFormatXml" xml:space="preserve">
+        <value>XML</value>
+    </data>
+    <data name="ChangeLogFormatTitle" xml:space="preserve">
+        <value>Change log format :</value>
+    </data>
+    <data name="WarningLogFormatActive" xml:space="preserve">
+        <value />
+    </data>
+    <data name="ChangeLogFormatSuccess" xml:space="preserve">
+        <value>Log format changed successfully</value>
+    </data>
+    <data name="ConsoleMenuLogFormat" xml:space="preserve">
+        <value>Change Log format</value>
+    </data>
 </root>

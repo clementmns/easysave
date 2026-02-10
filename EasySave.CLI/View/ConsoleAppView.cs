@@ -58,6 +58,7 @@ public class ConsoleAppView : IProgressionObserver
                 Messages.ResourceManager.GetString("ConsoleMenuExecuteJob"),
                 Messages.ResourceManager.GetString("ConsoleMenuExecuteAllJobs"),
                 Messages.ResourceManager.GetString("ConsoleMenuLanguage"),
+                Messages.ResourceManager.GetString("ConsoleMenuLogFormat"),
                 Messages.ResourceManager.GetString("ConsoleMenuPath"),
                 Messages.ResourceManager.GetString("ConsoleMenuQuit")
             ];
@@ -109,12 +110,16 @@ public class ConsoleAppView : IProgressionObserver
                     break;
                 
                 case 6:
+                    ChangeLogFormat();
+                    break;
+                
+                case 7:
                     Console.Clear();
                     ShowHeader();
                     AddToPath();
                     break;
 
-                case 7:
+                case 8:
                     Console.WriteLine(Messages.ResourceManager.GetString("ThankYouForUsing"));
                     exit = true;
                     break;
@@ -596,6 +601,36 @@ public class ConsoleAppView : IProgressionObserver
             Console.ForegroundColor = ConsoleTheme.MainColor;
             Console.WriteLine();
             WriteCentered(Messages.ResourceManager.GetString("ChangeLanguageSuccess"));
+        }
+
+        Console.ResetColor();
+    }
+
+    private void ChangeLogFormat()
+    {
+        var availableFormats = new[] 
+        {
+            (Name: Messages.ResourceManager.GetString("ChangeLogFormatJson"), Format: LogFormat.Json),
+            (Name: Messages.ResourceManager.GetString("ChangeLogFormatXml"), Format: LogFormat.Xml)
+        };
+        var options = availableFormats.Select(f => f.Name).ToArray();
+        var title = Messages.ResourceManager.GetString("ChangeLogFormatTitle");
+        var selection = NavigateMenu(options, title);
+        var selectedFormat = availableFormats[selection].Format;
+        var currentFormat = GetInstance.Settings.LogFormat;
+        
+        if (selectedFormat == currentFormat)
+        {
+            Console.ForegroundColor = ConsoleTheme.WarningColor;
+            Console.WriteLine();
+            WriteCentered(Messages.ResourceManager.GetString("WarningLogFormatActive"));
+        }
+        else
+        {
+            GetInstance.ChangeLogFormat(selectedFormat);
+            Console.ForegroundColor = ConsoleTheme.MainColor;
+            Console.WriteLine();
+            WriteCentered(Messages.ResourceManager.GetString("ChangeLogFormatSuccess"));
         }
 
         Console.ResetColor();
