@@ -146,7 +146,7 @@ namespace EasySave.Core.Service
             File.WriteAllText(_settingsFilePath, json);
         }
 
-        private void ApplyCulture(string language)
+        private static void ApplyCulture(string language)
         {
             try
             {
