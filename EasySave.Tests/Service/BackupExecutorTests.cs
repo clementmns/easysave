@@ -1,5 +1,5 @@
-using EasySave.Model;
-using EasySave.Service;
+using EasySave.Core.Model;
+using EasySave.Core.Service;
 
 namespace EasySave.Tests.Service;
 

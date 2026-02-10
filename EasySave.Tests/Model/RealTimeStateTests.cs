@@ -1,4 +1,4 @@
-using EasySave.Model;
+using EasySave.Core.Model;
 
 namespace EasySave.Tests.Model;
 
