@@ -26,7 +26,7 @@ public partial class App : Application
             DisableAvaloniaDataAnnotationValidation();
             desktop.MainWindow = new MainWindow
             {
-                DataContext = new BackupViewModel(Ressources.Constant.appSaveDirectory),
+                DataContext = new BackupViewModel(Ressources.Constant.AppSaveDirectory),
             };
         }
 
