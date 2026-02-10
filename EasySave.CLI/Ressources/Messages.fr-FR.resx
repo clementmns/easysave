@@ -174,4 +174,16 @@
     <data name="ConsoleMenuLogFormat" xml:space="preserve">
         <value>Changer le format de log</value>
     </data>
+    <data name="WarningLogFormatActive" xml:space="preserve">
+        <value>Ce format de log est déjà appliquée</value>
+    </data>
+    <data name="ChangeLanguageEspañol" xml:space="preserve">
+        <value>Espagnol</value>
+    </data>
+    <data name="ChangeLanguageItalian" xml:space="preserve">
+        <value>Italien</value>
+    </data>
+    <data name="ChangeLanguageGerman" xml:space="preserve">
+        <value>Allemand</value>
+    </data>
 </root>
