@@ -30,6 +30,17 @@ public class Logger
 
         if (!Directory.Exists(_instance._logFilePath)) Directory.CreateDirectory(_instance._logFilePath);
     }
+
+    /// <summary>
+    /// Modify the logging strategies.
+    /// </summary>
+    /// <param name="strategies">List of logging strategies</param>
+    /// <exception cref="InvalidOperationException">Logger must be initialized first</exception>
+    public static void ModifyStrategies(List<ILoggerStrategy> strategies)
+    {
+        if (_instance == null) throw new InvalidOperationException("Logger not initialized. Call Logger.Init() first.");
+        _instance._strategies = strategies;
+    }
     
     /// <summary>
     /// Write a log entry to the log file

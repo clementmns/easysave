@@ -1,5 +1,7 @@
 using System.Globalization;
 using System.Text.Json;
+using EasyLog;
+using EasyLog.Strategies;
 using EasySave.Core.Model;
 using EasySave.Core.Utils;
 
@@ -38,12 +40,41 @@ namespace EasySave.Core.Service
             if (_instance != null) return;
             {
                 _instance ??= new SettingsService(appDirectory);
+                Logger.Init(appDirectory, [GetLoggerStrategyFromLogFormat(_instance.Settings.LogFormat)]);
             }
         }
         
         public static SettingsService GetInstance => _instance ?? throw new Exception();
         
         public Settings Settings => _settings;
+
+        /// <summary>
+        /// Get the logger strategy from the log format
+        /// </summary>
+        /// <param name="logFormat">Logging format</param>
+        /// <returns>Logging strategy</returns>
+        private static ILoggerStrategy GetLoggerStrategyFromLogFormat(LogFormat logFormat)
+        {
+            ILoggerStrategy loggerStrategy = logFormat switch
+            {
+                LogFormat.Json => new JsonLoggerStrategy(),
+                LogFormat.Xml => new XmlLoggerStrategy(),
+                _ => new JsonLoggerStrategy()
+            };
+            return loggerStrategy;
+        }
+        
+        /// <summary>
+        /// Change the log format
+        /// </summary>
+        /// <param name="format">Log format</param>
+        public void ChangeLogFormat(LogFormat format)
+        {
+            if (_settings.LogFormat == format) return;
+
+            SaveSettings(_settings);
+            Logger.ModifyStrategies([GetLoggerStrategyFromLogFormat(format)]);
+        }
         
         /// <summary>
         /// Set the application language
@@ -99,7 +130,12 @@ namespace EasySave.Core.Service
 
         private Settings CreateDefaultSettings()
         {
-            var defaultSettings = new Settings { Language = CultureInfo.InstalledUICulture.Name, Version = GetAppVersion() };
+            var defaultSettings = new Settings
+            {
+                Language = CultureInfo.InstalledUICulture.Name,
+                Version = GetAppVersion(),
+                LogFormat = LogFormat.Json
+            };
             SaveSettings(defaultSettings);
             return defaultSettings;
         }
