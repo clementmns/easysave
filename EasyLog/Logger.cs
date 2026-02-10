@@ -40,7 +40,7 @@ public class Logger
     {
         if (_strategies.Count == 0 || _logFilePath is null) return;
         
-        var fileName = $"{DateTime.Now:yyyy-MM-dd}.json";
+        var fileName = $"{DateTime.Now:yyyy-MM-dd}";
         var fullPath = Path.Combine(_logFilePath, fileName);
         
         foreach (var strategy in _strategies) strategy.Write(logEntry, fullPath);
