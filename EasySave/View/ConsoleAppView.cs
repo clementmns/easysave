@@ -187,7 +187,7 @@ public class ConsoleAppView : IProgressionObserver
         Console.WriteLine();
         Console.WriteLine();
         
-        // write the logo (ascii art)
+        // write the logo
         foreach (var line in logo)
         {
             WriteCentered(line);

@@ -12,23 +12,42 @@ public static class FileUtils
     /// <param name="destinationDir">Destination Directory</param>
     /// <param name="sourceRoot">Source root</param>
     /// <returns></returns>
-    public static bool CopyFile(string sourceFile, string destinationDir, string? sourceRoot = null) // path/to/text.txt -> path/to/dir 
+    public static bool CopyFile(string sourceFile, string destinationDir, string? sourceRoot = null)
     {
+        if (string.IsNullOrWhiteSpace(sourceFile))
+            return false;
+        if (string.IsNullOrWhiteSpace(destinationDir))
+            return false;
+        if (!File.Exists(sourceFile))
+            return false;
+    
         try
         {
             var relativePath = string.IsNullOrWhiteSpace(sourceRoot)
                 ? Path.GetFileName(sourceFile)
                 : Path.GetRelativePath(sourceRoot, sourceFile);
+        
+            if (relativePath.Contains(".."))
+                return false;
+        
             var destinationFileName = Path.Combine(destinationDir, relativePath);
-
             var destinationParent = Path.GetDirectoryName(destinationFileName);
-            if (!string.IsNullOrWhiteSpace(destinationParent) && !Directory.Exists(destinationParent))
+        
+            if (!string.IsNullOrWhiteSpace(destinationParent))
             {
                 Directory.CreateDirectory(destinationParent);
             }
-            
-            // Use the Path.Combine method to safely append the file name to the path.
-            File.Copy(sourceFile, destinationFileName, true); // true if the destination file should be replaced if it already exists; otherwise, false
+        
+            if (File.Exists(destinationFileName))
+            {
+                var attributes = File.GetAttributes(destinationFileName);
+                if ((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+                {
+                    File.SetAttributes(destinationFileName, attributes & ~FileAttributes.ReadOnly);
+                }
+            }
+        
+            File.Copy(sourceFile, destinationFileName, true);
             return true;
         }
         catch
