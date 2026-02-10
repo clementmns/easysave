@@ -6,6 +6,7 @@ EasyLog is a logging library designed for use in the ProSoft company. It provide
 ## Supported Formats
 
 - **JSON**
+- **XML**
 
 
 ## Usage

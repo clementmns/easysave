@@ -1,20 +1,45 @@
-<Window xmlns="https://github.com/avaloniaui"
+﻿<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:EasySaveGUI.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:EasySave.GUI.ViewModels"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="EasySaveGUI.Views.MainWindow"
-        x:DataType="vm:MainWindowViewModel"
-        Icon="/Assets/avalonia-logo.ico"
-        Title="EasySave.GUI">
-
-    <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:MainWindowViewModel/>
-    </Design.DataContext>
-
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-
+        x:Class="EasySave.GUI.Views.MainWindow"
+        x:DataType="vm:BackupViewModel"
+        Title="EasySave">
+    
+        <Grid> 
+            <DataGrid 
+                    ItemsSource="{Binding Jobs}"
+                    IsReadOnly="True"
+                    GridLinesVisibility="All"
+                    BorderThickness="1"
+                    BorderBrush="Gray">
+                    <DataGrid.Columns>
+                            <DataGridCheckBoxColumn Header=""/>
+                            <DataGridTextColumn Header="ID"
+                                                Binding="{Binding Id}"/>
+                            <DataGridTextColumn Header ="Nom"
+                                                Binding="{Binding Name}"/>
+                            <DataGridTextColumn Header ="Chemin Source"
+                                                Binding="{Binding SourcePath}"/>
+                            <DataGridTextColumn Header ="Chemin Destination"
+                                                Binding="{Binding DestinationPath}"/>
+                    </DataGrid.Columns>
+                
+                
+            </DataGrid>
+            
+            <StackPanel Grid.Row="1" 
+                        Orientation="Horizontal" 
+                        HorizontalAlignment="Center"
+                        Spacing="10"
+                        Margin="0,10,0,0">
+                <Button Content="Ajouter" 
+                        Width="100"
+                        Click="AddJob_Click"/>
+            </StackPanel>
+            
+        </Grid>    
+        
 </Window>
