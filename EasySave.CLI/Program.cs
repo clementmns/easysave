@@ -1,6 +1,4 @@
-﻿using EasyLog;
-using EasyLog.Strategies;
-using EasySave.CLI.View;
+﻿using EasySave.CLI.View;
 using EasySave.Core.Service;
 
 namespace EasySave.CLI;
@@ -9,9 +7,8 @@ internal abstract class Program
 {
     private static void Main(string[] args)
     {
-        // init app settings and logger
-        var appSaveDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/ProSoft/EasySave.Core";
-        Logger.Init(appSaveDirectory, [new JsonLoggerStrategy()]);
+        // init app settings
+        var appSaveDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/ProSoft/EasySave";
         SettingsService.Init(appSaveDirectory);
 
         var consoleAppView = new ConsoleAppView(appSaveDirectory);
