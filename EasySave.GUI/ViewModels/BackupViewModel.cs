@@ -9,7 +9,7 @@ namespace EasySave.GUI.ViewModels;
 /// <summary>
 /// ViewModel for managing backup jobs, providing methods to add, delete, update, and execute backup jobs.
 /// </summary>
-public class BackupViewModel
+public class BackupViewModel : ViewModelBase
 {
     /// <summary>
     /// Singleton instance of the BackupJobService.

@@ -48,8 +48,6 @@ public class BackupViewModel
 
         return result;
     }
-
-    public void UpdateJob(BackupJob job) => _jobService.UpdateJob(job);
     
     /// <summary>
     /// Execute jobs from command line arguments.
