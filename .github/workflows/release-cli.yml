@@ -4,7 +4,7 @@ on:
   push:
     # v1.0 etc.
     tags:
-      - "v*.*"
+      - "v*.* CLI"
 
 jobs:
   build-and-release:
@@ -35,7 +35,7 @@ jobs:
       # publish self-contained for each runtime 
       - name: Publish
         run: |
-          dotnet publish ./EasySave/EasySave.csproj \
+          dotnet publish ./EasySave.CLI/EasySave.CLI.csproj \
             -c Release \
             -r ${{ matrix.runtime }} \
             --self-contained true \
@@ -46,14 +46,14 @@ jobs:
         run: |
           mkdir -p artifacts
           cd out
-          zip -r ../artifacts/easysave-${{ matrix.runtime }}.zip ${{ matrix.runtime }}
+          zip -r ../artifacts/easysave-cli-${{ matrix.runtime }}.zip ${{ matrix.runtime }}
 
       # upload artifacts
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: easysave-${{ matrix.runtime }}
-          path: artifacts/easysave-${{ matrix.runtime }}.zip
+          path: artifacts/easysave-cli-${{ matrix.runtime }}.zip
 
   create-release:
     needs: build-and-release
