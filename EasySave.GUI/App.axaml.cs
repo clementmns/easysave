@@ -1,13 +1,14 @@
+using System;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core;
 using Avalonia.Data.Core.Plugins;
 using System.Linq;
 using Avalonia.Markup.Xaml;
-using EasySaveGUI.ViewModels;
-using EasySaveGUI.Views;
+using EasySave.GUI.ViewModels;
+using EasySave.GUI.Views;
 
-namespace EasySaveGUI;
+namespace EasySave.GUI;
 
 public partial class App : Application
 {
@@ -25,7 +26,7 @@ public partial class App : Application
             DisableAvaloniaDataAnnotationValidation();
             desktop.MainWindow = new MainWindow
             {
-                DataContext = new MainWindowViewModel(),
+                DataContext = new BackupViewModel(Ressources.Constant.appSaveDirectory),
             };
         }
 
