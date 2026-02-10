@@ -130,10 +130,10 @@
         <value>Jobs execution failed</value>
     </data>
     <data name="ConsoleMenuPath" xml:space="preserve">
-        <value>Add EasySave.Core to PATH</value>
+        <value>Add EasySave to PATH</value>
     </data>
     <data name="ThankYouForUsing" xml:space="preserve">
-        <value>Thank you for using EasySave.Core</value>
+        <value>Thank you for using EasySave</value>
     </data>
     <data name="AlreadyInPath" xml:space="preserve">
         <value>Already in the Path !</value>
