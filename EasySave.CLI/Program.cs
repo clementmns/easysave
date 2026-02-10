@@ -1,4 +1,4 @@
-﻿using EasySave.CLI.View;
+﻿using EasySave.CLI.Views;
 using EasySave.Core.Service;
 
 namespace EasySave.CLI;

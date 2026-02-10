@@ -1,10 +1,10 @@
 ﻿using EasySave.CLI.Ressources;
+using EasySave.CLI.ViewModels;
 using EasySave.Core.Model;
 using EasySave.Core.Service;
-using EasySave.Core.ViewModel;
 using static EasySave.Core.Service.SettingsService;
 
-namespace EasySave.CLI.View;
+namespace EasySave.CLI.Views;
 
 /// <summary>
 /// Console view for managing backup jobs. Implement IProgressionObserver to be notified of backup progression.
@@ -452,8 +452,6 @@ public class ConsoleAppView : IProgressionObserver
             var jobType = job.Type == BackupType.Full 
                 ? Messages.ResourceManager.GetString("SaveFullType") 
                 : Messages.ResourceManager.GetString("SaveDifferentialType");
-            var source = Messages.ResourceManager.GetString("SourcePath");
-            var target = Messages.ResourceManager.GetString("DestinationPath");
             
             var truncatedSource = TruncatePath(job.SourcePath, 30);
             var truncatedDestination = TruncatePath(job.DestinationPath, 30);

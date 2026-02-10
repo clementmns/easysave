@@ -2,7 +2,7 @@ using System.Collections.ObjectModel;
 using EasySave.Core.Model;
 using EasySave.Core.Service;
 
-namespace EasySave.Core.ViewModel;
+namespace EasySave.CLI.ViewModels;
 
 /// <summary>
 /// ViewModel for managing backup jobs, providing methods to add, delete, update, and execute backup jobs.
