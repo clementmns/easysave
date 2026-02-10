@@ -7,8 +7,8 @@ namespace EasySave.Core.Model;
 /// </summary>
 public class LogEntry
 {
-    public string Message { get; set; }
-    public string BackupName { get; set; }
+    public string? Message { get; set; }
+    public string? BackupName { get; set; }
     public DateTime Timestamp { get; set; }
     public string? SourcePath { get; set; }
     public string? DestinationPath { get; set; }
