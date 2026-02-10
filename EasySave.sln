@@ -6,7 +6,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyLog", "EasyLog\EasyLog.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasySave.Tests", "EasySave.Tests\EasySave.Tests.csproj", "{70E2D957-70C0-4282-9841-697C094654C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasySaveGUI", "EasySaveGUI\EasySaveGUI.csproj", "{2AC915B8-E285-4CEC-A3B0-54DC89BFA290}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasySave.GUI", "EasySave.GUI\EasySave.GUI.csproj", "{2AC915B8-E285-4CEC-A3B0-54DC89BFA290}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
