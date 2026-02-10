@@ -159,4 +159,19 @@
     <data name="PathAddError" xml:space="preserve">
         <value>Une erreur est survenue lors de l'ajout au chemin</value>
     </data>
+    <data name="ChangeLogFormatJson" xml:space="preserve">
+        <value>JSON</value>
+    </data>
+    <data name="ChangeLogFormatXml" xml:space="preserve">
+        <value>XML</value>
+    </data>
+    <data name="ChangeLogFormatSuccess" xml:space="preserve">
+        <value>Le format de log a été changé avec succès.</value>
+    </data>
+    <data name="ChangeLogFormatTitle" xml:space="preserve">
+        <value>Changer le format de log :</value>
+    </data>
+    <data name="ConsoleMenuLogFormat" xml:space="preserve">
+        <value>Changer le format de log</value>
+    </data>
 </root>

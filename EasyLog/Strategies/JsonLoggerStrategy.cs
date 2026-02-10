@@ -21,7 +21,7 @@ namespace EasyLog.Strategies
 
             try
             {
-                File.AppendAllText(logFilePath, jsonString + "," + Environment.NewLine);
+                File.AppendAllText(logFilePath + ".json", jsonString + "," + Environment.NewLine);
             }
             catch (Exception ex)
             {
