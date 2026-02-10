@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
 using System.Text;
-using EasySave.Utils;
+using EasySave.Core.Utils;
 
 namespace EasySave.Tests.Utils;
 
