@@ -67,7 +67,7 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <CheckBox
-                                    Command="{Binding DataContext.ToggleSelectionCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                    Command="{Binding ((vm:BackupViewModel)DataContext).ToggleSelectionCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                     CommandParameter="{Binding}"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
