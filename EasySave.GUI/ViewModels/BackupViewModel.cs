@@ -32,6 +32,22 @@ public partial class BackupViewModel : ViewModelBase
     /// </summary>
     public ObservableCollection<BackupJob>? Jobs => _jobService.Jobs;
     
+    public ObservableCollection<BackupJob> SelectedJobs { get; } = new();
+
+    [RelayCommand]
+    public void ToggleSelection(BackupJob job)
+    {
+        if (SelectedJobs.Contains(job))
+        {
+            SelectedJobs.Remove(job);
+        }
+        else
+        {
+            SelectedJobs.Add(job);
+        }
+    }
+
+    
     public BackupViewModel()
     {
         _jobService = new BackupJobService();
