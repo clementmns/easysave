@@ -122,7 +122,8 @@
                     <Button Content="Ajouter" 
                             Width="100"
                             Height="35"
-                            Click="AddJob_Click"/>
+                            Command="{Binding OpenCreateJobDialog}"
+                            CommandParameter="{Binding $parent[Window]}"/>
                     <Button Content="Exécuter" 
                             Width="100"
                             Height="35"

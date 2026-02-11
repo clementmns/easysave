@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using System;
+using EasySave.Core.Service;
 
 namespace EasySave.GUI;
 
@@ -9,8 +10,13 @@ sealed class Program
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
     // yet and stuff might break.
     [STAThread]
-    public static void Main(string[] args) => BuildAvaloniaApp()
-        .StartWithClassicDesktopLifetime(args);
+    public static void Main(string[] args)
+    {
+        SettingsService.Init(Ressources.Constant.AppSaveDirectory);
+        
+        BuildAvaloniaApp()
+            .StartWithClassicDesktopLifetime(args);
+    }
 
     // Avalonia configuration, don't remove; also used by visual designer.
     public static AppBuilder BuildAvaloniaApp()
