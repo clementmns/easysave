@@ -7,28 +7,28 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace EasySave.Core.Ressources {
+namespace EasySave.GUI.Ressources {
     using System;
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Errors {
+    internal class Messages {
         
         private static System.Resources.ResourceManager resourceMan;
         
         private static System.Globalization.CultureInfo resourceCulture;
         
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Errors() {
+        internal Messages() {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("EasySave.Core.Ressources.Errors", typeof(Errors).Assembly);
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("EasySave.GUI.Ressources.Messages", typeof(Messages).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -45,33 +45,21 @@ namespace EasySave.Core.Ressources {
             }
         }
         
-        internal static string NameCantBeNull {
+        internal static string SelectDestinationPath {
             get {
-                return ResourceManager.GetString("NameCantBeNull", resourceCulture);
+                return ResourceManager.GetString("SelectDestinationPath", resourceCulture);
             }
         }
         
-        internal static string SourceCantBeNull {
+        internal static string SelectSourcePathFile {
             get {
-                return ResourceManager.GetString("SourceCantBeNull", resourceCulture);
+                return ResourceManager.GetString("SelectSourcePathFile", resourceCulture);
             }
         }
         
-        internal static string ProcessingError {
+        internal static string SelectSourcePathFolder {
             get {
-                return ResourceManager.GetString("ProcessingError", resourceCulture);
-            }
-        }
-        
-        internal static string FileCantBeCopied {
-            get {
-                return ResourceManager.GetString("FileCantBeCopied", resourceCulture);
-            }
-        }
-        
-        internal static string MaxJobsReached {
-            get {
-                return ResourceManager.GetString("MaxJobsReached", resourceCulture);
+                return ResourceManager.GetString("SelectSourcePathFolder", resourceCulture);
             }
         }
     }

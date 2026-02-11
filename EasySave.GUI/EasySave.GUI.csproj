@@ -35,4 +35,46 @@
         <AvaloniaResource Include="Assets\**" />
         <AvaloniaResource Include="Ressources\**"/>
     </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Ressources\Messages.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Ressources\Messages.fr-FR.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Messages.fr-FR.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Ressources\Messages.es-ES.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Messages.es-ES.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Ressources\Messages.de-DE.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Messages.de-DE.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Ressources\Messages.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Messages.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Ressources\Messages.fr-FR.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Messages.fr-FR.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Ressources\Messages.es-ES.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Messages.es-ES.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Ressources\Messages.de-DE.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Messages.de-DE.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
 </Project>

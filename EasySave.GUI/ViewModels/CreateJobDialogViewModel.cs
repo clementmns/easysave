@@ -23,19 +23,25 @@ public partial class CreateJobDialogViewModel : DialogViewModel
     }
     
     [ObservableProperty] private string? _name;
-    
     [ObservableProperty] private string? _sourcePath;
-    
     [ObservableProperty] private string? _destinationPath;
-
     [ObservableProperty] private bool _isFileSelected = true;
-    
-    [ObservableProperty] private bool _isFolderSelected = true;
-    
+    [ObservableProperty] private bool _isFolderSelected;
     public List<BackupType> BackupTypes { get; } = [BackupType.Full, BackupType.Differential];
+    [ObservableProperty] private BackupType _selectedBackupType = BackupType.Full;
+    
+    [ObservableProperty] private string? _errorMessage;
+    partial void OnErrorMessageChanged(string? value) => OnPropertyChanged(nameof(IsErrorVisible));
+    
+    public bool IsErrorVisible => !string.IsNullOrWhiteSpace(ErrorMessage);
+    
+    public bool CanCreate => !string.IsNullOrWhiteSpace(Name) && 
+                            !string.IsNullOrWhiteSpace(SourcePath) && 
+                            !string.IsNullOrWhiteSpace(DestinationPath);
 
-    [ObservableProperty]
-    private BackupType _selectedBackupType = BackupType.Full;
+    partial void OnNameChanged(string? value) => OnPropertyChanged(nameof(CanCreate));
+    partial void OnSourcePathChanged(string? value) => OnPropertyChanged(nameof(CanCreate));
+    partial void OnDestinationPathChanged(string? value) => OnPropertyChanged(nameof(CanCreate));
 
     [RelayCommand]
     public async Task BrowseSourceCommand()
@@ -43,11 +49,11 @@ public partial class CreateJobDialogViewModel : DialogViewModel
         var topLevel = TopLevel.GetTopLevel(_dialogWindow);
         IReadOnlyList<IStorageItem> selected;
         
-        if (_isFileSelected)
+        if (IsFileSelected)
         {
             selected = await topLevel?.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
             {
-                Title = "Select a file",
+                Title = Ressources.Messages.ResourceManager.GetString("SelectSourcePathFile"),
                 AllowMultiple = false
             })!;
         }
@@ -55,7 +61,7 @@ public partial class CreateJobDialogViewModel : DialogViewModel
         {
             selected = await topLevel?.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
             {
-                Title = "Select a folder",
+                Title = Ressources.Messages.ResourceManager.GetString("SelectSourcePathFolder"),
                 AllowMultiple = false
             })!;
         }
@@ -73,7 +79,7 @@ public partial class CreateJobDialogViewModel : DialogViewModel
     
         var selected = await topLevel?.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
         {
-            Title = "Select a folder to save backups in",
+            Title = Ressources.Messages.ResourceManager.GetString("SelectDestinationPath"),
             AllowMultiple = false
         })!;
         if (selected.Count < 1) return;
@@ -83,26 +89,16 @@ public partial class CreateJobDialogViewModel : DialogViewModel
     }
 
     [RelayCommand]
-    public void CancelCommand()
-    {
-        _dialogWindow?.Close();
-    }
+    public void CancelCommand() => _dialogWindow?.Close();
 
     [RelayCommand]
     public void CreateCommand()
     {
         try
         {
-            // validate inputs
-            if (string.IsNullOrWhiteSpace(Name) || 
-                string.IsNullOrWhiteSpace(SourcePath) || 
-                string.IsNullOrWhiteSpace(DestinationPath))
-            {
-                // TODO: Show error message to user
-                return;
-            }
+            if (!CanCreate) return;
+            ErrorMessage = null;
             
-            // create the job using the factory
             var factory = BackupJobFactory.GetInstance();
             var newJob = factory.CreateJob(
                 Name, 
@@ -112,16 +108,13 @@ public partial class CreateJobDialogViewModel : DialogViewModel
                 _backupViewModel.Jobs?.ToList()
             );
             
-            // Add the job to the backup view model
             _backupViewModel.AddJob(newJob);
-            
-            // Close the dialog after the successful creation
             _dialogWindow?.Close();
         }
         catch (Exception ex)
         {
-            // TODO: Show error message to user
-            Console.WriteLine($"Error creating job: {ex.Message}");
+            ErrorMessage = ex.Message;
+            _dialogWindow?.Focus();
         }
     }
 }
