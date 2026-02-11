@@ -10,12 +10,16 @@
 
     <ItemGroup>
         <AvaloniaResource Include="Assets\**"/>
+        <None Remove="Ressources\svg\settings.svg" />
+        <AvaloniaResource Include="Ressources\svg\Logo.svg" />
+        <AvaloniaResource Include="Ressources\svg\settings.svg" />
     </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="11.3.11"/>
         <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.3.11" />
         <PackageReference Include="Avalonia.Desktop" Version="11.3.11"/>
+        <PackageReference Include="Avalonia.Svg.Skia" Version="11.3.0" />
         <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.11"/>
         <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.11"/>
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
@@ -28,5 +32,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\EasySave.Core\EasySave.Core.csproj" />
+        <AvaloniaResource Include="Assets\**" />
+        <AvaloniaResource Include="Ressources\**"/>
     </ItemGroup>
 </Project>

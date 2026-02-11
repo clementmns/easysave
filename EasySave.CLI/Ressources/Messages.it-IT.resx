@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="AddJobDestinationPath" xml:space="preserve">
+        <value>Aggiungi un percorso (destinazione):</value>
+    </data>
+    <data name="AddJobFailed" xml:space="preserve">
+        <value>Errore nell'aggiunta del lavoro.</value>
+    </data>
+    <data name="AddJobName" xml:space="preserve">
+        <value>Aggiungi un nome del lavoro:</value>
+    </data>
+    <data name="AddJobSaveType" xml:space="preserve">
+        <value>Definisci il tipo di backup che desideri:</value>
+    </data>
+    <data name="AddJobSourcePath" xml:space="preserve">
+        <value>Aggiungi un percorso (origine):</value>
+    </data>
+    <data name="AddJobSuccess" xml:space="preserve">
+        <value>Lavoro aggiunto con successo.</value>
+    </data>
+    <data name="AddJobTypeDifferential" xml:space="preserve">
+        <value>Differenziale</value>
+    </data>
+    <data name="AddJobTypeFull" xml:space="preserve">
+        <value>Completo</value>
+    </data>
+    <data name="AddToPathSucces" xml:space="preserve">
+        <value>Aggiunto con successo al PATH!</value>
+    </data>
+    <data name="AlreadyInPath" xml:space="preserve">
+        <value>Già presente nel Path!</value>
+    </data>
+    <data name="ChangeLanguageEnglish" xml:space="preserve">
+        <value>Inglese</value>
+    </data>
+    <data name="ChangeLanguageFrench" xml:space="preserve">
+        <value>Francese</value>
+    </data>
+    <data name="ChangeLanguageInvalid" xml:space="preserve">
+        <value>Input non valido. Impostazione predefinita su Inglese.</value>
+    </data>
+    <data name="ChangeLanguageSuccess" xml:space="preserve">
+        <value>Lingua cambiata con successo.</value>
+    </data>
+    <data name="ChangeLanguageTitle" xml:space="preserve">
+        <value>Cambia la lingua:</value>
+    </data>
+    <data name="ChangeLogFormatJson" xml:space="preserve">
+        <value>JSON</value>
+    </data>
+    <data name="ChangeLogFormatSuccess" xml:space="preserve">
+        <value>Formato di log cambiato con successo.</value>
+    </data>
+    <data name="ChangeLogFormatTitle" xml:space="preserve">
+        <value>Cambia formato di log:</value>
+    </data>
+    <data name="ChangeLogFormatXml" xml:space="preserve">
+        <value>XML</value>
+    </data>
+    <data name="ConsoleMenuAddJob" xml:space="preserve">
+        <value>Aggiungi un lavoro</value>
+    </data>
+    <data name="ConsoleMenuDeleteJob" xml:space="preserve">
+        <value>Elimina lavoro</value>
+    </data>
+    <data name="ConsoleMenuExecuteAllJobs" xml:space="preserve">
+        <value>Esegui tutti i lavori</value>
+    </data>
+    <data name="ConsoleMenuExecuteJob" xml:space="preserve">
+        <value>Esegui uno o più lavori</value>
+    </data>
+    <data name="ConsoleMenuLanguage" xml:space="preserve">
+        <value>Cambia lingua</value>
+    </data>
+    <data name="ConsoleMenuLogFormat" xml:space="preserve">
+        <value>Cambia formato di log</value>
+    </data>
+    <data name="ConsoleMenuOption" xml:space="preserve">
+        <value>Scegli un'opzione:</value>
+    </data>
+    <data name="ConsoleMenuPath" xml:space="preserve">
+        <value>Aggiungi EasySave al PATH</value>
+    </data>
+    <data name="ConsoleMenuQuit" xml:space="preserve">
+        <value>Esci</value>
+    </data>
+    <data name="ConsoleMenuViewJobs" xml:space="preserve">
+        <value>Visualizza lavori salvati</value>
+    </data>
+    <data name="DeleteJobFailed" xml:space="preserve">
+        <value>Rimozione del lavoro non riuscita.</value>
+    </data>
+    <data name="DeleteJobInvalid" xml:space="preserve">
+        <value>Numero di lavoro non valido</value>
+    </data>
+    <data name="DeleteJobPrompt" xml:space="preserve">
+        <value>Inserisci il lavoro da rimuovere:</value>
+    </data>
+    <data name="DeleteJobSuccess" xml:space="preserve">
+        <value>Lavoro rimosso con successo</value>
+    </data>
+    <data name="DestinationPath" xml:space="preserve">
+        <value>Percorso di destinazione</value>
+    </data>
+    <data name="ExecuteAllJobsSuccess" xml:space="preserve">
+        <value>Tutti i lavori sono stati completati con successo.</value>
+    </data>
+    <data name="ExecuteJobsFailed" xml:space="preserve">
+        <value>Esecuzione dei lavori non riuscita</value>
+    </data>
+    <data name="ExecuteJobsNoJobs" xml:space="preserve">
+        <value>Nessun lavoro disponibile.</value>
+    </data>
+    <data name="ExecuteJobsNoValid" xml:space="preserve">
+        <value>Nessun lavoro valido selezionato.</value>
+    </data>
+    <data name="ExecuteJobsPrompt" xml:space="preserve">
+        <value>Inserisci i numeri dei lavori da eseguire (separati da virgole come 1;3 o 1-3):</value>
+    </data>
+    <data name="ExecuteJobsSuccess" xml:space="preserve">
+        <value>Lavori completati con successo.</value>
+    </data>
+    <data name="MaxFileWarning" xml:space="preserve">
+        <value>Hai raggiunto il numero massimo di lavori. Per continuare, elimina un lavoro esistente. </value>
+    </data>
+    <data name="MultipleSelectionAdvice" xml:space="preserve">
+        <value>(Spazio = Seleziona/Deseleziona, Invio = Conferma)</value>
+    </data>
+    <data name="PathAddError" xml:space="preserve">
+        <value>Errore durante l'aggiunta al percorso</value>
+    </data>
+    <data name="PressKeyToContinue" xml:space="preserve">
+        <value>Premi un tasto qualsiasi per continuare...</value>
+    </data>
+    <data name="Restart" xml:space="preserve">
+        <value>Riavvia il terminale affinché abbia effetto.</value>
+    </data>
+    <data name="SaveDifferentialType" xml:space="preserve">
+        <value>Backup differenziale</value>
+    </data>
+    <data name="SaveFullType" xml:space="preserve">
+        <value>Backup completo</value>
+    </data>
+    <data name="SourcePath" xml:space="preserve">
+        <value>Percorso di origine</value>
+    </data>
+    <data name="ThankYouForUsing" xml:space="preserve">
+        <value>Grazie per aver utilizzato EasySave</value>
+    </data>
+    <data name="ViewJobsNoJob" xml:space="preserve">
+        <value>Nessun lavoro disponibile.</value>
+    </data>
+    <data name="ViewJobsTitle" xml:space="preserve">
+        <value>Ecco i lavori:</value>
+    </data>
+    <data name="WarningLanguageActive" xml:space="preserve">
+        <value>Lingua già attiva.</value>
+    </data>
+    <data name="WarningLogFormatActive" xml:space="preserve">
+        <value>Formato di log già attivo.</value>
+    </data>
+    <data name="ChangeLanguageEspañol" xml:space="preserve">
+        <value>Spagnolo</value>
+    </data>
+    <data name="ChangeLanguageGerman" xml:space="preserve">
+        <value>Tedesco</value>
+    </data>
+    <data name="ChangeLanguageItalian" xml:space="preserve">
+        <value>Italiano</value>
+    </data>
+</root>

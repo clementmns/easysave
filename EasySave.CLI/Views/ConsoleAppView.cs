@@ -579,7 +579,10 @@ public class ConsoleAppView : IProgressionObserver
         var availableLanguages = new[] 
         {
             (Name: Messages.ResourceManager.GetString("ChangeLanguageEnglish"), Code: "en-US"),
-            (Name: Messages.ResourceManager.GetString("ChangeLanguageFrench"),  Code: "fr-FR")
+            (Name: Messages.ResourceManager.GetString("ChangeLanguageFrench"), Code: "fr-FR"),
+            (Name: Messages.ResourceManager.GetString("ChangeLanguageEspañol"), Code: "es-ES"),
+            (Name: Messages.ResourceManager.GetString("ChangeLanguageGerman"), Code: "de-DE"),
+            (Name: Messages.ResourceManager.GetString("ChangeLanguageItalian"), Code: "it-IT")
         };
         var options = availableLanguages.Select(l => l.Name).ToArray();
         var title = Messages.ResourceManager.GetString("ChangeLanguageTitle");

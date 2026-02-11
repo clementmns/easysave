@@ -169,12 +169,21 @@
         <value>Change log format :</value>
     </data>
     <data name="WarningLogFormatActive" xml:space="preserve">
-        <value />
+        <value>Log format already active.</value>
     </data>
     <data name="ChangeLogFormatSuccess" xml:space="preserve">
         <value>Log format changed successfully</value>
     </data>
     <data name="ConsoleMenuLogFormat" xml:space="preserve">
         <value>Change Log format</value>
+    </data>
+    <data name="ChangeLanguageGerman" xml:space="preserve">
+        <value>German</value>
+    </data>
+    <data name="ChangeLanguageItalian" xml:space="preserve">
+        <value>Italian</value>
+    </data>
+    <data name="ChangeLanguageEspañol" xml:space="preserve">
+        <value>Español</value>
     </data>
 </root>
