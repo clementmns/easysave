@@ -19,7 +19,6 @@
                 <Button Grid.Column="0" 
                         Background="Transparent" 
                         BorderThickness="1" 
-                        BorderBrush="White" 
                         CornerRadius="5" 
                         Padding="8" 
                         Cursor="Hand">
@@ -68,7 +67,9 @@
                             <DataTemplate>
                                 <CheckBox
                                     Command="{Binding ((vm:BackupViewModel)DataContext).ToggleSelectionCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                    CommandParameter="{Binding}"/>
+                                    CommandParameter="{Binding}"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -114,13 +115,13 @@
 
                             <TextBlock Text="Destination :" FontWeight="Bold"/>
                             <TextBlock Text="{Binding DestinationPath}"/>
+                            
+                            <TextBlock Text="Type :" FontWeight="Bold"/>
+                            <TextBlock Text="{Binding Type}"/>
                         </StackPanel>
                     </DataTemplate>
                 </TabControl.ContentTemplate>
-
             </TabControl>
-
         </Grid>
-
     </Grid>
 </Window>
