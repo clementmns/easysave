@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 
 <root>
     <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
@@ -18,13 +18,7 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="SelectDestinationPath" xml:space="preserve">
-        <value>Select destination folder</value>
-    </data>
-    <data name="SelectSourcePathFile" xml:space="preserve">
-        <value>Select source file</value>
-    </data>
-    <data name="SelectSourcePathFolder" xml:space="preserve">
-        <value>Select source folder</value>
+    <data name="DeleteText" xml:space="preserve">
+        <value>Delete</value>
     </data>
 </root>

@@ -3,7 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:EasySave.GUI.ViewModels"
-        xmlns:lang="clr-namespace:EasySave.GUI.Ressources;assembly=EasySave.GUI"
+        xmlns:lang="clr-namespace:EasySave.GUI.Ressources"
         mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="700"
         x:Class="EasySave.GUI.Views.MainWindow"
         x:DataType="vm:BackupViewModel"
@@ -42,7 +42,7 @@
                 <Button Command="{Binding OpenCreateJobDialog}" CommandParameter="{Binding $parent[Window]}" Background="Transparent" BorderThickness="0" Cursor="Hand">
                     <StackPanel Orientation="Horizontal" Spacing="5">
                         <TextBlock Text="+" FontWeight="Bold" Foreground="#8961CC" VerticalAlignment="Center"/>
-                        <TextBlock Text="{x:Static lang:Ressources.Addtext}" VerticalAlignment="Center"/>
+                        <TextBlock Text="{x:Static lang:Message.DeleteText}" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
                 <Rectangle Width="1" Fill="Gray" Margin="5,2" VerticalAlignment="Stretch"/>

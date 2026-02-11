@@ -53,7 +53,7 @@ public partial class CreateJobDialogViewModel : DialogViewModel
         {
             selected = await topLevel?.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
             {
-                Title = Ressources.Messages.ResourceManager.GetString("SelectSourcePathFile"),
+                Title = Ressources.Message.ResourceManager.GetString("SelectSourcePathFile"),
                 AllowMultiple = false
             })!;
         }
@@ -61,7 +61,7 @@ public partial class CreateJobDialogViewModel : DialogViewModel
         {
             selected = await topLevel?.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
             {
-                Title = Ressources.Messages.ResourceManager.GetString("SelectSourcePathFolder"),
+                Title = Ressources.Message.ResourceManager.GetString("SelectSourcePathFolder"),
                 AllowMultiple = false
             })!;
         }
@@ -79,7 +79,7 @@ public partial class CreateJobDialogViewModel : DialogViewModel
     
         var selected = await topLevel?.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
         {
-            Title = Ressources.Messages.ResourceManager.GetString("SelectDestinationPath"),
+            Title = Ressources.Message.ResourceManager.GetString("SelectDestinationPath"),
             AllowMultiple = false
         })!;
         if (selected.Count < 1) return;
