@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Avalonia.Controls;
-using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Core.Model;
 using EasySave.Core.Service;
-using EasySave.GUI.Ressources;
 using EasySave.GUI.Views;
 
 namespace EasySave.GUI.ViewModels;
@@ -41,18 +39,34 @@ public partial class BackupViewModel : ViewModelBase
     [RelayCommand]
     public async Task OpenCreateJobDialog(Window mainWindow)
     {
-        var dialog = new Window() 
+        var dialog = new Window 
         {
             Title = "Create New job",
             Content = new DialogCreateJob(),
-            Width = 500,
-            Height = 450,
+            Width = 1000,
+            Height = 470,
             WindowStartupLocation = WindowStartupLocation.CenterOwner,
-            CanResize = false
         };
         
         dialog.DataContext = new CreateJobDialogViewModel(this, dialog);
         
+        await dialog.ShowDialog(mainWindow);
+    }
+    
+    [RelayCommand]
+    public async Task OpenSettingsDialog(Window mainWindow)
+    {
+        var dialog = new Window
+        {
+            Title = "App Settings",
+            Content = new DialogSettings(),
+            Width = 500,
+            Height = 430,
+            WindowStartupLocation = WindowStartupLocation.CenterOwner,
+        };
+
+        dialog.DataContext = new SettingsDialogViewModel(dialog);
+
         await dialog.ShowDialog(mainWindow);
     }
 
