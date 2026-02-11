@@ -21,10 +21,4 @@
     <data name="SelectDestinationPath" xml:space="preserve">
         <value>Sélectionner le dossier de sauvegarde</value>
     </data>
-    <data name="SelectSourcePathFile" xml:space="preserve">
-        <value>test</value>
-    </data>
-    <data name="SelectSourcePathFolder" xml:space="preserve">
-        <value>test</value>
-    </data>
 </root>
