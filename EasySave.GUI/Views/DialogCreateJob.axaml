@@ -1,0 +1,43 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:EasySave.GUI.ViewModels;assembly=EasySave.GUI"
+             x:DataType="vm:CreateJobDialogViewModel"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="EasySave.GUI.Views.DialogCreateJob">
+    <Design.DataContext><vm:CreateJobDialogViewModel></vm:CreateJobDialogViewModel></Design.DataContext>
+    <Border>
+        <StackPanel Spacing="10" Margin="20">
+            <TextBlock Text="Job Name:" />
+            <TextBox Watermark="Enter job name" Text="{Binding Name}" />
+            
+            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                <TextBlock Text="Choose Saving Type:" VerticalAlignment="Center" Margin="0,0,10,0" />
+                <RadioButton Content="File" IsChecked="{Binding IsFileSelected}" GroupName="SaveType" Margin="0, 0, 5, 0" />
+                <RadioButton Content="Folder" IsChecked="{Binding IsFolderSelected}" GroupName="SaveType" />
+            </StackPanel>
+
+            <TextBlock Text="Source Path:" Margin="0,10,0,0" />
+            <Grid ColumnDefinitions="*,Auto">
+                <TextBox Grid.Column="0" Watermark="Select source folder" Text="{Binding SourcePath}" IsReadOnly="True" />
+                <Button Grid.Column="1" Content="Browse" Command="{Binding BrowseSourceCommand}" Margin="5,0,0,0" />
+            </Grid>
+    
+            <TextBlock Text="Destination Path:" Margin="0,10,0,0" />
+            <Grid ColumnDefinitions="*,Auto">
+                <TextBox Grid.Column="0" Watermark="Select destination folder" Text="{Binding DestinationPath}" IsReadOnly="True" />
+                <Button Grid.Column="1" Content="Browse" Margin="5,0,0,0" Command="{Binding BrowseDestinationCommand}" />
+            </Grid>
+    
+            <TextBlock Text="Backup Type:" Margin="0,10,0,0" />
+            <ComboBox ItemsSource="{Binding BackupTypes}" SelectedItem="{Binding SelectedBackupType}" PlaceholderText="Select backup type" HorizontalAlignment="Stretch" />
+    
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10" Margin="0,20,0,0">
+                <Button Content="Cancel" Command="{Binding CancelCommand}" />
+                <Button Content="Create" Command="{Binding CreateCommand}" Classes="accent" />
+            </StackPanel>
+        </StackPanel>
+
+    </Border>
+</UserControl>

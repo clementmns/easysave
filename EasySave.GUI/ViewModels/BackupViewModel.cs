@@ -1,15 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using Avalonia.Controls;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using EasySave.Core.Model;
 using EasySave.Core.Service;
+using EasySave.GUI.Views;
 
 namespace EasySave.GUI.ViewModels;
 
 /// <summary>
 /// ViewModel for managing backup jobs, providing methods to add, delete, update, and execute backup jobs.
 /// </summary>
-public class BackupViewModel : ViewModelBase
+public partial class BackupViewModel : ViewModelBase
 {
     /// <summary>
     /// Singleton instance of the BackupJobService.
@@ -30,6 +35,24 @@ public class BackupViewModel : ViewModelBase
     {
         _jobService = new BackupJobService(appDirectory);
         _backupExecutor = new BackupExecutor();
+    }
+
+    [RelayCommand]
+    public async Task OpenCreateJobDialog(Window mainWindow)
+    {
+        var dialog = new Window() 
+        {
+            Title = "Create New job",
+            Content = new DialogCreateJob(),
+            Width = 500,
+            Height = 450,
+            WindowStartupLocation = WindowStartupLocation.CenterOwner,
+            CanResize = false
+        };
+        
+        dialog.DataContext = new CreateJobDialogViewModel(this, dialog);
+        
+        await dialog.ShowDialog(mainWindow);
     }
 
     public bool AddJob(BackupJob job) => _jobService.CreateJob(job);
