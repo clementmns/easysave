@@ -41,6 +41,29 @@ public class FullBackupStrategy : IBackupStrategy
                 throw new Exception(Ressources.Errors.FileCantBeCopied);
             }
 
+            // Encrypt .txt files with CryptoSoft
+            if (fileInfo.Extension.ToLower() == ".txt")
+            {
+                var sourcePath = fileInfo.FullName;
+                var sourceRoot = Path.GetDirectoryName(sourcePath);
+                var relativePath = string.IsNullOrWhiteSpace(sourceRoot)
+                    ? fileInfo.Name
+                    : Path.GetRelativePath(sourceRoot, sourcePath);
+                var destinationFilePath = Path.Combine(job.DestinationPath, relativePath);
+                var encryptedPath = destinationFilePath + ".encrypted";
+                
+                if (CryptoUtils.EncryptFile(destinationFilePath, encryptedPath))
+                {
+                    // Delete the unencrypted file after successful encryption
+                    File.Delete(destinationFilePath);
+                    Console.WriteLine($"[CRYPTO] Fichier chiffré : {Path.GetFileName(encryptedPath)}");
+                }
+                else
+                {
+                    Console.WriteLine($"[CRYPTO] Échec chiffrement : {Path.GetFileName(destinationFilePath)}");
+                }
+            }
+
             job.State.Progression = 100;
             
             return true;
@@ -86,6 +109,22 @@ public class FullBackupStrategy : IBackupStrategy
                 if (!FileUtils.CopyFile(file.FullName, destinationBackupFolder, directoryInfo.FullName))
                 {
                     throw new Exception(Ressources.Errors.FileCantBeCopied);
+                }
+
+                // Chiffrer les fichiers .txt avec CryptoSoft
+                if (file.Extension.ToLower() == ".txt")
+                {
+                    var encryptedPath = destinationFilePath + ".encrypted";
+                    if (CryptoUtils.EncryptFile(destinationFilePath, encryptedPath))
+                    {
+                        // Supprimer le fichier non chiffré après chiffrement réussi
+                        File.Delete(destinationFilePath);
+                        Console.WriteLine($"[CRYPTO] File Encrypted : {Path.GetFileName(encryptedPath)}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"[CRYPTO] Encryption failed : {Path.GetFileName(destinationFilePath)}");
+                    }
                 }
 
                 job.State.RemainingFiles -= 1;

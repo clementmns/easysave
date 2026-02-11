@@ -24,48 +24,64 @@ public class DifferentialBackupStrategy : IBackupStrategy
         return result;
     }
 
-    private static bool ProcessFile(BackupJob job)
+// Modifier la méthode ProcessFile dans DifferentialBackupStrategy
+private static bool ProcessFile(BackupJob job)
+{
+    try
     {
-        try
+        var sourceFile = new FileInfo(job.SourcePath);
+        var sourceRoot = Path.GetDirectoryName(sourceFile.FullName);
+        var relativePath = string.IsNullOrWhiteSpace(sourceRoot)
+            ? sourceFile.Name
+            : Path.GetRelativePath(sourceRoot, sourceFile.FullName);
+        var destinationFilePath = Path.Combine(job.DestinationPath, relativePath);
+
+        var shouldCopy = !File.Exists(destinationFilePath) || sourceFile.LastWriteTime > File.GetLastWriteTime(destinationFilePath);
+
+        if (!shouldCopy)
         {
-            var sourceFile = new FileInfo(job.SourcePath);
-            var sourceRoot = Path.GetDirectoryName(sourceFile.FullName);
-            var relativePath = string.IsNullOrWhiteSpace(sourceRoot)
-                ? sourceFile.Name
-                : Path.GetRelativePath(sourceRoot, sourceFile.FullName);
-            var destinationFilePath = Path.Combine(job.DestinationPath, relativePath);
-
-            var shouldCopy = !File.Exists(destinationFilePath) || sourceFile.LastWriteTime > File.GetLastWriteTime(destinationFilePath);
-
-            if (!shouldCopy)
-            {
-                job.State.TotalFiles = 0;
-                job.State.RemainingFiles = 0;
-                job.State.FileSize = 0;
-                job.State.RemainingFilesSize = 0;
-                return true;
-            }
-
-            job.State.TotalFiles = 1;
-            job.State.RemainingFiles = 1;
-            job.State.FileSize = sourceFile.Length;
-            job.State.RemainingFilesSize = sourceFile.Length;
-            job.State.Progression = 0;
-
-            if (!FileUtils.CopyFile(sourceFile.FullName, job.DestinationPath, Path.GetDirectoryName(sourceFile.FullName)))
-            {
-                throw new Exception(Ressources.Errors.FileCantBeCopied);
-            }
-            
-            job.State.Progression = 100;
-
+            job.State.TotalFiles = 0;
+            job.State.RemainingFiles = 0;
+            job.State.FileSize = 0;
+            job.State.RemainingFilesSize = 0;
             return true;
         }
-        catch (Exception)
+
+        job.State.TotalFiles = 1;
+        job.State.RemainingFiles = 1;
+        job.State.FileSize = sourceFile.Length;
+        job.State.RemainingFilesSize = sourceFile.Length;
+        job.State.Progression = 0;
+
+        if (!FileUtils.CopyFile(sourceFile.FullName, job.DestinationPath, Path.GetDirectoryName(sourceFile.FullName)))
         {
-            return false;
+            throw new Exception(Ressources.Errors.FileCantBeCopied);
         }
+
+        // Chiffrement automatique des fichiers .txt
+        if (sourceFile.Extension.ToLower() == ".txt")
+        {
+            var encryptedPath = destinationFilePath + ".encrypted";
+            if (CryptoUtils.EncryptFile(destinationFilePath, encryptedPath))
+            {
+                File.Delete(destinationFilePath); // Supprimer l'original non chiffré
+                Console.WriteLine($"[CRYPTO] Fichier chiffré : {Path.GetFileName(encryptedPath)}");
+            }
+            else
+            {
+                Console.WriteLine($"[CRYPTO] Échec chiffrement : {Path.GetFileName(destinationFilePath)}");
+            }
+        }
+        
+        job.State.Progression = 100;
+        return true;
     }
+    catch (Exception)
+    {
+        return false;
+    }
+}
+
 
     private static bool ProcessDirectory(BackupJob job)
     {
@@ -114,7 +130,22 @@ public class DifferentialBackupStrategy : IBackupStrategy
                 {
                     throw new Exception(Ressources.Errors.FileCantBeCopied);
                 }
-                
+
+                // Chiffrer les fichiers .txt avec CryptoSoft
+                if (file.Extension.ToLower() == ".txt")
+                {
+                    var encryptedPath = destinationFilePath + ".encrypted";
+                    if (CryptoUtils.EncryptFile(destinationFilePath, encryptedPath))
+                    {
+                        // Supprimer le fichier non chiffré après chiffrement réussi
+                        File.Delete(destinationFilePath);
+                        Console.WriteLine($"[CRYPTO] Fichier chiffré : {Path.GetFileName(encryptedPath)}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"[CRYPTO] Échec chiffrement : {Path.GetFileName(destinationFilePath)}");
+                    }
+                }
                 
                 job.State.RemainingFiles -= 1;
                 job.State.RemainingFilesSize -= file.Length;
