@@ -18,9 +18,9 @@ public class ConsoleAppView : IProgressionObserver
     private string _currentJobName = "";
     
 
-    public ConsoleAppView(string appSaveDirectory)
+    public ConsoleAppView()
     {
-        _backupViewModel = new BackupViewModel(appSaveDirectory);
+        _backupViewModel = new BackupViewModel();
         _consoleWidth = Console.WindowWidth;
     }
     
@@ -76,7 +76,7 @@ public class ConsoleAppView : IProgressionObserver
                 case 1:
                     // Add a new job
                     var currentJobs = _backupViewModel.Jobs?.ToList() ?? [];
-                    if (currentJobs.Count == maxFiles)
+                    if (currentJobs.Count >= SettingsService.GetInstance.Settings.MaxJobs)
                     {
                         Console.ForegroundColor = ConsoleTheme.WarningColor;
                         Console.WriteLine(Messages.ResourceManager.GetString("MaxFileWarning"));
