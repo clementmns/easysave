@@ -1,4 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
         <TargetFramework>net10.0</TargetFramework>
@@ -15,23 +16,23 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Avalonia" Version="11.3.11"/>
+        <PackageReference Include="Avalonia" Version="11.3.11" />
         <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.3.11" />
-        <PackageReference Include="Avalonia.Desktop" Version="11.3.11"/>
+        <PackageReference Include="Avalonia.Desktop" Version="11.3.11" />
         <PackageReference Include="Avalonia.Svg.Skia" Version="11.3.0" />
-        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.11"/>
-        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.11"/>
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.11" />
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.11" />
         <PackageReference Include="Avalonia.Diagnostics" Version="11.3.11">
             <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
             <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1"/>
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\EasySave.Core\EasySave.Core.csproj" />
         <AvaloniaResource Include="Assets\**" />
-        <AvaloniaResource Include="Ressources\**"/>
+        <AvaloniaResource Include="Ressources\**" />
     </ItemGroup>
 
     <ItemGroup>
@@ -39,7 +40,7 @@
             <Generator>PublicResXFileCodeGenerator</Generator>
             <LastGenOutput>Messages.Designer.cs</LastGenOutput>
         </EmbeddedResource>
-        
+
         <EmbeddedResource Update="Ressources\Messages.de-DE.resx">
             <DependentUpon>Messages.resx</DependentUpon>
         </EmbeddedResource>
@@ -55,24 +56,6 @@
         <EmbeddedResource Update="Ressources\Messages.it-IT.resx">
             <DependentUpon>Messages.resx</DependentUpon>
         </EmbeddedResource>
-
-        <EmbeddedResource Update="Ressources\Message.resx">
-          <Generator>ResXFileCodeGenerator</Generator>
-          <LastGenOutput>Message.Designer.cs</LastGenOutput>
-        </EmbeddedResource>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Compile Update="Ressources\Messages.Designer.cs">
-            <DesignTime>True</DesignTime>
-            <AutoGen>True</AutoGen>
-            <DependentUpon>Messages.resx</DependentUpon>
-        </Compile>
-        <Compile Update="Ressources\Message.Designer.cs">
-          <DesignTime>True</DesignTime>
-          <AutoGen>True</AutoGen>
-          <DependentUpon>Message.resx</DependentUpon>
-        </Compile>
     </ItemGroup>
 
     <ItemGroup>
@@ -82,4 +65,5 @@
             <DependentUpon>Messages.resx</DependentUpon>
         </Compile>
     </ItemGroup>
+
 </Project>

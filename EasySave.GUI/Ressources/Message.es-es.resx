@@ -11,7 +11,40 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="DeleteText" xml:space="preserve">
+    <data name="test" xml:space="preserve">
+        <value>jfj</value>
+    </data>
+    <data name="deleteText" xml:space="preserve">
         <value>eliminar</value>
+    </data>
+    <data name="addText" xml:space="preserve">
+        <value>añadir</value>
+    </data>
+    <data name="ExecuteText" xml:space="preserve">
+        <value>ejecutar </value>
+    </data>
+    <data name="breakText" xml:space="preserve">
+        <value>pausa</value>
+    </data>
+    <data name="name" xml:space="preserve">
+        <value>nombre</value>
+    </data>
+    <data name="progression" xml:space="preserve">
+        <value>progresión</value>
+    </data>
+    <data name="size" xml:space="preserve">
+        <value>talla</value>
+    </data>
+    <data name="state" xml:space="preserve">
+        <value>estado</value>
+    </data>
+    <data name="destination" xml:space="preserve">
+        <value>destino</value>
+    </data>
+    <data name="source" xml:space="preserve">
+        <value>fuente</value>
+    </data>
+    <data name="type" xml:space="preserve">
+        <value>tipo</value>
     </data>
 </root>

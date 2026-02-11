@@ -21,7 +21,7 @@ namespace EasySave.GUI.Ressources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Message {
+    public class Message {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -60,11 +60,83 @@ namespace EasySave.GUI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete.
+        ///   Looks up a localized string similar to add.
         /// </summary>
-        internal static string DeleteText {
+        public static string addText {
             get {
-                return ResourceManager.GetString("DeleteText", resourceCulture);
+                return ResourceManager.GetString("addText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to break.
+        /// </summary>
+        public static string breakText {
+            get {
+                return ResourceManager.GetString("breakText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to delete.
+        /// </summary>
+        public static string deleteText {
+            get {
+                return ResourceManager.GetString("deleteText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to execute.
+        /// </summary>
+        public static string ExecuteText {
+            get {
+                return ResourceManager.GetString("ExecuteText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to name.
+        /// </summary>
+        public static string name {
+            get {
+                return ResourceManager.GetString("name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to progression.
+        /// </summary>
+        public static string progression {
+            get {
+                return ResourceManager.GetString("progression", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to size.
+        /// </summary>
+        public static string size {
+            get {
+                return ResourceManager.GetString("size", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to state.
+        /// </summary>
+        public static string state {
+            get {
+                return ResourceManager.GetString("state", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to test1.
+        /// </summary>
+        public static string test {
+            get {
+                return ResourceManager.GetString("test", resourceCulture);
             }
         }
     }
