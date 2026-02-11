@@ -9,139 +9,74 @@
         Title="EasySave"
         Icon="avares://EasySave.GUI/Ressources/ico/Logo.ico"
         Width="1200" Height="700">
-    
-    <Grid RowDefinitions="Auto,*,Auto" Margin="0">
-        
-        <Border Grid.Row="0" 
-                Background="#8961CC"
-                Padding="20,15">
+
+    <Grid RowDefinitions="Auto, Auto, *">
+
+        <Border Grid.Row="0" Background="#8961CC" Padding="20,15">
             <Grid ColumnDefinitions="Auto,*,Auto">
-                
-                
-                <Button Grid.Column="0"
-                        Background="Transparent"
-                        Foreground="White"
-                        BorderThickness="1"
-                        BorderBrush="White"
-                        Padding="15,8"
-                        CornerRadius="5"
-                        Cursor="Hand">
-                        <Svg Path="avares://EasySave.GUI/Ressources/svg/settings.svg"
-                             Width="18"
-                             Height="18"/>
-                    
-                    <Button.Styles>
-                        <Style Selector="Button:pointerover">
-                            <Setter Property="Background" Value="#34495E"/>
-                        </Style>
-                    </Button.Styles>
+                <Button Grid.Column="0" Background="Transparent" BorderThickness="1" BorderBrush="White" CornerRadius="5" Padding="8" Cursor="Hand">
+                    <PathIcon Data="{StaticResource settings_icon}" Width="18" Height="18" Foreground="White"/>
                 </Button>
-                
-                
-                <Svg Grid.Column="1"
-                       Path="avares://EasySave.GUI/Ressources/svg/Logo.svg"
-                       Width="150"
-                       Height="40"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"/>
+                <TextBlock Grid.Column="1" Text="EASYSAVE" FontWeight="Bold" Foreground="White" FontSize="24" HorizontalAlignment="Center"/>
             </Grid>
         </Border>
-        
-        <Grid Grid.Row="1" ColumnDefinitions="2*,1*" ColumnSpacing="10" Margin="10">
+
+        <Border Grid.Row="1" Background="#F0F0F0" BorderBrush="#DDD" BorderThickness="0,0,0,1" Padding="10,5">
+            <StackPanel Orientation="Horizontal" Spacing="10">
+                <Button Command="{Binding OpenCreateJobDialog}" CommandParameter="{Binding $parent[Window]}" Background="Transparent" BorderThickness="0" Cursor="Hand">
+                    <StackPanel Orientation="Horizontal" Spacing="5">
+                        <TextBlock Text="+" FontWeight="Bold" Foreground="#8961CC" VerticalAlignment="Center"/>
+                        <TextBlock Text="Ajouter" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <Rectangle Width="1" Fill="Gray" Margin="5,2" VerticalAlignment="Stretch"/>
+                <Button Content="Exécuter" Background="Transparent" BorderThickness="0"/>
+                <Button Content="Pause" Background="Transparent" BorderThickness="0"/>
+                <Button Content="Supprimer" Background="Transparent" BorderThickness="0" Foreground="Red"/>
+            </StackPanel>
+        </Border>
+
+        <Grid Grid.Row="2" RowDefinitions="*, 4, *">
             
-            <Border Grid.Column="0" 
-                    BorderBrush="Gray" 
-                    BorderThickness="1"
-                    CornerRadius="5"
-                    Padding="5">
-                <DataGrid ItemsSource="{Binding Jobs}"
-                          IsReadOnly="True"
-                          GridLinesVisibility="All"
-                          BorderThickness="0">
-                    <DataGrid.Columns>
-                        <DataGridCheckBoxColumn Header="" Width="40"/>
-                        <DataGridTextColumn Header="ID"
-                                            Binding="{Binding Id}"
-                                            Width="50"/>
-                        <DataGridTextColumn Header="Nom"
-                                            Binding="{Binding Name}"
-                                            Width="120"/>
-                        <DataGridTextColumn Header="Chemin Source"
-                                            Binding="{Binding SourcePath}"
-                                            Width="*"/>
-                        <DataGridTextColumn Header="Chemin Destination"
-                                            Binding="{Binding DestinationPath}"
-                                            Width="*"/>
-                    </DataGrid.Columns>
-                </DataGrid>
+            <DataGrid Grid.Row="0"
+                      ItemsSource="{Binding Jobs}"
+                      AutoGenerateColumns="False"
+                      CanUserResizeColumns="True"
+                      GridLinesVisibility="Horizontal"
+                      BorderThickness="0"
+                      RowBackground="White"
+                      >
+                
+                <DataGrid.Columns>
+                    <DataGridCheckBoxColumn  Width="40"/>
+                    <DataGridTextColumn Header="Nom" Binding="{Binding Name}" Width="2*" IsReadOnly="True" FontWeight="SemiBold"/>
+                    <DataGridTextColumn Header="Size" IsReadOnly="True" Width="100"/>
+                    <DataGridTemplateColumn Header="État" Width="120">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border Background="#2ecc71" CornerRadius="4" VerticalAlignment="Center" HorizontalAlignment="Left" Padding="8,2" >
+                                    <TextBlock Text="PRÊT" Foreground="White" FontWeight="Bold" FontSize="11"/>
+                                </Border>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Progression" IsReadOnly="True" Width="3*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <GridSplitter Grid.Row="1" 
+                          ResizeDirection="Rows" 
+                          Background="#DDD" 
+                          HorizontalAlignment="Stretch" 
+                          VerticalAlignment="Stretch"/>
+
+            <Border Grid.Row="2" Background="#2D2D30" Padding="10">
+                <Grid RowDefinitions="Auto, *">
+                    <TextBlock Text="Jfsfd" Foreground="White" FontWeight="Bold" Margin="0,0,0,5"/>
+                </Grid>
             </Border>
-            
-            <Border Grid.Column="1" 
-                    BorderBrush="LightGray" 
-                    BorderThickness="1"
-                    CornerRadius="5"
-                    Background="WhiteSmoke"
-                    Padding="10">
-                <StackPanel>
-                    <TextBlock Text="Détails du job" 
-                               FontWeight="Bold"
-                               FontSize="14"
-                               Margin="0,0,0,10"/>
-                </StackPanel>
-            </Border>
-            
+
         </Grid>
-        
-        <Border Grid.Row="2" 
-                BorderBrush="Gray" 
-                BorderThickness="1,0,1,1"
-                Background="WhiteSmoke"
-                Padding="15"
-                Margin="10,0,10,10">
-            
-            <Grid ColumnDefinitions="*,Auto">
-                
-                <StackPanel Grid.Column="0" 
-                            VerticalAlignment="Center"
-                            Spacing="5">
-                    <TextBlock Text="Progression : En attente..." 
-                               FontSize="12"
-                               Foreground="Gray"/>
-                    <ProgressBar Height="20"
-                                 Minimum="0"
-                                 Maximum="100"
-                                 Value="0"
-                                 ShowProgressText="True"/>
-                </StackPanel>
-                
-                <StackPanel Grid.Column="1" 
-                            Orientation="Horizontal" 
-                            Spacing="10"
-                            VerticalAlignment="Center"
-                            Margin="20,0,0,0">
-                    <Button Content="Ajouter" 
-                            Width="100"
-                            Height="35"
-                            Command="{Binding OpenCreateJobDialog}"
-                            CommandParameter="{Binding $parent[Window]}"/>
-                    <Button Content="Exécuter" 
-                            Width="100"
-                            Height="35"
-                            />
-                    <Button Content="Supprimer" 
-                            Width="100"
-                            Height="35"
-                            />
-                    <Button Content="Pause" 
-                            Width="100"
-                            Height="35"
-                            />
-                </StackPanel>
-                
-            </Grid>
-            
-        </Border>
-        
+
     </Grid>
-        
 </Window>
