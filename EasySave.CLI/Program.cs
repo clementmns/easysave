@@ -1,4 +1,5 @@
-﻿using EasySave.CLI.Views;
+using EasySave.CLI.Ressources;
+using EasySave.CLI.Views;
 using EasySave.Core.Service;
 
 namespace EasySave.CLI;
@@ -8,10 +9,8 @@ internal abstract class Program
     private static void Main(string[] args)
     {
         // init app settings
-        var appSaveDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/ProSoft/EasySave";
-        SettingsService.Init(appSaveDirectory);
-
-        var consoleAppView = new ConsoleAppView(appSaveDirectory);
+        SettingsService.Init(new AppProperties());
+        var consoleAppView = new ConsoleAppView();
 
         // cli execution (`EasySave.Core.exe 1-3` or `EasySave.Core.exe 1-3`)
         if (args.Length > 0)

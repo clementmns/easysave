@@ -7,28 +7,28 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace EasySave.Core.Ressources {
+namespace EasySave.GUI.Ressources {
     using System;
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Errors {
+    internal class Messages_es_ES {
         
         private static System.Resources.ResourceManager resourceMan;
         
         private static System.Globalization.CultureInfo resourceCulture;
         
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Errors() {
+        internal Messages_es_ES() {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("EasySave.Core.Ressources.Errors", typeof(Errors).Assembly);
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("EasySave.GUI.Ressources.Messages_es_ES", typeof(Messages_es_ES).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -42,36 +42,6 @@ namespace EasySave.Core.Ressources {
             }
             set {
                 resourceCulture = value;
-            }
-        }
-        
-        internal static string NameCantBeNull {
-            get {
-                return ResourceManager.GetString("NameCantBeNull", resourceCulture);
-            }
-        }
-        
-        internal static string SourceCantBeNull {
-            get {
-                return ResourceManager.GetString("SourceCantBeNull", resourceCulture);
-            }
-        }
-        
-        internal static string ProcessingError {
-            get {
-                return ResourceManager.GetString("ProcessingError", resourceCulture);
-            }
-        }
-        
-        internal static string FileCantBeCopied {
-            get {
-                return ResourceManager.GetString("FileCantBeCopied", resourceCulture);
-            }
-        }
-        
-        internal static string MaxJobsReached {
-            get {
-                return ResourceManager.GetString("MaxJobsReached", resourceCulture);
             }
         }
     }

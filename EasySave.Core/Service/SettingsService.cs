@@ -20,27 +20,29 @@ namespace EasySave.Core.Service
             PropertyNameCaseInsensitive = true
         };
 
-        private SettingsService(string appDirectory)
+        private SettingsService(IAppProperties properties)
         {
-            if (!Directory.Exists(appDirectory))
+            if (!Directory.Exists(properties.AppSaveDirectory))
             {
-                FileUtils.CreateDirectory(appDirectory);
+                FileUtils.CreateDirectory(properties.AppSaveDirectory);
             }
 
-            _settingsFilePath = Path.Combine(appDirectory, "settings.json");
+            _settingsFilePath = Path.Combine(properties.AppSaveDirectory, "settings.json");
             _settings = LoadOrCreateSettings();
+            _settings.AppSaveDirectory = properties.AppSaveDirectory;
+            _settings.MaxJobs = properties.MaxJobs;
         }
 
         /// <summary>
         /// Initialize the settings service
         /// </summary>
-        /// <param name="appDirectory">Application content directory</param>
-        public static void Init(string appDirectory)
+        /// <param name="properties"></param>
+        public static void Init(IAppProperties properties)
         {
             if (_instance != null) return;
             {
-                _instance ??= new SettingsService(appDirectory);
-                Logger.Init(appDirectory, [GetLoggerStrategyFromLogFormat(_instance.Settings.LogFormat)]);
+                _instance ??= new SettingsService(properties);
+                Logger.Init(properties.AppSaveDirectory, [GetLoggerStrategyFromLogFormat(_instance.Settings.LogFormat)]);
             }
         }
         

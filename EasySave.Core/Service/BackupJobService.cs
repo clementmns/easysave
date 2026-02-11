@@ -19,11 +19,12 @@ public class BackupJobService : IRealTimeStateObserver
         PropertyNameCaseInsensitive = true,
     };
     
-    public BackupJobService(string appDirectory)
+    public BackupJobService()
     {
-        if (!Directory.Exists(appDirectory)) FileUtils.CreateDirectory(appDirectory);
+        var appSaveDirectory = SettingsService.GetInstance.Settings.AppSaveDirectory;
+        if (!Directory.Exists(appSaveDirectory)) FileUtils.CreateDirectory(appSaveDirectory);
 
-        _stateFilePath = Path.Combine(appDirectory, "state.json");
+        _stateFilePath = Path.Combine(appSaveDirectory, "state.json");
         Jobs = LoadJobs();
         SubscribeToJobStates();
     }

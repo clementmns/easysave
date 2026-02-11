@@ -7,6 +7,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Core.Model;
 using EasySave.Core.Service;
+using EasySave.GUI.Ressources;
 using EasySave.GUI.Views;
 
 namespace EasySave.GUI.ViewModels;
@@ -31,9 +32,9 @@ public partial class BackupViewModel : ViewModelBase
     /// </summary>
     public ObservableCollection<BackupJob>? Jobs => _jobService.Jobs;
     
-    public BackupViewModel(string appDirectory)
+    public BackupViewModel()
     {
-        _jobService = new BackupJobService(appDirectory);
+        _jobService = new BackupJobService();
         _backupExecutor = new BackupExecutor();
     }
 

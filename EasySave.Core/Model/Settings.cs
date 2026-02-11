@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace EasySave.Core.Model;
 
 /// <summary>
@@ -13,4 +15,10 @@ public class Settings
     public string Language { get; set; } = "en-US";
     
     public LogFormat LogFormat { get; set; } = LogFormat.Json;
+    
+    [JsonIgnore]
+    public int MaxJobs { get; set; }
+    
+    [JsonIgnore]
+    public string AppSaveDirectory { get; set; } = "";
 }
