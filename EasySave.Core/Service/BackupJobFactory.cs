@@ -6,7 +6,6 @@ namespace EasySave.Core.Service;
 public class BackupJobFactory
 {
     private static BackupJobFactory? _instance;
-    private const int MaxJobs = 5;
 
     private BackupJobFactory()
     {
@@ -33,13 +32,14 @@ public class BackupJobFactory
 
         existingJobs ??= [];
         
-        if (existingJobs.Count >= MaxJobs)
+        if (existingJobs.Count >= SettingsService.GetInstance.Settings.MaxJobs)
         {
-            throw new Exception();
+            throw new InvalidOperationException(Errors.MaxJobsReached);
         }
         
         var newId = 0;
-        for (var i = 1; i <= MaxJobs; i++)
+        var maxId = existingJobs.Select(job => job.Id).DefaultIfEmpty(0).Max() + 1; // get one more than the max id in the list to avoid memory leap
+        for (var i = 1; i <= maxId; i++)
         {
             // check if the id is already taken
             var isTaken = existingJobs.Any(job => job.Id == i);

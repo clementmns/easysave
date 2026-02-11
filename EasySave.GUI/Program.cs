@@ -1,6 +1,7 @@
-﻿using Avalonia;
+using Avalonia;
 using System;
 using EasySave.Core.Service;
+using EasySave.GUI.Ressources;
 
 namespace EasySave.GUI;
 
@@ -12,7 +13,7 @@ sealed class Program
     [STAThread]
     public static void Main(string[] args)
     {
-        SettingsService.Init(Ressources.Constant.AppSaveDirectory);
+        SettingsService.Init(new AppProperties());
         
         BuildAvaloniaApp()
             .StartWithClassicDesktopLifetime(args);

@@ -18,19 +18,7 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="NameCantBeNull" xml:space="preserve">
-        <value>The name cannot be null or empty.</value>
-    </data>
-    <data name="SourceCantBeNull" xml:space="preserve">
-        <value>The source and destination cannot be null or empty.</value>
-    </data>
-    <data name="ProcessingError" xml:space="preserve">
-        <value>The path can't be processed.</value>
-    </data>
-    <data name="FileCantBeCopied" xml:space="preserve">
-        <value>The file can't be copied.</value>
-    </data>
-    <data name="MaxJobsReached" xml:space="preserve">
-        <value>Max jobs reached</value>
+    <data name="SelectDestinationPath" xml:space="preserve">
+        <value>Sélectionner le dossier de sauvegarde</value>
     </data>
 </root>

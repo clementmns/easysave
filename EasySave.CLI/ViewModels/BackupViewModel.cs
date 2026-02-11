@@ -24,9 +24,9 @@ public class BackupViewModel
     /// </summary>
     public ObservableCollection<BackupJob>? Jobs => _jobService.Jobs;
     
-    public BackupViewModel(string appDirectory)
+    public BackupViewModel()
     {
-        _jobService = new BackupJobService(appDirectory);
+        _jobService = new BackupJobService();
         _backupExecutor = new BackupExecutor();
     }
 
