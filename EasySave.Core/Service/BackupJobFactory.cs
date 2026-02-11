@@ -38,7 +38,7 @@ public class BackupJobFactory
         }
         
         var newId = 0;
-        var maxId = existingJobs.Max(job => job.Id) + 1; // get one more than the max id in the list to avoid memory leap
+        var maxId = existingJobs.Select(job => job.Id).DefaultIfEmpty(0).Max() + 1; // get one more than the max id in the list to avoid memory leap
         for (var i = 1; i <= maxId; i++)
         {
             // check if the id is already taken
