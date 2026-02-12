@@ -51,9 +51,21 @@ namespace EasySave.GUI.Assets {
             }
         }
         
-        public static string qsdqsd {
+        public static string SelectSourcePathFolder {
             get {
-                return ResourceManager.GetString("qsdqsd", resourceCulture);
+                return ResourceManager.GetString("SelectSourcePathFolder", resourceCulture);
+            }
+        }
+        
+        public static string SelectSourcePathFile {
+            get {
+                return ResourceManager.GetString("SelectSourcePathFile", resourceCulture);
+            }
+        }
+        
+        public static string SelectDestinationPath {
+            get {
+                return ResourceManager.GetString("SelectDestinationPath", resourceCulture);
             }
         }
     }

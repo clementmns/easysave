@@ -22,7 +22,9 @@
                         BorderThickness="1" 
                         CornerRadius="5" 
                         Padding="8" 
-                        Cursor="Hand">
+                        Cursor="Hand"
+                        Command="{Binding OpenSettingsDialogCommand}"
+                        CommandParameter="{Binding $parent[Window]}">
                     <Svg Path="avares://EasySave.GUI/Assets/svg/settings.svg" 
                          Width="18" 
                          Height="18"/>

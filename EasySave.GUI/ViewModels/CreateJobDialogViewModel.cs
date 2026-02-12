@@ -8,6 +8,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Core.Model;
 using EasySave.Core.Service;
+using EasySave.GUI.Assets;
 
 namespace EasySave.GUI.ViewModels;
 
@@ -53,7 +54,7 @@ public partial class CreateJobDialogViewModel : DialogViewModel
         {
             selected = await topLevel?.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
             {
-                Title = Ressources.Message.ResourceManager.GetString("SelectSourcePathFile"),
+                Title = Messages.SelectSourcePathFile,
                 AllowMultiple = false
             })!;
         }
@@ -61,7 +62,7 @@ public partial class CreateJobDialogViewModel : DialogViewModel
         {
             selected = await topLevel?.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
             {
-                Title = Ressources.Message.ResourceManager.GetString("SelectSourcePathFolder"),
+                Title = Messages.SelectSourcePathFolder,
                 AllowMultiple = false
             })!;
         }
@@ -79,7 +80,7 @@ public partial class CreateJobDialogViewModel : DialogViewModel
     
         var selected = await topLevel?.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
         {
-            Title = Ressources.Message.ResourceManager.GetString("SelectDestinationPath"),
+            Title = Messages.SelectDestinationPath,
             AllowMultiple = false
         })!;
         if (selected.Count < 1) return;

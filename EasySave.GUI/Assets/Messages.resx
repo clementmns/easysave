@@ -21,7 +21,13 @@
     <data name="test" xml:space="preserve">
         <value>test</value>
     </data>
-    <data name="qsdqsd" xml:space="preserve">
-        <value />
+    <data name="SelectSourcePathFolder" xml:space="preserve">
+        <value>Select source path folder</value>
+    </data>
+    <data name="SelectSourcePathFile" xml:space="preserve">
+        <value>Select source path file</value>
+    </data>
+    <data name="SelectDestinationPath" xml:space="preserve">
+        <value>Select destination path</value>
     </data>
 </root>
