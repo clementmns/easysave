@@ -30,4 +30,7 @@
     <data name="SelectDestinationPath" xml:space="preserve">
         <value>Select destination path</value>
     </data>
+    <data name="execute" xml:space="preserve">
+        <value>execute</value>
+    </data>
 </root>

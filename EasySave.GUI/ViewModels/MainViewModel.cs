@@ -7,6 +7,7 @@ using CommunityToolkit.Mvvm.Input;
 using EasySave.Core.Model;
 using EasySave.Core.Service;
 using EasySave.GUI.Views;
+using System.Linq;
 
 namespace EasySave.GUI.ViewModels;
 
@@ -69,6 +70,19 @@ public partial class MainViewModel : ViewModelBase
         await dialog.ShowDialog(mainWindow);
     }
     
+    
+    [RelayCommand]
+    public async Task ExecuteSelectedJobs()
+    {
+        if (SelectedJobs.Count == 0) return;
+    
+        foreach (var job in SelectedJobs.ToList())
+        {
+            await Task.Run(() => ExecuteJob(job));
+            
+        }
+    }
+    
     [RelayCommand]
     public async Task OpenSettingsDialog(Window mainWindow)
     {
@@ -92,18 +106,30 @@ public partial class MainViewModel : ViewModelBase
     
     public bool ExecuteJob(BackupJob job, IProgressionObserver? progressionObserver = null)
     {
-        // attach to needed observers
-        job.State.AttachStateObserver(_jobService);
-        if (progressionObserver != null) job.State.AttachProgressionObserver(progressionObserver);
+        try
+        {
+            Console.WriteLine($"Start : {job.Name}");
         
-        var result = _jobService.ExecuteJob(job);
-        
-        // detach from observers to avoid memory leaks
-        job.State.DetachStateObserver(_jobService);
-        if (progressionObserver != null) job.State.DetachProgressionObserver(progressionObserver);
+            // attach to needed observers
+            job.State.AttachStateObserver(_jobService);
+            if (progressionObserver != null) job.State.AttachProgressionObserver(progressionObserver);
 
-        return result;
+            var result = _jobService.ExecuteJob(job);
+
+            // detach from observers to avoid memory leaks
+            job.State.DetachStateObserver(_jobService);
+            if (progressionObserver != null) job.State.DetachProgressionObserver(progressionObserver);
+
+            Console.WriteLine($"Job {job.Name} finished with success: {result}");
+            return result;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Debug : {job.Name}: {ex.Message}");
+            return false;
+        }
     }
+
 
     public void UpdateJob(BackupJob job) => _jobService.UpdateJob(job);
     

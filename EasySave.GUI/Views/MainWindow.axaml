@@ -49,7 +49,11 @@
                 </Button>
                 <Rectangle Width="1" Fill="Gray" Margin="5,2" VerticalAlignment="Stretch"/>
                 <Button Content="{x:Static ressources:Messages.test}" Background="Transparent" BorderThickness="0"/>
-                <Button Content="{x:Static ressources:Messages.test}" Background="Transparent" BorderThickness="0"/>
+                <Button Content="{x:Static ressources:Messages.execute}" 
+                        Background="Transparent" 
+                        BorderThickness="0"
+                        Command="{Binding ExecuteSelectedJobsCommand}"
+                        IsEnabled="{Binding SelectedJobs.Count}"/>
                 <Button Content="{x:Static ressources:Messages.test}" Background="Transparent" BorderThickness="0" Foreground="Red"/>
             </StackPanel>
         </Border>
