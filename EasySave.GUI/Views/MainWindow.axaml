@@ -3,13 +3,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:EasySave.GUI.ViewModels"
-        xmlns:lang="clr-namespace:EasySave.GUI.Ressources"
         mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="700"
         x:Class="EasySave.GUI.Views.MainWindow"
         x:DataType="vm:BackupViewModel"
         Title="EasySave"
-        Icon="avares://EasySave.GUI/Ressources/ico/Logo.ico"
+        Icon="avares://EasySave.GUI/Assets/ico/Logo.ico"
         xmlns:model="clr-namespace:EasySave.Core.Model;assembly=EasySave.Core"
+        xmlns:assets="clr-namespace:EasySave.GUI.Assets"
         Width="1200" Height="700">
 
     <Grid RowDefinitions="Auto, Auto, *">
@@ -23,13 +23,13 @@
                         CornerRadius="5" 
                         Padding="8" 
                         Cursor="Hand">
-                    <Svg Path="avares://EasySave.GUI/Ressources/svg/settings.svg" 
+                    <Svg Path="avares://EasySave.GUI/Assets/svg/settings.svg" 
                          Width="18" 
                          Height="18"/>
                 </Button>
 
                 <Svg Grid.Column="1"
-                     Path="avares://EasySave.GUI/Ressources/svg/Logo.svg"
+                     Path="avares://EasySave.GUI/Assets/svg/Logo.svg"
                      Width="150"
                      Height="40"
                      HorizontalAlignment="Center"
@@ -42,13 +42,13 @@
                 <Button Command="{Binding OpenCreateJobDialog}" CommandParameter="{Binding $parent[Window]}" Background="Transparent" BorderThickness="0" Cursor="Hand">
                     <StackPanel Orientation="Horizontal" Spacing="5">
                         <TextBlock Text="+" FontWeight="Bold" Foreground="#8961CC" VerticalAlignment="Center"/>
-                        <TextBlock Text="{x:Static lang:Message.addText}" VerticalAlignment="Center"/>
+                        <TextBlock Text="{x:Static assets:Messages.test}" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
                 <Rectangle Width="1" Fill="Gray" Margin="5,2" VerticalAlignment="Stretch"/>
-                <Button Content="{x:Static lang:Message.ExecuteText}" Background="Transparent" BorderThickness="0"/>
-                <Button Content="{x:Static lang:Message.breakText}" Background="Transparent" BorderThickness="0"/>
-                <Button Content="{x:Static lang:Message.deleteText}" Background="Transparent" BorderThickness="0" Foreground="Red"/>
+                <Button Content="{x:Static assets:Messages.test}" Background="Transparent" BorderThickness="0"/>
+                <Button Content="{x:Static assets:Messages.test}" Background="Transparent" BorderThickness="0"/>
+                <Button Content="{x:Static assets:Messages.test}" Background="Transparent" BorderThickness="0" Foreground="Red"/>
             </StackPanel>
         </Border>
 
@@ -75,11 +75,11 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                     
-                    <DataGridTextColumn Header="{x:Static lang:Message.name}" Binding="{Binding Name}" Width="2*" IsReadOnly="True" FontWeight="SemiBold"/>
+                    <DataGridTextColumn Header="{x:Static assets:Messages.test}" Binding="{Binding Name}" Width="2*" IsReadOnly="True" FontWeight="SemiBold"/>
                     
-                    <DataGridTextColumn Header="{x:Static lang:Message.size}" IsReadOnly="True" Width="100"/>
+                    <DataGridTextColumn Header="{x:Static assets:Messages.test}" IsReadOnly="True" Width="100"/>
                     
-                    <DataGridTemplateColumn Header="{x:Static lang:Message.state}" Width="120">
+                    <DataGridTemplateColumn Header="{x:Static assets:Messages.test}" Width="120">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Border Background="#2ecc71" CornerRadius="4" VerticalAlignment="Center" HorizontalAlignment="Left" Padding="8,2">
@@ -89,7 +89,7 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                     
-                    <DataGridTextColumn Header="{x:Static lang:Message.progression}" IsReadOnly="True" Width="3*"/>
+                    <DataGridTextColumn Header="{x:Static assets:Messages.test}" IsReadOnly="True" Width="3*"/>
                 </DataGrid.Columns>
             </DataGrid>
 

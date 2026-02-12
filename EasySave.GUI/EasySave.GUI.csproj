@@ -10,12 +10,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <None Remove="Ressources\svg\settings.svg" />
-        <AvaloniaResource Include="Ressources\svg\Logo.svg" />
-        <AvaloniaResource Include="Ressources\svg\settings.svg" />
-    </ItemGroup>
-
-    <ItemGroup>
         <PackageReference Include="Avalonia" Version="11.3.11" />
         <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.3.11" />
         <PackageReference Include="Avalonia.Desktop" Version="11.3.11" />
@@ -32,38 +26,21 @@
     <ItemGroup>
         <ProjectReference Include="..\EasySave.Core\EasySave.Core.csproj" />
         <AvaloniaResource Include="Assets\**" />
-        <AvaloniaResource Include="Ressources\**" />
     </ItemGroup>
 
     <ItemGroup>
-        <EmbeddedResource Update="Ressources\Messages.resx">
-            <Generator>PublicResXFileCodeGenerator</Generator>
-            <LastGenOutput>Messages.Designer.cs</LastGenOutput>
-        </EmbeddedResource>
-
-        <EmbeddedResource Update="Ressources\Messages.de-DE.resx">
-            <DependentUpon>Messages.resx</DependentUpon>
-        </EmbeddedResource>
-
-        <EmbeddedResource Update="Ressources\Messages.fr-FR.resx">
-            <DependentUpon>Messages.resx</DependentUpon>
-        </EmbeddedResource>
-
-        <EmbeddedResource Update="Ressources\Messages.es-ES.resx">
-            <DependentUpon>Messages.resx</DependentUpon>
-        </EmbeddedResource>
-
-        <EmbeddedResource Update="Ressources\Messages.it-IT.resx">
-            <DependentUpon>Messages.resx</DependentUpon>
-        </EmbeddedResource>
+      <EmbeddedResource Update="Assets\Messages.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Update="Ressources\Messages.Designer.cs">
-            <DesignTime>True</DesignTime>
-            <AutoGen>True</AutoGen>
-            <DependentUpon>Messages.resx</DependentUpon>
-        </Compile>
+      <Compile Update="Assets\Messages.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Messages.resx</DependentUpon>
+      </Compile>
     </ItemGroup>
 
 </Project>
