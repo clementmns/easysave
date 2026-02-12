@@ -7,121 +7,124 @@
         x:Class="EasySave.GUI.Views.MainWindow"
         x:DataType="vm:BackupViewModel"
         Title="EasySave"
-        Icon="avares://EasySave.GUI/Ressources/ico/Logo.ico"
+        Icon="avares://EasySave.GUI/Assets/ico/Logo.ico"
+        xmlns:model="clr-namespace:EasySave.Core.Model;assembly=EasySave.Core"
+        xmlns:assets="clr-namespace:EasySave.GUI.Assets"
         Width="1200" Height="700">
-    <Grid RowDefinitions="Auto,*,Auto" Margin="0">
-        <Border Grid.Row="0"
-                Background="#8961CC"
-                Padding="20,15">
+
+    <Grid RowDefinitions="Auto, Auto, *">
+
+        <Border Grid.Row="0" Background="#8961CC" Padding="20,15">
             <Grid ColumnDefinitions="Auto,*,Auto">
-                <Button Grid.Column="0"
-                        Background="Transparent"
-                        Foreground="White"
-                        BorderThickness="1"
-                        BorderBrush="White"
-                        Padding="15,8"
-                        CornerRadius="5"
+                
+                <Button Grid.Column="0" 
+                        Background="Transparent" 
+                        BorderThickness="1" 
+                        CornerRadius="5" 
+                        Padding="8" 
                         Cursor="Hand"
                         Command="{Binding OpenSettingsDialogCommand}"
                         CommandParameter="{Binding $parent[Window]}">
-                    <Svg Path="avares://EasySave.GUI/Ressources/svg/settings.svg"
-                         Width="18"
-                         Height="18" />
-                    <Button.Styles>
-                        <Style Selector="Button:pointerover">
-                            <Setter Property="Background" Value="#34495E" />
-                        </Style>
-                    </Button.Styles>
+                    <Svg Path="avares://EasySave.GUI/Assets/svg/settings.svg" 
+                         Width="18" 
+                         Height="18"/>
                 </Button>
+
                 <Svg Grid.Column="1"
-                     Path="avares://EasySave.GUI/Ressources/svg/Logo.svg"
+                     Path="avares://EasySave.GUI/Assets/svg/Logo.svg"
                      Width="150"
                      Height="40"
                      HorizontalAlignment="Center"
-                     VerticalAlignment="Center" />
+                     VerticalAlignment="Center"/>
             </Grid>
         </Border>
-        <Grid Grid.Row="1" ColumnDefinitions="2*,1*" ColumnSpacing="10" Margin="10">
-            <Border Grid.Column="0"
-                    BorderBrush="Gray"
-                    BorderThickness="1"
-                    CornerRadius="5"
-                    Padding="5">
-                <DataGrid ItemsSource="{Binding Jobs}"
-                          IsReadOnly="True"
-                          GridLinesVisibility="All"
-                          BorderThickness="0">
-                    <DataGrid.Columns>
-                        <DataGridCheckBoxColumn Header="" Width="40" />
-                        <DataGridTextColumn Header="ID"
-                                            Binding="{Binding Id}"
-                                            Width="50" />
-                        <DataGridTextColumn Header="Nom"
-                                            Binding="{Binding Name}"
-                                            Width="120" />
-                        <DataGridTextColumn Header="Chemin Source"
-                                            Binding="{Binding SourcePath}"
-                                            Width="*" />
-                        <DataGridTextColumn Header="Chemin Destination"
-                                            Binding="{Binding DestinationPath}"
-                                            Width="*" />
-                    </DataGrid.Columns>
-                </DataGrid>
-            </Border>
-            <Border Grid.Column="1"
-                    BorderBrush="LightGray"
-                    BorderThickness="1"
-                    CornerRadius="5"
-                    Background="WhiteSmoke"
-                    Padding="10">
-                <StackPanel>
-                    <TextBlock Text="Détails du job"
-                               FontWeight="Bold"
-                               FontSize="14"
-                               Margin="0,0,0,10" />
-                </StackPanel>
-            </Border>
+
+        <Border Grid.Row="1" Background="#F0F0F0" BorderBrush="#DDD" BorderThickness="0,0,0,1" Padding="10,5">
+            <StackPanel Orientation="Horizontal" Spacing="10">
+                <Button Command="{Binding OpenCreateJobDialog}" CommandParameter="{Binding $parent[Window]}" Background="Transparent" BorderThickness="0" Cursor="Hand">
+                    <StackPanel Orientation="Horizontal" Spacing="5">
+                        <TextBlock Text="+" FontWeight="Bold" Foreground="#8961CC" VerticalAlignment="Center"/>
+                        <TextBlock Text="{x:Static assets:Messages.test}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <Rectangle Width="1" Fill="Gray" Margin="5,2" VerticalAlignment="Stretch"/>
+                <Button Content="{x:Static assets:Messages.test}" Background="Transparent" BorderThickness="0"/>
+                <Button Content="{x:Static assets:Messages.test}" Background="Transparent" BorderThickness="0"/>
+                <Button Content="{x:Static assets:Messages.test}" Background="Transparent" BorderThickness="0" Foreground="Red"/>
+            </StackPanel>
+        </Border>
+
+        <Grid Grid.Row="2" RowDefinitions="*, 4, *">
+            
+            <DataGrid Grid.Row="0"
+                      ItemsSource="{Binding Jobs}"
+                      AutoGenerateColumns="False"
+                      CanUserResizeColumns="True"
+                      GridLinesVisibility="Horizontal"
+                      BorderThickness="0"
+                      RowBackground="White">
+                
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Width="50" CanUserResize="False">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox
+                                    Command="{Binding ((vm:BackupViewModel)DataContext).ToggleSelectionCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                    CommandParameter="{Binding}"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    
+                    <DataGridTextColumn Header="{x:Static assets:Messages.test}" Binding="{Binding Name}" Width="2*" IsReadOnly="True" FontWeight="SemiBold"/>
+                    
+                    <DataGridTextColumn Header="{x:Static assets:Messages.test}" IsReadOnly="True" Width="100"/>
+                    
+                    <DataGridTemplateColumn Header="{x:Static assets:Messages.test}" Width="120">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border Background="#2ecc71" CornerRadius="4" VerticalAlignment="Center" HorizontalAlignment="Left" Padding="8,2">
+                                    <TextBlock Text="PRÊT" Foreground="White" FontWeight="Bold" FontSize="11"/>
+                                </Border>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    
+                    <DataGridTextColumn Header="{x:Static assets:Messages.test}" IsReadOnly="True" Width="3*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <GridSplitter Grid.Row="1" 
+                          ResizeDirection="Rows" 
+                          Background="#DDD" 
+                          HorizontalAlignment="Stretch" 
+                          VerticalAlignment="Stretch"/>
+
+            <TabControl Grid.Row="2"
+                        ItemsSource="{Binding SelectedJobs}">
+
+                <TabControl.ItemTemplate>
+                    <DataTemplate x:DataType="model:BackupJob">
+                        <TextBlock Text="{Binding Name}" />
+                    </DataTemplate>
+                </TabControl.ItemTemplate>
+
+                <TabControl.ContentTemplate>
+                    <DataTemplate x:DataType="model:BackupJob">
+                        <StackPanel Margin="10" Spacing="5">
+                            <TextBlock Text="Source :" FontWeight="Bold"/>
+                            <TextBlock Text="{Binding SourcePath}"/>
+
+                            <TextBlock Text="Destination :" FontWeight="Bold"/>
+                            <TextBlock Text="{Binding DestinationPath}"/>
+                            
+                            <TextBlock Text="Type :" FontWeight="Bold"/>
+                            <TextBlock Text="{Binding Type}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </TabControl.ContentTemplate>
+            </TabControl>
         </Grid>
-        <Border Grid.Row="2"
-                BorderBrush="Gray"
-                BorderThickness="1,0,1,1"
-                Background="WhiteSmoke"
-                Padding="15"
-                Margin="10,0,10,10">
-            <Grid ColumnDefinitions="*,Auto">
-                <StackPanel Grid.Column="0"
-                            VerticalAlignment="Center"
-                            Spacing="5">
-                    <TextBlock Text="Progression : En attente..."
-                               FontSize="12"
-                               Foreground="Gray" />
-                    <ProgressBar Height="20"
-                                 Minimum="0"
-                                 Maximum="100"
-                                 Value="0"
-                                 ShowProgressText="True" />
-                </StackPanel>
-                <StackPanel Grid.Column="1"
-                            Orientation="Horizontal"
-                            Spacing="10"
-                            VerticalAlignment="Center"
-                            Margin="20,0,0,0">
-                    <Button Content="Ajouter"
-                            Width="100"
-                            Height="35"
-                            Command="{Binding OpenCreateJobDialog}"
-                            CommandParameter="{Binding $parent[Window]}" />
-                    <Button Content="Exécuter"
-                            Width="100"
-                            Height="35" />
-                    <Button Content="Supprimer"
-                            Width="100"
-                            Height="35" />
-                    <Button Content="Pause"
-                            Width="100"
-                            Height="35" />
-                </StackPanel>
-            </Grid>
-        </Border>
     </Grid>
 </Window>

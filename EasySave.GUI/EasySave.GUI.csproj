@@ -1,4 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
         <TargetFramework>net10.0</TargetFramework>
@@ -9,72 +10,37 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <AvaloniaResource Include="Assets\**"/>
-        <None Remove="Ressources\svg\settings.svg" />
-        <AvaloniaResource Include="Ressources\svg\Logo.svg" />
-        <AvaloniaResource Include="Ressources\svg\settings.svg" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Include="Avalonia" Version="11.3.11"/>
+        <PackageReference Include="Avalonia" Version="11.3.11" />
         <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.3.11" />
-        <PackageReference Include="Avalonia.Desktop" Version="11.3.11"/>
+        <PackageReference Include="Avalonia.Desktop" Version="11.3.11" />
         <PackageReference Include="Avalonia.Svg.Skia" Version="11.3.0" />
-        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.11"/>
-        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.11"/>
-        <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.11" />
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.11" />
         <PackageReference Include="Avalonia.Diagnostics" Version="11.3.11">
             <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
             <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1"/>
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\EasySave.Core\EasySave.Core.csproj" />
+        <ProjectReference Include="..\EasySave.Core\EasySave.Core.csproj" />
         <AvaloniaResource Include="Assets\**" />
-        <AvaloniaResource Include="Ressources\**"/>
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Update="Ressources\Messages.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
+      <EmbeddedResource Update="Assets\Messages.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>Messages.Designer.cs</LastGenOutput>
       </EmbeddedResource>
-      <EmbeddedResource Update="Ressources\Messages.fr-FR.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>Messages.fr-FR.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Ressources\Messages.es-ES.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>Messages.es-ES.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Ressources\Messages.de-DE.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>Messages.de-DE.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Ressources\Messages.Designer.cs">
+      <Compile Update="Assets\Messages.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>Messages.resx</DependentUpon>
       </Compile>
-      <Compile Update="Ressources\Messages.fr-FR.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Messages.fr-FR.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Ressources\Messages.es-ES.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Messages.es-ES.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Ressources\Messages.de-DE.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Messages.de-DE.resx</DependentUpon>
-      </Compile>
     </ItemGroup>
+
 </Project>

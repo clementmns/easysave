@@ -8,7 +8,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Core.Model;
 using EasySave.Core.Service;
-using EasySave.GUI.Ressources;
+using EasySave.GUI.Assets;
 
 namespace EasySave.GUI.ViewModels;
 
