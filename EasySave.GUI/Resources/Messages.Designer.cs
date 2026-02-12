@@ -60,7 +60,7 @@ namespace EasySave.GUI.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to break.
+        ///   Looks up a localized string similar to Break.
         /// </summary>
         public static string _break {
             get {
@@ -69,11 +69,20 @@ namespace EasySave.GUI.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to add.
+        ///   Looks up a localized string similar to Add.
         /// </summary>
         public static string add {
             get {
                 return ResourceManager.GetString("add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string cancel {
+            get {
+                return ResourceManager.GetString("cancel", resourceCulture);
             }
         }
         
@@ -87,6 +96,24 @@ namespace EasySave.GUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create backup job.
+        /// </summary>
+        public static string createBackupJob {
+            get {
+                return ResourceManager.GetString("createBackupJob", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set the source, destination, and backup behavior for this job..
+        /// </summary>
+        public static string createBackupText {
+            get {
+                return ResourceManager.GetString("createBackupText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Customize app settings.
         /// </summary>
         public static string customizeSettings {
@@ -96,7 +123,7 @@ namespace EasySave.GUI.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to delete.
+        ///   Looks up a localized string similar to Delete.
         /// </summary>
         public static string delete {
             get {
@@ -114,7 +141,7 @@ namespace EasySave.GUI.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to execute.
+        ///   Looks up a localized string similar to Execute.
         /// </summary>
         public static string execute {
             get {
@@ -150,6 +177,24 @@ namespace EasySave.GUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Job details.
+        /// </summary>
+        public static string jobDetails {
+            get {
+                return ResourceManager.GetString("jobDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Job name.
+        /// </summary>
+        public static string jobName {
+            get {
+                return ResourceManager.GetString("jobName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Language.
         /// </summary>
         public static string Language {
@@ -177,11 +222,20 @@ namespace EasySave.GUI.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to name.
+        ///   Looks up a localized string similar to Name.
         /// </summary>
         public static string name {
             get {
                 return ResourceManager.GetString("name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public static string save {
+            get {
+                return ResourceManager.GetString("save", resourceCulture);
             }
         }
         
@@ -231,7 +285,7 @@ namespace EasySave.GUI.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to size.
+        ///   Looks up a localized string similar to Size.
         /// </summary>
         public static string size {
             get {
@@ -240,7 +294,7 @@ namespace EasySave.GUI.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to state.
+        ///   Looks up a localized string similar to State.
         /// </summary>
         public static string state {
             get {

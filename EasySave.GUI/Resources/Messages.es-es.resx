@@ -12,28 +12,28 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <data name="add" xml:space="preserve">
-        <value>añadir</value>
+        <value>Añadir</value>
     </data>
     <data name="delete" xml:space="preserve">
-        <value>eliminar</value>
+        <value>Eliminar</value>
     </data>
     <data name="execute" xml:space="preserve">
-        <value>ejecutar</value>
+        <value>Ejecutar</value>
     </data>
     <data name="name" xml:space="preserve">
-        <value>nombre</value>
+        <value>Nombre</value>
     </data>
     <data name="SelectDestinationPath" xml:space="preserve">
         <value>Seleccionar ruta de destino</value>
     </data>
     <data name="break" xml:space="preserve">
-        <value>descanso</value>
+        <value>Descanso</value>
     </data>
     <data name="size" xml:space="preserve">
-        <value>talla</value>
+        <value>Talla</value>
     </data>
     <data name="state" xml:space="preserve">
-        <value>estado</value>
+        <value>Estado</value>
     </data>
     <data name="english" xml:space="preserve">
         <value>Inglés</value>
@@ -64,5 +64,23 @@
     </data>
     <data name="chooseBackupText" xml:space="preserve">
         <value>Elija cómo se almacenan los registros de copia de seguridad</value>
+    </data>
+    <data name="cancel" xml:space="preserve">
+        <value>Anular</value>
+    </data>
+    <data name="save" xml:space="preserve">
+        <value>Guardar</value>
+    </data>
+    <data name="createBackupJob" xml:space="preserve">
+        <value>Crear tarea de copia de seguridad</value>
+    </data>
+    <data name="createBackupText" xml:space="preserve">
+        <value>Configure el origen, el destino y el comportamiento de la copia de seguridad para este trabajo.</value>
+    </data>
+    <data name="jobDetails" xml:space="preserve">
+        <value>Detalles del trabajo</value>
+    </data>
+    <data name="jobName" xml:space="preserve">
+        <value>Nombre del puesto</value>
     </data>
 </root>

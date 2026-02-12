@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:EasySave.GUI.ViewModels;assembly=EasySave.GUI"
+             xmlns:resources="clr-namespace:EasySave.GUI.Resources"
              x:DataType="vm:CreateJobDialogViewModel"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="EasySave.GUI.Views.DialogCreateJob">
@@ -13,16 +14,16 @@
         <ScrollViewer>
             <StackPanel Spacing="20">
                 <StackPanel Spacing="4">
-                    <TextBlock Text="Create Backup Job" FontSize="20" FontWeight="SemiBold" />
-                    <TextBlock Text="Set the source, destination, and backup behavior for this job." Opacity="0.7" />
+                    <TextBlock Text="{x:Static resources:Messages.createBackupJob}" FontSize="20" FontWeight="SemiBold" />
+                    <TextBlock Text="{x:Static resources:Messages.createBackupText}" Opacity="0.7" />
                 </StackPanel>
 
                 <Grid ColumnDefinitions="2*,3*" RowDefinitions="Auto,Auto" ColumnSpacing="20" RowSpacing="20">
                     <Border Grid.Column="0" Grid.RowSpan="2" Padding="16" CornerRadius="8" Background="#0A000000">
                         <StackPanel Spacing="12">
-                            <TextBlock Text="Job Details" FontWeight="SemiBold" />
+                            <TextBlock Text="{x:Static resources:Messages.jobDetails}" FontWeight="SemiBold" />
                             <StackPanel Spacing="6">
-                                <TextBlock Text="Job Name" FontWeight="SemiBold" />
+                                <TextBlock Text="{x:Static resources:Messages.jobName}" FontWeight="SemiBold" />
                                 <TextBlock Text="Give this job a clear, recognizable name." Opacity="0.7" />
                                 <TextBox Watermark="Enter job name" Text="{Binding Name}" />
                             </StackPanel>

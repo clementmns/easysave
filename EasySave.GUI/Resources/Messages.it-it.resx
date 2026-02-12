@@ -12,28 +12,28 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <data name="add" xml:space="preserve">
-        <value>aggiungere</value>
+        <value>Aggiungere</value>
     </data>
     <data name="delete" xml:space="preserve">
-        <value>eliminare</value>
+        <value>Eliminare</value>
     </data>
     <data name="execute" xml:space="preserve">
-        <value>eseguire</value>
+        <value>Eseguire</value>
     </data>
     <data name="name" xml:space="preserve">
-        <value>nome</value>
+        <value>Nome</value>
     </data>
     <data name="SelectDestinationPath" xml:space="preserve">
         <value>Seleziona percorso di destinazione</value>
     </data>
     <data name="break" xml:space="preserve">
-        <value>pausa</value>
+        <value>Pausa</value>
     </data>
     <data name="size" xml:space="preserve">
-        <value>taglia</value>
+        <value>Taglia</value>
     </data>
     <data name="state" xml:space="preserve">
-        <value>stato</value>
+        <value>Stato</value>
     </data>
     <data name="english" xml:space="preserve">
         <value>Inglese</value>
@@ -64,5 +64,23 @@
     </data>
     <data name="chooseBackupText" xml:space="preserve">
         <value>Scegli come archiviare i log di backup</value>
+    </data>
+    <data name="cancel" xml:space="preserve">
+        <value>Annullare</value>
+    </data>
+    <data name="save" xml:space="preserve">
+        <value>Salvare</value>
+    </data>
+    <data name="createBackupJob" xml:space="preserve">
+        <value>Crea processo di backup</value>
+    </data>
+    <data name="createBackupText" xml:space="preserve">
+        <value>Imposta l'origine, la destinazione e il comportamento di backup per questo processo.</value>
+    </data>
+    <data name="jobDetails" xml:space="preserve">
+        <value>Dettagli del lavoro</value>
+    </data>
+    <data name="jobName" xml:space="preserve">
+        <value>Nome del lavoro</value>
     </data>
 </root>

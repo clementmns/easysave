@@ -12,13 +12,13 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <data name="add" xml:space="preserve">
-        <value>hinzufügen</value>
+        <value>Hinzufügen</value>
     </data>
     <data name="delete" xml:space="preserve">
-        <value>löschen</value>
+        <value>Iöschen</value>
     </data>
     <data name="execute" xml:space="preserve">
-        <value>ausführen</value>
+        <value>Ausführen</value>
     </data>
     <data name="name" xml:space="preserve">
         <value>Name</value>
@@ -64,5 +64,23 @@
     </data>
     <data name="chooseBackupText" xml:space="preserve">
         <value>Wählen Sie aus, wie Backup-Protokolle gespeichert werden sollen.</value>
+    </data>
+    <data name="cancel" xml:space="preserve">
+        <value>Annullieren</value>
+    </data>
+    <data name="save" xml:space="preserve">
+        <value>Speichern</value>
+    </data>
+    <data name="createBackupJob" xml:space="preserve">
+        <value>Sicherungsauftrag erstellen</value>
+    </data>
+    <data name="createBackupText" xml:space="preserve">
+        <value>Legen Sie die Quelle, das Ziel und das Sicherungsverhalten für diesen Auftrag fest.</value>
+    </data>
+    <data name="jobDetails" xml:space="preserve">
+        <value>Stellenbeschreibung</value>
+    </data>
+    <data name="jobName" xml:space="preserve">
+        <value>Stellenbezeichnung</value>
     </data>
 </root>

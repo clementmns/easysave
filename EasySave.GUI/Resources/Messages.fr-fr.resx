@@ -12,28 +12,28 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <data name="add" xml:space="preserve">
-        <value>ajouter</value>
+        <value>Ajouter</value>
     </data>
     <data name="delete" xml:space="preserve">
-        <value>supprimer</value>
+        <value>Supprimer</value>
     </data>
     <data name="execute" xml:space="preserve">
-        <value>executer</value>
+        <value>Executer</value>
     </data>
     <data name="name" xml:space="preserve">
-        <value>nom</value>
+        <value>Nom</value>
     </data>
     <data name="SelectDestinationPath" xml:space="preserve">
         <value>Selectionner un chemin de destination</value>
     </data>
     <data name="break" xml:space="preserve">
-        <value>pause</value>
+        <value>Pause</value>
     </data>
     <data name="size" xml:space="preserve">
-        <value>taille</value>
+        <value>Taille</value>
     </data>
     <data name="state" xml:space="preserve">
-        <value>état</value>
+        <value>Etat</value>
     </data>
     <data name="english" xml:space="preserve">
         <value>Anglais</value>
@@ -67,5 +67,23 @@
     </data>
     <data name="chooseBackupText" xml:space="preserve">
         <value>Choisissez comment les logs sont stockés</value>
+    </data>
+    <data name="cancel" xml:space="preserve">
+        <value>Annuler</value>
+    </data>
+    <data name="save" xml:space="preserve">
+        <value>Sauvegarder</value>
+    </data>
+    <data name="createBackupJob" xml:space="preserve">
+        <value>Créer une tâche de sauvegarde</value>
+    </data>
+    <data name="createBackupText" xml:space="preserve">
+        <value>Définissez la source, la destination et le comportement de sauvegarde pour cette tâche.</value>
+    </data>
+    <data name="jobDetails" xml:space="preserve">
+        <value>Détails du travail</value>
+    </data>
+    <data name="jobName" xml:space="preserve">
+        <value>Nom du travail</value>
     </data>
 </root>

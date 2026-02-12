@@ -31,25 +31,25 @@
         <value>Select destination path</value>
     </data>
     <data name="name" xml:space="preserve">
-        <value>name</value>
+        <value>Name</value>
     </data>
     <data name="add" xml:space="preserve">
-        <value>add</value>
+        <value>Add</value>
     </data>
     <data name="delete" xml:space="preserve">
-        <value>delete</value>
+        <value>Delete</value>
     </data>
     <data name="execute" xml:space="preserve">
-        <value>execute</value>
+        <value>Execute</value>
     </data>
     <data name="break" xml:space="preserve">
-        <value>break</value>
+        <value>Break</value>
     </data>
     <data name="size" xml:space="preserve">
-        <value>size</value>
+        <value>Size</value>
     </data>
     <data name="state" xml:space="preserve">
-        <value>state</value>
+        <value>State</value>
     </data>
     <data name="settings" xml:space="preserve">
         <value>Settings</value>
@@ -83,5 +83,23 @@
     </data>
     <data name="chooseBackupText" xml:space="preserve">
         <value>Choose how backup logs are stored</value>
+    </data>
+    <data name="cancel" xml:space="preserve">
+        <value>Cancel</value>
+    </data>
+    <data name="save" xml:space="preserve">
+        <value>Save</value>
+    </data>
+    <data name="createBackupJob" xml:space="preserve">
+        <value>Create backup job</value>
+    </data>
+    <data name="createBackupText" xml:space="preserve">
+        <value>Set the source, destination, and backup behavior for this job.</value>
+    </data>
+    <data name="jobDetails" xml:space="preserve">
+        <value>Job details</value>
+    </data>
+    <data name="jobName" xml:space="preserve">
+        <value>Job name</value>
     </data>
 </root>

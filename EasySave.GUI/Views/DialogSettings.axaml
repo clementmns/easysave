@@ -37,8 +37,8 @@
                 </Border>
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10" Margin="0,4,0,0">
-                    <Button Content="Cancel" Command="{Binding CancelCommand}" />
-                    <Button Content="Save" Command="{Binding SaveCommand}" Classes="accent" />
+                    <Button Content="{x:Static ressources:Messages.cancel}" Command="{Binding CancelCommand}" />
+                    <Button Content="{x:Static ressources:Messages.save}" Command="{Binding SaveCommand}" Classes="accent" />
                 </StackPanel>
             </StackPanel>
         </ScrollViewer>
