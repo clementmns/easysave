@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace EasySave.CLI.Ressources {
+namespace EasySave.CLI.Resources {
     using System;
     
     
@@ -38,7 +38,7 @@ namespace EasySave.CLI.Ressources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EasySave.CLI.Ressources.Messages.it-IT", typeof(Messages_it_IT).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EasySave.CLI.Resources.Messages.it-IT", typeof(Messages_it_IT).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

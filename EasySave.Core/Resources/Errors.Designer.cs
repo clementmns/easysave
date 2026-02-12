@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace EasySave.Core.Ressources {
+namespace EasySave.Core.Resources {
     using System;
     
     
@@ -28,7 +28,7 @@ namespace EasySave.Core.Ressources {
         internal static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("EasySave.Core.Ressources.Errors", typeof(Errors).Assembly);
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("EasySave.Core.Resources.Errors", typeof(Errors).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

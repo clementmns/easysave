@@ -16,11 +16,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Update="Ressources\Errors.resx">
+      <EmbeddedResource Update="Resources\Errors.resx">
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>Errors.Designer.cs</LastGenOutput>
       </EmbeddedResource>
-      <EmbeddedResource Update="Ressources\Errors.fr-FR.resx">
+      <EmbeddedResource Update="Resources\Errors.fr-FR.resx">
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>Errors.fr-FR.Designer.cs</LastGenOutput>
       </EmbeddedResource>

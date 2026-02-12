@@ -1,7 +1,6 @@
-using System;
 using EasySave.Core.Model;
 
-namespace EasySave.CLI.Ressources;
+namespace EasySave.CLI.Resources;
 
 public sealed class AppProperties : IAppProperties
 {

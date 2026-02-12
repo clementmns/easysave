@@ -1,4 +1,4 @@
-﻿namespace EasySave.CLI.Ressources;
+﻿namespace EasySave.CLI.Resources;
 
 public static class ConsoleTheme
 {

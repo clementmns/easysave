@@ -7,14 +7,14 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace EasySave.CLI.Ressources {
+namespace EasySave.GUI.Resources {
     using System;
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Messages {
+    public class Messages {
         
         private static System.Resources.ResourceManager resourceMan;
         
@@ -25,10 +25,10 @@ namespace EasySave.CLI.Ressources {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Resources.ResourceManager ResourceManager {
+        public static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("EasySave.CLI.Ressources.Messages", typeof(Messages).Assembly);
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("EasySave.GUI.Resources.Messages", typeof(Messages).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -36,7 +36,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Globalization.CultureInfo Culture {
+        public static System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -45,9 +45,27 @@ namespace EasySave.CLI.Ressources {
             }
         }
         
-        internal static string HelloWorld {
+        public static string test {
             get {
-                return ResourceManager.GetString("HelloWorld", resourceCulture);
+                return ResourceManager.GetString("test", resourceCulture);
+            }
+        }
+        
+        public static string SelectSourcePathFolder {
+            get {
+                return ResourceManager.GetString("SelectSourcePathFolder", resourceCulture);
+            }
+        }
+        
+        public static string SelectSourcePathFile {
+            get {
+                return ResourceManager.GetString("SelectSourcePathFile", resourceCulture);
+            }
+        }
+        
+        public static string SelectDestinationPath {
+            get {
+                return ResourceManager.GetString("SelectDestinationPath", resourceCulture);
             }
         }
     }

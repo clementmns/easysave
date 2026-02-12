@@ -7,28 +7,28 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace EasySave.GUI.Assets {
+namespace EasySave.CLI.Resources {
     using System;
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Messages {
+    internal class Messages_fr_FR {
         
         private static System.Resources.ResourceManager resourceMan;
         
         private static System.Globalization.CultureInfo resourceCulture;
         
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Messages() {
+        internal Messages_fr_FR() {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static System.Resources.ResourceManager ResourceManager {
+        internal static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("EasySave.GUI.Assets.Messages", typeof(Messages).Assembly);
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("EasySave.CLI.Resources.Messages_fr_FR", typeof(Messages_fr_FR).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -36,7 +36,7 @@ namespace EasySave.GUI.Assets {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static System.Globalization.CultureInfo Culture {
+        internal static System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -45,27 +45,9 @@ namespace EasySave.GUI.Assets {
             }
         }
         
-        public static string test {
+        internal static string HelloWorld {
             get {
-                return ResourceManager.GetString("test", resourceCulture);
-            }
-        }
-        
-        public static string SelectSourcePathFolder {
-            get {
-                return ResourceManager.GetString("SelectSourcePathFolder", resourceCulture);
-            }
-        }
-        
-        public static string SelectSourcePathFile {
-            get {
-                return ResourceManager.GetString("SelectSourcePathFile", resourceCulture);
-            }
-        }
-        
-        public static string SelectDestinationPath {
-            get {
-                return ResourceManager.GetString("SelectDestinationPath", resourceCulture);
+                return ResourceManager.GetString("HelloWorld", resourceCulture);
             }
         }
     }

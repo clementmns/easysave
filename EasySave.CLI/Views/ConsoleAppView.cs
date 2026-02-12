@@ -1,4 +1,4 @@
-﻿using EasySave.CLI.Ressources;
+﻿using EasySave.CLI.Resources;
 using EasySave.CLI.ViewModels;
 using EasySave.Core.Model;
 using EasySave.Core.Service;

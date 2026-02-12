@@ -8,18 +8,18 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Core.Model;
 using EasySave.Core.Service;
-using EasySave.GUI.Assets;
+using EasySave.GUI.Resources;
 
 namespace EasySave.GUI.ViewModels;
 
 public partial class CreateJobDialogViewModel : DialogViewModel
 {
-    private readonly BackupViewModel _backupViewModel;
+    private readonly MainViewModel _mainViewModel;
     private readonly Window? _dialogWindow;
     
-    public CreateJobDialogViewModel(BackupViewModel backupViewModel, Window? dialogWindow = null)
+    public CreateJobDialogViewModel(MainViewModel mainViewModel, Window? dialogWindow = null)
     {
-        _backupViewModel = backupViewModel;
+        _mainViewModel = mainViewModel;
         _dialogWindow = dialogWindow;
     }
     
@@ -106,10 +106,10 @@ public partial class CreateJobDialogViewModel : DialogViewModel
                 SourcePath, 
                 DestinationPath, 
                 SelectedBackupType, 
-                _backupViewModel.Jobs?.ToList()
+                _mainViewModel.Jobs?.ToList()
             );
             
-            _backupViewModel.AddJob(newJob);
+            _mainViewModel.AddJob(newJob);
             _dialogWindow?.Close();
         }
         catch (Exception ex)

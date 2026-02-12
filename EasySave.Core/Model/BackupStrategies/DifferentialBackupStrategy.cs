@@ -1,3 +1,4 @@
+using EasySave.Core.Resources;
 using EasySave.Core.Utils;
 
 namespace EasySave.Core.Model.BackupStrategies;
@@ -16,7 +17,7 @@ public class DifferentialBackupStrategy : IBackupStrategy
         {
             (true, false) => ProcessFile(job),
             (false, true) => ProcessDirectory(job),
-            _ => throw new FileNotFoundException(Ressources.Errors.ProcessingError)
+            _ => throw new FileNotFoundException(Errors.ProcessingError)
         };
 
         job.State.Reset();
@@ -54,7 +55,7 @@ public class DifferentialBackupStrategy : IBackupStrategy
 
             if (!FileUtils.CopyFile(sourceFile.FullName, job.DestinationPath, Path.GetDirectoryName(sourceFile.FullName)))
             {
-                throw new Exception(Ressources.Errors.FileCantBeCopied);
+                throw new Exception(Errors.FileCantBeCopied);
             }
             
             job.State.Progression = 100;
@@ -112,7 +113,7 @@ public class DifferentialBackupStrategy : IBackupStrategy
                 
                 if (!FileUtils.CopyFile(file.FullName, destinationBackupFolder, job.SourcePath))
                 {
-                    throw new Exception(Ressources.Errors.FileCantBeCopied);
+                    throw new Exception(Errors.FileCantBeCopied);
                 }
                 
                 

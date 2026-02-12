@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace EasySave.CLI.Ressources {
+namespace EasySave.CLI.Resources {
     using System;
     
     
@@ -21,14 +21,14 @@ namespace EasySave.CLI.Ressources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Messages_es_ES {
+    internal class Messages_de_DE {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Messages_es_ES() {
+        internal Messages_de_DE() {
         }
         
         /// <summary>
@@ -38,7 +38,7 @@ namespace EasySave.CLI.Ressources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EasySave.CLI.Ressources.Messages.es-ES", typeof(Messages_es_ES).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EasySave.CLI.Resources.Messages.de-DE", typeof(Messages_de_DE).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -60,7 +60,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Agregar una ruta (destino):.
+        ///   Looks up a localized string similar to Pfad hinzufügen (Ziel):.
         /// </summary>
         internal static string AddJobDestinationPath {
             get {
@@ -69,7 +69,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error al agregar el trabajo..
+        ///   Looks up a localized string similar to Hinzufügen des Auftrags fehlgeschlagen..
         /// </summary>
         internal static string AddJobFailed {
             get {
@@ -78,7 +78,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Agregar un nombre de trabajo:.
+        ///   Looks up a localized string similar to Auftragsnamen hinzufügen:.
         /// </summary>
         internal static string AddJobName {
             get {
@@ -87,7 +87,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Definir el tipo de copia de seguridad que desea:.
+        ///   Looks up a localized string similar to Definieren Sie den gewünschten Sicherungstyp:.
         /// </summary>
         internal static string AddJobSaveType {
             get {
@@ -96,7 +96,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Agregar una ruta (origen):.
+        ///   Looks up a localized string similar to Pfad hinzufügen (Quelle):.
         /// </summary>
         internal static string AddJobSourcePath {
             get {
@@ -105,7 +105,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Trabajo agregado con éxito..
+        ///   Looks up a localized string similar to Auftrag erfolgreich hinzugefügt..
         /// </summary>
         internal static string AddJobSuccess {
             get {
@@ -114,7 +114,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Diferencial.
+        ///   Looks up a localized string similar to Differenziell.
         /// </summary>
         internal static string AddJobTypeDifferential {
             get {
@@ -123,7 +123,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Completa.
+        ///   Looks up a localized string similar to Vollständig.
         /// </summary>
         internal static string AddJobTypeFull {
             get {
@@ -132,7 +132,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ¡Agregado al PATH con éxito!.
+        ///   Looks up a localized string similar to Erfolgreich zu PATH hinzugefügt!.
         /// </summary>
         internal static string AddToPathSucces {
             get {
@@ -141,7 +141,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ¡Ya está en el Path!.
+        ///   Looks up a localized string similar to Bereits im Path!.
         /// </summary>
         internal static string AlreadyInPath {
             get {
@@ -150,7 +150,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Inglés.
+        ///   Looks up a localized string similar to Englisch.
         /// </summary>
         internal static string ChangeLanguageEnglish {
             get {
@@ -159,7 +159,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Español.
+        ///   Looks up a localized string similar to Spanisch.
         /// </summary>
         internal static string ChangeLanguageEspañol {
             get {
@@ -168,7 +168,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Francés.
+        ///   Looks up a localized string similar to Französisch.
         /// </summary>
         internal static string ChangeLanguageFrench {
             get {
@@ -177,7 +177,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Alemán.
+        ///   Looks up a localized string similar to Deutsch.
         /// </summary>
         internal static string ChangeLanguageGerman {
             get {
@@ -186,7 +186,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Entrada inválida. Cambiando a Inglés por defecto..
+        ///   Looks up a localized string similar to Ungültige Eingabe. Standardmäßig auf Englisch gesetzt..
         /// </summary>
         internal static string ChangeLanguageInvalid {
             get {
@@ -195,7 +195,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Italiano.
+        ///   Looks up a localized string similar to Italienisch.
         /// </summary>
         internal static string ChangeLanguageItalian {
             get {
@@ -204,7 +204,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Idioma cambiado con éxito..
+        ///   Looks up a localized string similar to Sprache erfolgreich geändert..
         /// </summary>
         internal static string ChangeLanguageSuccess {
             get {
@@ -213,7 +213,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cambiar el idioma:.
+        ///   Looks up a localized string similar to Sprache ändern:.
         /// </summary>
         internal static string ChangeLanguageTitle {
             get {
@@ -231,7 +231,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Formato de registro cambiado con éxito..
+        ///   Looks up a localized string similar to Protokollformat erfolgreich geändert..
         /// </summary>
         internal static string ChangeLogFormatSuccess {
             get {
@@ -240,7 +240,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cambiar formato de registro:.
+        ///   Looks up a localized string similar to Protokollformat ändern:.
         /// </summary>
         internal static string ChangeLogFormatTitle {
             get {
@@ -258,7 +258,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Agregar un trabajo.
+        ///   Looks up a localized string similar to Auftrag hinzufügen.
         /// </summary>
         internal static string ConsoleMenuAddJob {
             get {
@@ -267,7 +267,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Eliminar trabajo.
+        ///   Looks up a localized string similar to Auftrag löschen.
         /// </summary>
         internal static string ConsoleMenuDeleteJob {
             get {
@@ -276,7 +276,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ejecutar todos los trabajos.
+        ///   Looks up a localized string similar to Alle Aufträge ausführen.
         /// </summary>
         internal static string ConsoleMenuExecuteAllJobs {
             get {
@@ -285,7 +285,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ejecutar uno o más trabajos.
+        ///   Looks up a localized string similar to Einen oder mehrere Aufträge ausführen.
         /// </summary>
         internal static string ConsoleMenuExecuteJob {
             get {
@@ -294,7 +294,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cambiar idioma.
+        ///   Looks up a localized string similar to Sprache ändern.
         /// </summary>
         internal static string ConsoleMenuLanguage {
             get {
@@ -303,7 +303,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cambiar formato de registro.
+        ///   Looks up a localized string similar to Protokollformat ändern.
         /// </summary>
         internal static string ConsoleMenuLogFormat {
             get {
@@ -312,7 +312,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Elija una opción:.
+        ///   Looks up a localized string similar to Wählen Sie eine Option:.
         /// </summary>
         internal static string ConsoleMenuOption {
             get {
@@ -321,7 +321,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Agregar EasySave al PATH.
+        ///   Looks up a localized string similar to EasySave zu PATH hinzufügen.
         /// </summary>
         internal static string ConsoleMenuPath {
             get {
@@ -330,7 +330,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Salir.
+        ///   Looks up a localized string similar to Beenden.
         /// </summary>
         internal static string ConsoleMenuQuit {
             get {
@@ -339,7 +339,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ver trabajos guardados.
+        ///   Looks up a localized string similar to Gespeicherte Aufträge anzeigen.
         /// </summary>
         internal static string ConsoleMenuViewJobs {
             get {
@@ -348,7 +348,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error al eliminar el trabajo..
+        ///   Looks up a localized string similar to Löschen des Auftrags fehlgeschlagen..
         /// </summary>
         internal static string DeleteJobFailed {
             get {
@@ -357,7 +357,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Número de trabajo inválido.
+        ///   Looks up a localized string similar to Ungültige Auftragsnummer.
         /// </summary>
         internal static string DeleteJobInvalid {
             get {
@@ -366,7 +366,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ingrese el trabajo a eliminar:.
+        ///   Looks up a localized string similar to Geben Sie den zu entfernenden Auftrag ein:.
         /// </summary>
         internal static string DeleteJobPrompt {
             get {
@@ -375,7 +375,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Trabajo eliminado con éxito.
+        ///   Looks up a localized string similar to Auftrag erfolgreich entfernt.
         /// </summary>
         internal static string DeleteJobSuccess {
             get {
@@ -384,7 +384,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ruta de destino.
+        ///   Looks up a localized string similar to Zielpfad.
         /// </summary>
         internal static string DestinationPath {
             get {
@@ -393,7 +393,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Todos los trabajos se han completado con éxito..
+        ///   Looks up a localized string similar to Alle Aufträge wurden erfolgreich abgeschlossen..
         /// </summary>
         internal static string ExecuteAllJobsSuccess {
             get {
@@ -402,7 +402,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error en la ejecución de trabajos.
+        ///   Looks up a localized string similar to Ausführung der Aufträge fehlgeschlagen.
         /// </summary>
         internal static string ExecuteJobsFailed {
             get {
@@ -411,7 +411,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No hay trabajos disponibles..
+        ///   Looks up a localized string similar to Keine Aufträge verfügbar..
         /// </summary>
         internal static string ExecuteJobsNoJobs {
             get {
@@ -420,7 +420,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No se seleccionaron trabajos válidos..
+        ///   Looks up a localized string similar to Keine gültigen Aufträge ausgewählt..
         /// </summary>
         internal static string ExecuteJobsNoValid {
             get {
@@ -429,7 +429,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ingrese los números de los trabajos a ejecutar (separados por comas como 1;3 o 1-3):.
+        ///   Looks up a localized string similar to Geben Sie die Nummern der auszuführenden Aufträge ein (getrennt durch Kommas wie 1;3 oder 1-3):.
         /// </summary>
         internal static string ExecuteJobsPrompt {
             get {
@@ -438,7 +438,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Trabajos completados con éxito..
+        ///   Looks up a localized string similar to Aufträge erfolgreich abgeschlossen..
         /// </summary>
         internal static string ExecuteJobsSuccess {
             get {
@@ -447,7 +447,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ha alcanzado el número máximo de trabajos. Para continuar, elimine un trabajo existente. .
+        ///   Looks up a localized string similar to Sie haben die maximale Anzahl an Aufträgen erreicht. Um fortzufahren, löschen Sie bitte einen vorhandenen Auftrag. .
         /// </summary>
         internal static string MaxFileWarning {
             get {
@@ -456,7 +456,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to (Espacio = Marcar/Desmarcar, Enter = Confirmar).
+        ///   Looks up a localized string similar to (Leertaste = Aktivieren/Deaktivieren, Enter = Bestätigen).
         /// </summary>
         internal static string MultipleSelectionAdvice {
             get {
@@ -465,7 +465,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error al agregar al path.
+        ///   Looks up a localized string similar to Fehler beim Hinzufügen zum Pfad.
         /// </summary>
         internal static string PathAddError {
             get {
@@ -474,7 +474,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Presione cualquier tecla para continuar....
+        ///   Looks up a localized string similar to Drücken Sie eine beliebige Taste, um fortzufahren....
         /// </summary>
         internal static string PressKeyToContinue {
             get {
@@ -483,7 +483,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reinicie su terminal para que esto tenga efecto..
+        ///   Looks up a localized string similar to Starten Sie Ihr Terminal neu, damit dies wirksam wird..
         /// </summary>
         internal static string Restart {
             get {
@@ -492,7 +492,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Copia de seguridad diferencial.
+        ///   Looks up a localized string similar to Differenzielle Sicherung.
         /// </summary>
         internal static string SaveDifferentialType {
             get {
@@ -501,7 +501,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Copia de seguridad completa.
+        ///   Looks up a localized string similar to Vollständige Sicherung.
         /// </summary>
         internal static string SaveFullType {
             get {
@@ -510,7 +510,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ruta de origen.
+        ///   Looks up a localized string similar to Quellpfad.
         /// </summary>
         internal static string SourcePath {
             get {
@@ -519,7 +519,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gracias por usar EasySave.
+        ///   Looks up a localized string similar to Vielen Dank für die Nutzung von EasySave.
         /// </summary>
         internal static string ThankYouForUsing {
             get {
@@ -528,7 +528,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No hay trabajos disponibles..
+        ///   Looks up a localized string similar to Kein Auftrag verfügbar..
         /// </summary>
         internal static string ViewJobsNoJob {
             get {
@@ -537,7 +537,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Aquí están los trabajos:.
+        ///   Looks up a localized string similar to Hier sind die Aufträge:.
         /// </summary>
         internal static string ViewJobsTitle {
             get {
@@ -546,7 +546,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Idioma ya activo..
+        ///   Looks up a localized string similar to Sprache bereits aktiv..
         /// </summary>
         internal static string WarningLanguageActive {
             get {
@@ -555,7 +555,7 @@ namespace EasySave.CLI.Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Formato de registro ya activo..
+        ///   Looks up a localized string similar to Protokollformat bereits aktiv..
         /// </summary>
         internal static string WarningLogFormatActive {
             get {
