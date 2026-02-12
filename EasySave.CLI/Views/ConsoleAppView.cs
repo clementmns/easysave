@@ -45,7 +45,6 @@ public class ConsoleAppView : IProgressionObserver
     public void Run()
     {
         var exit = false;
-        const int maxFiles = 5;
 
         while (!exit)
         {
@@ -137,6 +136,12 @@ public class ConsoleAppView : IProgressionObserver
         }
     }
     
+    /// <summary>
+    /// shorten the file path to display it
+    /// </summary>
+    /// <param name="path"></param>
+    /// <param name="maxLength"></param>
+    /// <returns></returns>
     private static string TruncatePath(string path, int maxLength = 40)
     {
         if (string.IsNullOrEmpty(path) || path.Length <= maxLength)
