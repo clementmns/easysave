@@ -1,7 +1,7 @@
 using Avalonia;
 using System;
 using EasySave.Core.Service;
-using EasySave.GUI.Ressources;
+using EasySave.GUI.Resources;
 
 namespace EasySave.GUI;
 

@@ -1,5 +1,5 @@
 ﻿using EasySave.Core.Model;
-using EasySave.Core.Ressources;
+using EasySave.Core.Resources;
 
 namespace EasySave.Core.Service;
 
