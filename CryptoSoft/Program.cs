@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CryptoSoft;
+﻿namespace CryptoSoft;
 
 public static class Program
 {
@@ -8,42 +6,40 @@ public static class Program
     {
         try
         {
-            // Vérifier les arguments de ligne de commande
             if (args.Length < 5)
             {
                 Console.WriteLine("Usage: CryptoSoft.exe <algorithm> <action> <sourcePath> <destinationPath> <key>");
                 Console.WriteLine("  algorithm: xor ou aes");
                 Console.WriteLine("  action: encrypt ou decrypt");
+                Console.WriteLine("  sourcePath: file source path");
+                Console.WriteLine("  destinationPath: directory destination path");
+                Console.WriteLine("  key: sha256 encryption key");
                 Environment.Exit(-1);
                 return;
             }
 
-            // Parser les arguments
-            string algorithmStr = args[0].ToLower();
-            string actionStr = args[1].ToLower();
-            string sourcePath = args[2];
-            string destinationPath = args[3];
-            string key = args[4];
+            var algorithmInput = args[0].ToLower();
+            var actionInput = args[1].ToLower();
+            var sourcePath = args[2];
+            var destinationPath = args[3];
+            var key = args[4];
 
-            // Convertir l'algorithme
-            CryptoAlgorithm algorithm = algorithmStr switch
+            var algorithm = algorithmInput switch
             {
                 "xor" => CryptoAlgorithm.Xor,
                 "aes" => CryptoAlgorithm.Aes,
-                _ => throw new ArgumentException("Algorithme invalide. Utilisez 'xor' ou 'aes'.")
+                _ => throw new ArgumentException("Invalid algorithm. Use 'xor' or 'aes'.")
             };
-
-            // Convertir l'action
-            bool isEncryption = actionStr switch
+            
+            var isEncryption = actionInput switch
             {
                 "encrypt" => true,
                 "decrypt" => false,
-                _ => throw new ArgumentException("Action invalide. Utilisez 'encrypt' ou 'decrypt'.")
+                _ => throw new ArgumentException("Invalid action. Use 'encrypt' or 'decrypt'.")
             };
 
-            // Exécuter la transformation
             var fileManager = new FileManager(sourcePath, destinationPath, key, algorithm, isEncryption);
-            int elapsedTime = fileManager.TransformFile();
+            var elapsedTime = fileManager.TransformFile();
 
             if (elapsedTime >= 0)
             {
@@ -52,7 +48,7 @@ public static class Program
             }
             else
             {
-                Console.WriteLine("ERROR:Opération échouée");
+                Console.WriteLine("ERROR:Operation failed");
                 Environment.Exit(-2);
             }
         }

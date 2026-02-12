@@ -40,9 +40,8 @@ public class FullBackupStrategy : IBackupStrategy
             {
                 throw new Exception(Ressources.Errors.FileCantBeCopied);
             }
-
-            // Encrypt .txt files with CryptoSoft
-            if (fileInfo.Extension.ToLower() == ".txt")
+            
+            if (fileInfo.Extension.Equals(".txt", StringComparison.CurrentCultureIgnoreCase))
             {
                 var sourcePath = fileInfo.FullName;
                 var sourceRoot = Path.GetDirectoryName(sourcePath);
@@ -54,13 +53,12 @@ public class FullBackupStrategy : IBackupStrategy
                 
                 if (CryptoUtils.EncryptFile(destinationFilePath, encryptedPath))
                 {
-                    // Delete the unencrypted file after successful encryption
                     File.Delete(destinationFilePath);
-                    Console.WriteLine($"[CRYPTO] Fichier chiffré : {Path.GetFileName(encryptedPath)}");
+                    Console.WriteLine(@$"[CRYPTO] Fichier chiffré : {Path.GetFileName(encryptedPath)}");
                 }
                 else
                 {
-                    Console.WriteLine($"[CRYPTO] Échec chiffrement : {Path.GetFileName(destinationFilePath)}");
+                    Console.WriteLine(@$"[CRYPTO] Échec chiffrement : {Path.GetFileName(destinationFilePath)}");
                 }
             }
 
@@ -79,11 +77,10 @@ public class FullBackupStrategy : IBackupStrategy
         try
         {
             var directoryInfo = new DirectoryInfo(job.SourcePath + "");
-            string destinationBackupFolder = Path.Combine(job.DestinationPath, Path.GetFileName(job.SourcePath) + "_copy");
+            var destinationBackupFolder = Path.Combine(job.DestinationPath, Path.GetFileName(job.SourcePath) + "_copy");
             
             Directory.CreateDirectory(destinationBackupFolder);
             
-            // Find all the files even in the subfolders
             var files = directoryInfo.GetFiles("*", SearchOption.AllDirectories); 
 
             job.State.TotalFiles = files.Length;
@@ -110,20 +107,19 @@ public class FullBackupStrategy : IBackupStrategy
                 {
                     throw new Exception(Ressources.Errors.FileCantBeCopied);
                 }
-
-                // Chiffrer les fichiers .txt avec CryptoSoft
-                if (file.Extension.ToLower() == ".txt")
+                
+                if (file.Extension.Equals(".txt", StringComparison.CurrentCultureIgnoreCase))
                 {
                     var encryptedPath = destinationFilePath + ".encrypted";
                     if (CryptoUtils.EncryptFile(destinationFilePath, encryptedPath))
                     {
-                        // Supprimer le fichier non chiffré après chiffrement réussi
+                        
                         File.Delete(destinationFilePath);
-                        Console.WriteLine($"[CRYPTO] File Encrypted : {Path.GetFileName(encryptedPath)}");
+                        Console.WriteLine(@$"[CRYPTO] File Encrypted : {Path.GetFileName(encryptedPath)}");
                     }
                     else
                     {
-                        Console.WriteLine($"[CRYPTO] Encryption failed : {Path.GetFileName(destinationFilePath)}");
+                        Console.WriteLine(@$"[CRYPTO] Encryption failed : {Path.GetFileName(destinationFilePath)}");
                     }
                 }
 

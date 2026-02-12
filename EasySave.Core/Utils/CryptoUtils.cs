@@ -4,7 +4,7 @@ namespace EasySave.Core.Utils;
 
 public static class CryptoUtils
 {
-    private const string CRYPTO_EXE_NAME = "CryptoSoft.exe";
+    private const string CRYPTO_EXE_NAME = @"C:/Users/timmf/Documents/GitHub/easysave/CryptoSoft/bin/Debug/net8.0/win-x64/CryptoSoft.exe";
     private const string DEFAULT_KEY = "EasySave2024!";
     private const string DEFAULT_ALGORITHM = "xor";
 

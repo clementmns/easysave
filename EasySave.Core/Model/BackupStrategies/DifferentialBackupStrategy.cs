@@ -23,8 +23,7 @@ public class DifferentialBackupStrategy : IBackupStrategy
 
         return result;
     }
-
-// Modifier la méthode ProcessFile dans DifferentialBackupStrategy
+    
 private static bool ProcessFile(BackupJob job)
 {
     try
@@ -57,19 +56,18 @@ private static bool ProcessFile(BackupJob job)
         {
             throw new Exception(Ressources.Errors.FileCantBeCopied);
         }
-
-        // Chiffrement automatique des fichiers .txt
-        if (sourceFile.Extension.ToLower() == ".txt")
+        
+        if (sourceFile.Extension.Equals(".txt", StringComparison.CurrentCultureIgnoreCase))
         {
             var encryptedPath = destinationFilePath + ".encrypted";
             if (CryptoUtils.EncryptFile(destinationFilePath, encryptedPath))
             {
-                File.Delete(destinationFilePath); // Supprimer l'original non chiffré
-                Console.WriteLine($"[CRYPTO] Fichier chiffré : {Path.GetFileName(encryptedPath)}");
+                File.Delete(destinationFilePath);
+                Console.WriteLine(@$"[CRYPTO] Fichier chiffré : {Path.GetFileName(encryptedPath)}");
             }
             else
             {
-                Console.WriteLine($"[CRYPTO] Échec chiffrement : {Path.GetFileName(destinationFilePath)}");
+                Console.WriteLine(@$"[CRYPTO] Échec chiffrement : {Path.GetFileName(destinationFilePath)}");
             }
         }
         
@@ -130,20 +128,18 @@ private static bool ProcessFile(BackupJob job)
                 {
                     throw new Exception(Ressources.Errors.FileCantBeCopied);
                 }
-
-                // Chiffrer les fichiers .txt avec CryptoSoft
-                if (file.Extension.ToLower() == ".txt")
+                
+                if (file.Extension.Equals(".txt", StringComparison.CurrentCultureIgnoreCase))
                 {
                     var encryptedPath = destinationFilePath + ".encrypted";
                     if (CryptoUtils.EncryptFile(destinationFilePath, encryptedPath))
                     {
-                        // Supprimer le fichier non chiffré après chiffrement réussi
                         File.Delete(destinationFilePath);
-                        Console.WriteLine($"[CRYPTO] Fichier chiffré : {Path.GetFileName(encryptedPath)}");
+                        Console.WriteLine(@$"[CRYPTO] Fichier chiffré : {Path.GetFileName(encryptedPath)}");
                     }
                     else
                     {
-                        Console.WriteLine($"[CRYPTO] Échec chiffrement : {Path.GetFileName(destinationFilePath)}");
+                        Console.WriteLine(@$"[CRYPTO] Échec chiffrement : {Path.GetFileName(destinationFilePath)}");
                     }
                 }
                 

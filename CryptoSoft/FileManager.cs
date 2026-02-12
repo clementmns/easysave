@@ -24,7 +24,7 @@ public class FileManager
     }
 
     /// <summary>
-    /// check if the file exists
+    /// Check if the file exists
     /// </summary>
     private bool CheckFile()
     {
@@ -50,11 +50,11 @@ public class FileManager
 
         try
         {
-            Stopwatch stopwatch = Stopwatch.StartNew();
+            var stopwatch = Stopwatch.StartNew();
             var fileBytes = File.ReadAllBytes(SourcePath);
             var keyBytes = ConvertToByte(Key);
 
-            byte[] result = Algorithm switch
+            var result = Algorithm switch
             {
                 CryptoAlgorithm.Xor => XorMethod(fileBytes, keyBytes),
                 CryptoAlgorithm.Aes => IsEncryption 
@@ -63,7 +63,6 @@ public class FileManager
                 _ => throw new NotImplementedException()
             };
 
-            // Créer le dossier de destination si nécessaire
             var destDir = Path.GetDirectoryName(DestinationPath);
             if (!string.IsNullOrEmpty(destDir))
             {
@@ -117,7 +116,6 @@ public class FileManager
         using var encryptor = aes.CreateEncryptor();
         var encrypted = encryptor.TransformFinalBlock(data, 0, data.Length);
         
-        // Combining IV and numerical data
         var result = new byte[aes.IV.Length + encrypted.Length];
         Buffer.BlockCopy(aes.IV, 0, result, 0, aes.IV.Length);
         Buffer.BlockCopy(encrypted, 0, result, aes.IV.Length, encrypted.Length);
@@ -130,12 +128,10 @@ public class FileManager
         using var aes = Aes.Create();
         aes.Key = DeriveKey(key, 32);
         
-        // Extract the IV
         var iv = new byte[16];
         Buffer.BlockCopy(data, 0, iv, 0, 16);
         aes.IV = iv;
         
-        // Extract the numerical data
         var encryptedData = new byte[data.Length - 16];
         Buffer.BlockCopy(data, 16, encryptedData, 0, encryptedData.Length);
         
@@ -145,8 +141,7 @@ public class FileManager
 
     private static byte[] DeriveKey(byte[] key, int length)
     {
-        using var sha256 = SHA256.Create();
-        var hash = sha256.ComputeHash(key);
+        var hash = SHA256.HashData(key);
         var result = new byte[length];
         Buffer.BlockCopy(hash, 0, result, 0, Math.Min(hash.Length, length));
         return result;
