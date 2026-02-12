@@ -137,6 +137,12 @@ public class ConsoleAppView : IProgressionObserver
         }
     }
     
+    /// <summary>
+    /// shorten the file path to display it
+    /// </summary>
+    /// <param name="path"></param>
+    /// <param name="maxLength"></param>
+    /// <returns></returns>
     private static string TruncatePath(string path, int maxLength = 40)
     {
         if (string.IsNullOrEmpty(path) || path.Length <= maxLength)

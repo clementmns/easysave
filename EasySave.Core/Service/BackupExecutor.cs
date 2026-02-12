@@ -8,8 +8,7 @@ public class BackupExecutor
     public bool ExecuteJob(BackupJob job)
     {
         var strategy = GetStrategy(job);
-        strategy.Execute(job);
-        return true;
+        return strategy.Execute(job);
     }
 
     private static IBackupStrategy GetStrategy(BackupJob job)

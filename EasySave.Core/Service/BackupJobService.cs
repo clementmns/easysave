@@ -40,7 +40,10 @@ public class BackupJobService : IRealTimeStateObserver
             
             job.State.AttachStateObserver(this);
             var executor = new BackupExecutor();
-            executor.ExecuteJob(job);
+            if (!executor.ExecuteJob(job))
+            {
+                throw new Exception();
+            }
             sw.Stop();
             
             Logger.Instance.Write(new LogEntry("Job executed", job, false, sw.ElapsedMilliseconds));
