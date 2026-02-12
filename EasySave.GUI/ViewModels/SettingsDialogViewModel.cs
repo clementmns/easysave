@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Core.Model;
 using EasySave.Core.Service;
+using EasySave.GUI.Views;
 
 namespace EasySave.GUI.ViewModels;
 
@@ -50,14 +52,36 @@ public partial class SettingsDialogViewModel : DialogViewModel
     public void CancelCommand() => _dialogWindow?.Close();
     
     [RelayCommand]
-    public void SaveCommand()
+    public async Task SaveCommand()
     {
-        if (SelectedLogFormat != SettingsService.GetInstance.Settings.LogFormat) 
+        var languageChanged = SelectedLanguage != SettingsService.GetInstance.Settings.Language;
+
+        if (SelectedLogFormat != SettingsService.GetInstance.Settings.LogFormat)
             SettingsService.GetInstance.ChangeLogFormat(SelectedLogFormat);
         
-        if (SelectedLanguage != SettingsService.GetInstance.Settings.Language)
+        if (languageChanged)
             SettingsService.GetInstance.SetLanguage(SelectedLanguage);
         
+        if (languageChanged) await ShowRestartDialogAsync();
         _dialogWindow?.Close();
+        
+    }
+
+    private async Task ShowRestartDialogAsync()
+    {
+        var dialog = new Window
+        {
+            // Title = Messages.RestartTitle,
+            Content = new DialogRestartConfirm(),
+            Width = 300,
+            Height = 140,
+            WindowStartupLocation = WindowStartupLocation.CenterOwner,
+            CanResize = false
+        };
+
+        dialog.DataContext = new RestartConfirmDialogViewModel(dialog);
+
+        if (_dialogWindow != null) await dialog.ShowDialog(_dialogWindow);
+        else await dialog.ShowDialog(null);
     }
 }
