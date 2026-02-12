@@ -42,7 +42,7 @@ public class BackupJobService : IRealTimeStateObserver
             var executor = new BackupExecutor();
             if (!executor.ExecuteJob(job))
             {
-                throw new Exception();
+                throw new Exception("Failed to execute job");
             }
             sw.Stop();
             

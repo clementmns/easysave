@@ -45,7 +45,6 @@ public class ConsoleAppView : IProgressionObserver
     public void Run()
     {
         var exit = false;
-        const int maxFiles = 5;
 
         while (!exit)
         {
