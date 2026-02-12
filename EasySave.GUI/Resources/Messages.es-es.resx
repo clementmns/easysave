@@ -83,4 +83,43 @@
     <data name="jobName" xml:space="preserve">
         <value>Nombre del puesto</value>
     </data>
+    <data name="giveName" xml:space="preserve">
+        <value>Asigna a este trabajo un nombre claro y reconocible.</value>
+    </data>
+    <data name="enterJobName" xml:space="preserve">
+        <value>Introduzca un nombre para el trabajo.</value>
+    </data>
+    <data name="backupTypeText" xml:space="preserve">
+        <value>Seleccione el comportamiento de copia de seguridad completa o incremental.</value>
+    </data>
+    <data name="backupType" xml:space="preserve">
+        <value>Tipo de copia de seguridad</value>
+    </data>
+    <data name="sourceText" xml:space="preserve">
+        <value>Elija un archivo o carpeta para realizar una copia de seguridad.</value>
+    </data>
+    <data name="source" xml:space="preserve">
+        <value>fuente</value>
+    </data>
+    <data name="selectTheSource" xml:space="preserve">
+        <value>Seleccionar fuente </value>
+    </data>
+    <data name="settings" xml:space="preserve">
+        <value>Configuración</value>
+    </data>
+    <data name="destination" xml:space="preserve">
+        <value>Destino</value>
+    </data>
+    <data name="destinationText" xml:space="preserve">
+        <value>Elija una ubicación de destino para la copia de seguridad.</value>
+    </data>
+    <data name="selectDestination" xml:space="preserve">
+        <value>Seleccionar destino</value>
+    </data>
+    <data name="create" xml:space="preserve">
+        <value>Crear</value>
+    </data>
+    <data name="browse" xml:space="preserve">
+        <value>Explorar</value>
+    </data>
 </root>

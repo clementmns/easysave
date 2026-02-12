@@ -86,4 +86,40 @@
     <data name="jobName" xml:space="preserve">
         <value>Nom du travail</value>
     </data>
+    <data name="giveName" xml:space="preserve">
+        <value>Donnez à cette tâche un nom clair et reconnaissable.</value>
+    </data>
+    <data name="enterJobName" xml:space="preserve">
+        <value>Entrez le nom de la tâche</value>
+    </data>
+    <data name="backupTypeText" xml:space="preserve">
+        <value>Sélectionnez le comportement de sauvegarde complète ou incrémentielle.</value>
+    </data>
+    <data name="backupType" xml:space="preserve">
+        <value>Type de sauvegarde</value>
+    </data>
+    <data name="source" xml:space="preserve">
+        <value>Source</value>
+    </data>
+    <data name="sourceText" xml:space="preserve">
+        <value>Choisissez un fichier ou un dossier à sauvegarder.</value>
+    </data>
+    <data name="selectTheSource" xml:space="preserve">
+        <value>Choisir la source</value>
+    </data>
+    <data name="destination" xml:space="preserve">
+        <value>Destination</value>
+    </data>
+    <data name="destinationText" xml:space="preserve">
+        <value>Choisissez un emplacement cible pour la sauvegarde.</value>
+    </data>
+    <data name="selectDestination" xml:space="preserve">
+        <value>Sélectionner la destination</value>
+    </data>
+    <data name="create" xml:space="preserve">
+        <value>Créer</value>
+    </data>
+    <data name="browse" xml:space="preserve">
+        <value>Parcourir</value>
+    </data>
 </root>

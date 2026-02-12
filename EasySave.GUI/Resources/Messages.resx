@@ -102,4 +102,43 @@
     <data name="jobName" xml:space="preserve">
         <value>Job name</value>
     </data>
+    <data name="giveName" xml:space="preserve">
+        <value>Give this job a clear, recognizable name.</value>
+    </data>
+    <data name="enterJobName" xml:space="preserve">
+        <value>Enter a job name</value>
+    </data>
+    <data name="backupTypeText" xml:space="preserve">
+        <value>Select full or incremental backup behavior.</value>
+    </data>
+    <data name="backupType" xml:space="preserve">
+        <value>Backup type</value>
+    </data>
+    <data name="source" xml:space="preserve">
+        <value>Source</value>
+    </data>
+    <data name="sourceText" xml:space="preserve">
+        <value>Choose a file or folder to back up.</value>
+    </data>
+    <data name="selectSource" xml:space="preserve">
+        <value />
+    </data>
+    <data name="selectTheSource" xml:space="preserve">
+        <value>Select source</value>
+    </data>
+    <data name="destination" xml:space="preserve">
+        <value>Destination</value>
+    </data>
+    <data name="destinationText" xml:space="preserve">
+        <value>Pick a target location for the backup.</value>
+    </data>
+    <data name="selectDestination" xml:space="preserve">
+        <value>Select destination</value>
+    </data>
+    <data name="create" xml:space="preserve">
+        <value>Create</value>
+    </data>
+    <data name="browse" xml:space="preserve">
+        <value>Browse</value>
+    </data>
 </root>

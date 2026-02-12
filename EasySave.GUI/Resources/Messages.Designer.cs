@@ -78,6 +78,33 @@ namespace EasySave.GUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Backup type.
+        /// </summary>
+        public static string backupType {
+            get {
+                return ResourceManager.GetString("backupType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select full or incremental backup behavior..
+        /// </summary>
+        public static string backupTypeText {
+            get {
+                return ResourceManager.GetString("backupTypeText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Browse.
+        /// </summary>
+        public static string browse {
+            get {
+                return ResourceManager.GetString("browse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string cancel {
@@ -92,6 +119,15 @@ namespace EasySave.GUI.Resources {
         public static string chooseBackupText {
             get {
                 return ResourceManager.GetString("chooseBackupText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create.
+        /// </summary>
+        public static string create {
+            get {
+                return ResourceManager.GetString("create", resourceCulture);
             }
         }
         
@@ -132,11 +168,38 @@ namespace EasySave.GUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Destination.
+        /// </summary>
+        public static string destination {
+            get {
+                return ResourceManager.GetString("destination", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pick a target location for the backup..
+        /// </summary>
+        public static string destinationText {
+            get {
+                return ResourceManager.GetString("destinationText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to English.
         /// </summary>
         public static string english {
             get {
                 return ResourceManager.GetString("english", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter a job name.
+        /// </summary>
+        public static string enterJobName {
+            get {
+                return ResourceManager.GetString("enterJobName", resourceCulture);
             }
         }
         
@@ -164,6 +227,15 @@ namespace EasySave.GUI.Resources {
         public static string german {
             get {
                 return ResourceManager.GetString("german", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Give this job a clear, recognizable name..
+        /// </summary>
+        public static string giveName {
+            get {
+                return ResourceManager.GetString("giveName", resourceCulture);
             }
         }
         
@@ -240,6 +312,15 @@ namespace EasySave.GUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select destination.
+        /// </summary>
+        public static string selectDestination {
+            get {
+                return ResourceManager.GetString("selectDestination", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select destination path.
         /// </summary>
         public static string SelectDestinationPath {
@@ -254,6 +335,15 @@ namespace EasySave.GUI.Resources {
         public static string selectLanguage {
             get {
                 return ResourceManager.GetString("selectLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string selectSource {
+            get {
+                return ResourceManager.GetString("selectSource", resourceCulture);
             }
         }
         
@@ -276,6 +366,15 @@ namespace EasySave.GUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select source.
+        /// </summary>
+        public static string selectTheSource {
+            get {
+                return ResourceManager.GetString("selectTheSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
         public static string settings {
@@ -290,6 +389,24 @@ namespace EasySave.GUI.Resources {
         public static string size {
             get {
                 return ResourceManager.GetString("size", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Source.
+        /// </summary>
+        public static string source {
+            get {
+                return ResourceManager.GetString("source", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose a file or folder to back up..
+        /// </summary>
+        public static string sourceText {
+            get {
+                return ResourceManager.GetString("sourceText", resourceCulture);
             }
         }
         

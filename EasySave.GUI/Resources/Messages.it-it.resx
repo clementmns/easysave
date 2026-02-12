@@ -83,4 +83,43 @@
     <data name="jobName" xml:space="preserve">
         <value>Nome del lavoro</value>
     </data>
+    <data name="giveName" xml:space="preserve">
+        <value>Assegna a questo lavoro un nome chiaro e riconoscibile.</value>
+    </data>
+    <data name="enterJobName" xml:space="preserve">
+        <value>Inserisci il nome di un lavoro</value>
+    </data>
+    <data name="backupType" xml:space="preserve">
+        <value>Tipo di backup</value>
+    </data>
+    <data name="backupTypeText" xml:space="preserve">
+        <value>Selezionare il comportamento di backup completo o incrementale.</value>
+    </data>
+    <data name="source" xml:space="preserve">
+        <value>Fonte</value>
+    </data>
+    <data name="sourceText" xml:space="preserve">
+        <value>Scegli un file o una cartella di cui eseguire il backup.</value>
+    </data>
+    <data name="selectTheSource" xml:space="preserve">
+        <value>Seleziona fonte</value>
+    </data>
+    <data name="settings" xml:space="preserve">
+        <value>Impostazioni</value>
+    </data>
+    <data name="destination" xml:space="preserve">
+        <value>Destinazione</value>
+    </data>
+    <data name="destinationText" xml:space="preserve">
+        <value>Scegli una posizione di destinazione per il backup.</value>
+    </data>
+    <data name="selectDestination" xml:space="preserve">
+        <value>Seleziona destinazione</value>
+    </data>
+    <data name="create" xml:space="preserve">
+        <value>Crea</value>
+    </data>
+    <data name="browse" xml:space="preserve">
+        <value>Sfoglia</value>
+    </data>
 </root>
