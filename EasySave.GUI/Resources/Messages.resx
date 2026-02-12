@@ -30,4 +30,58 @@
     <data name="SelectDestinationPath" xml:space="preserve">
         <value>Select destination path</value>
     </data>
+    <data name="name" xml:space="preserve">
+        <value>name</value>
+    </data>
+    <data name="add" xml:space="preserve">
+        <value>add</value>
+    </data>
+    <data name="delete" xml:space="preserve">
+        <value>delete</value>
+    </data>
+    <data name="execute" xml:space="preserve">
+        <value>execute</value>
+    </data>
+    <data name="break" xml:space="preserve">
+        <value>break</value>
+    </data>
+    <data name="size" xml:space="preserve">
+        <value>size</value>
+    </data>
+    <data name="state" xml:space="preserve">
+        <value>state</value>
+    </data>
+    <data name="settings" xml:space="preserve">
+        <value>Settings</value>
+    </data>
+    <data name="customizeSettings" xml:space="preserve">
+        <value>Customize app settings</value>
+    </data>
+    <data name="Language" xml:space="preserve">
+        <value>Language</value>
+    </data>
+    <data name="languageText" xml:space="preserve">
+        <value>Used for the application interface</value>
+    </data>
+    <data name="french" xml:space="preserve">
+        <value>French</value>
+    </data>
+    <data name="english" xml:space="preserve">
+        <value>English</value>
+    </data>
+    <data name="german" xml:space="preserve">
+        <value>German</value>
+    </data>
+    <data name="italian" xml:space="preserve">
+        <value>Italian</value>
+    </data>
+    <data name="selectLanguage" xml:space="preserve">
+        <value>Select language</value>
+    </data>
+    <data name="logFormat" xml:space="preserve">
+        <value>Log Format</value>
+    </data>
+    <data name="chooseBackupText" xml:space="preserve">
+        <value>Choose how backup logs are stored</value>
+    </data>
 </root>

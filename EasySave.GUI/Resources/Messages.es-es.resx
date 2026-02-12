@@ -1,0 +1,68 @@
+﻿<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="add" xml:space="preserve">
+        <value>añadir</value>
+    </data>
+    <data name="delete" xml:space="preserve">
+        <value>eliminar</value>
+    </data>
+    <data name="execute" xml:space="preserve">
+        <value>ejecutar</value>
+    </data>
+    <data name="name" xml:space="preserve">
+        <value>nombre</value>
+    </data>
+    <data name="SelectDestinationPath" xml:space="preserve">
+        <value>Seleccionar ruta de destino</value>
+    </data>
+    <data name="break" xml:space="preserve">
+        <value>descanso</value>
+    </data>
+    <data name="size" xml:space="preserve">
+        <value>talla</value>
+    </data>
+    <data name="state" xml:space="preserve">
+        <value>estado</value>
+    </data>
+    <data name="english" xml:space="preserve">
+        <value>Inglés</value>
+    </data>
+    <data name="french" xml:space="preserve">
+        <value>Francés</value>
+    </data>
+    <data name="german" xml:space="preserve">
+        <value>Alemán</value>
+    </data>
+    <data name="italian" xml:space="preserve">
+        <value>Italiano</value>
+    </data>
+    <data name="Language" xml:space="preserve">
+        <value>Idioma</value>
+    </data>
+    <data name="languageText" xml:space="preserve">
+        <value>Utilizado para la interfaz de la aplicación.</value>
+    </data>
+    <data name="customizeSettings" xml:space="preserve">
+        <value>Personalizar la configuración de la aplicación</value>
+    </data>
+    <data name="selectLanguage" xml:space="preserve">
+        <value>Seleccionar idioma</value>
+    </data>
+    <data name="logFormat" xml:space="preserve">
+        <value>Formato de registro</value>
+    </data>
+    <data name="chooseBackupText" xml:space="preserve">
+        <value>Elija cómo se almacenan los registros de copia de seguridad</value>
+    </data>
+</root>

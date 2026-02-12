@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:EasySave.GUI.ViewModels;assembly=EasySave.GUI"
+             xmlns:ressources="clr-namespace:EasySave.GUI.Resources"
              x:DataType="vm:SettingsDialogViewModel"
              mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="500"
              x:Class="EasySave.GUI.Views.DialogSettings">
@@ -13,23 +14,23 @@
         <ScrollViewer>
             <StackPanel Spacing="20">
                 <StackPanel Spacing="4">
-                    <TextBlock Text="Settings" FontSize="20" FontWeight="SemiBold" />
-                    <TextBlock Text="Customize app settings." Opacity="0.7" />
+                    <TextBlock Text="{x:Static ressources:Messages.settings}" FontSize="20" FontWeight="SemiBold" />
+                    <TextBlock Text="{x:Static ressources:Messages.customizeSettings}" Opacity="0.7" />
                 </StackPanel>
 
                 <Border Padding="16" CornerRadius="8" Background="#0A000000">
                     <StackPanel Spacing="10">
-                        <TextBlock Text="Language" FontWeight="SemiBold" />
-                        <TextBlock Text="Used for the application interface." Opacity="0.7" />
+                        <TextBlock Text="{x:Static ressources:Messages.Language}" FontWeight="SemiBold" />
+                        <TextBlock Text="{x:Static ressources:Messages.languageText}" Opacity="0.7" />
                         <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding SelectedLanguageDisplay}"
-                                  PlaceholderText="Select language" HorizontalAlignment="Stretch" />
+                                  PlaceholderText="{x:Static ressources:Messages.selectLanguage}" HorizontalAlignment="Stretch" />
                     </StackPanel>
                 </Border>
 
                 <Border Padding="16" CornerRadius="8" Background="#0A000000">
                     <StackPanel Spacing="10">
-                        <TextBlock Text="Log Format" FontWeight="SemiBold" />
-                        <TextBlock Text="Choose how backup logs are stored." Opacity="0.7" />
+                        <TextBlock Text="{x:Static ressources:Messages.logFormat}" FontWeight="SemiBold" />
+                        <TextBlock Text="{x:Static ressources:Messages.chooseBackupText}" Opacity="0.7" />
                         <ComboBox ItemsSource="{Binding LogFormats}" SelectedItem="{Binding SelectedLogFormat}"
                                   PlaceholderText="Select log format" HorizontalAlignment="Stretch" />
                     </StackPanel>
