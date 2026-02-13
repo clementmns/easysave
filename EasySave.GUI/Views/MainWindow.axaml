@@ -169,7 +169,7 @@
                                 <Border Grid.Row="2" BorderBrush="#EEE" BorderThickness="0,1,0,0" Padding="0,15,0,0">
                                     <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Right">
                                         
-                                        <Button Background="White" BorderBrush="#DDD" BorderThickness="1" CornerRadius="4" Padding="15,8" Cursor="Hand">
+                                        <Button Command="{Binding ((vm:MainViewModel)DataContext).OpenEditJobDialogCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding .}" Background="White" BorderBrush="#DDD" BorderThickness="1" CornerRadius="4" Padding="15,8" Cursor="Hand">
                                             <StackPanel Orientation="Horizontal" Spacing="8">
                                                 <Svg Path="/Assets/svg/pencil.svg" Width="14" Height="14"/>
                                                 <TextBlock Text="Éditer"/>

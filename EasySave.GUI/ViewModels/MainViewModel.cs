@@ -70,6 +70,22 @@ public partial class MainViewModel : ViewModelBase
     }
     
     [RelayCommand]
+    public void OpenEditJobDialog(BackupJob jobToEdit)
+    {
+        var dialog = new Window 
+        {
+            Title = "Edit job",
+            Content = new DialogEditJob(),
+            Width = 1000,
+            Height = 400,
+            WindowStartupLocation = WindowStartupLocation.CenterOwner,
+        };
+        
+        dialog.DataContext = new EditJobViewModel(this, jobToEdit, dialog);;
+        dialog.Show();
+    }
+    
+    [RelayCommand]
     public async Task OpenSettingsDialog(Window mainWindow)
     {
         var dialog = new Window
