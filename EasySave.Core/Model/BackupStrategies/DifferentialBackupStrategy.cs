@@ -1,10 +1,9 @@
+using EasySave.Core.Resources;
 using EasySave.Core.Utils;
 using EasySave.Core.Service;
 using EasyLog;
 
 namespace EasySave.Core.Model.BackupStrategies;
-
-
 
 /// <summary>
 /// Strategy for backing up a directory or a file recursively using differential copy.
@@ -22,7 +21,7 @@ public class DifferentialBackupStrategy : IBackupStrategy
         {
             (true, false) => ProcessFile(job, cryptedExtensions),
             (false, true) => ProcessDirectory(job,  cryptedExtensions),
-            _ => throw new FileNotFoundException(Ressources.Errors.ProcessingError)
+            _ => throw new FileNotFoundException(Errors.ProcessingError)
         };
 
         job.State.Reset();
@@ -60,7 +59,7 @@ private static bool ProcessFile(BackupJob job, List<string> cryptExt)
             if (!resultEncryption.Item1)
             {
                 Logger.Instance.Write(new LogEntry($"Encryption failed : {Path.GetFileName(destinationFilePath)}", job, true));
-                throw new Exception(Ressources.Errors.FileCantBeCrypted);
+                throw new Exception(Errors.FileCantBeCrypted);
             }
             Logger.Instance.Write(new LogEntry($"File Encrypted : {job.DestinationPath}", job,false, resultEncryption.Item2));
         }
@@ -71,7 +70,7 @@ private static bool ProcessFile(BackupJob job, List<string> cryptExt)
             if (!resultCopy.Item1)
             {
                 Logger.Instance.Write(new LogEntry($"Copy failed : {job.DestinationPath}", job, true));
-                throw new Exception(Ressources.Errors.FileCantBeCopied);
+                throw new Exception(Errors.FileCantBeCopied);
             } 
             Logger.Instance.Write(new LogEntry($"File Copied : {job.DestinationPath}", job,false, resultCopy.Item2));
         }
@@ -84,7 +83,6 @@ private static bool ProcessFile(BackupJob job, List<string> cryptExt)
         return false;
     }
 }
-
 
     private static bool ProcessDirectory(BackupJob job, List<string> cryptExt)
     {
@@ -135,7 +133,7 @@ private static bool ProcessFile(BackupJob job, List<string> cryptExt)
                     if (!resultEncryption.Item1)
                     {
                         Logger.Instance.Write(new LogEntry($"Encryption failed : {Path.GetFileName(destinationFilePath)}", job, true));
-                        throw new Exception(Ressources.Errors.FileCantBeCrypted);
+                        throw new Exception(Errors.FileCantBeCrypted);
                     }
                     Logger.Instance.Write(new LogEntry($"File Encrypted : {job.DestinationPath}", job,false, resultEncryption.Item2));
                 }
@@ -145,7 +143,7 @@ private static bool ProcessFile(BackupJob job, List<string> cryptExt)
                     if (!resultCopy.Item1)
                     {
                         Logger.Instance.Write(new LogEntry($"Copy failed : {job.DestinationPath}", job, true));
-                        throw new Exception(Ressources.Errors.FileCantBeCopied);
+                        throw new Exception(Errors.FileCantBeCopied);
                     }
                     Logger.Instance.Write(new LogEntry($"File Copied : {job.DestinationPath}", job,false, resultCopy.Item2));
                 }   

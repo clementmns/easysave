@@ -1,0 +1,85 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:EasySave.GUI.ViewModels;assembly=EasySave.GUI"
+             xmlns:resources="clr-namespace:EasySave.GUI.Resources"
+             x:DataType="vm:CreateJobDialogViewModel"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="EasySave.GUI.Views.DialogCreateJob">
+    <Design.DataContext>
+        <vm:CreateJobDialogViewModel></vm:CreateJobDialogViewModel>
+    </Design.DataContext>
+    <Border Padding="24">
+        <ScrollViewer>
+            <StackPanel Spacing="20">
+                <StackPanel Spacing="4">
+                    <TextBlock Text="{x:Static resources:Messages.createBackupJob}" FontSize="20" FontWeight="SemiBold" />
+                    <TextBlock Text="{x:Static resources:Messages.createBackupText}" Opacity="0.7" />
+                </StackPanel>
+
+                <Grid ColumnDefinitions="2*,3*" RowDefinitions="Auto,Auto" ColumnSpacing="20" RowSpacing="20">
+                    <Border Grid.Column="0" Grid.RowSpan="2" Padding="16" CornerRadius="8" Background="#0A000000">
+                        <StackPanel Spacing="12">
+                            <TextBlock Text="{x:Static resources:Messages.jobDetails}" FontWeight="SemiBold" />
+                            <StackPanel Spacing="6">
+                                <TextBlock Text="{x:Static resources:Messages.jobName}" FontWeight="SemiBold" />
+                                <TextBlock Text="{x:Static resources:Messages.giveName}" Opacity="0.7" />
+                                <TextBox Watermark="{x:Static resources:Messages.enterJobName}" Text="{Binding Name}" />
+                            </StackPanel>
+                            <StackPanel Spacing="6">
+                                <TextBlock Text="{x:Static resources:Messages.backupType}" FontWeight="SemiBold" />
+                                <TextBlock Text="{x:Static resources:Messages.backupTypeText}" Opacity="0.7" />
+                                <ComboBox ItemsSource="{Binding BackupTypes}" SelectedItem="{Binding SelectedBackupType}"
+                                          PlaceholderText="Select backup type" HorizontalAlignment="Stretch" />
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Column="1" Grid.Row="0" Padding="16" CornerRadius="8" Background="#0A000000">
+                        <StackPanel Spacing="12">
+                            <TextBlock Text="{x:Static resources:Messages.source}" FontWeight="SemiBold" />
+                            <StackPanel Spacing="6">
+                                <TextBlock Text="{x:Static resources:Messages.sourceText}" Opacity="0.7" />
+                                <StackPanel Orientation="Horizontal" Spacing="14">
+                                    <RadioButton Content="File" IsChecked="{Binding IsFileSelected}" GroupName="SaveType" />
+                                    <RadioButton Content="Folder" IsChecked="{Binding IsFolderSelected}" GroupName="SaveType" />
+                                </StackPanel>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBox Grid.Column="0" Watermark="{x:Static resources:Messages.selectTheSource}" Text="{Binding SourcePath}"
+                                             IsReadOnly="True" />
+                                    <Button Grid.Column="1" Content="{x:Static resources:Messages.browse}" Command="{Binding BrowseSourceCommand}" Margin="8,0,0,0" />
+                                </Grid>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Column="1" Grid.Row="1" Padding="16" CornerRadius="8" Background="#0A000000">
+                        <StackPanel Spacing="12">
+                            <TextBlock Text="{x:Static resources:Messages.destination}" FontWeight="SemiBold" />
+                            <StackPanel Spacing="6">
+                                <TextBlock Text="{x:Static resources:Messages.destinationText}" Opacity="0.7" />
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBox Grid.Column="0" Watermark="{x:Static resources:Messages.selectDestination}" Text="{Binding DestinationPath}"
+                                             IsReadOnly="True" />
+                                    <Button Grid.Column="1" Content="{x:Static resources:Messages.browse}" Margin="8,0,0,0"
+                                            Command="{Binding BrowseDestinationCommand}" />
+                                </Grid>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="16" VerticalAlignment="Center">
+                    <TextBlock Grid.Column="0" Text="{Binding ErrorMessage}" IsVisible="{Binding IsErrorVisible}"
+                               Foreground="Red" TextAlignment="Left" />
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10">
+                        <Button Content="{x:Static resources:Messages.cancel}" Command="{Binding CancelCommand}" />
+                        <Button Content="{x:Static resources:Messages.create}" Command="{Binding CreateCommand}" Classes="accent"
+                                IsEnabled="{Binding CanCreate}" />
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </ScrollViewer>
+    </Border>
+</UserControl>

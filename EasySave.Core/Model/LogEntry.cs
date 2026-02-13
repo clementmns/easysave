@@ -1,3 +1,5 @@
+using static EasySave.Core.Utils.FileUtils;
+
 namespace EasySave.Core.Model;
 
 /// <summary>
@@ -5,17 +7,20 @@ namespace EasySave.Core.Model;
 /// </summary>
 public class LogEntry
 {
-    public string Message { get; set; }
-    public string BackupName { get; set; }
+    public string? Message { get; set; }
+    public string? BackupName { get; set; }
     public DateTime Timestamp { get; set; }
-    public string SourcePath { get; set; }
-    public string DestinationPath { get; set; }
+    public string? SourcePath { get; set; }
+    public string? DestinationPath { get; set; }
     public long FileSize { get; set; }
     public long? TransferDuration { get; set; }
+    public long? CryptDuration { get; set; }
     
     public bool? IsError { get; set; }
+
+    public LogEntry() { }
     
-    private LogEntry(string message, string backupName, string sourcePath, string destinationPath, long fileSize, bool? isError = false, long? transferDuration = null)
+    private LogEntry(string message, string backupName, string? sourcePath, string? destinationPath, long fileSize, bool? isError = false, long? transferDuration = null, long? cryptDuration = null)
     {
         Message = message;
         BackupName = backupName;
@@ -25,7 +30,8 @@ public class LogEntry
         FileSize = fileSize;
         IsError = isError;
         TransferDuration = transferDuration;
+        CryptDuration = cryptDuration;
     }
     
-    public LogEntry( string message, BackupJob job, bool? isError = false, long? transferDuration = null) : this(message, job.Name, job.SourcePath, job.DestinationPath, job.State.FileSize, isError, transferDuration) { }
+    public LogEntry( string message, BackupJob job, bool? isError = false, long? transferDuration = null, long? cryptDuration = null) : this(message, job.Name, ConvertToUnc(job.SourcePath), ConvertToUnc(job.DestinationPath), job.State.FileSize, isError, transferDuration, cryptDuration) { }
 }

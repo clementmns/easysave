@@ -16,14 +16,44 @@
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Update="Ressources\Messages.fr-FR.resx">
+      <EmbeddedResource Update="Resources\Messages.fr-FR.resx">
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>Language.fr-FR.Designer.cs</LastGenOutput>
       </EmbeddedResource>
-      <EmbeddedResource Update="Ressources\Messages.resx">
+      <EmbeddedResource Update="Resources\Messages.resx">
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>Language.en-US.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Messages.es-ES.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Messages.es-ES.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Messages.it-IT.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Messages.it-IT.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Messages.de-DE.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Messages.de-DE.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Resources\Messages.es-ES.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Messages.es-ES.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Messages.it-IT.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Messages.it-IT.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Messages.de-DE.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Messages.de-DE.resx</DependentUpon>
+      </Compile>
     </ItemGroup>
 
 </Project>

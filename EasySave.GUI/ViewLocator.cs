@@ -2,9 +2,9 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using EasySaveGUI.ViewModels;
+using EasySave.GUI.ViewModels;
 
-namespace EasySaveGUI;
+namespace EasySave.GUI;
 
 /// <summary>
 /// Given a view model, returns the corresponding view if possible.

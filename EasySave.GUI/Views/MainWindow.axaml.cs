@@ -1,6 +1,6 @@
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 
-namespace EasySaveGUI.Views;
+namespace EasySave.GUI.Views;
 
 public partial class MainWindow : Window
 {

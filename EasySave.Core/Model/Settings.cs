@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace EasySave.Core.Model;
 
 /// <summary>
@@ -8,9 +10,17 @@ public class Settings
     /// <summary>
     /// The application version for which these settings are valid.
     /// </summary>
-    public string Version { get; set; } = "1.0.0";
+    public string Version { get; set; } = "1.1.0";
 
     public string Language { get; set; } = "en-US";
-
+    
+    public LogFormat LogFormat { get; set; } = LogFormat.Json;
+    
     public List<string> CryptExtensions { get; set; } = []; 
+    
+    [JsonIgnore]
+    public int MaxJobs { get; set; }
+    
+    [JsonIgnore]
+    public string AppSaveDirectory { get; set; } = "";
 }

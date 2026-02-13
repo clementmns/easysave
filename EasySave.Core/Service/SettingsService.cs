@@ -1,5 +1,7 @@
 using System.Globalization;
 using System.Text.Json;
+using EasyLog;
+using EasyLog.Strategies;
 using EasySave.Core.Model;
 using EasySave.Core.Utils;
 
@@ -18,32 +20,63 @@ namespace EasySave.Core.Service
             PropertyNameCaseInsensitive = true
         };
 
-        private SettingsService(string appDirectory)
+        private SettingsService(IAppProperties properties)
         {
-            if (!Directory.Exists(appDirectory))
+            if (!Directory.Exists(properties.AppSaveDirectory))
             {
-                FileUtils.CreateDirectory(appDirectory);
+                FileUtils.CreateDirectory(properties.AppSaveDirectory);
             }
 
-            _settingsFilePath = Path.Combine(appDirectory, "settings.json");
+            _settingsFilePath = Path.Combine(properties.AppSaveDirectory, "settings.json");
             _settings = LoadOrCreateSettings();
+            _settings.AppSaveDirectory = properties.AppSaveDirectory;
+            _settings.MaxJobs = properties.MaxJobs;
         }
 
         /// <summary>
         /// Initialize the settings service
         /// </summary>
-        /// <param name="appDirectory">Application content directory</param>
-        public static void Init(string appDirectory)
+        /// <param name="properties"></param>
+        public static void Init(IAppProperties properties)
         {
             if (_instance != null) return;
             {
-                _instance ??= new SettingsService(appDirectory);
+                _instance ??= new SettingsService(properties);
+                Logger.Init(properties.AppSaveDirectory, [GetLoggerStrategyFromLogFormat(_instance.Settings.LogFormat)]);
             }
         }
         
         public static SettingsService GetInstance => _instance ?? throw new Exception();
         
         public Settings Settings => _settings;
+
+        /// <summary>
+        /// Get the logger strategy from the log format
+        /// </summary>
+        /// <param name="logFormat">Logging format</param>
+        /// <returns>Logging strategy</returns>
+        private static ILoggerStrategy GetLoggerStrategyFromLogFormat(LogFormat logFormat)
+        {
+            ILoggerStrategy loggerStrategy = logFormat switch
+            {
+                LogFormat.Json => new JsonLoggerStrategy(),
+                LogFormat.Xml => new XmlLoggerStrategy(),
+                _ => new JsonLoggerStrategy()
+            };
+            return loggerStrategy;
+        }
+        
+        /// <summary>
+        /// Change the log format
+        /// </summary>
+        /// <param name="format">Log format</param>
+        public void ChangeLogFormat(LogFormat format)
+        {
+            if (_settings.LogFormat == format) return;
+
+            SaveSettings(_settings);
+            Logger.ModifyStrategies([GetLoggerStrategyFromLogFormat(format)]);
+        }
         
         /// <summary>
         /// Set the application language
@@ -109,7 +142,12 @@ namespace EasySave.Core.Service
 
         private Settings CreateDefaultSettings()
         {
-            var defaultSettings = new Settings { Language = CultureInfo.InstalledUICulture.Name, Version = GetAppVersion() };
+            var defaultSettings = new Settings
+            {
+                Language = CultureInfo.InstalledUICulture.Name,
+                Version = GetAppVersion(),
+                LogFormat = LogFormat.Json
+            };
             SaveSettings(defaultSettings);
             return defaultSettings;
         }
@@ -120,7 +158,7 @@ namespace EasySave.Core.Service
             File.WriteAllText(_settingsFilePath, json);
         }
 
-        private void ApplyCulture(string language)
+        private static void ApplyCulture(string language)
         {
             try
             {

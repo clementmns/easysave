@@ -1,10 +1,9 @@
+using EasySave.Core.Resources;
 using EasySave.Core.Utils;
 using EasySave.Core.Service;
 using EasyLog;
 
 namespace EasySave.Core.Model.BackupStrategies;
-
-
 
 /// <summary>
 /// Strategy for backing up a directory or a file recursively using full copy.
@@ -22,7 +21,7 @@ public class FullBackupStrategy : IBackupStrategy
         {
             (true, false) => ProcessFile(job, cryptedExtensions),
             (false, true) => ProcessDirectory(job,cryptedExtensions),
-            _ => throw new FileNotFoundException(Ressources.Errors.ProcessingError)
+            _ => throw new FileNotFoundException(Errors.ProcessingError)
         };
         
         job.State.Reset();
@@ -53,7 +52,7 @@ public class FullBackupStrategy : IBackupStrategy
                 if (!resultEncryption.Item1)
                 {
                     Logger.Instance.Write(new LogEntry($"Encryption failed : {Path.GetFileName(destinationFilePath)}", job, true));
-                    throw new Exception(Ressources.Errors.FileCantBeCrypted);
+                    throw new Exception(Errors.FileCantBeCrypted);
                 }
                 Logger.Instance.Write(new LogEntry($"File Encrypted : {job.DestinationPath}", job, false, resultEncryption.Item2));
             }
@@ -64,7 +63,7 @@ public class FullBackupStrategy : IBackupStrategy
                 if (!resultCopy.Item1)
                 {
                     Logger.Instance.Write(new LogEntry($"Copy failed : {job.DestinationPath}", job, true));
-                    throw new Exception(Ressources.Errors.FileCantBeCopied);
+                    throw new Exception(Errors.FileCantBeCopied);
                 }
                 Logger.Instance.Write(new LogEntry($"File Copied : {job.DestinationPath}", job, false,resultCopy.Item2));
             }
@@ -115,7 +114,7 @@ public class FullBackupStrategy : IBackupStrategy
                     if (!resultEncryption.Item1)
                     {
                         Logger.Instance.Write(new LogEntry($"Encryption failed : {Path.GetFileName(destinationFilePath)}", job, true));
-                        throw new Exception(Ressources.Errors.FileCantBeCrypted);
+                        throw new Exception(Errors.FileCantBeCrypted);
                     }
                     Logger.Instance.Write(new LogEntry($"File Encrypted : {job.DestinationPath}", job,false, resultEncryption.Item2));
                 }
@@ -125,7 +124,7 @@ public class FullBackupStrategy : IBackupStrategy
                     if (!resultCopy.Item1)
                     {
                         Logger.Instance.Write(new LogEntry($"Copy failed : {job.DestinationPath}", job, true));
-                        throw new Exception(Ressources.Errors.FileCantBeCopied);
+                        throw new Exception(Errors.FileCantBeCopied);
                     }
                     Logger.Instance.Write(new LogEntry($"File Copied : {job.DestinationPath}", job,false, resultCopy.Item2));
                 }

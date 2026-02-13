@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace EasySaveGUI.ViewModels;
+namespace EasySave.GUI.ViewModels;
 
 public abstract class ViewModelBase : ObservableObject
 {

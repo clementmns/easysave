@@ -24,21 +24,28 @@ public static class FileUtils
             var relativePath = string.IsNullOrWhiteSpace(sourceRoot)
                 ? Path.GetFileName(sourceFile)
                 : Path.GetRelativePath(sourceRoot, sourceFile);
+        
+            if (relativePath.Contains(".."))
+                return (false, 0);
+        
             var destinationFileName = Path.Combine(destinationDir, relativePath);
-
             var destinationParent = Path.GetDirectoryName(destinationFileName);
-            if (!string.IsNullOrWhiteSpace(destinationParent) && !Directory.Exists(destinationParent))
-            {
-                Directory.CreateDirectory(destinationParent);
-            }
-            
-            // Use the Path.Combine method to safely append the file name to the path.
-            File.Copy(sourceFile, destinationFileName, true); // true if the destination file should be replaced if it already exists; otherwise, false
+            if (!string.IsNullOrWhiteSpace(destinationParent) && !Directory.Exists(destinationParent)) Directory.CreateDirectory(destinationParent);
             
             stopwatch.Stop();
 
             var ms = stopwatch.ElapsedMilliseconds;
+            if (File.Exists(destinationFileName))
+            {
+                var attributes = File.GetAttributes(destinationFileName);
+                if ((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+                {
+                    File.SetAttributes(destinationFileName, attributes & ~FileAttributes.ReadOnly);
+                }
+            }
             
+            // Use the Path.Combine method to safely append the file name to the path.
+            File.Copy(sourceFile, destinationFileName, true); // true if the destination file should be replaced if it already exists; otherwise, false
             return (true, ms);
         }
         catch
