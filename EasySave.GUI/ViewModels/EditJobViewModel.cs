@@ -1,4 +1,6 @@
-﻿using Avalonia.Controls;
+﻿using System;
+using System.Collections.ObjectModel;
+using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Core.Model;
@@ -11,10 +13,16 @@ public partial class EditJobViewModel : ObservableObject
     private readonly MainViewModel _mainViewModel;
     private readonly Window _dialogWindow;
     
-    [ObservableProperty] public string _name;
-    [ObservableProperty] public string _sourcePath;
-    [ObservableProperty] public string _destinationPath;
-    [ObservableProperty] public string _type;
+    [ObservableProperty] private string _name;
+    [ObservableProperty] private string _sourcePath;
+    [ObservableProperty] private string _destinationPath;
+    [ObservableProperty] private string _selectedType;
+    
+    public ObservableCollection<string> BackupTypes { get; } = new()
+    {
+        "Full",
+        "Differential"
+    };
 
     public EditJobViewModel(MainViewModel mainViewModel, BackupJob job, Window dialogWindow)
     {
@@ -25,7 +33,7 @@ public partial class EditJobViewModel : ObservableObject
         Name = job.Name;
         SourcePath = job.SourcePath;
         DestinationPath = job.DestinationPath;
-        Type = job.Type.ToString();
+        SelectedType = job.Type.ToString();
     }
     
     [RelayCommand]
@@ -40,6 +48,8 @@ public partial class EditJobViewModel : ObservableObject
         _originalJob.Name = Name;
         _originalJob.SourcePath = SourcePath;
         _originalJob.DestinationPath = DestinationPath;
+        _originalJob.Type = Enum.Parse<BackupType>(SelectedType);
+
         
         _mainViewModel.UpdateJob(_originalJob);
         _dialogWindow.Close(); 
