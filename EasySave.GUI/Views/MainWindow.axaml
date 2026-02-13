@@ -9,25 +9,29 @@
         Title="EasySave"
         Icon="avares://EasySave.GUI/Assets/ico/Logo.ico"
         xmlns:model="clr-namespace:EasySave.Core.Model;assembly=EasySave.Core"
-        xmlns:ressources="clr-namespace:EasySave.GUI.Resources"
+        xmlns:resources="clr-namespace:EasySave.GUI.Resources"
+        xmlns:converters="clr-namespace:EasySave.GUI.Converters"
         Width="1200" Height="700">
+    <Window.Resources>
+        <converters:SelectedJobsContainsConverter x:Key="SelectedJobsContainsConverter" />
+    </Window.Resources>
 
     <Grid RowDefinitions="Auto, Auto, *">
 
         <Border Grid.Row="0" Background="#8961CC" Padding="20,15">
             <Grid ColumnDefinitions="Auto,*,Auto">
-                
-                <Button Grid.Column="0" 
-                        Background="Transparent" 
-                        BorderThickness="1" 
-                        CornerRadius="5" 
-                        Padding="8" 
+
+                <Button Grid.Column="0"
+                        Background="Transparent"
+                        BorderThickness="1"
+                        CornerRadius="5"
+                        Padding="8"
                         Cursor="Hand"
                         Command="{Binding OpenSettingsDialogCommand}"
                         CommandParameter="{Binding $parent[Window]}">
-                    <Svg Path="avares://EasySave.GUI/Assets/svg/settings.svg" 
-                         Width="18" 
-                         Height="18"/>
+                    <Svg Path="avares://EasySave.GUI/Assets/svg/settings.svg"
+                         Width="18"
+                         Height="18" />
                 </Button>
 
                 <Svg Grid.Column="1"
@@ -35,22 +39,28 @@
                      Width="150"
                      Height="40"
                      HorizontalAlignment="Center"
-                     VerticalAlignment="Center"/>
+                     VerticalAlignment="Center" />
             </Grid>
         </Border>
 
         <Border Grid.Row="1" Background="#F0F0F0" BorderBrush="#DDD" BorderThickness="0,0,0,1" Padding="10,5">
             <StackPanel Orientation="Horizontal" Spacing="10">
-                <Button Command="{Binding OpenCreateJobDialog}" CommandParameter="{Binding $parent[Window]}" Background="Transparent" BorderThickness="0" Cursor="Hand">
+                <Button Command="{Binding OpenCreateJobDialog}" CommandParameter="{Binding $parent[Window]}"
+                        Background="Transparent" BorderThickness="0" Cursor="Hand">
                     <StackPanel Orientation="Horizontal" Spacing="5">
-                        <TextBlock Text="+" FontWeight="Bold" Foreground="#8961CC" VerticalAlignment="Center"/>
-                        <TextBlock Text="{x:Static ressources:Messages.add}" VerticalAlignment="Center"/>
+                        <TextBlock Text="+" FontWeight="Bold" Foreground="#8961CC" VerticalAlignment="Center" />
+                        <TextBlock Text="{x:Static resources:Messages.add}" VerticalAlignment="Center" />
                     </StackPanel>
                 </Button>
-                <Rectangle Width="1" Fill="Gray" Margin="5,2" VerticalAlignment="Stretch"/>
-                <Button Content="{x:Static ressources:Messages.execute}" Background="Transparent" BorderThickness="0"/>
-                <Button Content="{x:Static ressources:Messages._break}" Background="Transparent" BorderThickness="0"/>
-                <Button Content="{x:Static ressources:Messages.delete}" Background="Transparent" BorderThickness="0" Foreground="Red"/>
+                <Rectangle Width="1" Fill="Gray" Margin="5,2" VerticalAlignment="Stretch" />
+                <Button Content="{x:Static resources:Messages.execute}" Background="Transparent" BorderThickness="0"
+                        Command="{Binding ExecuteSelectedJobs}" />
+                <Button Content="{x:Static resources:Messages._break}" Background="Transparent" BorderThickness="0" />
+                <Button Content="{x:Static resources:Messages.delete}" Background="Transparent" BorderThickness="0"
+                        Foreground="Red" Command="{Binding DeleteSelectedJobsCommand}" />
+                <Rectangle Width="1" Fill="Gray" Margin="5,2" VerticalAlignment="Stretch" />
+                <Button Content="{x:Static resources:Messages.executeAll}" Background="Transparent" BorderThickness="0"
+                        Command="{Binding ExecuteAllJobs}" />
             </StackPanel>
         </Border>
 
@@ -58,9 +68,9 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="4" />
-                <RowDefinition Height="*" MinHeight="300"/>
+                <RowDefinition Height="*" MinHeight="300" />
             </Grid.RowDefinitions>
-            
+
             <DataGrid Grid.Row="0"
                       ItemsSource="{Binding Jobs}"
                       AutoGenerateColumns="False"
@@ -68,43 +78,64 @@
                       GridLinesVisibility="Horizontal"
                       BorderThickness="0"
                       RowBackground="White">
-                
+
                 <DataGrid.Columns>
-                    <DataGridTemplateColumn Width="50" CanUserResize="False">
+
+                    <DataGridTemplateColumn Width="100" CanUserResize="False">
+                        <DataGridTemplateColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <CheckBox
+                                    IsThreeState="True"
+                                    IsChecked="{Binding ((vm:MainViewModel)DataContext).AreAllJobsSelected, RelativeSource={RelativeSource AncestorType=Window}}"
+                                    Command="{Binding ((vm:MainViewModel)DataContext).ToggleAllSelectionCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.HeaderTemplate>
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <CheckBox
                                     Command="{Binding ((vm:MainViewModel)DataContext).ToggleSelectionCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                     CommandParameter="{Binding}"
                                     HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"/>
+                                    VerticalAlignment="Center">
+                                    <CheckBox.IsChecked>
+                                        <MultiBinding Converter="{StaticResource SelectedJobsContainsConverter}">
+                                            <Binding Path="((vm:MainViewModel)DataContext).SelectedJobs"
+                                                     RelativeSource="{RelativeSource AncestorType=Window}" />
+                                            <Binding />
+                                        </MultiBinding>
+                                    </CheckBox.IsChecked>
+                                </CheckBox>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    
-                    <DataGridTextColumn Header="{x:Static ressources:Messages.name}" Binding="{Binding Name}" Width="2*" IsReadOnly="True" FontWeight="SemiBold"/>
-                    
-                    <DataGridTextColumn Header="{x:Static ressources:Messages.size}" IsReadOnly="True" Width="100"/>
-                    
-                    <DataGridTemplateColumn Header="{x:Static ressources:Messages.state}" Width="120">
+
+                    <DataGridTextColumn Header="{x:Static resources:Messages.name}" Binding="{Binding Name}" Width="2*"
+                                        IsReadOnly="True" FontWeight="SemiBold" />
+
+                    <DataGridTextColumn Header="{x:Static resources:Messages.size}" IsReadOnly="True" Width="100" />
+
+                    <DataGridTemplateColumn Header="{x:Static resources:Messages.state}" Width="120">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Border Background="#2ecc71" CornerRadius="4" VerticalAlignment="Center" HorizontalAlignment="Left" Padding="8,2">
-                                    <TextBlock Text="PRÊT" Foreground="White" FontWeight="Bold" FontSize="11"/>
+                                <Border Background="#2ecc71" CornerRadius="4" VerticalAlignment="Center"
+                                        HorizontalAlignment="Left" Padding="8,2">
+                                    <TextBlock Text="PRÊT" Foreground="White" FontWeight="Bold" FontSize="11" />
                                 </Border>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    
-                    <DataGridTextColumn Header="{x:Static ressources:Messages.test}" IsReadOnly="True" Width="3*"/>
+
+                    <DataGridTextColumn Header="{x:Static resources:Messages.test}" IsReadOnly="True" Width="3*" />
                 </DataGrid.Columns>
             </DataGrid>
 
-            <GridSplitter Grid.Row="1" 
-                          ResizeDirection="Rows" 
-                          Background="#DDD" 
-                          HorizontalAlignment="Stretch" 
-                          VerticalAlignment="Stretch"/>
+            <GridSplitter Grid.Row="1"
+                          ResizeDirection="Rows"
+                          Background="#DDD"
+                          HorizontalAlignment="Stretch"
+                          VerticalAlignment="Stretch" />
 
             <TabControl Grid.Row="2"
                         ItemsSource="{Binding SelectedJobs}">
@@ -117,51 +148,60 @@
 
                 <TabControl.ContentTemplate>
                     <DataTemplate x:DataType="model:BackupJob">
-                        <Border Background="White" 
-                                BorderBrush="#E5E5E5" 
-                                BorderThickness="1" 
-                                CornerRadius="8" 
-                                Margin="10" 
+                        <Border Background="White"
+                                BorderBrush="#E5E5E5"
+                                BorderThickness="1"
+                                CornerRadius="8"
+                                Margin="10"
                                 Padding="20"
                                 BoxShadow="0 4 10 0 #10000000">
-                            
+
                             <Grid RowDefinitions="Auto, *, Auto">
-                                
+
                                 <Grid ColumnDefinitions="*, Auto" Margin="0,0,0,20">
                                     <StackPanel>
-                                        <TextBlock Text="Détails de la sauvegarde" FontSize="12" Foreground="Gray"/>
-                                        <TextBlock Text="{Binding Name}" FontSize="24" FontWeight="Bold" Foreground="#333"/>
+                                        <TextBlock Text="Détails de la sauvegarde" FontSize="12" Foreground="Gray" />
+                                        <TextBlock Text="{Binding Name}" FontSize="24" FontWeight="Bold"
+                                                   Foreground="#333" />
                                     </StackPanel>
-                                    
-                                    <Border Grid.Column="1" Background="#F3F4F6" CornerRadius="6" Padding="10,5" VerticalAlignment="Top">
+
+                                    <Border Grid.Column="1" Background="#F3F4F6" CornerRadius="6" Padding="10,5"
+                                            VerticalAlignment="Top">
                                         <StackPanel Orientation="Horizontal" Spacing="8">
-                                            <Svg Path="/Assets/svg/info.svg" Width="16" Height="16"/>
-                                            <TextBlock Text="{Binding Type}" FontWeight="SemiBold" Foreground="#555"/>
+                                            <Svg Path="/Assets/svg/info.svg" Width="16" Height="16" />
+                                            <TextBlock Text="{Binding Type}" FontWeight="SemiBold" Foreground="#555" />
                                         </StackPanel>
                                     </Border>
                                 </Grid>
 
-                                <Grid Grid.Row="1" ColumnDefinitions="*, Auto, *" Margin="0,0,0,20" VerticalAlignment="Top">
-                                    
-                                    <Border Grid.Column="0" Background="#F9FAFB" BorderBrush="#E5E7EB" BorderThickness="1" CornerRadius="6" Padding="15" MinHeight="80" >
+                                <Grid Grid.Row="1" ColumnDefinitions="*, Auto, *" Margin="0,0,0,20"
+                                      VerticalAlignment="Top">
+
+                                    <Border Grid.Column="0" Background="#F9FAFB" BorderBrush="#E5E7EB"
+                                            BorderThickness="1" CornerRadius="6" Padding="15" MinHeight="80">
                                         <StackPanel Spacing="8">
                                             <StackPanel Orientation="Horizontal" Spacing="8">
-                                                <Svg Path="/Assets/svg/folder.svg" Width="18" Height="18"/> 
-                                                <TextBlock Text="Dossier Source" FontWeight="Bold" Foreground="#374151"/>
+                                                <Svg Path="/Assets/svg/folder.svg" Width="18" Height="18" />
+                                                <TextBlock Text="Dossier Source" FontWeight="Bold" Foreground="#374151" />
                                             </StackPanel>
-                                            <TextBlock Text="{Binding SourcePath}" TextWrapping="Wrap" Foreground="#6B7280"/>
+                                            <TextBlock Text="{Binding SourcePath}" TextWrapping="Wrap"
+                                                       Foreground="#6B7280" />
                                         </StackPanel>
                                     </Border>
 
-                                    <Svg Grid.Column="1" Path="/Assets/svg/arrow_right.svg" Width="24" Height="24" Margin="15,0" Opacity="0.3"/>
+                                    <Svg Grid.Column="1" Path="/Assets/svg/arrow_right.svg" Width="24" Height="24"
+                                         Margin="15,0" Opacity="0.3" />
 
-                                    <Border Grid.Column="2" Background="#F9FAFB" BorderBrush="#E5E7EB" BorderThickness="1" CornerRadius="6" Padding="15" MinHeight="80">
+                                    <Border Grid.Column="2" Background="#F9FAFB" BorderBrush="#E5E7EB"
+                                            BorderThickness="1" CornerRadius="6" Padding="15" MinHeight="80">
                                         <StackPanel Spacing="8">
                                             <StackPanel Orientation="Horizontal" Spacing="8">
-                                                <Svg Path="/Assets/svg/folder.svg" Width="18" Height="18"/>
-                                                <TextBlock Text="Dossier Destination" FontWeight="Bold" Foreground="#374151"/>
+                                                <Svg Path="/Assets/svg/folder.svg" Width="18" Height="18" />
+                                                <TextBlock Text="Dossier Destination" FontWeight="Bold"
+                                                           Foreground="#374151" />
                                             </StackPanel>
-                                            <TextBlock Text="{Binding DestinationPath}" TextWrapping="Wrap" Foreground="#6B7280"/>
+                                            <TextBlock Text="{Binding DestinationPath}" TextWrapping="Wrap"
+                                                       Foreground="#6B7280" />
                                         </StackPanel>
                                     </Border>
                                 </Grid>
@@ -171,21 +211,24 @@
                                         
                                         <Button Command="{Binding ((vm:MainViewModel)DataContext).OpenEditJobDialogCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding .}" Background="White" BorderBrush="#DDD" BorderThickness="1" CornerRadius="4" Padding="15,8" Cursor="Hand">
                                             <StackPanel Orientation="Horizontal" Spacing="8">
-                                                <Svg Path="/Assets/svg/pencil.svg" Width="14" Height="14"/>
-                                                <TextBlock Text="Éditer"/>
+                                                <Svg Path="/Assets/svg/pencil.svg" Width="14" Height="14" />
+                                                <TextBlock Text="Éditer" />
                                             </StackPanel>
                                         </Button>
 
-                                        <Button Background="#8961CC" Foreground="White" CornerRadius="4" Padding="15,8" Cursor="Hand">
+                                        <Button Background="#8961CC" Foreground="White" CornerRadius="4" Padding="15,8"
+                                                CommandParameter="{Binding}"
+                                                Cursor="Hand"
+                                                Command="{Binding ((vm:MainViewModel)DataContext).ExecuteJobCommand, RelativeSource={RelativeSource AncestorType=Window}}">
                                             <StackPanel Orientation="Horizontal" Spacing="8">
-                                                <Svg Path="/Assets/svg/play.svg" Width="14" Height="14"/>
-                                                <TextBlock Text="Lancer maintenant"/>
+                                                <Svg Path="/Assets/svg/play.svg" Width="14" Height="14" />
+                                                <TextBlock Text="Lancer maintenant" />
                                             </StackPanel>
                                         </Button>
-                                        
+
                                     </StackPanel>
                                 </Border>
-                                
+
                             </Grid>
                         </Border>
                     </DataTemplate>

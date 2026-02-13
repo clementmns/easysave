@@ -141,4 +141,7 @@
     <data name="browse" xml:space="preserve">
         <value>Browse</value>
     </data>
+    <data name="executeAll" xml:space="preserve">
+        <value>Execute All</value>
+    </data>
 </root>
