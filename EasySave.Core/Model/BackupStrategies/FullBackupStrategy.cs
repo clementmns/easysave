@@ -1,5 +1,7 @@
 using EasySave.Core.Resources;
 using EasySave.Core.Utils;
+using EasySave.Core.Service;
+using EasyLog;
 
 namespace EasySave.Core.Model.BackupStrategies;
 
@@ -13,10 +15,12 @@ public class FullBackupStrategy : IBackupStrategy
         job.State.IsActive = true;
         job.State.Progression = 0;
         
+        var cryptedExtensions = SettingsService.GetInstance.Settings.CryptExtensions;
+        
         var result = (File.Exists(job.SourcePath), Directory.Exists(job.SourcePath)) switch
         {
-            (true, false) => ProcessFile(job),
-            (false, true) => ProcessDirectory(job),
+            (true, false) => ProcessFile(job, cryptedExtensions),
+            (false, true) => ProcessDirectory(job,cryptedExtensions),
             _ => throw new FileNotFoundException(Errors.ProcessingError)
         };
         
@@ -25,25 +29,46 @@ public class FullBackupStrategy : IBackupStrategy
         return result;
     }
 
-    private static bool ProcessFile(BackupJob job)
+    private static bool ProcessFile(BackupJob job, List<string> cryptExt)
     {
         try
         {
             var fileInfo = new FileInfo(job.SourcePath);
-
+            
             job.State.TotalFiles = 1;
             job.State.RemainingFiles = 1;
             job.State.FileSize = fileInfo.Length;
             job.State.RemainingFilesSize = fileInfo.Length;
             job.State.Progression = 0;
-
-            if (!FileUtils.CopyFile(fileInfo.FullName, job.DestinationPath, Path.GetDirectoryName(fileInfo.FullName)))
+            
+            if (cryptExt.Contains(fileInfo.Extension))
             {
-                throw new Exception(Errors.FileCantBeCopied);
+                var sourcePath = fileInfo.FullName;
+                var sourceRoot = Path.GetDirectoryName(sourcePath);
+                var relativePath = string.IsNullOrWhiteSpace(sourceRoot) ? fileInfo.Name : Path.GetRelativePath(sourceRoot, sourcePath);
+                var destinationFilePath = Path.Combine(job.DestinationPath, relativePath);
+
+                var resultEncryption = CryptoUtils.EncryptFile(sourcePath, destinationFilePath);
+                if (!resultEncryption.Item1)
+                {
+                    Logger.Instance.Write(new LogEntry($"Encryption failed : {Path.GetFileName(destinationFilePath)}", job, true));
+                    throw new Exception(Errors.FileCantBeCrypted);
+                }
+                Logger.Instance.Write(new LogEntry($"File Encrypted : {job.DestinationPath}", job, false, resultEncryption.Item2));
+            }
+            else
+            {
+                var resultCopy = FileUtils.CopyFile(fileInfo.FullName, job.DestinationPath,
+                    Path.GetDirectoryName(fileInfo.FullName));
+                if (!resultCopy.Item1)
+                {
+                    Logger.Instance.Write(new LogEntry($"Copy failed : {job.DestinationPath}", job, true));
+                    throw new Exception(Errors.FileCantBeCopied);
+                }
+                Logger.Instance.Write(new LogEntry($"File Copied : {job.DestinationPath}", job, false,resultCopy.Item2));
             }
 
             job.State.Progression = 100;
-            
             return true;
         }
         catch (Exception)
@@ -52,16 +77,15 @@ public class FullBackupStrategy : IBackupStrategy
         }
     }
 
-    private bool ProcessDirectory(BackupJob job)
+    private static bool ProcessDirectory(BackupJob job, List<string> cryptExt)
     {
         try
         {
-            var directoryInfo = new DirectoryInfo(job.SourcePath + "");
-            string destinationBackupFolder = Path.Combine(job.DestinationPath, Path.GetFileName(job.SourcePath) + "_copy");
+            var directoryInfo = new DirectoryInfo(job.SourcePath);
+            var destinationBackupFolder = Path.Combine(job.DestinationPath, Path.GetFileName(job.SourcePath));
             
             Directory.CreateDirectory(destinationBackupFolder);
             
-            // Find all the files even in the subfolders
             var files = directoryInfo.GetFiles("*", SearchOption.AllDirectories); 
 
             job.State.TotalFiles = files.Length;
@@ -83,19 +107,34 @@ public class FullBackupStrategy : IBackupStrategy
                 }
 
                 Directory.CreateDirectory(dirName);
-                
-                if (!FileUtils.CopyFile(file.FullName, destinationBackupFolder, directoryInfo.FullName))
-                {
-                    throw new Exception(Errors.FileCantBeCopied);
-                }
 
+                if (cryptExt.Contains(file.Extension))
+                {
+                    var resultEncryption = CryptoUtils.EncryptFile(file.FullName, destinationFilePath);
+                    if (!resultEncryption.Item1)
+                    {
+                        Logger.Instance.Write(new LogEntry($"Encryption failed : {Path.GetFileName(destinationFilePath)}", job, true));
+                        throw new Exception(Errors.FileCantBeCrypted);
+                    }
+                    Logger.Instance.Write(new LogEntry($"File Encrypted : {job.DestinationPath}", job,false, resultEncryption.Item2));
+                }
+                else
+                {
+                    var resultCopy = FileUtils.CopyFile(file.FullName, destinationBackupFolder, job.SourcePath);
+                    if (!resultCopy.Item1)
+                    {
+                        Logger.Instance.Write(new LogEntry($"Copy failed : {job.DestinationPath}", job, true));
+                        throw new Exception(Errors.FileCantBeCopied);
+                    }
+                    Logger.Instance.Write(new LogEntry($"File Copied : {job.DestinationPath}", job,false, resultCopy.Item2));
+                }
+                
                 job.State.RemainingFiles -= 1;
                 job.State.RemainingFilesSize -= file.Length;
                 job.State.Progression = (int)(100.0 * (1.0 - ((double)job.State.RemainingFilesSize / job.State.FileSize)));
             }
             
             job.State.Progression = 100;
-            
             return true;
         }
         catch (Exception)
