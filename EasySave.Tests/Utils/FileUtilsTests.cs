@@ -28,10 +28,10 @@ public class FileUtilsTests
             Assert.True(File.Exists(expectedDest));
             Assert.Equal(content, File.ReadAllText(expectedDest, Encoding.UTF8));
             
-            var resultEncryption = CryptoUtils.EncryptFile(sourceFile, destRoot);
+            var resultEncryption = CryptoUtils.EncryptFile(sourceFile, destRoot, sourceRoot);
             expectedDest = Path.Combine(destRoot, "nested", "file.txt.lock");
             Assert.True(resultEncryption.Item1);
-            Assert.True(resultEncryption.Item2 <= 5000); // Encryption time must not exceed 5 seconds
+            Assert.True(resultEncryption.Item2 <= 1000); // Encryption time must not exceed 5 seconds
             Assert.True(File.Exists(expectedDest));
             Assert.NotEqual(content, File.ReadAllText(expectedDest, Encoding.UTF8));
         }
