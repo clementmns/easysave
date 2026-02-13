@@ -2,6 +2,7 @@ using Avalonia;
 using System;
 using EasySave.Core.Service;
 using EasySave.GUI.Resources;
+using EasySave.GUI.ViewModels;
 
 namespace EasySave.GUI;
 
@@ -14,6 +15,19 @@ sealed class Program
     public static void Main(string[] args)
     {
         SettingsService.Init(new AppProperties());
+        
+        if (args.Length > 0)
+        {
+            var vm = new MainViewModel();
+            var executed = vm.ExecuteJobsFromArgs(args[0]);
+            foreach (var (requestedIndex, result) in executed)
+            {
+                Console.WriteLine(!result
+                    ? requestedIndex + " :" + Messages.ResourceManager.GetString("ExecuteJobsFailed")
+                    : requestedIndex + " :" + Messages.ResourceManager.GetString("ExecuteJobsSuccess"));
+            }
+            return;
+        }
         
         BuildAvaloniaApp()
             .StartWithClassicDesktopLifetime(args);

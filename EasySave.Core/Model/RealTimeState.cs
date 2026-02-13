@@ -68,7 +68,8 @@ public class RealTimeState
     
     private void NotifyProgressionObservers()
     {
-        foreach (var observer in _progressionObservers)
+        var observers = _progressionObservers.ToList();
+        foreach (var observer in observers)
         {
             observer.OnProgressionUpdated(Progression);
         }

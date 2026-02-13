@@ -144,4 +144,10 @@
     <data name="executeAll" xml:space="preserve">
         <value>Execute All</value>
     </data>
+    <data name="ExecuteJobsFailed" xml:space="preserve">
+        <value />
+    </data>
+    <data name="ExecuteJobsSuccess" xml:space="preserve">
+        <value />
+    </data>
 </root>

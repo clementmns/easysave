@@ -296,5 +296,17 @@ namespace EasySave.GUI.Resources {
                 return ResourceManager.GetString("executeAll", resourceCulture);
             }
         }
+        
+        public static string ExecuteJobsFailed {
+            get {
+                return ResourceManager.GetString("ExecuteJobsFailed", resourceCulture);
+            }
+        }
+        
+        public static string ExecuteJobsSuccess {
+            get {
+                return ResourceManager.GetString("ExecuteJobsSuccess", resourceCulture);
+            }
+        }
     }
 }

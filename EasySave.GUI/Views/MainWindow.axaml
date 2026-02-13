@@ -16,12 +16,32 @@
         <converters:SelectedJobsContainsConverter x:Key="SelectedJobsContainsConverter" />
     </Window.Resources>
 
+    <!--Remove cell selection-->
+    <Window.Styles>
+        <Style Selector="DataGridCell:focus /template/ Grid#FocusVisual">
+            <Setter Property="IsVisible" Value="False" />
+        </Style>
+        <Style Selector="DataGridCell:current /template/ Rectangle#CurrencyVisual">
+            <Setter Property="IsVisible" Value="False" />
+        </Style>
+    </Window.Styles>
+
     <Grid RowDefinitions="Auto, Auto, *">
 
-        <Border Grid.Row="0" Background="#8961CC" Padding="20,15">
+        <Border Grid.Row="0" Background="#8961CC" Padding="20,10">
             <Grid ColumnDefinitions="Auto,*,Auto">
 
-                <Button Grid.Column="0"
+                <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="10">
+                    <Svg Path="avares://EasySave.GUI/Assets/svg/Logo.svg"
+                         Width="30" Height="30" />
+                    <TextBlock Text="EasySave"
+                               FontSize="20"
+                               FontWeight="Bold"
+                               Foreground="White"
+                               VerticalAlignment="Center" />
+                </StackPanel>
+                
+                <Button Grid.Column="2"
                         Background="Transparent"
                         BorderThickness="1"
                         CornerRadius="5"
@@ -30,16 +50,8 @@
                         Command="{Binding OpenSettingsDialogCommand}"
                         CommandParameter="{Binding $parent[Window]}">
                     <Svg Path="avares://EasySave.GUI/Assets/svg/settings.svg"
-                         Width="18"
-                         Height="18" />
+                         Width="18" Height="18" Css=".White { stroke: #FFF; }"/>
                 </Button>
-
-                <Svg Grid.Column="1"
-                     Path="avares://EasySave.GUI/Assets/svg/Logo.svg"
-                     Width="150"
-                     Height="40"
-                     HorizontalAlignment="Center"
-                     VerticalAlignment="Center" />
             </Grid>
         </Border>
 
@@ -74,9 +86,9 @@
             <DataGrid Grid.Row="0"
                       ItemsSource="{Binding Jobs}"
                       AutoGenerateColumns="False"
-                      CanUserResizeColumns="True"
-                      GridLinesVisibility="Horizontal"
+                      GridLinesVisibility="All"
                       BorderThickness="0"
+                      SelectionMode="Single"
                       RowBackground="White">
 
                 <DataGrid.Columns>
@@ -120,14 +132,22 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Border Background="#2ecc71" CornerRadius="4" VerticalAlignment="Center"
-                                        HorizontalAlignment="Left" Padding="8,2">
+                                        HorizontalAlignment="Center" Padding="8,2">
                                     <TextBlock Text="PRÊT" Foreground="White" FontWeight="Bold" FontSize="11" />
                                 </Border>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
-                    <DataGridTextColumn Header="{x:Static resources:Messages.test}" IsReadOnly="True" Width="3*" />
+                    <DataGridTemplateColumn Header="{x:Static resources:Messages.test}" IsReadOnly="True" Width="3*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ProgressBar Margin="20 10" Height="20"
+                                             Minimum="0" Maximum="100" Value="{Binding State.Progression}"
+                                             ShowProgressText="True" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
 

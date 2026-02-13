@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -10,7 +10,7 @@ using EasySave.GUI.Views;
 
 namespace EasySave.GUI.ViewModels;
 
-public partial class MainViewModel : ViewModelBase
+public partial class MainViewModel : ViewModelBase, IProgressionObserver
 {
     private BackupJobService _jobService { get; set; }
     public ObservableCollection<BackupJob>? Jobs => _jobService.Jobs;
@@ -61,17 +61,17 @@ public partial class MainViewModel : ViewModelBase
     public void ExecuteSelectedJobs()
     {
         if (SelectedJobs.Count == 0) return;
-        foreach (var job in SelectedJobs.ToList()) ExecuteJob(job);
+        foreach (var job in SelectedJobs.ToList())  _ = ExecuteJob(job);
     }
     
     [RelayCommand]
-    public void ExecuteJobCommand(BackupJob job) => ExecuteJob(job);
+    public void ExecuteJobCommand(BackupJob job) => _ = ExecuteJob(job);
 
     [RelayCommand]
     public void ExecuteAllJobs()
     {
         if (Jobs == null) return;
-        foreach (var job in Jobs.ToList()) ExecuteJob(job);
+        foreach (var job in Jobs.ToList()) _ = ExecuteJob(job);
     }
 
     [RelayCommand]
@@ -116,7 +116,7 @@ public partial class MainViewModel : ViewModelBase
 
     public void AddJob(BackupJob job) => _jobService.CreateJob(job);
 
-    public void DeleteJob(BackupJob job) => _jobService.DeleteJob(job);
+    private void DeleteJob(BackupJob job) => _jobService.DeleteJob(job);
 
     public bool ExecuteJob(BackupJob job, IProgressionObserver? progressionObserver = null)
     {
@@ -134,6 +134,11 @@ public partial class MainViewModel : ViewModelBase
     }
 
     public void UpdateJob(BackupJob job) => _jobService.UpdateJob(job);
+
+    public void OnProgressionUpdated(int progression)
+    {
+        OnPropertyChanged(nameof(SelectedJobs));
+    }
 
     /// <summary>
     /// Execute jobs from command line arguments.
@@ -177,7 +182,7 @@ public partial class MainViewModel : ViewModelBase
                 if (Jobs != null && jobIdx >= 0 && jobIdx < Jobs.Count)
                 {
                     // execute job and store result in the map
-                    resultMap[idx] = ExecuteJob(Jobs[jobIdx]);
+                    resultMap[idx] = _jobService.ExecuteJob(Jobs[jobIdx]);
                 }
                 else
                 {
