@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace EasySave.Core.Utils;
 
 /// <summary>
@@ -12,32 +14,27 @@ public static class FileUtils
     /// <param name="destinationDir">Destination Directory</param>
     /// <param name="sourceRoot">Source root</param>
     /// <returns></returns>
-    public static bool CopyFile(string sourceFile, string destinationDir, string? sourceRoot = null)
+    public static (bool, long) CopyFile(string sourceFile, string destinationDir, string? sourceRoot = null) // path/to/text.txt -> path/to/dir 
     {
-        if (string.IsNullOrWhiteSpace(sourceFile))
-            return false;
-        if (string.IsNullOrWhiteSpace(destinationDir))
-            return false;
-        if (!File.Exists(sourceFile))
-            return false;
-    
         try
         {
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            
             var relativePath = string.IsNullOrWhiteSpace(sourceRoot)
                 ? Path.GetFileName(sourceFile)
                 : Path.GetRelativePath(sourceRoot, sourceFile);
         
             if (relativePath.Contains(".."))
-                return false;
+                return (false, 0);
         
             var destinationFileName = Path.Combine(destinationDir, relativePath);
             var destinationParent = Path.GetDirectoryName(destinationFileName);
-        
-            if (!string.IsNullOrWhiteSpace(destinationParent))
-            {
-                Directory.CreateDirectory(destinationParent);
-            }
-        
+            if (!string.IsNullOrWhiteSpace(destinationParent) && !Directory.Exists(destinationParent)) Directory.CreateDirectory(destinationParent);
+            
+            stopwatch.Stop();
+
+            var ms = stopwatch.ElapsedMilliseconds;
             if (File.Exists(destinationFileName))
             {
                 var attributes = File.GetAttributes(destinationFileName);
@@ -46,13 +43,14 @@ public static class FileUtils
                     File.SetAttributes(destinationFileName, attributes & ~FileAttributes.ReadOnly);
                 }
             }
-        
-            File.Copy(sourceFile, destinationFileName, true);
-            return true;
+            
+            // Use the Path.Combine method to safely append the file name to the path.
+            File.Copy(sourceFile, destinationFileName, true); // true if the destination file should be replaced if it already exists; otherwise, false
+            return (true, ms);
         }
         catch
         {
-            return false;
+            return (false,0);
         }
     }
 
