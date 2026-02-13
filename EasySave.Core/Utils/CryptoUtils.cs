@@ -9,13 +9,22 @@ public static class CryptoUtils
     private const string DEFAULT_ALGORITHM = "xor";
     private const string ENCRYPT_EXTENSION = ".lock";
 
-    public static (bool, long) EncryptFile(string sourcePath, string destinationPath, string key = DEFAULT_KEY, string algorithm = DEFAULT_ALGORITHM)
+    public static (bool, long) EncryptFile(string sourcePath, string destinationPath, string? sourceRoot = null, string key = DEFAULT_KEY, string algorithm = DEFAULT_ALGORITHM)
     {
         var stopwatch = new Stopwatch();
         stopwatch.Start();
         
-        var encryptedDestinationPath = destinationPath + ENCRYPT_EXTENSION;
-        var result = ExecuteCryptoCommand(algorithm, "encrypt", sourcePath, encryptedDestinationPath, key);
+        var relativePath = string.IsNullOrWhiteSpace(sourceRoot)
+            ? Path.GetFileName(sourcePath)
+            : Path.GetRelativePath(sourceRoot, sourcePath);
+        
+        if (relativePath.Contains(".."))
+            return (false, 0);
+        
+        var destFile = Path.Combine(destinationPath, relativePath) + ENCRYPT_EXTENSION;
+
+        Directory.CreateDirectory(Path.GetDirectoryName(destFile)!);
+        var result = ExecuteCryptoCommand(algorithm, "encrypt", sourcePath, destFile, key);
         
         stopwatch.Stop();
 

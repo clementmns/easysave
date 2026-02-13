@@ -144,4 +144,16 @@
     <data name="executeAll" xml:space="preserve">
         <value>Execute All</value>
     </data>
+    <data name="noJobSelected" xml:space="preserve">
+        <value>No jobs selected</value>
+    </data>
+    <data name="selectJobText" xml:space="preserve">
+        <value>Select a job from the list above to view its details.</value>
+    </data>
+    <data name="noJobs" xml:space="preserve">
+        <value>No backup work</value>
+    </data>
+    <data name="addInstruction" xml:space="preserve">
+        <value>To get started, click the ‘+’ button above to add a backup job.</value>
+    </data>
 </root>
