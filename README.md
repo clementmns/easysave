@@ -22,7 +22,7 @@ EasySave is a simple tool for saving and loading data.
 - Clone the repository
 - Open the solution in Visual Studio or Rider
 - Build the solution : `dotnet build`
-- Run the project you want: `dotnet run --project EasySave/ConsoleApp`
+- Run the project you want: `dotnet run --project EasySave`
 
 
 ## Contributors
@@ -31,10 +31,6 @@ EasySave is a simple tool for saving and loading data.
 - FARDELLA Timothé
 - BOUZJALLIKHT Yanis
 - OMNÈS Clément
-
-<a href="https://github.com/clementmns/prosoft-easysave/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=clementmns/prosoft-easysave" />
-</a>
 
 
 ## License
