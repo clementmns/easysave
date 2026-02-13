@@ -137,9 +137,32 @@
                           HorizontalAlignment="Stretch"
                           VerticalAlignment="Stretch" />
 
-            <TabControl Grid.Row="2"
-                        ItemsSource="{Binding SelectedJobs}">
+                    <Grid Grid.Row="2">
+            <Border Background="#F9FAFB"
+                    IsVisible="{Binding !SelectedJobs.Count}">
+                <StackPanel HorizontalAlignment="Center" 
+                            VerticalAlignment="Center" 
+                            Spacing="15">
+                    <Svg Path="/Assets/svg/info.svg" 
+                         Width="48" 
+                         Height="48" 
+                         Opacity="0.3"/>
+                    <TextBlock Text="Aucun job sélectionné" 
+                               FontSize="18" 
+                               FontWeight="SemiBold"
+                               Foreground="#6B7280"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="Sélectionnez un job dans la liste ci-dessus pour afficher ses détails" 
+                               FontSize="14"
+                               Foreground="#9CA3AF"
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"/>
+                </StackPanel>
+            </Border>
 
+            <TabControl ItemsSource="{Binding SelectedJobs}"
+                        IsVisible="{Binding !!SelectedJobs.Count}">
+                
                 <TabControl.ItemTemplate>
                     <DataTemplate x:DataType="model:BackupJob">
                         <TextBlock Text="{Binding Name}" />
@@ -234,6 +257,7 @@
                     </DataTemplate>
                 </TabControl.ContentTemplate>
             </TabControl>
+        </Grid>
         </Grid>
     </Grid>
 </Window>
