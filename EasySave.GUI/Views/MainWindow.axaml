@@ -48,17 +48,22 @@
                 <Button Command="{Binding OpenCreateJobDialog}" CommandParameter="{Binding $parent[Window]}" Background="Transparent" BorderThickness="0" Cursor="Hand">
                     <StackPanel Orientation="Horizontal" Spacing="5">
                         <TextBlock Text="+" FontWeight="Bold" Foreground="#8961CC" VerticalAlignment="Center"/>
-                        <TextBlock Text="{x:Static resources:Messages.test}" VerticalAlignment="Center"/>
+                        <TextBlock Text="{x:Static ressources:Messages.add}" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
                 <Rectangle Width="1" Fill="Gray" Margin="5,2" VerticalAlignment="Stretch"/>
-                <Button Content="{x:Static resources:Messages.test}" Background="Transparent" BorderThickness="0"/>
-                <Button Content="{x:Static resources:Messages.test}" Background="Transparent" BorderThickness="0"/>
-                <Button Content="{x:Static resources:Messages.test}" Background="Transparent" BorderThickness="0" Foreground="Red"/>
+                <Button Content="{x:Static ressources:Messages.execute}" Background="Transparent" BorderThickness="0"/>
+                <Button Content="{x:Static ressources:Messages._break}" Background="Transparent" BorderThickness="0"/>
+                <Button Content="{x:Static ressources:Messages.delete}" Background="Transparent" BorderThickness="0" Foreground="Red"/>
             </StackPanel>
         </Border>
 
-        <Grid Grid.Row="2" RowDefinitions="*, 4, *">
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="4" />
+                <RowDefinition Height="*" MinHeight="300"/>
+            </Grid.RowDefinitions>
             
             <DataGrid Grid.Row="0"
                       ItemsSource="{Binding Jobs}"
@@ -99,11 +104,11 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                     
-                    <DataGridTextColumn Header="{x:Static resources:Messages.test}" Binding="{Binding Name}" Width="2*" IsReadOnly="True" FontWeight="SemiBold"/>
+                    <DataGridTextColumn Header="{x:Static ressources:Messages.name}" Binding="{Binding Name}" Width="2*" IsReadOnly="True" FontWeight="SemiBold"/>
                     
-                    <DataGridTextColumn Header="{x:Static resources:Messages.test}" IsReadOnly="True" Width="100"/>
+                    <DataGridTextColumn Header="{x:Static ressources:Messages.size}" IsReadOnly="True" Width="100"/>
                     
-                    <DataGridTemplateColumn Header="{x:Static resources:Messages.test}" Width="120">
+                    <DataGridTemplateColumn Header="{x:Static ressources:Messages.state}" Width="120">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Border Background="#2ecc71" CornerRadius="4" VerticalAlignment="Center" HorizontalAlignment="Left" Padding="8,2">
@@ -134,16 +139,77 @@
 
                 <TabControl.ContentTemplate>
                     <DataTemplate x:DataType="model:BackupJob">
-                        <StackPanel Margin="10" Spacing="5">
-                            <TextBlock Text="Source :" FontWeight="Bold"/>
-                            <TextBlock Text="{Binding SourcePath}"/>
-
-                            <TextBlock Text="Destination :" FontWeight="Bold"/>
-                            <TextBlock Text="{Binding DestinationPath}"/>
+                        <Border Background="White" 
+                                BorderBrush="#E5E5E5" 
+                                BorderThickness="1" 
+                                CornerRadius="8" 
+                                Margin="10" 
+                                Padding="20"
+                                BoxShadow="0 4 10 0 #10000000">
                             
-                            <TextBlock Text="Type :" FontWeight="Bold"/>
-                            <TextBlock Text="{Binding Type}"/>
-                        </StackPanel>
+                            <Grid RowDefinitions="Auto, *, Auto">
+                                
+                                <Grid ColumnDefinitions="*, Auto" Margin="0,0,0,20">
+                                    <StackPanel>
+                                        <TextBlock Text="Détails de la sauvegarde" FontSize="12" Foreground="Gray"/>
+                                        <TextBlock Text="{Binding Name}" FontSize="24" FontWeight="Bold" Foreground="#333"/>
+                                    </StackPanel>
+                                    
+                                    <Border Grid.Column="1" Background="#F3F4F6" CornerRadius="6" Padding="10,5" VerticalAlignment="Top">
+                                        <StackPanel Orientation="Horizontal" Spacing="8">
+                                            <Svg Path="/Assets/svg/info.svg" Width="16" Height="16"/>
+                                            <TextBlock Text="{Binding Type}" FontWeight="SemiBold" Foreground="#555"/>
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+
+                                <Grid Grid.Row="1" ColumnDefinitions="*, Auto, *" Margin="0,0,0,20" VerticalAlignment="Top">
+                                    
+                                    <Border Grid.Column="0" Background="#F9FAFB" BorderBrush="#E5E7EB" BorderThickness="1" CornerRadius="6" Padding="15" MinHeight="80" >
+                                        <StackPanel Spacing="8">
+                                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                                <Svg Path="/Assets/svg/folder.svg" Width="18" Height="18"/> 
+                                                <TextBlock Text="Dossier Source" FontWeight="Bold" Foreground="#374151"/>
+                                            </StackPanel>
+                                            <TextBlock Text="{Binding SourcePath}" TextWrapping="Wrap" Foreground="#6B7280"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <Svg Grid.Column="1" Path="/Assets/svg/arrow_right.svg" Width="24" Height="24" Margin="15,0" Opacity="0.3"/>
+
+                                    <Border Grid.Column="2" Background="#F9FAFB" BorderBrush="#E5E7EB" BorderThickness="1" CornerRadius="6" Padding="15" MinHeight="80">
+                                        <StackPanel Spacing="8">
+                                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                                <Svg Path="/Assets/svg/folder.svg" Width="18" Height="18"/>
+                                                <TextBlock Text="Dossier Destination" FontWeight="Bold" Foreground="#374151"/>
+                                            </StackPanel>
+                                            <TextBlock Text="{Binding DestinationPath}" TextWrapping="Wrap" Foreground="#6B7280"/>
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+
+                                <Border Grid.Row="2" BorderBrush="#EEE" BorderThickness="0,1,0,0" Padding="0,15,0,0">
+                                    <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Right">
+                                        
+                                        <Button Background="White" BorderBrush="#DDD" BorderThickness="1" CornerRadius="4" Padding="15,8" Cursor="Hand">
+                                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                                <Svg Path="/Assets/svg/pencil.svg" Width="14" Height="14"/>
+                                                <TextBlock Text="Éditer"/>
+                                            </StackPanel>
+                                        </Button>
+
+                                        <Button Background="#8961CC" Foreground="White" CornerRadius="4" Padding="15,8" Cursor="Hand">
+                                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                                <Svg Path="/Assets/svg/play.svg" Width="14" Height="14"/>
+                                                <TextBlock Text="Lancer maintenant"/>
+                                            </StackPanel>
+                                        </Button>
+                                        
+                                    </StackPanel>
+                                </Border>
+                                
+                            </Grid>
+                        </Border>
                     </DataTemplate>
                 </TabControl.ContentTemplate>
             </TabControl>
