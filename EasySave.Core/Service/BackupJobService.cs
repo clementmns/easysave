@@ -29,7 +29,7 @@ public class BackupJobService : IRealTimeStateObserver
         SubscribeToJobStates();
     }
     
-    public bool ExecuteJob(BackupJob job)
+    public async Task<bool> ExecuteJobAsync(BackupJob job, IProgressionObserver? progressionObserver = null)
     {
         Logger.Instance.Write(new LogEntry("Going to execute job", job));
         try
@@ -39,8 +39,10 @@ public class BackupJobService : IRealTimeStateObserver
             sw.Start();
             
             job.State.AttachStateObserver(this);
+            if (progressionObserver != null) job.State.AttachProgressionObserver(progressionObserver);
             var executor = new BackupExecutor();
-            if (!executor.ExecuteJob(job))
+            var success = await executor.ExecuteJobAsync(job);
+            if (!success)
             {
                 throw new Exception("Failed to execute job");
             }
@@ -54,6 +56,11 @@ public class BackupJobService : IRealTimeStateObserver
         {
             Logger.Instance.Write(new LogEntry($"Failed to execute job: {e.Message}", job, true));
             return false;
+        }
+        finally
+        {
+            job.State.DetachStateObserver(this);
+            if (progressionObserver != null) job.State.DetachProgressionObserver(progressionObserver);
         }
     }
 

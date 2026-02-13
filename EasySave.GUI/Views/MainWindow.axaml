@@ -156,15 +156,15 @@
                         <DataGridTemplateColumn Header="{x:Static resources:Messages.state}" Width="120">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Border Background="#2ecc71" CornerRadius="4" VerticalAlignment="Center"
-                                            HorizontalAlignment="Center" Padding="8,2">
-                                        <TextBlock Text="PRÊT" Foreground="White" FontWeight="Bold" FontSize="11" />
+                                    <Border CornerRadius="4" VerticalAlignment="Center"
+                                            HorizontalAlignment="Center" Padding="8,2"
+                                            Background="{Binding State.IsActive}">
+                                        <TextBlock Text="{Binding State.IsActive}" Foreground="Black" FontWeight="Bold" FontSize="11" />
                                     </Border>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
 
-            
                     <DataGridTemplateColumn Header="{x:Static resources:Messages.test}" IsReadOnly="True" Width="3*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>

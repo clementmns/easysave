@@ -1,13 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using Avalonia.Data.Converters;
 
 namespace EasySave.GUI.Converters;
 
 public class SelectedJobsContainsConverter : IMultiValueConverter
 {
-    public object? Convert(IList<object?> values, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
+    public object? Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
     {
         if (values.Count < 2) return false;
 

@@ -1,9 +1,12 @@
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+
 namespace EasySave.Core.Model;
 
 /// <summary>
 /// Real time state of a backup job.
 /// </summary>
-public class RealTimeState
+public class RealTimeState : INotifyPropertyChanged
 {
     private readonly List<IRealTimeStateObserver> _stateObservers = [];
     private readonly List<IProgressionObserver> _progressionObservers = [];
@@ -75,20 +78,22 @@ public class RealTimeState
         }
     }
 
-    private void SetField<T>(ref T field, T value)
+    private void SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
     {
         if (EqualityComparer<T>.Default.Equals(field, value)) return;
 
         field = value;
         NotifyStateObservers();
+        OnPropertyChanged(propertyName);
     }
     
-    private void SetFieldProgression<T>(ref T field, T value)
+    private void SetFieldProgression<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
     {
         if (EqualityComparer<T>.Default.Equals(field, value)) return;
         
         field = value;
         NotifyProgressionObservers();
+        OnPropertyChanged(propertyName);
     }
 
     public void AttachStateObserver(IRealTimeStateObserver observer)
@@ -115,6 +120,13 @@ public class RealTimeState
     public void DetachProgressionObserver(IProgressionObserver observer)
     {
         _progressionObservers.Remove(observer);
+    }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
     public override string ToString()
