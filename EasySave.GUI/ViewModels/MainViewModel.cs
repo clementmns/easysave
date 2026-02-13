@@ -19,43 +19,59 @@ public partial class MainViewModel : ViewModelBase
     /// Singleton instance of the BackupJobService.
     /// </summary>
     private BackupJobService _jobService { get; set; }
-    
-    /// <summary>
-    /// Singleton instance of the BackupExecutor.
-    /// </summary>
-    private BackupExecutor _backupExecutor { get; set; }
-    
+
     /// <summary>
     /// List of current backup jobs.
     /// </summary>
     public ObservableCollection<BackupJob>? Jobs => _jobService.Jobs;
-    
+
     public ObservableCollection<BackupJob> SelectedJobs { get; } = new();
+
+    public bool? AreAllJobsSelected
+    {
+        get
+        {
+            if (Jobs == null || Jobs.Count == 0) return false;
+            if (SelectedJobs.Count == Jobs.Count) return true;
+            if (SelectedJobs.Count == 0) return false;
+            return null;
+        }
+    }
+    
+    [RelayCommand]
+    public void ToggleAllSelectionCommand()
+    {
+        if (AreAllJobsSelected == true) SelectedJobs.Clear();
+        else
+        {
+            SelectedJobs.Clear();
+            if (Jobs != null)
+            {
+                foreach (var job in Jobs) SelectedJobs.Add(job);
+            }
+        }
+        OnPropertyChanged(nameof(AreAllJobsSelected));
+        OnPropertyChanged(nameof(SelectedJobs));
+    }
 
     [RelayCommand]
     public void ToggleSelection(BackupJob job)
     {
-        if (SelectedJobs.Contains(job))
-        {
-            SelectedJobs.Remove(job);
-        }
-        else
-        {
-            SelectedJobs.Add(job);
-        }
+        if (SelectedJobs.Contains(job)) SelectedJobs.Remove(job);
+        else SelectedJobs.Add(job);
+        OnPropertyChanged(nameof(AreAllJobsSelected));
+        OnPropertyChanged(nameof(SelectedJobs));
     }
 
-    
     public MainViewModel()
     {
         _jobService = new BackupJobService();
-        _backupExecutor = new BackupExecutor();
     }
 
     [RelayCommand]
     public async Task OpenCreateJobDialog(Window mainWindow)
     {
-        var dialog = new Window 
+        var dialog = new Window
         {
             Title = "Create New job",
             Content = new DialogCreateJob(),
@@ -63,12 +79,12 @@ public partial class MainViewModel : ViewModelBase
             Height = 470,
             WindowStartupLocation = WindowStartupLocation.CenterOwner,
         };
-        
+
         dialog.DataContext = new CreateJobDialogViewModel(this, dialog);
-        
+
         await dialog.ShowDialog(mainWindow);
     }
-    
+
     [RelayCommand]
     public async Task OpenSettingsDialog(Window mainWindow)
     {
@@ -87,17 +103,17 @@ public partial class MainViewModel : ViewModelBase
     }
 
     public bool AddJob(BackupJob job) => _jobService.CreateJob(job);
-    
+
     public bool DeleteJob(BackupJob job) => _jobService.DeleteJob(job);
-    
+
     public bool ExecuteJob(BackupJob job, IProgressionObserver? progressionObserver = null)
     {
         // attach to needed observers
         job.State.AttachStateObserver(_jobService);
         if (progressionObserver != null) job.State.AttachProgressionObserver(progressionObserver);
-        
+
         var result = _jobService.ExecuteJob(job);
-        
+
         // detach from observers to avoid memory leaks
         job.State.DetachStateObserver(_jobService);
         if (progressionObserver != null) job.State.DetachProgressionObserver(progressionObserver);
@@ -106,7 +122,7 @@ public partial class MainViewModel : ViewModelBase
     }
 
     public void UpdateJob(BackupJob job) => _jobService.UpdateJob(job);
-    
+
     /// <summary>
     /// Execute jobs from command line arguments.
     /// </summary>

@@ -9,8 +9,12 @@
         Title="EasySave"
         Icon="avares://EasySave.GUI/Assets/ico/Logo.ico"
         xmlns:model="clr-namespace:EasySave.Core.Model;assembly=EasySave.Core"
-        xmlns:ressources="clr-namespace:EasySave.GUI.Resources"
+        xmlns:resources="clr-namespace:EasySave.GUI.Resources"
+        xmlns:converters="clr-namespace:EasySave.GUI.Converters"
         Width="1200" Height="700">
+    <Window.Resources>
+        <converters:SelectedJobsContainsConverter x:Key="SelectedJobsContainsConverter" />
+    </Window.Resources>
 
     <Grid RowDefinitions="Auto, Auto, *">
 
@@ -44,13 +48,13 @@
                 <Button Command="{Binding OpenCreateJobDialog}" CommandParameter="{Binding $parent[Window]}" Background="Transparent" BorderThickness="0" Cursor="Hand">
                     <StackPanel Orientation="Horizontal" Spacing="5">
                         <TextBlock Text="+" FontWeight="Bold" Foreground="#8961CC" VerticalAlignment="Center"/>
-                        <TextBlock Text="{x:Static ressources:Messages.add}" VerticalAlignment="Center"/>
+                        <TextBlock Text="{x:Static resources:Messages.add}" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
                 <Rectangle Width="1" Fill="Gray" Margin="5,2" VerticalAlignment="Stretch"/>
-                <Button Content="{x:Static ressources:Messages.execute}" Background="Transparent" BorderThickness="0"/>
-                <Button Content="{x:Static ressources:Messages._break}" Background="Transparent" BorderThickness="0"/>
-                <Button Content="{x:Static ressources:Messages.delete}" Background="Transparent" BorderThickness="0" Foreground="Red"/>
+                <Button Content="{x:Static resources:Messages.execute}" Background="Transparent" BorderThickness="0"/>
+                <Button Content="{x:Static resources:Messages._break}" Background="Transparent" BorderThickness="0"/>
+                <Button Content="{x:Static resources:Messages.delete}" Background="Transparent" BorderThickness="0" Foreground="Red"/>
             </StackPanel>
         </Border>
 
@@ -70,23 +74,41 @@
                       RowBackground="White">
                 
                 <DataGrid.Columns>
-                    <DataGridTemplateColumn Width="50" CanUserResize="False">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <CheckBox
-                                    Command="{Binding ((vm:MainViewModel)DataContext).ToggleSelectionCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                    CommandParameter="{Binding}"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"/>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Width="100" CanUserResize="False">
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <CheckBox
+                                IsThreeState="True"
+                                IsChecked="{Binding ((vm:MainViewModel)DataContext).AreAllJobsSelected, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=Window}}"
+                                Command="{Binding ((vm:MainViewModel)DataContext).ToggleAllSelectionCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox
+                                Command="{Binding ((vm:MainViewModel)DataContext).ToggleSelectionCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                CommandParameter="{Binding}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center">
+                                <CheckBox.IsChecked>
+                                    <MultiBinding Converter="{StaticResource SelectedJobsContainsConverter}">
+                                        <Binding Path="((vm:MainViewModel)DataContext).SelectedJobs" RelativeSource="{RelativeSource AncestorType=Window}" />
+                                        <Binding />
+                                    </MultiBinding>
+                                </CheckBox.IsChecked>
+                            </CheckBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                     
-                    <DataGridTextColumn Header="{x:Static ressources:Messages.name}" Binding="{Binding Name}" Width="2*" IsReadOnly="True" FontWeight="SemiBold"/>
+                    <DataGridTextColumn Header="{x:Static resources:Messages.name}" Binding="{Binding Name}" Width="2*" IsReadOnly="True" FontWeight="SemiBold"/>
                     
-                    <DataGridTextColumn Header="{x:Static ressources:Messages.size}" IsReadOnly="True" Width="100"/>
+                    <DataGridTextColumn Header="{x:Static resources:Messages.size}" IsReadOnly="True" Width="100"/>
                     
-                    <DataGridTemplateColumn Header="{x:Static ressources:Messages.state}" Width="120">
+                    <DataGridTemplateColumn Header="{x:Static resources:Messages.state}" Width="120">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Border Background="#2ecc71" CornerRadius="4" VerticalAlignment="Center" HorizontalAlignment="Left" Padding="8,2">
@@ -96,7 +118,7 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                     
-                    <DataGridTextColumn Header="{x:Static ressources:Messages.test}" IsReadOnly="True" Width="3*"/>
+                    <DataGridTextColumn Header="{x:Static resources:Messages.test}" IsReadOnly="True" Width="3*"/>
                 </DataGrid.Columns>
             </DataGrid>
 
