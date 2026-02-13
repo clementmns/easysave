@@ -60,11 +60,263 @@ namespace EasySave.GUI.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to execute.
+        ///   Looks up a localized string similar to Break.
+        /// </summary>
+        public static string _break {
+            get {
+                return ResourceManager.GetString("break", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add.
+        /// </summary>
+        public static string add {
+            get {
+                return ResourceManager.GetString("add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Backup type.
+        /// </summary>
+        public static string backupType {
+            get {
+                return ResourceManager.GetString("backupType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select full or incremental backup behavior..
+        /// </summary>
+        public static string backupTypeText {
+            get {
+                return ResourceManager.GetString("backupTypeText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Browse.
+        /// </summary>
+        public static string browse {
+            get {
+                return ResourceManager.GetString("browse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string cancel {
+            get {
+                return ResourceManager.GetString("cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose how backup logs are stored.
+        /// </summary>
+        public static string chooseBackupText {
+            get {
+                return ResourceManager.GetString("chooseBackupText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create.
+        /// </summary>
+        public static string create {
+            get {
+                return ResourceManager.GetString("create", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create backup job.
+        /// </summary>
+        public static string createBackupJob {
+            get {
+                return ResourceManager.GetString("createBackupJob", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set the source, destination, and backup behavior for this job..
+        /// </summary>
+        public static string createBackupText {
+            get {
+                return ResourceManager.GetString("createBackupText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Customize app settings.
+        /// </summary>
+        public static string customizeSettings {
+            get {
+                return ResourceManager.GetString("customizeSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string delete {
+            get {
+                return ResourceManager.GetString("delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Destination.
+        /// </summary>
+        public static string destination {
+            get {
+                return ResourceManager.GetString("destination", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pick a target location for the backup..
+        /// </summary>
+        public static string destinationText {
+            get {
+                return ResourceManager.GetString("destinationText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to English.
+        /// </summary>
+        public static string english {
+            get {
+                return ResourceManager.GetString("english", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter a job name.
+        /// </summary>
+        public static string enterJobName {
+            get {
+                return ResourceManager.GetString("enterJobName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Execute.
         /// </summary>
         public static string execute {
             get {
                 return ResourceManager.GetString("execute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to French.
+        /// </summary>
+        public static string french {
+            get {
+                return ResourceManager.GetString("french", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to German.
+        /// </summary>
+        public static string german {
+            get {
+                return ResourceManager.GetString("german", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Give this job a clear, recognizable name..
+        /// </summary>
+        public static string giveName {
+            get {
+                return ResourceManager.GetString("giveName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Italian.
+        /// </summary>
+        public static string italian {
+            get {
+                return ResourceManager.GetString("italian", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Job details.
+        /// </summary>
+        public static string jobDetails {
+            get {
+                return ResourceManager.GetString("jobDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Job name.
+        /// </summary>
+        public static string jobName {
+            get {
+                return ResourceManager.GetString("jobName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Language.
+        /// </summary>
+        public static string Language {
+            get {
+                return ResourceManager.GetString("Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Used for the application interface.
+        /// </summary>
+        public static string languageText {
+            get {
+                return ResourceManager.GetString("languageText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Format.
+        /// </summary>
+        public static string logFormat {
+            get {
+                return ResourceManager.GetString("logFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string name {
+            get {
+                return ResourceManager.GetString("name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public static string save {
+            get {
+                return ResourceManager.GetString("save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select destination.
+        /// </summary>
+        public static string selectDestination {
+            get {
+                return ResourceManager.GetString("selectDestination", resourceCulture);
             }
         }
         
@@ -74,6 +326,24 @@ namespace EasySave.GUI.Resources {
         public static string SelectDestinationPath {
             get {
                 return ResourceManager.GetString("SelectDestinationPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select language.
+        /// </summary>
+        public static string selectLanguage {
+            get {
+                return ResourceManager.GetString("selectLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string selectSource {
+            get {
+                return ResourceManager.GetString("selectSource", resourceCulture);
             }
         }
         
@@ -92,6 +362,60 @@ namespace EasySave.GUI.Resources {
         public static string SelectSourcePathFolder {
             get {
                 return ResourceManager.GetString("SelectSourcePathFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select source.
+        /// </summary>
+        public static string selectTheSource {
+            get {
+                return ResourceManager.GetString("selectTheSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        public static string settings {
+            get {
+                return ResourceManager.GetString("settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Size.
+        /// </summary>
+        public static string size {
+            get {
+                return ResourceManager.GetString("size", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Source.
+        /// </summary>
+        public static string source {
+            get {
+                return ResourceManager.GetString("source", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose a file or folder to back up..
+        /// </summary>
+        public static string sourceText {
+            get {
+                return ResourceManager.GetString("sourceText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to State.
+        /// </summary>
+        public static string state {
+            get {
+                return ResourceManager.GetString("state", resourceCulture);
             }
         }
         

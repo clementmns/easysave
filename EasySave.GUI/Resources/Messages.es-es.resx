@@ -1,0 +1,125 @@
+﻿<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="add" xml:space="preserve">
+        <value>Añadir</value>
+    </data>
+    <data name="delete" xml:space="preserve">
+        <value>Eliminar</value>
+    </data>
+    <data name="execute" xml:space="preserve">
+        <value>Ejecutar</value>
+    </data>
+    <data name="name" xml:space="preserve">
+        <value>Nombre</value>
+    </data>
+    <data name="SelectDestinationPath" xml:space="preserve">
+        <value>Seleccionar ruta de destino</value>
+    </data>
+    <data name="break" xml:space="preserve">
+        <value>Descanso</value>
+    </data>
+    <data name="size" xml:space="preserve">
+        <value>Talla</value>
+    </data>
+    <data name="state" xml:space="preserve">
+        <value>Estado</value>
+    </data>
+    <data name="english" xml:space="preserve">
+        <value>Inglés</value>
+    </data>
+    <data name="french" xml:space="preserve">
+        <value>Francés</value>
+    </data>
+    <data name="german" xml:space="preserve">
+        <value>Alemán</value>
+    </data>
+    <data name="italian" xml:space="preserve">
+        <value>Italiano</value>
+    </data>
+    <data name="Language" xml:space="preserve">
+        <value>Idioma</value>
+    </data>
+    <data name="languageText" xml:space="preserve">
+        <value>Utilizado para la interfaz de la aplicación.</value>
+    </data>
+    <data name="customizeSettings" xml:space="preserve">
+        <value>Personalizar la configuración de la aplicación</value>
+    </data>
+    <data name="selectLanguage" xml:space="preserve">
+        <value>Seleccionar idioma</value>
+    </data>
+    <data name="logFormat" xml:space="preserve">
+        <value>Formato de registro</value>
+    </data>
+    <data name="chooseBackupText" xml:space="preserve">
+        <value>Elija cómo se almacenan los registros de copia de seguridad</value>
+    </data>
+    <data name="cancel" xml:space="preserve">
+        <value>Anular</value>
+    </data>
+    <data name="save" xml:space="preserve">
+        <value>Guardar</value>
+    </data>
+    <data name="createBackupJob" xml:space="preserve">
+        <value>Crear tarea de copia de seguridad</value>
+    </data>
+    <data name="createBackupText" xml:space="preserve">
+        <value>Configure el origen, el destino y el comportamiento de la copia de seguridad para este trabajo.</value>
+    </data>
+    <data name="jobDetails" xml:space="preserve">
+        <value>Detalles del trabajo</value>
+    </data>
+    <data name="jobName" xml:space="preserve">
+        <value>Nombre del puesto</value>
+    </data>
+    <data name="giveName" xml:space="preserve">
+        <value>Asigna a este trabajo un nombre claro y reconocible.</value>
+    </data>
+    <data name="enterJobName" xml:space="preserve">
+        <value>Introduzca un nombre para el trabajo.</value>
+    </data>
+    <data name="backupTypeText" xml:space="preserve">
+        <value>Seleccione el comportamiento de copia de seguridad completa o incremental.</value>
+    </data>
+    <data name="backupType" xml:space="preserve">
+        <value>Tipo de copia de seguridad</value>
+    </data>
+    <data name="sourceText" xml:space="preserve">
+        <value>Elija un archivo o carpeta para realizar una copia de seguridad.</value>
+    </data>
+    <data name="source" xml:space="preserve">
+        <value>fuente</value>
+    </data>
+    <data name="selectTheSource" xml:space="preserve">
+        <value>Seleccionar fuente </value>
+    </data>
+    <data name="settings" xml:space="preserve">
+        <value>Configuración</value>
+    </data>
+    <data name="destination" xml:space="preserve">
+        <value>Destino</value>
+    </data>
+    <data name="destinationText" xml:space="preserve">
+        <value>Elija una ubicación de destino para la copia de seguridad.</value>
+    </data>
+    <data name="selectDestination" xml:space="preserve">
+        <value>Seleccionar destino</value>
+    </data>
+    <data name="create" xml:space="preserve">
+        <value>Crear</value>
+    </data>
+    <data name="browse" xml:space="preserve">
+        <value>Explorar</value>
+    </data>
+</root>

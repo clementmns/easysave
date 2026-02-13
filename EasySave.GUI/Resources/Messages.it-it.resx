@@ -1,0 +1,125 @@
+﻿<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="add" xml:space="preserve">
+        <value>Aggiungere</value>
+    </data>
+    <data name="delete" xml:space="preserve">
+        <value>Eliminare</value>
+    </data>
+    <data name="execute" xml:space="preserve">
+        <value>Eseguire</value>
+    </data>
+    <data name="name" xml:space="preserve">
+        <value>Nome</value>
+    </data>
+    <data name="SelectDestinationPath" xml:space="preserve">
+        <value>Seleziona percorso di destinazione</value>
+    </data>
+    <data name="break" xml:space="preserve">
+        <value>Pausa</value>
+    </data>
+    <data name="size" xml:space="preserve">
+        <value>Taglia</value>
+    </data>
+    <data name="state" xml:space="preserve">
+        <value>Stato</value>
+    </data>
+    <data name="english" xml:space="preserve">
+        <value>Inglese</value>
+    </data>
+    <data name="french" xml:space="preserve">
+        <value>Francese</value>
+    </data>
+    <data name="german" xml:space="preserve">
+        <value>Tedesco</value>
+    </data>
+    <data name="italian" xml:space="preserve">
+        <value>Italiano</value>
+    </data>
+    <data name="Language" xml:space="preserve">
+        <value>Lingua</value>
+    </data>
+    <data name="languageText" xml:space="preserve">
+        <value>Utilizzato per l'interfaccia dell'applicazione</value>
+    </data>
+    <data name="customizeSettings" xml:space="preserve">
+        <value>Personalizza le impostazioni dell'app</value>
+    </data>
+    <data name="selectLanguage" xml:space="preserve">
+        <value>Seleziona lingua</value>
+    </data>
+    <data name="logFormat" xml:space="preserve">
+        <value>formato del log</value>
+    </data>
+    <data name="chooseBackupText" xml:space="preserve">
+        <value>Scegli come archiviare i log di backup</value>
+    </data>
+    <data name="cancel" xml:space="preserve">
+        <value>Annullare</value>
+    </data>
+    <data name="save" xml:space="preserve">
+        <value>Salvare</value>
+    </data>
+    <data name="createBackupJob" xml:space="preserve">
+        <value>Crea processo di backup</value>
+    </data>
+    <data name="createBackupText" xml:space="preserve">
+        <value>Imposta l'origine, la destinazione e il comportamento di backup per questo processo.</value>
+    </data>
+    <data name="jobDetails" xml:space="preserve">
+        <value>Dettagli del lavoro</value>
+    </data>
+    <data name="jobName" xml:space="preserve">
+        <value>Nome del lavoro</value>
+    </data>
+    <data name="giveName" xml:space="preserve">
+        <value>Assegna a questo lavoro un nome chiaro e riconoscibile.</value>
+    </data>
+    <data name="enterJobName" xml:space="preserve">
+        <value>Inserisci il nome di un lavoro</value>
+    </data>
+    <data name="backupType" xml:space="preserve">
+        <value>Tipo di backup</value>
+    </data>
+    <data name="backupTypeText" xml:space="preserve">
+        <value>Selezionare il comportamento di backup completo o incrementale.</value>
+    </data>
+    <data name="source" xml:space="preserve">
+        <value>Fonte</value>
+    </data>
+    <data name="sourceText" xml:space="preserve">
+        <value>Scegli un file o una cartella di cui eseguire il backup.</value>
+    </data>
+    <data name="selectTheSource" xml:space="preserve">
+        <value>Seleziona fonte</value>
+    </data>
+    <data name="settings" xml:space="preserve">
+        <value>Impostazioni</value>
+    </data>
+    <data name="destination" xml:space="preserve">
+        <value>Destinazione</value>
+    </data>
+    <data name="destinationText" xml:space="preserve">
+        <value>Scegli una posizione di destinazione per il backup.</value>
+    </data>
+    <data name="selectDestination" xml:space="preserve">
+        <value>Seleziona destinazione</value>
+    </data>
+    <data name="create" xml:space="preserve">
+        <value>Crea</value>
+    </data>
+    <data name="browse" xml:space="preserve">
+        <value>Sfoglia</value>
+    </data>
+</root>
