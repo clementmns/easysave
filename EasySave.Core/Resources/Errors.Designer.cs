@@ -69,6 +69,12 @@ namespace EasySave.Core.Resources {
             }
         }
         
+        internal static string FileCantBeCrypted {
+            get {
+                return ResourceManager.GetString("FileCantBeCrypted", resourceCulture);
+            }
+        }
+        
         internal static string MaxJobsReached {
             get {
                 return ResourceManager.GetString("MaxJobsReached", resourceCulture);

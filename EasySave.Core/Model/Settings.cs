@@ -16,6 +16,8 @@ public class Settings
     
     public LogFormat LogFormat { get; set; } = LogFormat.Json;
     
+    public List<string> CryptExtensions { get; set; } = []; 
+    
     [JsonIgnore]
     public int MaxJobs { get; set; }
     
