@@ -58,6 +58,9 @@
                 <Button Content="{x:Static resources:Messages._break}" Background="Transparent" BorderThickness="0" />
                 <Button Content="{x:Static resources:Messages.delete}" Background="Transparent" BorderThickness="0"
                         Foreground="Red" Command="{Binding DeleteSelectedJobsCommand}" />
+                <Rectangle Width="1" Fill="Gray" Margin="5,2" VerticalAlignment="Stretch" />
+                <Button Content="{x:Static resources:Messages.executeAll}" Background="Transparent" BorderThickness="0"
+                        Command="{Binding ExecuteAllJobs}" />
             </StackPanel>
         </Border>
 
