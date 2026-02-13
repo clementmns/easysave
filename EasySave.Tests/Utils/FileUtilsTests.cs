@@ -6,43 +6,43 @@ namespace EasySave.Tests.Utils;
 
 public class FileUtilsTests
 {
-    // [Fact]
-    // public void CopyFile_CreatesDestinationAndCopiesContent()
-    // {
-    //     var root = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
-    //     var sourceRoot = Path.Combine(root, "source");
-    //     var destRoot = Path.Combine(root, "dest");
-    //     var nestedDir = Path.Combine(sourceRoot, "nested");
-    //     Directory.CreateDirectory(nestedDir);
-    //
-    //     var sourceFile = Path.Combine(nestedDir, "file.txt");
-    //     const string content = "hello";
-    //     File.WriteAllText(sourceFile, content, Encoding.UTF8);
-    //
-    //     try
-    //     {
-    //         var resultCopy = FileUtils.CopyFile(sourceFile, destRoot, sourceRoot);
-    //         var expectedDest = Path.Combine(destRoot, "nested", "file.txt");
-    //         Assert.True(resultCopy.Item1);
-    //         Assert.True(resultCopy.Item2 <= 5000); // Copy time must not exceed 5 seconds
-    //         Assert.True(File.Exists(expectedDest));
-    //         Assert.Equal(content, File.ReadAllText(expectedDest, Encoding.UTF8));
-    //         
-    //         var resultEncryption = CryptoUtils.EncryptFile(sourceFile, destRoot);
-    //         expectedDest = Path.Combine(destRoot, "nested", "file.txt.lock");
-    //         Assert.True(resultEncryption.Item1);
-    //         Assert.True(resultEncryption.Item2 <= 5000); // Encryption time must not exceed 5 seconds
-    //         Assert.True(File.Exists(expectedDest));
-    //         Assert.NotEqual(content, File.ReadAllText(expectedDest, Encoding.UTF8));
-    //     }
-    //     finally
-    //     {
-    //         if (Directory.Exists(root))
-    //         {
-    //             Directory.Delete(root, true);
-    //         }
-    //     }
-    // }
+    [Fact]
+    public void CopyFile_CreatesDestinationAndCopiesContent()
+    {
+        var root = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
+        var sourceRoot = Path.Combine(root, "source");
+        var destRoot = Path.Combine(root, "dest");
+        var nestedDir = Path.Combine(sourceRoot, "nested");
+        Directory.CreateDirectory(nestedDir);
+
+        var sourceFile = Path.Combine(nestedDir, "file.txt");
+        const string content = "hello";
+        File.WriteAllText(sourceFile, content, Encoding.UTF8);
+
+        try
+        {
+            var resultCopy = FileUtils.CopyFile(sourceFile, destRoot, sourceRoot);
+            var expectedDest = Path.Combine(destRoot, "nested", "file.txt");
+            Assert.True(resultCopy.Item1);
+            Assert.True(resultCopy.Item2 <= 5000); // Copy time must not exceed 5 seconds
+            Assert.True(File.Exists(expectedDest));
+            Assert.Equal(content, File.ReadAllText(expectedDest, Encoding.UTF8));
+            
+            // var resultEncryption = CryptoUtils.EncryptFile(sourceFile, destRoot, sourceRoot);
+            // expectedDest = Path.Combine(destRoot, "nested", "file.txt.lock");
+            // Assert.True(resultEncryption.Item1);
+            // Assert.True(resultEncryption.Item2 <= 1000); // Encryption time must not exceed 5 seconds
+            // Assert.True(File.Exists(expectedDest));
+            // Assert.NotEqual(content, File.ReadAllText(expectedDest, Encoding.UTF8));
+        }
+        finally
+        {
+            if (Directory.Exists(root))
+            {
+                Directory.Delete(root, true);
+            }
+        }
+    }
 
     [Fact]
     public void GetAllFiles_ReturnsFilesFromSubdirectories()

@@ -1,0 +1,85 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:EasySave.GUI.ViewModels;assembly=EasySave.GUI"
+             xmlns:resources="clr-namespace:EasySave.GUI.Resources"
+             
+             x:DataType="vm:EditJobViewModel" 
+             
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="EasySave.GUI.Views.DialogEditJob">
+
+    <Border Padding="24">
+        <ScrollViewer>
+            <StackPanel Spacing="20">
+                <StackPanel Spacing="4">
+                    <TextBlock Text="Modifier le travail" FontSize="20" FontWeight="SemiBold" />
+                    <TextBlock Text="Modifiez les informations ci-dessous" Opacity="0.7" />
+                </StackPanel>
+
+                <Grid ColumnDefinitions="2*,3*" RowDefinitions="Auto,Auto" ColumnSpacing="20" RowSpacing="20">
+                    <Border Grid.Column="0" Grid.RowSpan="2" Padding="16" CornerRadius="8" Background="#0A000000">
+                        <StackPanel Spacing="12">
+                            <TextBlock Text="{x:Static resources:Messages.jobDetails}" FontWeight="SemiBold" />
+                            
+                            <StackPanel Spacing="6">
+                                <TextBlock Text="{x:Static resources:Messages.jobName}" FontWeight="SemiBold" />
+                                <TextBox Text="{Binding Name}" />
+                            </StackPanel>
+                            
+                            <StackPanel Spacing="6">
+                                <TextBlock Text="{x:Static resources:Messages.backupType}" FontWeight="SemiBold" />
+                                <ComboBox ItemsSource="{Binding BackupTypes}" 
+                                          SelectedItem="{Binding SelectedType}" 
+                                          HorizontalAlignment="Stretch" />
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Column="1" Grid.Row="0" Padding="16" CornerRadius="8" Background="#0A000000">
+                        <StackPanel Spacing="12">
+                            <TextBlock Text="{x:Static resources:Messages.source}" FontWeight="SemiBold" />
+                            <StackPanel Spacing="6">
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBox Grid.Column="0" Text="{Binding SourcePath}"/>
+                                    <Button Grid.Column="1" 
+                                            Content="..." 
+                                            Margin="8,0,0,0" 
+                                            Command="{Binding BrowseSourceCommand}"/> 
+                                </Grid>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Column="1" Grid.Row="1" Padding="16" CornerRadius="8" Background="#0A000000">
+                        <StackPanel Spacing="12">
+                            <TextBlock Text="{x:Static resources:Messages.destination}" FontWeight="SemiBold" />
+                            <StackPanel Spacing="6">
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBox Grid.Column="0" Text="{Binding DestinationPath}"/>
+                                    <Button Grid.Column="1" 
+                                            Content="..." 
+                                            Margin="8,0,0,0"
+                                            Command="{Binding BrowseDestinationCommand}"/>
+                                </Grid>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="16" VerticalAlignment="Center">
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10">
+                        
+                        <Button Content="{x:Static resources:Messages.cancel}" 
+                                Command="{Binding CancelCommand}" />
+                        
+                        <Button Content="Enregistrer" 
+                                Command="{Binding SaveCommand}" 
+                                Classes="accent" />
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </ScrollViewer>
+    </Border>
+</UserControl>

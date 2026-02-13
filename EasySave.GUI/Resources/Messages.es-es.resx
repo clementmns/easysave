@@ -122,4 +122,19 @@
     <data name="browse" xml:space="preserve">
         <value>Explorar</value>
     </data>
+    <data name="noJobSelected" xml:space="preserve">
+        <value>No hay trabajos seleccionados</value>
+    </data>
+    <data name="selectJobText" xml:space="preserve">
+        <value>Seleccione un trabajo de la lista anterior para ver sus detalles.</value>
+    </data>
+    <data name="noJobs" xml:space="preserve">
+        <value>Sin trabajo de copia de seguridad</value>
+    </data>
+    <data name="addInstruction" xml:space="preserve">
+        <value>Para empezar, haz clic en el botón «+» de arriba para añadir una tarea de copia de seguridad.</value>
+    </data>
+    <data name="executeAll" xml:space="preserve">
+        <value>Ejecutar todo</value>
+    </data>
 </root>

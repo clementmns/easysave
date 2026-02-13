@@ -122,4 +122,19 @@
     <data name="browse" xml:space="preserve">
         <value>Durchsuchen</value>
     </data>
+    <data name="noJobSelected" xml:space="preserve">
+        <value>Keine Jobs ausgewählt</value>
+    </data>
+    <data name="selectJobText" xml:space="preserve">
+        <value>Wählen Sie einen Job aus der obigen Liste aus, um dessen Details anzuzeigen.</value>
+    </data>
+    <data name="noJobs" xml:space="preserve">
+        <value>Keine Sicherungsarbeiten</value>
+    </data>
+    <data name="addInstruction" xml:space="preserve">
+        <value>Klicken Sie zunächst oben auf die Schaltfläche „+“, um einen Sicherungsauftrag hinzuzufügen.</value>
+    </data>
+    <data name="executeAll" xml:space="preserve">
+        <value>Alles ausführen</value>
+    </data>
 </root>
