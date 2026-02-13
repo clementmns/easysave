@@ -1,0 +1,46 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:EasySave.GUI.ViewModels;assembly=EasySave.GUI"
+             xmlns:ressources="clr-namespace:EasySave.GUI.Resources"
+             x:DataType="vm:SettingsDialogViewModel"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="500"
+             x:Class="EasySave.GUI.Views.DialogSettings">
+    <Design.DataContext>
+        <vm:SettingsDialogViewModel></vm:SettingsDialogViewModel>
+    </Design.DataContext>
+    <Border Padding="20">
+        <ScrollViewer>
+            <StackPanel Spacing="20">
+                <StackPanel Spacing="4">
+                    <TextBlock Text="{x:Static ressources:Messages.settings}" FontSize="20" FontWeight="SemiBold" />
+                    <TextBlock Text="{x:Static ressources:Messages.customizeSettings}" Opacity="0.7" />
+                </StackPanel>
+
+                <Border Padding="16" CornerRadius="8" Background="#0A000000">
+                    <StackPanel Spacing="10">
+                        <TextBlock Text="{x:Static ressources:Messages.Language}" FontWeight="SemiBold" />
+                        <TextBlock Text="{x:Static ressources:Messages.languageText}" Opacity="0.7" />
+                        <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding SelectedLanguageDisplay}"
+                                  PlaceholderText="{x:Static ressources:Messages.selectLanguage}" HorizontalAlignment="Stretch" />
+                    </StackPanel>
+                </Border>
+
+                <Border Padding="16" CornerRadius="8" Background="#0A000000">
+                    <StackPanel Spacing="10">
+                        <TextBlock Text="{x:Static ressources:Messages.logFormat}" FontWeight="SemiBold" />
+                        <TextBlock Text="{x:Static ressources:Messages.chooseBackupText}" Opacity="0.7" />
+                        <ComboBox ItemsSource="{Binding LogFormats}" SelectedItem="{Binding SelectedLogFormat}"
+                                  PlaceholderText="Select log format" HorizontalAlignment="Stretch" />
+                    </StackPanel>
+                </Border>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10" Margin="0,4,0,0">
+                    <Button Content="{x:Static ressources:Messages.cancel}" Command="{Binding CancelCommand}" />
+                    <Button Content="{x:Static ressources:Messages.save}" Command="{Binding SaveCommand}" Classes="accent" />
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </Border>
+</UserControl>

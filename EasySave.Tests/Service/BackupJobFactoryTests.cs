@@ -1,5 +1,6 @@
-using EasySave.Model;
-using EasySave.Service;
+using EasySave.Core.Model;
+using EasySave.Core.Service;
+using EasySave.Tests.Model;
 
 namespace EasySave.Tests.Service;
 
@@ -8,6 +9,7 @@ public class BackupJobFactoryTests
     [Fact]
     public void CreateJob_AssignsFirstAvailableId()
     {
+        SettingsService.Init(new TestsProperties());
         var factory = BackupJobFactory.GetInstance();
         var existing = new List<BackupJob>
         {
@@ -55,7 +57,7 @@ public class BackupJobFactoryTests
             new(5, "J5", "src", "dst", BackupType.Full)
         };
 
-        Assert.Throws<Exception>(() =>
+        Assert.Throws<InvalidOperationException>(() =>
             factory.CreateJob("New", "src", "dst", BackupType.Full, existing));
     }
 }

@@ -1,0 +1,192 @@
+namespace EasySave.Core.Utils;
+
+/// <summary>
+/// Utility class for file operations.
+/// </summary>
+public static class FileUtils
+{
+    /// <summary>
+    /// Copy a file to a new location.
+    /// </summary>
+    /// <param name="sourceFile">SourceFile</param>
+    /// <param name="destinationDir">Destination Directory</param>
+    /// <param name="sourceRoot">Source root</param>
+    /// <returns></returns>
+    public static bool CopyFile(string sourceFile, string destinationDir, string? sourceRoot = null)
+    {
+        if (string.IsNullOrWhiteSpace(sourceFile))
+            return false;
+        if (string.IsNullOrWhiteSpace(destinationDir))
+            return false;
+        if (!File.Exists(sourceFile))
+            return false;
+    
+        try
+        {
+            var relativePath = string.IsNullOrWhiteSpace(sourceRoot)
+                ? Path.GetFileName(sourceFile)
+                : Path.GetRelativePath(sourceRoot, sourceFile);
+        
+            if (relativePath.Contains(".."))
+                return false;
+        
+            var destinationFileName = Path.Combine(destinationDir, relativePath);
+            var destinationParent = Path.GetDirectoryName(destinationFileName);
+        
+            if (!string.IsNullOrWhiteSpace(destinationParent))
+            {
+                Directory.CreateDirectory(destinationParent);
+            }
+        
+            if (File.Exists(destinationFileName))
+            {
+                var attributes = File.GetAttributes(destinationFileName);
+                if ((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+                {
+                    File.SetAttributes(destinationFileName, attributes & ~FileAttributes.ReadOnly);
+                }
+            }
+        
+            File.Copy(sourceFile, destinationFileName, true);
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Get all files in a directory and its subdirectories.
+    /// </summary>
+    /// <param name="directoryPath">Directory path</param>
+    /// <returns></returns>
+    public static List<FileInfo> GetAllFiles(string directoryPath)
+    {
+        try
+        {
+            var dirInfo = new DirectoryInfo(directoryPath);
+            var filesInDir = dirInfo.GetFiles("*", SearchOption.AllDirectories).ToList();
+            return filesInDir;
+        }
+        catch
+        {
+            return [];
+        }
+        
+    }
+
+    /// <summary>
+    /// Convert a path to a UNC path.
+    /// </summary>
+    /// <param name="path">relative path</param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException">Can't be converted</exception>
+    public static string? ConvertToUnc(string path)
+    {
+        try
+        {
+            var fullPath = Path.GetFullPath(path);
+
+            if (new Uri(fullPath).IsUnc)
+            {
+                return fullPath;
+            }
+
+            var root = Path.GetPathRoot(fullPath);
+
+            // If the root is not a drive (no “:”), it cannot be converted simply.
+            if (string.IsNullOrEmpty(root) || !root.Contains(':'))
+            {
+                throw new ArgumentException("The path is not a valid absolute");
+            }
+
+            var driveLetter = root.Replace(":", "$").TrimEnd('\\');
+            var pathWithoutRoot = fullPath.Substring(root.Length); // Retrieve the rest of the path (without the root)
+            var machineName = Environment.MachineName;
+
+            return $@"\\{machineName}\{driveLetter}\{pathWithoutRoot}";
+        }
+        catch
+        {
+            return null;
+        }
+        
+    }
+
+    /// <summary>
+    /// Get the last modified date of a file.
+    /// </summary>
+    /// <param name="filePath">File path</param>
+    /// <returns></returns>
+    public static DateTime? GetLastModifiedDate(string filePath)
+    {
+        try
+        {
+            var fileInfo = new FileInfo(filePath);
+            var lastModifiedDate = fileInfo.LastWriteTime;
+            return lastModifiedDate;
+        }
+        catch
+        {
+            return null;
+        }
+        
+    }
+
+    /// <summary>
+    /// Create a directory if it doesn't exist.'
+    /// </summary>
+    /// <param name="path">Path</param>
+    /// <returns></returns>
+    public static bool CreateDirectory(string path)
+    {
+        try
+        {
+            Directory.CreateDirectory(path);
+            return Directory.Exists(path);
+        }
+        catch
+        {
+            return false;
+        }
+        
+    }
+
+    /// <summary>
+    /// Get the size of a file in bytes.
+    /// </summary>
+    /// <param name="path">Path</param>
+    /// <returns></returns>
+    public static long GetFileSize(string path)
+    {
+        try
+        {
+            var fileInfo = new FileInfo(path);
+            var fileSize =  fileInfo.Length; // In bytes
+            return fileSize;
+        }
+        catch
+        {
+            return 0;
+        }
+    }
+    
+    /// <summary>
+    /// Check if a path is a directory.
+    /// </summary>
+    /// <param name="path">Path</param>
+    /// <returns></returns>
+    public static bool? IsDirectory(string path)
+    {
+        try
+        {
+            var attrs = File.GetAttributes(path);
+            return (attrs & FileAttributes.Directory) == FileAttributes.Directory;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+}

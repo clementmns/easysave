@@ -30,6 +30,17 @@ public class Logger
 
         if (!Directory.Exists(_instance._logFilePath)) Directory.CreateDirectory(_instance._logFilePath);
     }
+
+    /// <summary>
+    /// Modify the logging strategies.
+    /// </summary>
+    /// <param name="strategies">List of logging strategies</param>
+    /// <exception cref="InvalidOperationException">Logger must be initialized first</exception>
+    public static void ModifyStrategies(List<ILoggerStrategy> strategies)
+    {
+        if (_instance == null) throw new InvalidOperationException("Logger not initialized. Call Logger.Init() first.");
+        _instance._strategies = strategies;
+    }
     
     /// <summary>
     /// Write a log entry to the log file
@@ -40,7 +51,7 @@ public class Logger
     {
         if (_strategies.Count == 0 || _logFilePath is null) return;
         
-        var fileName = $"{DateTime.Now:yyyy-MM-dd}.json";
+        var fileName = $"{DateTime.Now:yyyy-MM-dd}";
         var fullPath = Path.Combine(_logFilePath, fileName);
         
         foreach (var strategy in _strategies) strategy.Write(logEntry, fullPath);
