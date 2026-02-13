@@ -78,6 +78,15 @@ namespace EasySave.GUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to To get started, click the ‘+’ button above to add a backup job..
+        /// </summary>
+        public static string addInstruction {
+            get {
+                return ResourceManager.GetString("addInstruction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Backup type.
         /// </summary>
         public static string backupType {
@@ -308,6 +317,15 @@ namespace EasySave.GUI.Resources {
         public static string name {
             get {
                 return ResourceManager.GetString("name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No backup work.
+        /// </summary>
+        public static string noJobs {
+            get {
+                return ResourceManager.GetString("noJobs", resourceCulture);
             }
         }
         

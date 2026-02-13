@@ -128,4 +128,13 @@
     <data name="selectJobText" xml:space="preserve">
         <value>Sélectionnez un job dans la liste ci-dessus pour afficher ses détails</value>
     </data>
+    <data name="noJobs" xml:space="preserve">
+        <value>Aucun travail de sauvegarde</value>
+    </data>
+    <data name="addInstruction" xml:space="preserve">
+        <value>Pour commencer, cliquez sur le bouton '+' ci-dessus pour ajouter un travail de sauvegarde</value>
+    </data>
+    <data name="executeAll" xml:space="preserve">
+        <value>Tout exécuter</value>
+    </data>
 </root>
