@@ -102,7 +102,8 @@ public partial class MainViewModel : ViewModelBase
 
     public bool AddJob(BackupJob job) => _jobService.CreateJob(job);
     
-    public bool DeleteJob(BackupJob job) => _jobService.DeleteJob(job);
+    
+    public bool DeleteJob(BackupJob job) => _jobService.DeleteJob(job); 
     
     public bool ExecuteJob(BackupJob job, IProgressionObserver? progressionObserver = null)
     {
@@ -130,6 +131,18 @@ public partial class MainViewModel : ViewModelBase
         }
     }
 
+[RelayCommand]
+    public void DeleteSelectedJobs()
+    {
+        if (SelectedJobs.Count == 0) return;
+    
+        foreach (var job in SelectedJobs.ToList())
+        {
+            DeleteJob(job);
+        }
+        SelectedJobs.Clear();
+    }
+    
 
     public void UpdateJob(BackupJob job) => _jobService.UpdateJob(job);
     

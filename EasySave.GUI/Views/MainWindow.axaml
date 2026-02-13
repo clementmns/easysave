@@ -50,7 +50,12 @@
                 <Rectangle Width="1" Fill="Gray" Margin="5,2" VerticalAlignment="Stretch"/>
                 <Button Content="{x:Static ressources:Messages.execute}" Background="Transparent" BorderThickness="0"/>
                 <Button Content="{x:Static ressources:Messages._break}" Background="Transparent" BorderThickness="0"/>
-                <Button Content="{x:Static ressources:Messages.delete}" Background="Transparent" BorderThickness="0" Foreground="Red"/>
+                
+                <Button Content="{x:Static ressources:Messages.delete}" 
+                        Background="Transparent" 
+                        BorderThickness="0" 
+                        Foreground="Red"
+                        Command="{Binding DeleteSelectedJobsCommand}"/>
             </StackPanel>
         </Border>
 
