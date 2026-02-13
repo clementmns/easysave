@@ -6,6 +6,6 @@ public partial class DialogRestartConfirm : UserControl
 {
     public DialogRestartConfirm()
     {
-        InitializeComponent();
+        InitializeComponent(); 
     }
 }

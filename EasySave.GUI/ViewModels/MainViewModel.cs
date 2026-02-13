@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
+using System.Linq;
 using Avalonia.Controls;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Core.Model;
@@ -10,22 +10,16 @@ using EasySave.GUI.Views;
 
 namespace EasySave.GUI.ViewModels;
 
-/// <summary>
-/// ViewModel for managing backup jobs, providing methods to add, delete, update, and execute backup jobs.
-/// </summary>
 public partial class MainViewModel : ViewModelBase
 {
-    /// <summary>
-    /// Singleton instance of the BackupJobService.
-    /// </summary>
     private BackupJobService _jobService { get; set; }
-
-    /// <summary>
-    /// List of current backup jobs.
-    /// </summary>
     public ObservableCollection<BackupJob>? Jobs => _jobService.Jobs;
-
-    public ObservableCollection<BackupJob> SelectedJobs { get; } = new();
+    public ObservableCollection<BackupJob> SelectedJobs { get; } = [];
+    
+    public MainViewModel()
+    {
+        _jobService = new BackupJobService();
+    }
 
     public bool? AreAllJobsSelected
     {
@@ -62,14 +56,34 @@ public partial class MainViewModel : ViewModelBase
         OnPropertyChanged(nameof(AreAllJobsSelected));
         OnPropertyChanged(nameof(SelectedJobs));
     }
-
-    public MainViewModel()
+    
+    [RelayCommand]
+    public void ExecuteSelectedJobs()
     {
-        _jobService = new BackupJobService();
+        if (SelectedJobs.Count == 0) return;
+        foreach (var job in SelectedJobs.ToList()) ExecuteJob(job);
+    }
+    
+    [RelayCommand]
+    public void ExecuteJobCommand(BackupJob job) => ExecuteJob(job);
+
+    [RelayCommand]
+    public void ExecuteAllJobs()
+    {
+        if (Jobs == null) return;
+        foreach (var job in Jobs.ToList()) ExecuteJob(job);
     }
 
     [RelayCommand]
-    public async Task OpenCreateJobDialog(Window mainWindow)
+    public void DeleteSelectedJobs()
+    {
+        if (SelectedJobs.Count == 0) return;
+        foreach (var job in SelectedJobs.ToList()) DeleteJob(job);
+        SelectedJobs.Clear();
+    }
+    
+    [RelayCommand]
+    public void OpenCreateJobDialog(Window mainWindow)
     {
         var dialog = new Window
         {
@@ -81,12 +95,11 @@ public partial class MainViewModel : ViewModelBase
         };
 
         dialog.DataContext = new CreateJobDialogViewModel(this, dialog);
-
-        await dialog.ShowDialog(mainWindow);
+        dialog.ShowDialog(mainWindow);
     }
 
     [RelayCommand]
-    public async Task OpenSettingsDialog(Window mainWindow)
+    public void OpenSettingsDialog(Window mainWindow)
     {
         var dialog = new Window
         {
@@ -98,13 +111,12 @@ public partial class MainViewModel : ViewModelBase
         };
 
         dialog.DataContext = new SettingsDialogViewModel(dialog);
-
-        await dialog.ShowDialog(mainWindow);
+        dialog.ShowDialog(mainWindow);
     }
 
-    public bool AddJob(BackupJob job) => _jobService.CreateJob(job);
+    public void AddJob(BackupJob job) => _jobService.CreateJob(job);
 
-    public bool DeleteJob(BackupJob job) => _jobService.DeleteJob(job);
+    public void DeleteJob(BackupJob job) => _jobService.DeleteJob(job);
 
     public bool ExecuteJob(BackupJob job, IProgressionObserver? progressionObserver = null)
     {
