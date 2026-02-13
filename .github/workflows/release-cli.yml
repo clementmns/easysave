@@ -4,7 +4,7 @@ on:
   push:
     # v1.0 etc.
     tags:
-      - "v*.* CLI"
+      - "v*.*-CLI"
 
 jobs:
   build-and-release:
