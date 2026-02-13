@@ -144,4 +144,10 @@
     <data name="executeAll" xml:space="preserve">
         <value>Execute All</value>
     </data>
+    <data name="noJobSelected" xml:space="preserve">
+        <value>No jobs selected</value>
+    </data>
+    <data name="selectJobText" xml:space="preserve">
+        <value>Select a job from the list above to view its details.</value>
+    </data>
 </root>

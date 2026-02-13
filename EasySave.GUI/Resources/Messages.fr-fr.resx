@@ -122,4 +122,10 @@
     <data name="browse" xml:space="preserve">
         <value>Parcourir</value>
     </data>
+    <data name="noJobSelected" xml:space="preserve">
+        <value>Aucun job sélectionné</value>
+    </data>
+    <data name="selectJobText" xml:space="preserve">
+        <value>Sélectionnez un job dans la liste ci-dessus pour afficher ses détails</value>
+    </data>
 </root>
