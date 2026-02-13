@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace EasySave.Core.Utils;
 
 /// <summary>
@@ -12,10 +14,13 @@ public static class FileUtils
     /// <param name="destinationDir">Destination Directory</param>
     /// <param name="sourceRoot">Source root</param>
     /// <returns></returns>
-    public static bool CopyFile(string sourceFile, string destinationDir, string? sourceRoot = null) // path/to/text.txt -> path/to/dir 
+    public static (bool, long) CopyFile(string sourceFile, string destinationDir, string? sourceRoot = null) // path/to/text.txt -> path/to/dir 
     {
         try
         {
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            
             var relativePath = string.IsNullOrWhiteSpace(sourceRoot)
                 ? Path.GetFileName(sourceFile)
                 : Path.GetRelativePath(sourceRoot, sourceFile);
@@ -29,11 +34,16 @@ public static class FileUtils
             
             // Use the Path.Combine method to safely append the file name to the path.
             File.Copy(sourceFile, destinationFileName, true); // true if the destination file should be replaced if it already exists; otherwise, false
-            return true;
+            
+            stopwatch.Stop();
+
+            var ms = stopwatch.ElapsedMilliseconds;
+            
+            return (true, ms);
         }
         catch
         {
-            return false;
+            return (false,0);
         }
     }
 

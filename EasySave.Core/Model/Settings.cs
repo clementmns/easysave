@@ -11,4 +11,6 @@ public class Settings
     public string Version { get; set; } = "1.0.0";
 
     public string Language { get; set; } = "en-US";
+
+    public List<string> CryptExtensions { get; set; } = []; 
 }

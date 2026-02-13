@@ -5,12 +5,22 @@ namespace EasySave.Core.Utils;
 public static class CryptoUtils
 {
     private const string CRYPTO_EXE_NAME = @"C:/Users/timmf/Documents/GitHub/easysave/CryptoSoft/bin/Debug/net8.0/win-x64/CryptoSoft.exe";
-    private const string DEFAULT_KEY = "EasySave2024!";
+    private const string DEFAULT_KEY = "dda272ea2cc4fe8774d834acc05f78149ab55ac0e32804377b1c06b1d4ba1e39"; // hash of "EasySaveCore"
     private const string DEFAULT_ALGORITHM = "xor";
+    private const string ENCRYPT_EXTENSION = ".lock";
 
-    public static bool EncryptFile(string sourcePath, string destinationPath, string key = DEFAULT_KEY, string algorithm = DEFAULT_ALGORITHM)
+    public static (bool, long) EncryptFile(string sourcePath, string destinationPath, string key = DEFAULT_KEY, string algorithm = DEFAULT_ALGORITHM)
     {
-        return ExecuteCryptoCommand(algorithm, "encrypt", sourcePath, destinationPath, key);
+        var stopwatch = new Stopwatch();
+        stopwatch.Start();
+        
+        var encryptedDestinationPath = destinationPath + ENCRYPT_EXTENSION;
+        var result = ExecuteCryptoCommand(algorithm, "encrypt", sourcePath, encryptedDestinationPath, key);
+        
+        stopwatch.Stop();
+
+        var ms = stopwatch.ElapsedMilliseconds;
+        return (result, ms);
     }
 
     public static bool DecryptFile(string sourcePath, string destinationPath, string key = DEFAULT_KEY, string algorithm = DEFAULT_ALGORITHM)
@@ -25,7 +35,6 @@ public static class CryptoUtils
             var cryptoExePath = GetCryptoSoftPath();
             if (cryptoExePath == null)
             {
-                Console.WriteLine($"[CRYPTO ERROR] {CRYPTO_EXE_NAME} not found");
                 return false;
             }
 
@@ -52,24 +61,27 @@ public static class CryptoUtils
                 return true;
             }
 
-            Console.WriteLine($"CryptoSoft error : {output} {error}");
             return false;
         }
-        catch (Exception ex)
+        catch (Exception e)
         {
-            Console.WriteLine($"Error calling CryptoSoft : {ex.Message}");
             return false;
         }
     }
 
+    private static bool VerifyHash(string sourceHash)
+    {
+        // Check the hash between the process that launched Cryptosoft to ensure that only EasySave-Core can be called Cryptosoft.
+        return true;
+    }
+
     private static string? GetCryptoSoftPath()
     {
-        // Looking for CryptoSoft.exe
         var searchPaths = new[]
         {
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, CRYPTO_EXE_NAME),
             Path.Combine(Environment.CurrentDirectory, CRYPTO_EXE_NAME),
-            Path.Combine(Environment.CurrentDirectory, "CryptoSoft", "bin", "Release", "net8.0", "win-x64", CRYPTO_EXE_NAME)
+            Path.Combine(Environment.CurrentDirectory, "CryptoSoft", "bin", "Release", "net10.0", "win-x64", CRYPTO_EXE_NAME)
         };
 
         return searchPaths.FirstOrDefault(File.Exists);

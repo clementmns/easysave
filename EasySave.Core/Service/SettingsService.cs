@@ -57,6 +57,16 @@ namespace EasySave.Core.Service
         }
         
         /// <summary>
+        /// Set extensions that will be encrypted
+        /// </summary>
+        /// <param name="extensions">List of extensions</param>
+        public void SetCryptedExtensions(List<string> extensions)
+        {
+            _settings.CryptExtensions = extensions;
+            SaveSettings(_settings);
+        }
+        
+        /// <summary>
         /// Load or create the settings file
         /// </summary>
         /// <returns></returns>
