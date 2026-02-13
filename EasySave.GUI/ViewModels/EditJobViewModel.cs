@@ -91,7 +91,4 @@ public partial class EditJobViewModel : ObservableObject
         var path = selected[0].Path.LocalPath;
         DestinationPath = path;
     }
-    
-    
-    
 }

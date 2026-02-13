@@ -10,7 +10,7 @@ using EasySave.GUI.Views;
 
 namespace EasySave.GUI.ViewModels;
 
-public partial class MainViewModel : ViewModelBase, IProgressionObserver
+public partial class MainViewModel : ViewModelBase
 {
     private BackupJobService _jobService { get; set; }
     public ObservableCollection<BackupJob>? Jobs => _jobService.Jobs;
@@ -45,7 +45,6 @@ public partial class MainViewModel : ViewModelBase, IProgressionObserver
             }
         }
         OnPropertyChanged(nameof(AreAllJobsSelected));
-        OnPropertyChanged(nameof(SelectedJobs));
     }
 
     [RelayCommand]
@@ -54,7 +53,6 @@ public partial class MainViewModel : ViewModelBase, IProgressionObserver
         if (SelectedJobs.Contains(job)) SelectedJobs.Remove(job);
         else SelectedJobs.Add(job);
         OnPropertyChanged(nameof(AreAllJobsSelected));
-        OnPropertyChanged(nameof(SelectedJobs));
     }
     
     [RelayCommand]
@@ -150,10 +148,10 @@ public partial class MainViewModel : ViewModelBase, IProgressionObserver
         return result;
     }
 
-    public void UpdateJob(BackupJob job) => _jobService.UpdateJob(job);
-
-    public void OnProgressionUpdated(int progression)
+    public void UpdateJob(BackupJob job)
     {
+        _jobService.UpdateJob(job);
+        OnPropertyChanged(nameof(Jobs));
         OnPropertyChanged(nameof(SelectedJobs));
     }
 
