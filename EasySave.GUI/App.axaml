@@ -18,6 +18,6 @@
         </FluentTheme>
 
         <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
-        <StyleInclude Source="avares://EasySave.GUI/Styles.axaml" />
+        <StyleInclude Source="avares://EasySave.GUI/Resources/Styles.axaml" />
     </Application.Styles>
 </Application>

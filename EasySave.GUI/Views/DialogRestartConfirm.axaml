@@ -13,13 +13,16 @@
     <Border Padding="24" Background="{StaticResource SurfaceBrush}">
         <StackPanel Spacing="20">
             <StackPanel Spacing="4">
-                <TextBlock Text="{x:Static resources:Messages.test}" FontSize="18" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}" />
-                <TextBlock Text="{x:Static resources:Messages.test}" Foreground="{StaticResource TextSecondaryBrush}" TextWrapping="Wrap" />
+                <TextBlock Text="{x:Static resources:Messages.test}" FontSize="18" FontWeight="SemiBold"
+                           Foreground="{StaticResource TextPrimaryBrush}" />
+                <TextBlock Text="{x:Static resources:Messages.test}" Foreground="{StaticResource TextSecondaryBrush}"
+                           TextWrapping="Wrap" />
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10">
                 <Button Content="{x:Static resources:Messages.test}" Command="{Binding CancelCommand}" Classes="ghost" />
-                <Button Content="{x:Static resources:Messages.test}" Command="{Binding RestartCommand}" Classes="primary" />
+                <Button Content="{x:Static resources:Messages.test}" Command="{Binding RestartCommand}"
+                        Classes="primary" />
             </StackPanel>
         </StackPanel>
     </Border>
