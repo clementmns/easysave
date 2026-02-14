@@ -61,11 +61,23 @@
                     </StackPanel>
                 </Button>
                 <Rectangle Width="1" Fill="{StaticResource BorderSoftBrush}" Margin="6,0" VerticalAlignment="Stretch" />
-                <Button Content="{x:Static resources:Messages.execute}" Classes="primary"
-                        Command="{Binding ExecuteSelectedJobs}" />
-                <Button Content="{x:Static resources:Messages._break}" Classes="ghost" />
-                <Button Content="{x:Static resources:Messages.delete}" Classes="danger"
-                        Command="{Binding DeleteSelectedJobsCommand}" />
+                <Button Classes="primary"
+                        Command="{Binding ExecuteSelectedJobs}">
+                    <Svg Path="/Assets/svg/play.svg"
+                         Width="16"
+                         Height="16" />
+                </Button>
+                <Button Classes="ghost">
+                    <Svg Path="/Assets/svg/pause.svg"
+                         Width="16"
+                         Height="16" />
+                </Button>
+                <Button Classes="danger"
+                        Command="{Binding DeleteSelectedJobsCommand}">
+                    <Svg Path="/Assets/svg/trash.svg"
+                         Width="16"
+                         Height="16" />
+                </Button>
                 <Rectangle Width="1" Fill="{StaticResource BorderSoftBrush}" Margin="6,0" VerticalAlignment="Stretch" />
                 <Button Content="{x:Static resources:Messages.executeAll}" Classes="primary"
                         Command="{Binding ExecuteAllJobs}" />
