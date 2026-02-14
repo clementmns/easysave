@@ -186,11 +186,47 @@ namespace EasySave.GUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Destination folder.
+        /// </summary>
+        public static string destinationFolder {
+            get {
+                return ResourceManager.GetString("destinationFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pick a target location for the backup..
         /// </summary>
         public static string destinationText {
             get {
                 return ResourceManager.GetString("destinationText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        public static string edit {
+            get {
+                return ResourceManager.GetString("edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Modify the work.
+        /// </summary>
+        public static string editJob {
+            get {
+                return ResourceManager.GetString("editJob", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change the information below.
+        /// </summary>
+        public static string editJobText {
+            get {
+                return ResourceManager.GetString("editJobText", resourceCulture);
             }
         }
         
@@ -402,6 +438,15 @@ namespace EasySave.GUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Backup details.
+        /// </summary>
+        public static string saveDetails {
+            get {
+                return ResourceManager.GetString("saveDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select destination.
         /// </summary>
         public static string selectDestination {
@@ -497,6 +542,15 @@ namespace EasySave.GUI.Resources {
         public static string source {
             get {
                 return ResourceManager.GetString("source", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Source folder.
+        /// </summary>
+        public static string sourceFolder {
+            get {
+                return ResourceManager.GetString("sourceFolder", resourceCulture);
             }
         }
         

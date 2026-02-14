@@ -149,4 +149,22 @@
     <data name="progression" xml:space="preserve">
         <value>Progresión</value>
     </data>
+    <data name="saveDetails" xml:space="preserve">
+        <value>Detalles de la copia de seguridad</value>
+    </data>
+    <data name="sourceFolder" xml:space="preserve">
+        <value>Archivo fuente</value>
+    </data>
+    <data name="destinationFolder" xml:space="preserve">
+        <value>Carpeta de destino</value>
+    </data>
+    <data name="edit" xml:space="preserve">
+        <value>Modificar</value>
+    </data>
+    <data name="editJob" xml:space="preserve">
+        <value>Modificar el trabajo</value>
+    </data>
+    <data name="editJobText" xml:space="preserve">
+        <value>Modifique la siguiente información</value>
+    </data>
 </root>

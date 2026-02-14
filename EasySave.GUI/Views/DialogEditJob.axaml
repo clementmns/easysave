@@ -14,9 +14,9 @@
         <ScrollViewer>
             <StackPanel Spacing="20">
                 <StackPanel Spacing="4">
-                    <TextBlock Text="Modifier le travail" FontSize="20" FontWeight="SemiBold"
+                    <TextBlock Text="{x:Static resources:Messages.editJob}" FontSize="20" FontWeight="SemiBold"
                                Foreground="{StaticResource TextPrimaryBrush}" />
-                    <TextBlock Text="Modifiez les informations ci-dessous"
+                    <TextBlock Text="{x:Static resources:Messages.editJobText}"
                                Foreground="{StaticResource TextSecondaryBrush}" />
                 </StackPanel>
 

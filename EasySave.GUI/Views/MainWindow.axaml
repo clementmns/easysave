@@ -238,7 +238,7 @@
 
                                     <Grid ColumnDefinitions="*, Auto" Margin="0,0,0,20">
                                         <StackPanel>
-                                            <TextBlock Text="Détails de la sauvegarde" FontSize="12"
+                                            <TextBlock Text="{x:Static resources:Messages.jobDetails}" FontSize="12"
                                                        Foreground="{StaticResource TextSecondaryBrush}" />
                                             <TextBlock Text="{Binding Name}" FontSize="24" FontWeight="Bold"
                                                        Foreground="{StaticResource TextPrimaryBrush}" />
@@ -264,7 +264,7 @@
                                             <StackPanel Spacing="8">
                                                 <StackPanel Orientation="Horizontal" Spacing="8">
                                                     <Svg Path="/Assets/svg/folder.svg" Width="18" Height="18" />
-                                                    <TextBlock Text="Dossier Source" FontWeight="Bold"
+                                                    <TextBlock Text="{x:Static resources:Messages.sourceFolder}" FontWeight="Bold"
                                                                Foreground="{StaticResource TextPrimaryBrush}" />
                                                 </StackPanel>
                                                 <TextBlock Text="{Binding SourcePath}" TextWrapping="Wrap"
@@ -281,7 +281,7 @@
                                             <StackPanel Spacing="8">
                                                 <StackPanel Orientation="Horizontal" Spacing="8">
                                                     <Svg Path="/Assets/svg/folder.svg" Width="18" Height="18" />
-                                                    <TextBlock Text="Dossier Destination" FontWeight="Bold"
+                                                    <TextBlock Text="{x:Static resources:Messages.destinationFolder}" FontWeight="Bold"
                                                                Foreground="{StaticResource TextPrimaryBrush}" />
                                                 </StackPanel>
                                                 <TextBlock Text="{Binding DestinationPath}" TextWrapping="Wrap"
@@ -300,18 +300,9 @@
                                                 CommandParameter="{Binding .}">
                                                 <StackPanel Orientation="Horizontal" Spacing="8">
                                                     <Svg Path="/Assets/svg/pencil.svg" Width="14" Height="14" />
-                                                    <TextBlock Text="Éditer" />
+                                                    <TextBlock Text="{x:Static resources:Messages.edit}" />
                                                 </StackPanel>
                                             </Button>
-
-                                            <Button CommandParameter="{Binding}" Classes="primary"
-                                                    Command="{Binding ((vm:MainViewModel)DataContext).ExecuteJobCommand, RelativeSource={RelativeSource AncestorType=Window}}">
-                                                <StackPanel Orientation="Horizontal" Spacing="8">
-                                                    <Svg Path="/Assets/svg/play.svg" Width="14" Height="14" />
-                                                    <TextBlock Text="Lancer maintenant" />
-                                                </StackPanel>
-                                            </Button>
-
                                         </StackPanel>
                                     </Border>
 
