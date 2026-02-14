@@ -1,8 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using Avalonia.Controls;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Core.Model;
 using EasySave.Core.Service;
@@ -10,11 +12,12 @@ using EasySave.GUI.Views;
 
 namespace EasySave.GUI.ViewModels;
 
-public partial class MainViewModel : ViewModelBase
+public partial class MainViewModel : ViewModelBase, IProgressionObserver
 {
     private BackupJobService _jobService { get; set; }
     public ObservableCollection<BackupJob>? Jobs => _jobService.Jobs;
-    public ObservableCollection<BackupJob> SelectedJobs { get; } = [];
+    
+    [ObservableProperty] private ObservableCollection<BackupJob> selectedJobs = [];
     
     public MainViewModel()
     {
@@ -54,24 +57,23 @@ public partial class MainViewModel : ViewModelBase
         if (SelectedJobs.Contains(job)) SelectedJobs.Remove(job);
         else SelectedJobs.Add(job);
         OnPropertyChanged(nameof(AreAllJobsSelected));
-        OnPropertyChanged(nameof(SelectedJobs));
     }
     
     [RelayCommand]
-    public void ExecuteSelectedJobs()
+    public async Task ExecuteSelectedJobs()
     {
         if (SelectedJobs.Count == 0) return;
-        foreach (var job in SelectedJobs.ToList()) ExecuteJob(job);
+        foreach (var job in SelectedJobs.ToList())  await ExecuteJob(job, this);
     }
     
     [RelayCommand]
-    public void ExecuteJobCommand(BackupJob job) => ExecuteJob(job);
+    public async Task ExecuteJobCommand(BackupJob job) => await ExecuteJob(job, this);
 
     [RelayCommand]
-    public void ExecuteAllJobs()
+    public async Task ExecuteAllJobs()
     {
         if (Jobs == null) return;
-        foreach (var job in Jobs.ToList()) ExecuteJob(job);
+        foreach (var job in Jobs.ToList()) await ExecuteJob(job, this);
     }
 
     [RelayCommand]
@@ -133,24 +135,27 @@ public partial class MainViewModel : ViewModelBase
 
     public void AddJob(BackupJob job) => _jobService.CreateJob(job);
 
-    public void DeleteJob(BackupJob job) => _jobService.DeleteJob(job);
+    private void DeleteJob(BackupJob job) => _jobService.DeleteJob(job);
 
-    public bool ExecuteJob(BackupJob job, IProgressionObserver? progressionObserver = null)
+    public async Task<bool> ExecuteJob(BackupJob job, IProgressionObserver? progressionObserver = null)
     {
-        // attach to needed observers
-        job.State.AttachStateObserver(_jobService);
-        if (progressionObserver != null) job.State.AttachProgressionObserver(progressionObserver);
-
-        var result = _jobService.ExecuteJob(job);
-
-        // detach from observers to avoid memory leaks
-        job.State.DetachStateObserver(_jobService);
-        if (progressionObserver != null) job.State.DetachProgressionObserver(progressionObserver);
+        var result = await _jobService.ExecuteJobAsync(job, progressionObserver);
 
         return result;
     }
 
-    public void UpdateJob(BackupJob job) => _jobService.UpdateJob(job);
+    public void UpdateJob(BackupJob job)
+    {
+        _jobService.UpdateJob(job);
+        OnPropertyChanged(nameof(Jobs));
+        OnPropertyChanged(nameof(SelectedJobs));
+    }
+
+    public void OnProgressionUpdated(int progression)
+    {
+        OnPropertyChanged(nameof(Jobs));
+        OnPropertyChanged(nameof(SelectedJobs));
+    }
 
     /// <summary>
     /// Execute jobs from command line arguments.
@@ -194,7 +199,7 @@ public partial class MainViewModel : ViewModelBase
                 if (Jobs != null && jobIdx >= 0 && jobIdx < Jobs.Count)
                 {
                     // execute job and store result in the map
-                    resultMap[idx] = ExecuteJob(Jobs[jobIdx]);
+                    resultMap[idx] = _jobService.ExecuteJobAsync(Jobs[jobIdx]).GetAwaiter().GetResult();
                 }
                 else
                 {
