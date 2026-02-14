@@ -162,4 +162,13 @@
     <data name="ExecuteJobsSuccess" xml:space="preserve">
         <value />
     </data>
+    <data name="restartApp" xml:space="preserve">
+        <value>Restart the application</value>
+    </data>
+    <data name="restartAppText" xml:space="preserve">
+        <value>For the change to take effect, click the button to automatically restart the application.</value>
+    </data>
+    <data name="restart" xml:space="preserve">
+        <value>Restart</value>
+    </data>
 </root>

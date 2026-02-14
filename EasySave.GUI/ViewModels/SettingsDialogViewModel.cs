@@ -74,8 +74,8 @@ public partial class SettingsDialogViewModel : DialogViewModel
         {
             // Title = Messages.RestartTitle,
             Content = new DialogRestartConfirm(),
-            Width = 300,
-            Height = 140,
+            Width = 500,
+            Height = 170,
             WindowStartupLocation = WindowStartupLocation.CenterOwner,
             CanResize = false
         };

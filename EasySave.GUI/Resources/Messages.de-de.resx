@@ -137,4 +137,13 @@
     <data name="executeAll" xml:space="preserve">
         <value>Alles ausführen</value>
     </data>
+    <data name="restartApp" xml:space="preserve">
+        <value>Anwendung neu starten</value>
+    </data>
+    <data name="restartAppText" xml:space="preserve">
+        <value>Damit die Änderung übernommen wird, klicken Sie auf die Schaltfläche, um die Anwendung automatisch neu zu starten.</value>
+    </data>
+    <data name="restart" xml:space="preserve">
+        <value>Neustart</value>
+    </data>
 </root>

@@ -137,4 +137,13 @@
     <data name="executeAll" xml:space="preserve">
         <value>Eseguire tutto</value>
     </data>
+    <data name="restartApp" xml:space="preserve">
+        <value>Riavviare l'applicazione</value>
+    </data>
+    <data name="restartAppText" xml:space="preserve">
+        <value>Affinché la modifica venga applicata, clicca sul pulsante per riavviare automaticamente l'applicazione.</value>
+    </data>
+    <data name="restart" xml:space="preserve">
+        <value>Riavvio</value>
+    </data>
 </root>
