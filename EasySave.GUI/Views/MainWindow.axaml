@@ -67,7 +67,7 @@
                          Width="16"
                          Height="16" />
                 </Button>
-                <Button Classes="ghost">
+                <Button Classes="ghost" IsEnabled="False">
                     <Svg Path="/Assets/svg/pause.svg"
                          Width="16"
                          Height="16" />
