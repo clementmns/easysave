@@ -16,6 +16,9 @@
                 <ColorPaletteResources x:Key="Dark" Accent="#ff6366f1" AltHigh="Black" AltLow="Black" AltMedium="Black" AltMediumHigh="Black" AltMediumLow="Black" BaseHigh="White" BaseLow="#ff767676" BaseMedium="#ffbbbbbb" BaseMediumHigh="#ffcccccc" BaseMediumLow="#ff989898" ChromeAltLow="#ffcccccc" ChromeBlackHigh="Black" ChromeBlackLow="#ffcccccc" ChromeBlackMedium="Black" ChromeBlackMediumLow="Black" ChromeDisabledHigh="#ff767676" ChromeDisabledLow="#ffbbbbbb" ChromeGray="#ffaaaaaa" ChromeHigh="#ffaaaaaa" ChromeLow="#ff353535" ChromeMedium="#ff454545" ChromeMediumLow="#ff666666" ChromeWhite="White" ListLow="#ff454545" ListMedium="#ff767676" RegionColor="Black" />
             </FluentTheme.Palettes>
         </FluentTheme>
+        <Style Selector="Window">
+            <Setter Property="Icon" Value="avares://EasySave.GUI/Assets/ico/Logo.ico"/>
+        </Style>
 
         <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
         <StyleInclude Source="avares://EasySave.GUI/Resources/Styles.axaml" />
