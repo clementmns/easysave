@@ -29,7 +29,7 @@
                 <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="10"
                             VerticalAlignment="Center">
                     <Svg Path="avares://EasySave.GUI/Assets/svg/Logo.svg"
-                         Width="24" Height="24" Css="* { fill: #6366F1; }" />
+                         Width="24" Height="24"/>
                     <StackPanel Spacing="0">
                         <TextBlock Text="EasySave Backup" FontSize="16" FontWeight="SemiBold" Foreground="White" />
                         <TextBlock Text="Secure your backups" FontSize="14" Foreground="White" Opacity="0.9" />
