@@ -32,7 +32,7 @@
                          Width="24" Height="24" Css="* { fill: #6366F1; }" />
                     <StackPanel Spacing="0">
                         <TextBlock Text="EasySave Backup" FontSize="16" FontWeight="SemiBold" Foreground="White" />
-                        <TextBlock Text="Secure, schedule, and monitor your backups" FontSize="12" Foreground="White" Opacity="0.9" />
+                        <TextBlock Text="Secure your backups" FontSize="14" Foreground="White" Opacity="0.9" />
                     </StackPanel>
                 </StackPanel>
 
