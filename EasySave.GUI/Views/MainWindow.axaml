@@ -176,7 +176,7 @@
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
 
-                        <DataGridTemplateColumn Header="{x:Static resources:Messages.test}" IsReadOnly="True"
+                        <DataGridTemplateColumn Header="{x:Static resources:Messages.progression}" IsReadOnly="True"
                                                 Width="3*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>

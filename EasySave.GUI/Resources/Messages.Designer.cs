@@ -357,6 +357,15 @@ namespace EasySave.GUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Progression.
+        /// </summary>
+        public static string progression {
+            get {
+                return ResourceManager.GetString("progression", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Restart.
         /// </summary>
         public static string restart {

@@ -146,4 +146,7 @@
     <data name="restart" xml:space="preserve">
         <value>Riavvio</value>
     </data>
+    <data name="progression" xml:space="preserve">
+        <value>Progressione</value>
+    </data>
 </root>
