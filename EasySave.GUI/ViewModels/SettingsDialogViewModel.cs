@@ -16,10 +16,11 @@ public partial class SettingsDialogViewModel : DialogViewModel
     
     private static readonly Dictionary<string, string> LanguageMap = new()
     {
-        { "fr-FR", "French" },
+        { "fr-FR", "Français" },
         { "en-US", "English" },
-        { "de-DE", "German" },
-        { "es-ES", "Spanish" }
+        { "de-DE", "Deutsch" },
+        { "es-ES", "Español" },
+        { "it-IT", "Italiano"}
     };
     
     public SettingsDialogViewModel(Window? dialogWindow = null)
