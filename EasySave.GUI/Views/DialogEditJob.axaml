@@ -10,26 +10,26 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="EasySave.GUI.Views.DialogEditJob">
 
-    <Border Padding="24">
+    <Border Padding="24" Background="{StaticResource SurfaceBrush}">
         <ScrollViewer>
             <StackPanel Spacing="20">
                 <StackPanel Spacing="4">
-                    <TextBlock Text="Modifier le travail" FontSize="20" FontWeight="SemiBold" />
-                    <TextBlock Text="Modifiez les informations ci-dessous" Opacity="0.7" />
+                    <TextBlock Text="Modifier le travail" FontSize="20" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}" />
+                    <TextBlock Text="Modifiez les informations ci-dessous" Foreground="{StaticResource TextSecondaryBrush}" />
                 </StackPanel>
 
                 <Grid ColumnDefinitions="2*,3*" RowDefinitions="Auto,Auto" ColumnSpacing="20" RowSpacing="20">
-                    <Border Grid.Column="0" Grid.RowSpan="2" Padding="16" CornerRadius="8" Background="#0A000000">
+                    <Border Grid.Column="0" Grid.RowSpan="2" Padding="16" CornerRadius="8" Background="{StaticResource BackgroundBrush}" BorderBrush="{StaticResource BorderSoftBrush}" BorderThickness="1">
                         <StackPanel Spacing="12">
-                            <TextBlock Text="{x:Static resources:Messages.jobDetails}" FontWeight="SemiBold" />
+                            <TextBlock Text="{x:Static resources:Messages.jobDetails}" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}" />
                             
                             <StackPanel Spacing="6">
-                                <TextBlock Text="{x:Static resources:Messages.jobName}" FontWeight="SemiBold" />
+                                <TextBlock Text="{x:Static resources:Messages.jobName}" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}" />
                                 <TextBox Text="{Binding Name}" />
                             </StackPanel>
                             
                             <StackPanel Spacing="6">
-                                <TextBlock Text="{x:Static resources:Messages.backupType}" FontWeight="SemiBold" />
+                                <TextBlock Text="{x:Static resources:Messages.backupType}" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}" />
                                 <ComboBox ItemsSource="{Binding BackupTypes}" 
                                           SelectedItem="{Binding SelectedType}" 
                                           HorizontalAlignment="Stretch" />
@@ -37,9 +37,9 @@
                         </StackPanel>
                     </Border>
 
-                    <Border Grid.Column="1" Grid.Row="0" Padding="16" CornerRadius="8" Background="#0A000000">
+                    <Border Grid.Column="1" Grid.Row="0" Padding="16" CornerRadius="8" Background="{StaticResource BackgroundBrush}" BorderBrush="{StaticResource BorderSoftBrush}" BorderThickness="1">
                         <StackPanel Spacing="12">
-                            <TextBlock Text="{x:Static resources:Messages.source}" FontWeight="SemiBold" />
+                            <TextBlock Text="{x:Static resources:Messages.source}" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}" />
                             <StackPanel Spacing="6">
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBox Grid.Column="0" Text="{Binding SourcePath}"/>
@@ -52,9 +52,9 @@
                         </StackPanel>
                     </Border>
 
-                    <Border Grid.Column="1" Grid.Row="1" Padding="16" CornerRadius="8" Background="#0A000000">
+                    <Border Grid.Column="1" Grid.Row="1" Padding="16" CornerRadius="8" Background="{StaticResource BackgroundBrush}" BorderBrush="{StaticResource BorderSoftBrush}" BorderThickness="1">
                         <StackPanel Spacing="12">
-                            <TextBlock Text="{x:Static resources:Messages.destination}" FontWeight="SemiBold" />
+                            <TextBlock Text="{x:Static resources:Messages.destination}" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}" />
                             <StackPanel Spacing="6">
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBox Grid.Column="0" Text="{Binding DestinationPath}"/>
@@ -72,11 +72,11 @@
                     <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10">
                         
                         <Button Content="{x:Static resources:Messages.cancel}" 
-                                Command="{Binding CancelCommand}" />
+                                Command="{Binding CancelCommand}" Classes="ghost" />
                         
                         <Button Content="Enregistrer" 
                                 Command="{Binding SaveCommand}" 
-                                Classes="accent" />
+                                Classes="primary" />
                     </StackPanel>
                 </Grid>
             </StackPanel>

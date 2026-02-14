@@ -1,0 +1,104 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Styles.Resources>
+        <Color x:Key="AccentColor">#6366F1</Color>
+        <Color x:Key="AccentMutedColor">#EEF2FF</Color>
+        <Color x:Key="SurfaceColor">#FFFFFF</Color>
+        <Color x:Key="BackgroundColor">#F9FAFB</Color>
+        <Color x:Key="BorderSoftColor">#D1D5DB</Color>
+        <Color x:Key="TextPrimaryColor">#0F172A</Color>
+        <Color x:Key="TextSecondaryColor">#545F7D</Color>
+        <Color x:Key="DangerColor">#DC2626</Color>
+        <Color x:Key="DangerBgColor">#FEE2E2</Color>
+        <Color x:Key="SuccessColor">#22C55E</Color>
+        <Color x:Key="SuccessBgColor">#DCFCE7</Color>
+
+        <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource AccentColor}" />
+        <SolidColorBrush x:Key="AccentMutedBrush" Color="{StaticResource AccentMutedColor}" />
+        <SolidColorBrush x:Key="SurfaceBrush" Color="{StaticResource SurfaceColor}" />
+        <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource BackgroundColor}" />
+        <SolidColorBrush x:Key="BorderSoftBrush" Color="{StaticResource BorderSoftColor}" />
+        <SolidColorBrush x:Key="TextPrimaryBrush" Color="{StaticResource TextPrimaryColor}" />
+        <SolidColorBrush x:Key="TextSecondaryBrush" Color="{StaticResource TextSecondaryColor}" />
+        <SolidColorBrush x:Key="DangerBrush" Color="{StaticResource DangerColor}" />
+        <SolidColorBrush x:Key="DangerBgBrush" Color="{StaticResource DangerBgColor}" />
+        <SolidColorBrush x:Key="SuccessBrush" Color="{StaticResource SuccessColor}" />
+        <SolidColorBrush x:Key="SuccessBgBrush" Color="{StaticResource SuccessBgColor}" />
+    </Styles.Resources>
+
+    <!-- Buttons -->
+    <Style Selector="Button">
+        <Setter Property="Background" Value="{StaticResource AccentMutedBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource BorderSoftBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
+        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="Padding" Value="12 8" />
+        <Setter Property="Cursor" Value="Hand"></Setter>
+    </Style>
+
+    <Style Selector="Button.primary">
+        <Setter Property="Background" Value="{StaticResource AccentBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}" />
+        <Setter Property="Foreground" Value="White" />
+    </Style>
+
+    <Style Selector="Button.danger">
+        <Setter Property="Background" Value="{StaticResource DangerBgBrush}" />
+        <Setter Property="BorderBrush" Value="#f0b8bc" />
+        <Setter Property="Foreground" Value="{StaticResource DangerBrush}" />
+    </Style>
+
+    <Style Selector="Button.success">
+        <Setter Property="Background" Value="{StaticResource SuccessBgBrush}" />
+        <Setter Property="BorderBrush" Value="#b7e3c7" />
+        <Setter Property="Foreground" Value="{StaticResource SuccessBrush}" />
+    </Style>
+
+    <Style Selector="Button.ghost">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
+    </Style>
+
+    <!-- Inputs -->
+    <Style Selector="TextBox, ComboBox, NumericUpDown">
+        <Setter Property="Background" Value="{StaticResource SurfaceBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource BorderSoftBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Padding" Value="10 8" />
+    </Style>
+
+    <!-- Cards -->
+    <Style Selector="Border.card">
+        <Setter Property="Background" Value="{StaticResource SurfaceBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource BorderSoftBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="12" />
+        <Setter Property="BoxShadow" Value="0 12 30 0 #14000000" />
+    </Style>
+
+    <!-- DataGrid tweaks -->
+    <Style Selector="DataGrid">
+        <Setter Property="RowHeight" Value="48" />
+        <Setter Property="GridLinesVisibility" Value="Horizontal" />
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
+
+    <Style Selector="DataGridCell:focus /template/ Grid#FocusVisual">
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
+
+    <Style Selector="DataGridCell:current /template/ Rectangle#CurrencyVisual">
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
+
+    <!-- Tabs -->
+    <Style Selector="TabItem">
+        <Setter Property="Padding" Value="12 8" />
+        <Setter Property="MinWidth" Value="120" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+
+</Styles>

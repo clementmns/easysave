@@ -10,35 +10,35 @@
     <Design.DataContext>
         <vm:SettingsDialogViewModel></vm:SettingsDialogViewModel>
     </Design.DataContext>
-    <Border Padding="20">
+    <Border Padding="20" Background="{StaticResource SurfaceBrush}">
         <ScrollViewer>
             <StackPanel Spacing="20">
                 <StackPanel Spacing="4">
-                    <TextBlock Text="{x:Static ressources:Messages.settings}" FontSize="20" FontWeight="SemiBold" />
-                    <TextBlock Text="{x:Static ressources:Messages.customizeSettings}" Opacity="0.7" />
+                    <TextBlock Text="{x:Static ressources:Messages.settings}" FontSize="20" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}" />
+                    <TextBlock Text="{x:Static ressources:Messages.customizeSettings}" Foreground="{StaticResource TextSecondaryBrush}" />
                 </StackPanel>
 
-                <Border Padding="16" CornerRadius="8" Background="#0A000000">
+                <Border Padding="16" CornerRadius="8" Background="{StaticResource BackgroundBrush}" BorderBrush="{StaticResource BorderSoftBrush}" BorderThickness="1">
                     <StackPanel Spacing="10">
-                        <TextBlock Text="{x:Static ressources:Messages.Language}" FontWeight="SemiBold" />
-                        <TextBlock Text="{x:Static ressources:Messages.languageText}" Opacity="0.7" />
+                        <TextBlock Text="{x:Static ressources:Messages.Language}" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}" />
+                        <TextBlock Text="{x:Static ressources:Messages.languageText}" Foreground="{StaticResource TextSecondaryBrush}" />
                         <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding SelectedLanguageDisplay}"
-                                  PlaceholderText="{x:Static ressources:Messages.selectLanguage}" HorizontalAlignment="Stretch" />
+                                   PlaceholderText="{x:Static ressources:Messages.selectLanguage}" HorizontalAlignment="Stretch" />
                     </StackPanel>
                 </Border>
 
-                <Border Padding="16" CornerRadius="8" Background="#0A000000">
+                <Border Padding="16" CornerRadius="8" Background="{StaticResource BackgroundBrush}" BorderBrush="{StaticResource BorderSoftBrush}" BorderThickness="1">
                     <StackPanel Spacing="10">
-                        <TextBlock Text="{x:Static ressources:Messages.logFormat}" FontWeight="SemiBold" />
-                        <TextBlock Text="{x:Static ressources:Messages.chooseBackupText}" Opacity="0.7" />
+                        <TextBlock Text="{x:Static ressources:Messages.logFormat}" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}" />
+                        <TextBlock Text="{x:Static ressources:Messages.chooseBackupText}" Foreground="{StaticResource TextSecondaryBrush}" />
                         <ComboBox ItemsSource="{Binding LogFormats}" SelectedItem="{Binding SelectedLogFormat}"
                                   PlaceholderText="Select log format" HorizontalAlignment="Stretch" />
                     </StackPanel>
                 </Border>
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10" Margin="0,4,0,0">
-                    <Button Content="{x:Static ressources:Messages.cancel}" Command="{Binding CancelCommand}" />
-                    <Button Content="{x:Static ressources:Messages.save}" Command="{Binding SaveCommand}" Classes="accent" />
+                    <Button Content="{x:Static ressources:Messages.cancel}" Command="{Binding CancelCommand}" Classes="ghost" />
+                    <Button Content="{x:Static ressources:Messages.save}" Command="{Binding SaveCommand}" Classes="primary" />
                 </StackPanel>
             </StackPanel>
         </ScrollViewer>
