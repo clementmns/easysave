@@ -159,6 +159,15 @@ namespace EasySave.GUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create New job.
+        /// </summary>
+        public static string createJobTitle {
+            get {
+                return ResourceManager.GetString("createJobTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Customize app settings.
         /// </summary>
         public static string customizeSettings {

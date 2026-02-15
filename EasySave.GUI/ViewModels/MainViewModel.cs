@@ -9,6 +9,7 @@ using CommunityToolkit.Mvvm.Input;
 using EasySave.Core.Model;
 using EasySave.Core.Service;
 using EasySave.GUI.Views;
+using EasySave.GUI.Resources;
 
 namespace EasySave.GUI.ViewModels;
 
@@ -89,7 +90,7 @@ public partial class MainViewModel : ViewModelBase, IProgressionObserver
     {
         var dialog = new Window
         {
-            Title = "Create New job",
+            Title = Messages.createJobTitle,
             Content = new DialogCreateJob(),
             Width = 1000,
             Height = 470,
@@ -106,7 +107,7 @@ public partial class MainViewModel : ViewModelBase, IProgressionObserver
     {
         var dialog = new Window 
         {
-            Title = "Edit job",
+            Title = Messages.editJob,
             Content = new DialogEditJob(),
             Width = 1000,
             Height = 400,
@@ -122,7 +123,7 @@ public partial class MainViewModel : ViewModelBase, IProgressionObserver
     {
         var dialog = new Window
         {
-            Title = "App Settings",
+            Title = Messages.settings,
             Content = new DialogSettings(),
             Width = 500,
             Height = 430,
