@@ -6,7 +6,8 @@
              xmlns:ressources="clr-namespace:EasySave.GUI.Resources"
              x:DataType="vm:SettingsDialogViewModel"
              mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="500"
-             x:Class="EasySave.GUI.Views.DialogSettings">
+             x:Class="EasySave.GUI.Views.DialogSettings"
+             x:Name="DialogSettingsRoot">
     <Design.DataContext>
         <vm:SettingsDialogViewModel></vm:SettingsDialogViewModel>
     </Design.DataContext>
@@ -42,6 +43,62 @@
                                    Foreground="{StaticResource TextSecondaryBrush}" />
                         <ComboBox ItemsSource="{Binding LogFormats}" SelectedItem="{Binding SelectedLogFormat}"
                                   PlaceholderText="Select log format" HorizontalAlignment="Stretch" />
+                    </StackPanel>
+                </Border>
+                
+                <Border Padding="16" CornerRadius="8" Background="{StaticResource BackgroundBrush}"
+                        BorderBrush="{StaticResource BorderSoftBrush}" BorderThickness="1">
+                    <StackPanel Spacing="10">
+                        <TextBlock Text="Crypted Extensions" FontWeight="SemiBold"
+                                   Foreground="{StaticResource TextPrimaryBrush}" />
+                        <TextBlock Text="Choose extensions to be crypted :"
+                                   Foreground="{StaticResource TextSecondaryBrush}" />
+                        
+                        <!-- new extension -->
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <TextBox Text="{Binding NewExtension}" 
+                                     Watermark="e.g., .pdf or pdf"
+                                     Width="200" 
+                                     VerticalContentAlignment="Center" />
+                            <Button Content="Add" 
+                                    Command="{Binding AddExtensionCommand}"
+                                    Classes="primary" />
+                        </StackPanel>
+                        
+                        <!-- current extensions -->
+                        <Border BorderBrush="{StaticResource BorderSoftBrush}" 
+                                BorderThickness="1" 
+                                CornerRadius="4"
+                                Padding="8"
+                                MinHeight="100"
+                                MaxHeight="200">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <ItemsControl ItemsSource="{Binding CryptedExtensions}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate DataType="x:String"
+                                                      x:DataType="vm:SettingsDialogViewModel">
+                                            <Border Padding="8,4" 
+                                                    Margin="0,2"
+                                                    Background="{StaticResource SurfaceBrush}"
+                                                    CornerRadius="4">
+                                                <Grid ColumnDefinitions="*,Auto">
+                                                    <TextBlock Text="{Binding}" 
+                                                               VerticalAlignment="Center"
+                                                               Foreground="{StaticResource TextPrimaryBrush}" />
+                                                    <Button Grid.Column="1" 
+                                                            Content="Remove"
+                                                            Command="{Binding $parent[UserControl].DataContext.RemoveExtensionCommand}"
+                                                            CommandParameter="{Binding .}"
+                                                            Classes="ghost" 
+                                                            Foreground="{StaticResource ErrorBrush}"
+                                                            Padding="8,4" />
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </Border>
                     </StackPanel>
                 </Border>
 
