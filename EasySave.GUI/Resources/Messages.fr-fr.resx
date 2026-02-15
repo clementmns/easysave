@@ -137,4 +137,34 @@
     <data name="executeAll" xml:space="preserve">
         <value>Tout exécuter</value>
     </data>
+    <data name="restartApp" xml:space="preserve">
+        <value>Redémarrer l'application</value>
+    </data>
+    <data name="restartAppText" xml:space="preserve">
+        <value>Pour que la modification soit prise en compte, cliquez sur le bouton afin de redémarrer automatiquement l’application.</value>
+    </data>
+    <data name="restart" xml:space="preserve">
+        <value>Redémarrer</value>
+    </data>
+    <data name="progression" xml:space="preserve">
+        <value>Progression</value>
+    </data>
+    <data name="saveDetails" xml:space="preserve">
+        <value>Détails de la sauvegarde</value>
+    </data>
+    <data name="sourceFolder" xml:space="preserve">
+        <value>Dossier source</value>
+    </data>
+    <data name="destinationFolder" xml:space="preserve">
+        <value>Dossier de destination</value>
+    </data>
+    <data name="edit" xml:space="preserve">
+        <value>Modifier</value>
+    </data>
+    <data name="editJob" xml:space="preserve">
+        <value>Modifier le travail</value>
+    </data>
+    <data name="editJobText" xml:space="preserve">
+        <value>Modifiez les informations ci-dessous</value>
+    </data>
 </root>
