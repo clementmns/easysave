@@ -8,6 +8,7 @@ using EasySave.Core.Model;
 using EasySave.Core.Service;
 using EasySave.GUI.Views;
 using System.Linq;
+using EasyLog;
 
 namespace EasySave.GUI.ViewModels;
 
@@ -102,22 +103,27 @@ public partial class MainViewModel : ViewModelBase
 
     public bool AddJob(BackupJob job) => _jobService.CreateJob(job);
     
-    
+    public ProcessMonitorService ProcessMonitor { get; } = ProcessMonitorService.Instance;
     public bool DeleteJob(BackupJob job) => _jobService.DeleteJob(job); 
     
     public bool ExecuteJob(BackupJob job, IProgressionObserver? progressionObserver = null)
     {
         try
         {
+            if (ProcessMonitor.IsBusinessSoftwareRunning)
+            {
+                Console.WriteLine($"Backup {job.Name} blocked: business software detected");
+                Logger.Instance.Write($"Backup blocked for job {job.Name}: business software detected");
+                return false;
+            }
+
             Console.WriteLine($"Start : {job.Name}");
         
-            // attach to needed observers
             job.State.AttachStateObserver(_jobService);
             if (progressionObserver != null) job.State.AttachProgressionObserver(progressionObserver);
 
             var result = _jobService.ExecuteJob(job);
 
-            // detach from observers to avoid memory leaks
             job.State.DetachStateObserver(_jobService);
             if (progressionObserver != null) job.State.DetachProgressionObserver(progressionObserver);
 

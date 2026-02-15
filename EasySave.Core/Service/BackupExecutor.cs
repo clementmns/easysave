@@ -1,5 +1,6 @@
 using EasySave.Core.Model;
 using EasySave.Core.Model.BackupStrategies;
+using EasyLog;
 
 namespace EasySave.Core.Service;
 
@@ -7,6 +8,13 @@ public class BackupExecutor
 {
     public bool ExecuteJob(BackupJob job)
     {
+        // Check if business software is running
+        if (ProcessMonitorService.Instance.IsBusinessSoftwareRunning)
+        {
+            Logger.Instance.Write($"Backup blocked for job {job.Name}: business software detected");
+            return false;
+        }
+        
         var strategy = GetStrategy(job);
         return strategy.Execute(job);
     }
