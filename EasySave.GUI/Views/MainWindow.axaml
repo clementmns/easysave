@@ -290,9 +290,7 @@
                                         </Border>
                                     </Grid>
 
-                                    <Border Grid.Row="2" BorderBrush="{StaticResource BorderSoftBrush}"
-                                            BorderThickness="0,1,0,0"
-                                            Padding="0,15,0,0">
+                                    <Border Grid.Row="2" Padding="0,15,0,0">
                                         <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Right">
 
                                             <Button
