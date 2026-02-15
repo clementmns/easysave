@@ -204,4 +204,7 @@
     <data name="StatusError" xml:space="preserve">
         <value>Error</value>
     </data>
+    <data name="createJobTitle" xml:space="preserve">
+        <value>Create New job</value>
+    </data>
 </root>

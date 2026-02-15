@@ -416,5 +416,11 @@ namespace EasySave.GUI.Resources {
                 return ResourceManager.GetString("StatusError", resourceCulture);
             }
         }
+        
+        public static string createJobTitle {
+            get {
+                return ResourceManager.GetString("createJobTitle", resourceCulture);
+            }
+        }
     }
 }

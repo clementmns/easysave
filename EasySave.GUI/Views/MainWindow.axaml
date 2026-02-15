@@ -93,7 +93,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="4" />
-                <RowDefinition Height="*" MinHeight="300" />
+                <RowDefinition Height="*" MinHeight="300" MaxHeight="430" />
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0">
@@ -295,9 +295,7 @@
                                         </Border>
                                     </Grid>
 
-                                    <Border Grid.Row="2" BorderBrush="{StaticResource BorderSoftBrush}"
-                                            BorderThickness="0,1,0,0"
-                                            Padding="0,15,0,0">
+                                    <Border Grid.Row="2" Padding="0,15,0,0">
                                         <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Right">
 
                                             <Button

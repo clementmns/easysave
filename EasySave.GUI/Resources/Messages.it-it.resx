@@ -164,4 +164,7 @@
     <data name="editJobText" xml:space="preserve">
         <value>Modifica le informazioni riportate di seguito</value>
     </data>
+    <data name="createJobTitle" xml:space="preserve">
+        <value>Crea nuovo lavoro</value>
+    </data>
 </root>
