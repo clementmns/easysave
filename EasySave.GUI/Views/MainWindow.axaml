@@ -31,8 +31,8 @@
                     <Svg Path="avares://EasySave.GUI/Assets/svg/Logo.svg"
                          Width="24" Height="24"/>
                     <StackPanel Spacing="0">
-                        <TextBlock Text="EasySave Backup" FontSize="16" FontWeight="SemiBold" Foreground="White" />
-                        <TextBlock Text="Secure your backups" FontSize="14" Foreground="White" Opacity="0.9" />
+                        <TextBlock Text="{x:Static resources:Messages.easysave}" FontSize="16" FontWeight="SemiBold" Foreground="White" />
+                        <TextBlock Text="{x:Static resources:Messages.easysaveSlogan}" FontSize="14" Foreground="White" Opacity="0.9" />
                     </StackPanel>
                 </StackPanel>
 

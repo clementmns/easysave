@@ -45,13 +45,13 @@
                                   PlaceholderText="Select log format" HorizontalAlignment="Stretch" />
                     </StackPanel>
                 </Border>
-                
+                <!-- Ressources -->
                 <Border Padding="16" CornerRadius="8" Background="{StaticResource BackgroundBrush}"
                         BorderBrush="{StaticResource BorderSoftBrush}" BorderThickness="1">
                     <StackPanel Spacing="10">
-                        <TextBlock Text="Crypted Extensions" FontWeight="SemiBold"
+                        <TextBlock Text="{x:Static ressources:Messages.cryptedExtensions}" FontWeight="SemiBold"
                                    Foreground="{StaticResource TextPrimaryBrush}" />
-                        <TextBlock Text="Choose extensions to be crypted :"
+                        <TextBlock Text="{x:Static ressources:Messages.chooseExt}"
                                    Foreground="{StaticResource TextSecondaryBrush}" />
                         
                         <!-- new extension -->
@@ -60,7 +60,7 @@
                                      Watermark="e.g., .pdf or pdf"
                                      Width="200" 
                                      VerticalContentAlignment="Center" />
-                            <Button Content="Add" 
+                            <Button Content="{x:Static ressources:Messages.add}" 
                                     Command="{Binding AddExtensionCommand}"
                                     Classes="primary" />
                         </StackPanel>
@@ -86,7 +86,7 @@
                                                                VerticalAlignment="Center"
                                                                Foreground="{StaticResource TextPrimaryBrush}" />
                                                     <Button Grid.Column="1" 
-                                                            Content="Remove"
+                                                            Content="{x:Static ressources:Messages.remove}"
                                                             Command="{Binding $parent[UserControl].DataContext.RemoveExtensionCommand}"
                                                             CommandParameter="{Binding .}"
                                                             Classes="ghost" 

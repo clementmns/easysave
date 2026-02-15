@@ -141,7 +141,7 @@
         <value>Redémarrer l'application</value>
     </data>
     <data name="restartAppText" xml:space="preserve">
-        <value>Pour que la modification soit prise en compte, cliquez sur le bouton afin de redémarrer automatiquement l’application.</value>
+        <value>Pour que la modification soit prise en compte, cliquez sur le bouton afin de redémarrer automatiquement l'application.</value>
     </data>
     <data name="restart" xml:space="preserve">
         <value>Redémarrer</value>
@@ -169,5 +169,35 @@
     </data>
     <data name="createJobTitle" xml:space="preserve">
         <value>Créer un nouveau job</value>
+    </data>
+    <data name="ExecuteJobsFailed" xml:space="preserve">
+        <value>L'exécution a échouée</value>
+    </data>
+    <data name="ExecuteJobsSuccess" xml:space="preserve">
+        <value>Exécution réussie</value>
+    </data>
+    <data name="SelectSourcePathFile" xml:space="preserve">
+        <value>Sélectionner le fichier source</value>
+    </data>
+    <data name="SelectSourcePathFolder" xml:space="preserve">
+        <value>Sélectionner le dossier source</value>
+    </data>
+    <data name="chooseExt" xml:space="preserve">
+        <value>Choisissez les extensions à chiffrer :</value>
+    </data>
+    <data name="cryptedExtensions" xml:space="preserve">
+        <value>Extensions chiffrées</value>
+    </data>
+    <data name="remove" xml:space="preserve">
+        <value>Supprimer</value>
+    </data>
+    <data name="selectSource" xml:space="preserve">
+        <value>Choisir la source</value>
+    </data>
+    <data name="easysave" xml:space="preserve">
+        <value>EasySave</value>
+    </data>
+    <data name="easysaveSlogan" xml:space="preserve">
+        <value>Sécurisez vos sauvegardes</value>
     </data>
 </root>
