@@ -4,7 +4,7 @@ namespace EasySave.Core.Utils;
 
 public static class CryptoUtils
 {
-    private const string CRYPTO_EXE_NAME = @"C:/Users/timmf/Documents/GitHub/easysave/CryptoSoft/bin/Debug/net8.0/win-x64/CryptoSoft.exe";
+    private const string CRYPTO_EXE_NAME = @"CryptoSoft.exe";
     private const string DEFAULT_KEY = "dda272ea2cc4fe8774d834acc05f78149ab55ac0e32804377b1c06b1d4ba1e39"; // hash of "EasySaveCore"
     private const string DEFAULT_ALGORITHM = "xor";
     private const string ENCRYPT_EXTENSION = ".lock";
@@ -21,9 +21,10 @@ public static class CryptoUtils
         if (relativePath.Contains(".."))
             return (false, 0);
         
-        var destFile = Path.Combine(destinationPath, relativePath) + ENCRYPT_EXTENSION;
+        // var destFile = Path.Combine(destinationPath, relativePath) + ENCRYPT_EXTENSION;
+        var destFile = destinationPath + ENCRYPT_EXTENSION;
 
-        Directory.CreateDirectory(Path.GetDirectoryName(destFile)!);
+        // Directory.CreateDirectory(Path.GetDirectoryName(destFile)!);
         var result = ExecuteCryptoCommand(algorithm, "encrypt", sourcePath, destFile, key);
         
         stopwatch.Stop();
@@ -61,16 +62,11 @@ public static class CryptoUtils
             if (process == null) return false;
 
             var output = process.StandardOutput.ReadToEnd();
-            var error = process.StandardError.ReadToEnd();
+            // var error = process.StandardError.ReadToEnd();
             
             process.WaitForExit();
 
-            if (process.ExitCode == 0 && output.StartsWith("SUCCESS"))
-            {
-                return true;
-            }
-
-            return false;
+            return process.ExitCode == 0 && output.StartsWith("SUCCESS");
         }
         catch (Exception e)
         {
@@ -86,12 +82,25 @@ public static class CryptoUtils
 
     private static string? GetCryptoSoftPath()
     {
-        var searchPaths = new[]
+        var assemblyBaseDir = AppDomain.CurrentDomain.BaseDirectory;
+        var currentDir = new DirectoryInfo(assemblyBaseDir);
+        DirectoryInfo? solutionRoot = null;
+        
+        for (var i = 0; i < 4 && currentDir?.Parent != null; i++)
         {
-            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, CRYPTO_EXE_NAME),
-            Path.Combine(Environment.CurrentDirectory, CRYPTO_EXE_NAME),
-            Path.Combine(Environment.CurrentDirectory, "CryptoSoft", "bin", "Release", "net10.0", "win-x64", CRYPTO_EXE_NAME)
+            currentDir = currentDir.Parent;
+        }
+        solutionRoot = currentDir;
+        
+        var searchPaths = new List<string>
+        {
+            Path.Combine(assemblyBaseDir, CRYPTO_EXE_NAME),
+            Path.Combine(Environment.CurrentDirectory, CRYPTO_EXE_NAME)
         };
+
+        if (solutionRoot is not { Exists: true }) return searchPaths.FirstOrDefault(File.Exists);
+        searchPaths.Add(Path.Combine(solutionRoot.FullName, "CryptoSoft", "bin", "Debug", "net10.0", "win-x64", CRYPTO_EXE_NAME));
+        searchPaths.Add(Path.Combine(solutionRoot.FullName, "CryptoSoft", "bin", "Release", "net10.0", "win-x64", CRYPTO_EXE_NAME));
 
         return searchPaths.FirstOrDefault(File.Exists);
     }
