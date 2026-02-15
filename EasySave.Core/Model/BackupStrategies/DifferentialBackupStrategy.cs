@@ -72,7 +72,7 @@ private static bool ProcessFile(BackupJob job, List<string> cryptExt)
                 Logger.Instance.Write(new LogEntry($"Copy failed : {job.DestinationPath}", job, true));
                 throw new Exception(Errors.FileCantBeCopied);
             } 
-            Logger.Instance.Write(new LogEntry($"File Copied : {job.DestinationPath}", job,false, resultCopy.Item2));
+            Logger.Instance.Write(new LogEntry($"File Copied : {job.DestinationPath}", job,false, resultCopy.Item2, null));
         }
         
         job.State.Progression = 100;
@@ -135,7 +135,7 @@ private static bool ProcessFile(BackupJob job, List<string> cryptExt)
                         Logger.Instance.Write(new LogEntry($"Encryption failed : {Path.GetFileName(destinationFilePath)}", job, true));
                         throw new Exception(Errors.FileCantBeCrypted);
                     }
-                    Logger.Instance.Write(new LogEntry($"File Encrypted : {job.DestinationPath}", job,false, resultEncryption.Item2));
+                    Logger.Instance.Write(new LogEntry($"File Encrypted : {job.DestinationPath}", job,false, null, resultEncryption.Item2));
                 }
                 else
                 {
@@ -145,7 +145,7 @@ private static bool ProcessFile(BackupJob job, List<string> cryptExt)
                         Logger.Instance.Write(new LogEntry($"Copy failed : {job.DestinationPath}", job, true));
                         throw new Exception(Errors.FileCantBeCopied);
                     }
-                    Logger.Instance.Write(new LogEntry($"File Copied : {job.DestinationPath}", job,false, resultCopy.Item2));
+                    Logger.Instance.Write(new LogEntry($"File Copied : {job.DestinationPath}", job,false, resultCopy.Item2, null));
                 }   
                 
                 

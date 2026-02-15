@@ -66,9 +66,9 @@ public static class CryptoUtils
             
             process.WaitForExit();
 
-            return process.ExitCode == 0 && output.StartsWith("SUCCESS");
+            return process is { HasExited: true, ExitCode: 0 };
         }
-        catch (Exception e)
+        catch (Exception)
         {
             return false;
         }

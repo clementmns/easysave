@@ -38,47 +38,34 @@ public class FileManager
     /// <summary>
     /// Encrypts or decrypts the file based on the chosen algorithm
     /// </summary>
-    public int TransformFile()
+    public void TransformFile()
     {
         if (string.IsNullOrEmpty(Key))
         {
-            Console.WriteLine("ERROR: The key cannot be empty.");
-            return -1;
+            return;
         }
 
-        if (!CheckFile()) return -1;
+        if (!CheckFile()) return;
+        
+        var fileBytes = File.ReadAllBytes(SourcePath);
+        var keyBytes = ConvertToByte(Key);
 
-        try
+        var result = Algorithm switch
         {
-            var stopwatch = Stopwatch.StartNew();
-            var fileBytes = File.ReadAllBytes(SourcePath);
-            var keyBytes = ConvertToByte(Key);
+            CryptoAlgorithm.Xor => XorMethod(fileBytes, keyBytes),
+            CryptoAlgorithm.Aes => IsEncryption 
+                ? AesEncrypt(fileBytes, keyBytes) 
+                : AesDecrypt(fileBytes, keyBytes),
+            _ => throw new NotImplementedException()
+        };
 
-            var result = Algorithm switch
-            {
-                CryptoAlgorithm.Xor => XorMethod(fileBytes, keyBytes),
-                CryptoAlgorithm.Aes => IsEncryption 
-                    ? AesEncrypt(fileBytes, keyBytes) 
-                    : AesDecrypt(fileBytes, keyBytes),
-                _ => throw new NotImplementedException()
-            };
-
-            var destDir = Path.GetDirectoryName(DestinationPath);
-            if (!string.IsNullOrEmpty(destDir))
-            {
-                Directory.CreateDirectory(destDir);
-            }
-
-            File.WriteAllBytes(DestinationPath, result);
-            stopwatch.Stop();
-
-            return (int)stopwatch.ElapsedMilliseconds;
-        }
-        catch (Exception ex)
+        var destDir = Path.GetDirectoryName(DestinationPath);
+        if (!string.IsNullOrEmpty(destDir))
         {
-            Console.WriteLine($"ERROR:{ex.Message}");
-            return -1;
+            Directory.CreateDirectory(destDir);
         }
+
+        File.WriteAllBytes(DestinationPath, result);
     }
 
     /// <summary>

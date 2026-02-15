@@ -13,14 +13,14 @@ public class LogEntry
     public string? SourcePath { get; set; }
     public string? DestinationPath { get; set; }
     public long FileSize { get; set; }
-    public long? TransferDuration { get; set; }
+    public long? CopyDuration { get; set; }
     public long? CryptDuration { get; set; }
     
     public bool? IsError { get; set; }
 
     public LogEntry() { }
     
-    private LogEntry(string message, string backupName, string? sourcePath, string? destinationPath, long fileSize, bool? isError = false, long? transferDuration = null, long? cryptDuration = null)
+    private LogEntry(string message, string backupName, string? sourcePath, string? destinationPath, long fileSize, bool? isError = false, long? copyDuration = null, long? cryptDuration = null)
     {
         Message = message;
         BackupName = backupName;
@@ -29,9 +29,9 @@ public class LogEntry
         DestinationPath = destinationPath;
         FileSize = fileSize;
         IsError = isError;
-        TransferDuration = transferDuration;
+        CopyDuration = copyDuration;
         CryptDuration = cryptDuration;
     }
     
-    public LogEntry( string message, BackupJob job, bool? isError = false, long? transferDuration = null, long? cryptDuration = null) : this(message, job.Name, ConvertToUnc(job.SourcePath), ConvertToUnc(job.DestinationPath), job.State.FileSize, isError, transferDuration, cryptDuration) { }
+    public LogEntry( string message, BackupJob job, bool? isError = false, long? copyDuration = null, long? cryptDuration = null) : this(message, job.Name, ConvertToUnc(job.SourcePath), ConvertToUnc(job.DestinationPath), job.State.FileSize, isError, copyDuration, cryptDuration) { }
 }

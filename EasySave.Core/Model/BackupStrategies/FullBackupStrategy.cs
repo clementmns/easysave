@@ -54,7 +54,7 @@ public class FullBackupStrategy : IBackupStrategy
                     Logger.Instance.Write(new LogEntry($"Encryption failed : {Path.GetFileName(destinationFilePath)}", job, true));
                     throw new Exception(Errors.FileCantBeCrypted);
                 }
-                Logger.Instance.Write(new LogEntry($"File Encrypted : {job.DestinationPath}", job, false, resultEncryption.Item2));
+                Logger.Instance.Write(new LogEntry($"File Encrypted : {job.DestinationPath}", job, false, null, resultEncryption.Item2));
             }
             else
             {
@@ -65,7 +65,7 @@ public class FullBackupStrategy : IBackupStrategy
                     Logger.Instance.Write(new LogEntry($"Copy failed : {job.DestinationPath}", job, true));
                     throw new Exception(Errors.FileCantBeCopied);
                 }
-                Logger.Instance.Write(new LogEntry($"File Copied : {job.DestinationPath}", job, false,resultCopy.Item2));
+                Logger.Instance.Write(new LogEntry($"File Copied : {job.DestinationPath}", job, false,resultCopy.Item2, null));
             }
 
             job.State.Progression = 100;
@@ -116,7 +116,7 @@ public class FullBackupStrategy : IBackupStrategy
                         Logger.Instance.Write(new LogEntry($"Encryption failed : {Path.GetFileName(destinationFilePath)}", job, true));
                         throw new Exception(Errors.FileCantBeCrypted);
                     }
-                    Logger.Instance.Write(new LogEntry($"File Encrypted : {job.DestinationPath}", job,false, resultEncryption.Item2));
+                    Logger.Instance.Write(new LogEntry($"File Encrypted : {job.DestinationPath}", job,false, null, resultEncryption.Item2));
                 }
                 else
                 {
@@ -126,7 +126,7 @@ public class FullBackupStrategy : IBackupStrategy
                         Logger.Instance.Write(new LogEntry($"Copy failed : {job.DestinationPath}", job, true));
                         throw new Exception(Errors.FileCantBeCopied);
                     }
-                    Logger.Instance.Write(new LogEntry($"File Copied : {job.DestinationPath}", job,false, resultCopy.Item2));
+                    Logger.Instance.Write(new LogEntry($"File Copied : {job.DestinationPath}", job,false, resultCopy.Item2, null));
                 }
                 
                 job.State.RemainingFiles -= 1;
