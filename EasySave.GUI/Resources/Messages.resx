@@ -192,4 +192,16 @@
     <data name="editJobText" xml:space="preserve">
         <value>Change the information below</value>
     </data>
+    <data name="StatusReady" xml:space="preserve">
+        <value>Ready</value>
+    </data>
+    <data name="StatusOnGoing" xml:space="preserve">
+        <value>OnGoing</value>
+    </data>
+    <data name="StatusDone" xml:space="preserve">
+        <value>Done</value>
+    </data>
+    <data name="StatusError" xml:space="preserve">
+        <value>Error</value>
+    </data>
 </root>

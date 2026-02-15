@@ -8,6 +8,14 @@ namespace EasySave.Core.Model;
 /// </summary>
 public class RealTimeState : INotifyPropertyChanged
 {
+    public enum RealTimeStatus
+    {
+        Ready,
+        Done,
+        Error,
+        OnGoing
+    }
+
     private readonly List<IRealTimeStateObserver> _stateObservers = [];
     private readonly List<IProgressionObserver> _progressionObservers = [];
 
@@ -22,6 +30,12 @@ public class RealTimeState : INotifyPropertyChanged
         get;
         set => SetField(ref field, value);
     }
+
+    public RealTimeStatus Status
+    {
+        get;
+        set => SetField(ref field, value);
+    } = RealTimeStatus.Ready;
 
     public int TotalFiles
     {
