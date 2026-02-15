@@ -57,7 +57,6 @@ public class RealTimeStatusToBackgroundConverter : IValueConverter
     {
         return RealTimeStatusPalette.From(value).Background;
     }
-
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => BindingOperations.DoNothing;
 }
 
@@ -67,7 +66,6 @@ public class RealTimeStatusToBorderBrushConverter : IValueConverter
     {
         return RealTimeStatusPalette.From(value).Border;
     }
-
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => BindingOperations.DoNothing;
 }
 
@@ -77,7 +75,6 @@ public class RealTimeStatusToForegroundConverter : IValueConverter
     {
         return RealTimeStatusPalette.From(value).Foreground;
     }
-
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => BindingOperations.DoNothing;
 }
 
@@ -87,6 +84,5 @@ public class RealTimeStatusToTextConverter : IValueConverter
     {
         return RealTimeStatusPalette.From(value).Text;
     }
-
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => BindingOperations.DoNothing;
 }
