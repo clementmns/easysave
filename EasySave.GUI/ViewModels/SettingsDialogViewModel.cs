@@ -7,7 +7,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Core.Model;
 using EasySave.Core.Service;
-using EasySave.GUI.Views;
+using EasySave.GUI.Resources;
 
 namespace EasySave.GUI.ViewModels;
 
@@ -98,33 +98,16 @@ public partial class SettingsDialogViewModel : DialogViewModel
 
         if (SelectedLogFormat != SettingsService.GetInstance.Settings.LogFormat)
             SettingsService.GetInstance.ChangeLogFormat(SelectedLogFormat);
-        
+
         if (languageChanged)
+        {
             SettingsService.GetInstance.SetLanguage(SelectedLanguage);
+            LanguageManager.SetLanguage(SelectedLanguage);
+        }
         
         // Save crypted extensions
         SettingsService.GetInstance.SetCryptedExtensions(CryptedExtensions.ToList());
-        
-        if (languageChanged) await ShowRestartDialogAsync();
+
         _dialogWindow?.Close();
-        
-    }
-
-    private async Task ShowRestartDialogAsync()
-    {
-        var dialog = new Window
-        {
-            // Title = Messages.RestartTitle,
-            Content = new DialogRestartConfirm(),
-            Width = 500,
-            Height = 170,
-            WindowStartupLocation = WindowStartupLocation.CenterOwner,
-            CanResize = false
-        };
-
-        dialog.DataContext = new RestartConfirmDialogViewModel(dialog);
-
-        if (_dialogWindow != null) await dialog.ShowDialog(_dialogWindow);
-        else await dialog.ShowDialog(null);
     }
 }

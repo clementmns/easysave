@@ -176,9 +176,6 @@
     <data name="SelectSourcePathFile" xml:space="preserve">
         <value>Quelldateipfad auswählen</value>
     </data>
-    <data name="SelectSourcePathFolder" xml:space="preserve">
-        <value>Quellordnerpfad auswählen</value>
-    </data>
     <data name="chooseExt" xml:space="preserve">
         <value>Wählen Sie zu verschlüsselnde Erweiterungen:</value>
     </data>

@@ -173,9 +173,6 @@
     <data name="SelectSourcePathFile" xml:space="preserve">
         <value>Seleziona il file del percorso sorgente</value>
     </data>
-    <data name="SelectSourcePathFolder" xml:space="preserve">
-        <value>Seleziona la cartella del percorso sorgente</value>
-    </data>
     <data name="chooseExt" xml:space="preserve">
         <value>Scegli le estensioni da cifrare:</value>
     </data>

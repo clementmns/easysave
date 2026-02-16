@@ -8,8 +8,8 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Core.Model;
 using EasySave.Core.Service;
-using EasySave.GUI.Views;
 using EasySave.GUI.Resources;
+using EasySave.GUI.Views;
 
 namespace EasySave.GUI.ViewModels;
 
@@ -18,11 +18,19 @@ public partial class MainViewModel : ViewModelBase, IProgressionObserver
     private BackupJobService _jobService { get; set; }
     public ObservableCollection<BackupJob>? Jobs => _jobService.Jobs;
     
-    [ObservableProperty] private ObservableCollection<BackupJob> selectedJobs = [];
+    [ObservableProperty] private ObservableCollection<BackupJob> _selectedJobs = [];
     
     public MainViewModel()
     {
         _jobService = new BackupJobService();
+        LanguageManager.LanguageChanged += OnLanguageChanged;
+        OnPropertyChanged(nameof(Jobs));
+    }
+
+    private void OnLanguageChanged()
+    {
+        if (Jobs is not { } jobs) return;
+        foreach (var job in jobs) job.State.RefreshDisplay();
     }
 
     public bool? AreAllJobsSelected

@@ -176,9 +176,6 @@
     <data name="SelectSourcePathFile" xml:space="preserve">
         <value>Seleccionar el archivo de la ruta de origen</value>
     </data>
-    <data name="SelectSourcePathFolder" xml:space="preserve">
-        <value>Seleccionar la carpeta de la ruta de origen</value>
-    </data>
     <data name="chooseExt" xml:space="preserve">
         <value>Elija las extensiones a cifrar:</value>
     </data>

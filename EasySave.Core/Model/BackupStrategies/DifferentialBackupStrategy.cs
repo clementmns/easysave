@@ -12,21 +12,13 @@ public class DifferentialBackupStrategy : IBackupStrategy
 {
     public bool Execute(BackupJob job)
     {
-        job.State.Status = RealTimeState.RealTimeStatus.OnGoing;
-        job.State.IsActive = true;
-        job.State.Progression = 0;
-
         var cryptedExtensions = SettingsService.GetInstance.Settings.CryptExtensions;
-
         var result = (File.Exists(job.SourcePath), Directory.Exists(job.SourcePath)) switch
         {
             (true, false) => ProcessFile(job, cryptedExtensions),
             (false, true) => ProcessDirectory(job,  cryptedExtensions),
             _ => throw new FileNotFoundException(Errors.ProcessingError)
         };
-
-        job.State.Status = result ? RealTimeState.RealTimeStatus.Done : RealTimeState.RealTimeStatus.Error;
-        job.State.Reset();
 
         return result;
     }
@@ -55,27 +47,27 @@ public class DifferentialBackupStrategy : IBackupStrategy
             job.State.RemainingFilesSize = fileInfo.Length;
             job.State.Progression = 0;
 
-        if (cryptExt.Contains(fileInfo.Extension))
-        {
-            var resultEncryption = CryptoUtils.EncryptFile(sourcePath, destinationFilePath);
-            if (!resultEncryption.Item1)
+            if (cryptExt.Contains(fileInfo.Extension))
             {
-                Logger.Instance.Write(new LogEntry($"Encryption failed : {Path.GetFileName(destinationFilePath)}", job, true));
-                throw new Exception(Errors.FileCantBeCrypted);
+                var resultEncryption = CryptoUtils.EncryptFile(sourcePath, destinationFilePath);
+                if (!resultEncryption.Item1)
+                {
+                    Logger.Instance.Write(new LogEntry($"Encryption failed : {Path.GetFileName(destinationFilePath)}", job, true));
+                    throw new Exception(Errors.FileCantBeCrypted);
+                }
+                Logger.Instance.Write(new LogEntry($"File Encrypted : {job.DestinationPath}", job,false, resultEncryption.Item2));
             }
-            Logger.Instance.Write(new LogEntry($"File Encrypted : {job.DestinationPath}", job,false, resultEncryption.Item2));
-        }
-        else
-        {
-            var resultCopy = FileUtils.CopyFile(fileInfo.FullName, job.DestinationPath,
-                Path.GetDirectoryName(fileInfo.FullName));
-            if (!resultCopy.Item1)
+            else
             {
-                Logger.Instance.Write(new LogEntry($"Copy failed : {job.DestinationPath}", job, true));
-                throw new Exception(Errors.FileCantBeCopied);
-            } 
-            Logger.Instance.Write(new LogEntry($"File Copied : {job.DestinationPath}", job,false, resultCopy.Item2, null));
-        }
+                var resultCopy = FileUtils.CopyFile(fileInfo.FullName, job.DestinationPath,
+                    Path.GetDirectoryName(fileInfo.FullName));
+                if (!resultCopy.Item1)
+                {
+                    Logger.Instance.Write(new LogEntry($"Copy failed : {job.DestinationPath}", job, true));
+                    throw new Exception(Errors.FileCantBeCopied);
+                } 
+                Logger.Instance.Write(new LogEntry($"File Copied : {job.DestinationPath}", job,false, resultCopy.Item2, null));
+            }
         
             job.State.Progression = 100;
             return true;
