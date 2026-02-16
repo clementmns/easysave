@@ -9,7 +9,6 @@
         Title="EasySave"
         Icon="avares://EasySave.GUI/Assets/ico/Logo.ico"
         xmlns:model="clr-namespace:EasySave.Core.Model;assembly=EasySave.Core"
-        xmlns:resources="clr-namespace:EasySave.GUI.Resources"
         xmlns:converters="clr-namespace:EasySave.GUI.Converters"
         Width="1200" Height="700">
     <Window.Resources>
@@ -36,8 +35,8 @@
                     <Svg Path="avares://EasySave.GUI/Assets/svg/Logo.svg"
                          Width="24" Height="24"/>
                     <StackPanel Spacing="0">
-                        <TextBlock Text="{x:Static resources:Messages.easysave}" FontSize="16" FontWeight="SemiBold" Foreground="White" />
-                        <TextBlock Text="{x:Static resources:Messages.easysaveSlogan}" FontSize="14" Foreground="White" Opacity="0.9" />
+                        <TextBlock Text="{DynamicResource easysave}" FontSize="16" FontWeight="SemiBold" Foreground="White" />
+                        <TextBlock Text="{DynamicResource easysaveSlogan}" FontSize="14" Foreground="White" Opacity="0.9" />
                     </StackPanel>
                 </StackPanel>
 
@@ -48,7 +47,7 @@
                         <StackPanel Orientation="Horizontal" Spacing="6">
                             <Svg Path="avares://EasySave.GUI/Assets/svg/settings.svg"
                                  Width="18" Height="18" Css="* { stroke: #FFFFFF; }" />
-                            <TextBlock Text="{x:Static resources:Messages.settings}" Foreground="White" />
+                            <TextBlock Text="{DynamicResource settings}" Foreground="White" />
                         </StackPanel>
                     </Button>
                 </StackPanel>
@@ -61,8 +60,8 @@
                         Classes="primary" Cursor="Hand">
                     <StackPanel Orientation="Horizontal" Spacing="6">
                         <TextBlock Text="+" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" />
-                        <TextBlock Text="{x:Static resources:Messages.add}" VerticalAlignment="Center"
-                                   Foreground="White" />
+                         <TextBlock Text="{DynamicResource add}" VerticalAlignment="Center"
+                                    Foreground="White" />
                     </StackPanel>
                 </Button>
                 <Rectangle Width="1" Fill="{StaticResource BorderSoftBrush}" Margin="6,0" VerticalAlignment="Stretch" />
@@ -84,8 +83,8 @@
                          Height="16" />
                 </Button>
                 <Rectangle Width="1" Fill="{StaticResource BorderSoftBrush}" Margin="6,0" VerticalAlignment="Stretch" />
-                <Button Content="{x:Static resources:Messages.executeAll}" Classes="primary"
-                        Command="{Binding ExecuteAllJobs}" />
+                 <Button Content="{DynamicResource executeAll}" Classes="primary"
+                         Command="{Binding ExecuteAllJobs}" />
             </StackPanel>
         </Border>
 
@@ -106,12 +105,12 @@
                              Width="64"
                              Height="64"
                              Opacity="0.2" />
-                        <TextBlock Text="{x:Static resources:Messages.noJobs}"
+                         <TextBlock Text="{DynamicResource noJobs}"
                                    FontSize="20"
                                    FontWeight="Bold"
                                    Foreground="{StaticResource TextSecondaryBrush}"
                                    HorizontalAlignment="Center" />
-                        <TextBlock Text="{x:Static resources:Messages.addInstruction}"
+                         <TextBlock Text="{DynamicResource addInstruction}"
                                    FontSize="14"
                                    Foreground="{StaticResource TextSecondaryBrush}"
                                    HorizontalAlignment="Center"
@@ -161,11 +160,11 @@
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
 
-                        <DataGridTextColumn Header="{x:Static resources:Messages.name}" Binding="{Binding Name}"
-                                            Width="2*"
+                         <DataGridTextColumn Header="{DynamicResource name}" Binding="{Binding Name}"
+                                             Width="2*"
                                             IsReadOnly="True" FontWeight="SemiBold" />
 
-                        <DataGridTemplateColumn Header="{x:Static resources:Messages.state}" Width="140">
+                         <DataGridTemplateColumn Header="{DynamicResource state}" Width="140">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Border CornerRadius="6" VerticalAlignment="Center"
@@ -181,8 +180,8 @@
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
 
-                        <DataGridTemplateColumn Header="{x:Static resources:Messages.progression}" IsReadOnly="True"
-                                                Width="3*">
+                         <DataGridTemplateColumn Header="{DynamicResource progression}" IsReadOnly="True"
+                                                 Width="3*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <ProgressBar Margin="20 10" Height="20"
@@ -211,12 +210,12 @@
                              Width="48"
                              Height="48"
                              Opacity="0.3" />
-                        <TextBlock Text="{x:Static resources:Messages.noJobSelected}"
+                         <TextBlock Text="{DynamicResource noJobSelected}"
                                    FontSize="18"
                                    FontWeight="SemiBold"
                                    Foreground="{StaticResource TextSecondaryBrush}"
                                    HorizontalAlignment="Center" />
-                        <TextBlock Text="{x:Static resources:Messages.selectJobText}"
+                         <TextBlock Text="{DynamicResource selectJobText}"
                                    FontSize="14"
                                    Foreground="{StaticResource TextSecondaryBrush}"
                                    HorizontalAlignment="Center"
@@ -243,7 +242,7 @@
 
                                     <Grid ColumnDefinitions="*, Auto" Margin="0,0,0,20">
                                         <StackPanel>
-                                            <TextBlock Text="{x:Static resources:Messages.jobDetails}" FontSize="12"
+                                             <TextBlock Text="{DynamicResource jobDetails}" FontSize="12"
                                                        Foreground="{StaticResource TextSecondaryBrush}" />
                                             <TextBlock Text="{Binding Name}" FontSize="24" FontWeight="Bold"
                                                        Foreground="{StaticResource TextPrimaryBrush}" />
@@ -269,8 +268,8 @@
                                             <StackPanel Spacing="8">
                                                 <StackPanel Orientation="Horizontal" Spacing="8">
                                                     <Svg Path="/Assets/svg/folder.svg" Width="18" Height="18" />
-                                                    <TextBlock Text="{x:Static resources:Messages.sourceFolder}" FontWeight="Bold"
-                                                               Foreground="{StaticResource TextPrimaryBrush}" />
+                                                     <TextBlock Text="{DynamicResource sourceFolder}" FontWeight="Bold"
+                                                                Foreground="{StaticResource TextPrimaryBrush}" />
                                                 </StackPanel>
                                                 <TextBlock Text="{Binding SourcePath}" TextWrapping="Wrap"
                                                            Foreground="{StaticResource TextSecondaryBrush}" />
@@ -286,8 +285,8 @@
                                             <StackPanel Spacing="8">
                                                 <StackPanel Orientation="Horizontal" Spacing="8">
                                                     <Svg Path="/Assets/svg/folder.svg" Width="18" Height="18" />
-                                                    <TextBlock Text="{x:Static resources:Messages.destinationFolder}" FontWeight="Bold"
-                                                               Foreground="{StaticResource TextPrimaryBrush}" />
+                                                     <TextBlock Text="{DynamicResource destinationFolder}" FontWeight="Bold"
+                                                                Foreground="{StaticResource TextPrimaryBrush}" />
                                                 </StackPanel>
                                                 <TextBlock Text="{Binding DestinationPath}" TextWrapping="Wrap"
                                                            Foreground="{StaticResource TextSecondaryBrush}" />
@@ -303,7 +302,7 @@
                                                 CommandParameter="{Binding .}">
                                                 <StackPanel Orientation="Horizontal" Spacing="8">
                                                     <Svg Path="/Assets/svg/pencil.svg" Width="14" Height="14" />
-                                                    <TextBlock Text="{x:Static resources:Messages.edit}" />
+                                                     <TextBlock Text="{DynamicResource edit}" />
                                                 </StackPanel>
                                             </Button>
                                         </StackPanel>

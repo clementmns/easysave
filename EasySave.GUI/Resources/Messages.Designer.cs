@@ -45,12 +45,6 @@ namespace EasySave.GUI.Resources {
             }
         }
         
-        public static string SelectSourcePathFolder {
-            get {
-                return ResourceManager.GetString("SelectSourcePathFolder", resourceCulture);
-            }
-        }
-        
         public static string SelectSourcePathFile {
             get {
                 return ResourceManager.GetString("SelectSourcePathFile", resourceCulture);

@@ -65,7 +65,7 @@ public partial class EditJobViewModel : ObservableObject
     
         var selected = await topLevel?.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
         {
-            Title = Messages.SelectSourcePathFolder,
+            Title = "Select source path folder",
             AllowMultiple = false
         })!;
     

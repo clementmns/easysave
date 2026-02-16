@@ -3,7 +3,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:EasySave.GUI.ViewModels;assembly=EasySave.GUI"
-             xmlns:resources="clr-namespace:EasySave.GUI.Resources"
              x:DataType="vm:CreateJobDialogViewModel"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="EasySave.GUI.Views.DialogCreateJob">
@@ -14,9 +13,9 @@
         <ScrollViewer>
             <StackPanel Spacing="20">
                 <StackPanel Spacing="4">
-                    <TextBlock Text="{x:Static resources:Messages.createBackupJob}" FontSize="20" FontWeight="SemiBold"
+                     <TextBlock Text="{DynamicResource createBackupJob}" FontSize="20" FontWeight="SemiBold"
                                Foreground="{StaticResource TextPrimaryBrush}" />
-                    <TextBlock Text="{x:Static resources:Messages.createBackupText}"
+                    <TextBlock Text="{DynamicResource createBackupText}"
                                Foreground="{StaticResource TextSecondaryBrush}" />
                 </StackPanel>
 
@@ -25,19 +24,19 @@
                             Background="{StaticResource BackgroundBrush}"
                             BorderBrush="{StaticResource BorderSoftBrush}" BorderThickness="1">
                         <StackPanel Spacing="12">
-                            <TextBlock Text="{x:Static resources:Messages.jobDetails}" FontWeight="SemiBold"
+                             <TextBlock Text="{DynamicResource jobDetails}" FontWeight="SemiBold"
                                        Foreground="{StaticResource TextPrimaryBrush}" />
                             <StackPanel Spacing="6">
-                                <TextBlock Text="{x:Static resources:Messages.jobName}" FontWeight="SemiBold"
+                                 <TextBlock Text="{DynamicResource jobName}" FontWeight="SemiBold"
                                            Foreground="{StaticResource TextPrimaryBrush}" />
-                                <TextBlock Text="{x:Static resources:Messages.giveName}"
+                                 <TextBlock Text="{DynamicResource giveName}"
                                            Foreground="{StaticResource TextSecondaryBrush}" />
-                                <TextBox Watermark="{x:Static resources:Messages.enterJobName}" Text="{Binding Name}" />
+                                 <TextBox Watermark="{DynamicResource enterJobName}" Text="{Binding Name}" />
                             </StackPanel>
                             <StackPanel Spacing="6">
-                                <TextBlock Text="{x:Static resources:Messages.backupType}" FontWeight="SemiBold"
+                                 <TextBlock Text="{DynamicResource backupType}" FontWeight="SemiBold"
                                            Foreground="{StaticResource TextPrimaryBrush}" />
-                                <TextBlock Text="{x:Static resources:Messages.backupTypeText}"
+                                 <TextBlock Text="{DynamicResource backupTypeText}"
                                            Foreground="{StaticResource TextSecondaryBrush}" />
                                 <ComboBox ItemsSource="{Binding BackupTypes}"
                                           SelectedItem="{Binding SelectedBackupType}"
@@ -50,11 +49,11 @@
                             Background="{StaticResource BackgroundBrush}"
                             BorderBrush="{StaticResource BorderSoftBrush}" BorderThickness="1">
                         <StackPanel Spacing="12">
-                            <TextBlock Text="{x:Static resources:Messages.source}" FontWeight="SemiBold"
-                                       Foreground="{StaticResource TextPrimaryBrush}" />
-                            <StackPanel Spacing="6">
-                                <TextBlock Text="{x:Static resources:Messages.sourceText}"
-                                           Foreground="{StaticResource TextSecondaryBrush}" />
+                             <TextBlock Text="{DynamicResource source}" FontWeight="SemiBold"
+                                        Foreground="{StaticResource TextPrimaryBrush}" />
+                             <StackPanel Spacing="6">
+                                 <TextBlock Text="{DynamicResource sourceText}"
+                                            Foreground="{StaticResource TextSecondaryBrush}" />
                                 <StackPanel Orientation="Horizontal" Spacing="14">
                                     <RadioButton Content="File" IsChecked="{Binding IsFileSelected}"
                                                  GroupName="SaveType" />
@@ -62,11 +61,11 @@
                                                  GroupName="SaveType" />
                                 </StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
-                                    <TextBox Grid.Column="0" Watermark="{x:Static resources:Messages.selectTheSource}"
-                                             Text="{Binding SourcePath}"
-                                             IsReadOnly="True" />
-                                    <Button Grid.Column="1" Content="{x:Static resources:Messages.browse}"
-                                            Command="{Binding BrowseSourceCommand}" Margin="8,0,0,0" />
+                                     <TextBox Grid.Column="0" Watermark="{DynamicResource selectTheSource}"
+                                              Text="{Binding SourcePath}"
+                                              IsReadOnly="True" />
+                                     <Button Grid.Column="1" Content="{DynamicResource browse}"
+                                             Command="{Binding BrowseSourceCommand}" Margin="8,0,0,0" />
                                 </Grid>
                             </StackPanel>
                         </StackPanel>
@@ -76,19 +75,19 @@
                             Background="{StaticResource BackgroundBrush}"
                             BorderBrush="{StaticResource BorderSoftBrush}" BorderThickness="1">
                         <StackPanel Spacing="12">
-                            <TextBlock Text="{x:Static resources:Messages.destination}" FontWeight="SemiBold"
-                                       Foreground="{StaticResource TextPrimaryBrush}" />
-                            <StackPanel Spacing="6">
-                                <TextBlock Text="{x:Static resources:Messages.destinationText}"
-                                           Foreground="{StaticResource TextSecondaryBrush}" />
+                             <TextBlock Text="{DynamicResource destination}" FontWeight="SemiBold"
+                                        Foreground="{StaticResource TextPrimaryBrush}" />
+                             <StackPanel Spacing="6">
+                                 <TextBlock Text="{DynamicResource destinationText}"
+                                            Foreground="{StaticResource TextSecondaryBrush}" />
                                 <Grid ColumnDefinitions="*,Auto">
-                                    <TextBox Grid.Column="0"
-                                             Watermark="{x:Static resources:Messages.selectDestination}"
-                                             Text="{Binding DestinationPath}"
-                                             IsReadOnly="True" />
-                                    <Button Grid.Column="1" Content="{x:Static resources:Messages.browse}"
-                                            Margin="8,0,0,0"
-                                            Command="{Binding BrowseDestinationCommand}" />
+                                     <TextBox Grid.Column="0"
+                                              Watermark="{DynamicResource selectDestination}"
+                                              Text="{Binding DestinationPath}"
+                                              IsReadOnly="True" />
+                                     <Button Grid.Column="1" Content="{DynamicResource browse}"
+                                             Margin="8,0,0,0"
+                                             Command="{Binding BrowseDestinationCommand}" />
                                 </Grid>
                             </StackPanel>
                         </StackPanel>
@@ -99,9 +98,9 @@
                     <TextBlock Grid.Column="0" Text="{Binding ErrorMessage}" IsVisible="{Binding IsErrorVisible}"
                                Foreground="{StaticResource DangerBrush}" TextAlignment="Left" />
                     <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10">
-                        <Button Content="{x:Static resources:Messages.cancel}" Command="{Binding CancelCommand}"
+                        <Button Content="{DynamicResource cancel}" Command="{Binding CancelCommand}"
                                 Classes="ghost" />
-                        <Button Content="{x:Static resources:Messages.create}" Command="{Binding CreateCommand}"
+                        <Button Content="{DynamicResource create}" Command="{Binding CreateCommand}"
                                 Classes="primary"
                                 IsEnabled="{Binding CanCreate}" />
                     </StackPanel>

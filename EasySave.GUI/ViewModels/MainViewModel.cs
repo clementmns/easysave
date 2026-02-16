@@ -23,6 +23,7 @@ public partial class MainViewModel : ViewModelBase, IProgressionObserver
     public MainViewModel()
     {
         _jobService = new BackupJobService();
+        OnPropertyChanged(nameof(Jobs));
     }
 
     public bool? AreAllJobsSelected

@@ -176,9 +176,6 @@
     <data name="SelectSourcePathFile" xml:space="preserve">
         <value>Sélectionner le fichier source</value>
     </data>
-    <data name="SelectSourcePathFolder" xml:space="preserve">
-        <value>Sélectionner le dossier source</value>
-    </data>
     <data name="chooseExt" xml:space="preserve">
         <value>Choisissez les extensions à chiffrer :</value>
     </data>
@@ -196,5 +193,20 @@
     </data>
     <data name="easysaveSlogan" xml:space="preserve">
         <value>Sécurisez vos sauvegardes</value>
+    </data>
+    <data name="settings" xml:space="preserve">
+        <value>Paramètres</value>
+    </data>
+    <data name="StatusDone" xml:space="preserve">
+        <value>Fini</value>
+    </data>
+    <data name="StatusError" xml:space="preserve">
+        <value>Erreur</value>
+    </data>
+    <data name="StatusOnGoing" xml:space="preserve">
+        <value>En cours</value>
+    </data>
+    <data name="StatusReady" xml:space="preserve">
+        <value>Prêt</value>
     </data>
 </root>
