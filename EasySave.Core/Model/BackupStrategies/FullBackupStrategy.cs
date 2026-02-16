@@ -12,22 +12,14 @@ public class FullBackupStrategy : IBackupStrategy
 {
     public bool Execute(BackupJob job)
     {
-        job.State.Status = RealTimeState.RealTimeStatus.OnGoing;
-        job.State.IsActive = true;
-        job.State.Progression = 0;
-        
         var cryptedExtensions = SettingsService.GetInstance.Settings.CryptExtensions;
-        
         var result = (File.Exists(job.SourcePath), Directory.Exists(job.SourcePath)) switch
         {
             (true, false) => ProcessFile(job, cryptedExtensions),
             (false, true) => ProcessDirectory(job,cryptedExtensions),
             _ => throw new FileNotFoundException(Errors.ProcessingError)
         };
-        
-        job.State.Status = result ? RealTimeState.RealTimeStatus.Done : RealTimeState.RealTimeStatus.Error;
-        job.State.Reset();
-        
+
         return result;
     }
 
