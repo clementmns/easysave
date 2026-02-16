@@ -123,7 +123,7 @@ public partial class MainViewModel : ViewModelBase, IProgressionObserver
     {
         var dialog = new Window
         {
-            Title = Messages.settings,
+            Title = Messages.settings, 
             Content = new DialogSettings(),
             Width = 500,
             Height = 430,

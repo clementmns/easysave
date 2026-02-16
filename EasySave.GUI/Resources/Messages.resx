@@ -18,9 +18,6 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="test" xml:space="preserve">
-        <value>test</value>
-    </data>
     <data name="SelectSourcePathFolder" xml:space="preserve">
         <value>Select source path folder</value>
     </data>
@@ -50,9 +47,6 @@
     </data>
     <data name="state" xml:space="preserve">
         <value>State</value>
-    </data>
-    <data name="settings" xml:space="preserve">
-        <value>Settings</value>
     </data>
     <data name="customizeSettings" xml:space="preserve">
         <value>Customize app settings</value>
@@ -121,7 +115,7 @@
         <value>Choose a file or folder to back up.</value>
     </data>
     <data name="selectSource" xml:space="preserve">
-        <value />
+        <value>Select source</value>
     </data>
     <data name="selectTheSource" xml:space="preserve">
         <value>Select source</value>
@@ -154,13 +148,13 @@
         <value>No backup work</value>
     </data>
     <data name="addInstruction" xml:space="preserve">
-        <value>To get started, click the ‘+’ button above to add a backup job.</value>
+        <value>To get started, click the '+' button above to add a backup job.</value>
     </data>
     <data name="ExecuteJobsFailed" xml:space="preserve">
-        <value />
+        <value>The execution has failed</value>
     </data>
     <data name="ExecuteJobsSuccess" xml:space="preserve">
-        <value />
+        <value>The execution was successful</value>
     </data>
     <data name="restartApp" xml:space="preserve">
         <value>Restart the application</value>
@@ -206,5 +200,23 @@
     </data>
     <data name="createJobTitle" xml:space="preserve">
         <value>Create New job</value>
+    </data>
+    <data name="cryptedExtensions" xml:space="preserve">
+        <value>Crypted Extensions</value>
+    </data>
+    <data name="chooseExt" xml:space="preserve">
+        <value>Choose extensions to be crypted :</value>
+    </data>
+    <data name="remove" xml:space="preserve">
+        <value>Remove</value>
+    </data>
+    <data name="easysave" xml:space="preserve">
+        <value>EasySave Backup</value>
+    </data>
+    <data name="easysaveSlogan" xml:space="preserve">
+        <value>Secure your backups</value>
+    </data>
+    <data name="settings" xml:space="preserve">
+        <value>Settings</value>
     </data>
 </root>

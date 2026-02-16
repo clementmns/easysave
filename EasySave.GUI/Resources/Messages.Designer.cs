@@ -45,12 +45,6 @@ namespace EasySave.GUI.Resources {
             }
         }
         
-        public static string test {
-            get {
-                return ResourceManager.GetString("test", resourceCulture);
-            }
-        }
-        
         public static string SelectSourcePathFolder {
             get {
                 return ResourceManager.GetString("SelectSourcePathFolder", resourceCulture);
@@ -108,12 +102,6 @@ namespace EasySave.GUI.Resources {
         public static string state {
             get {
                 return ResourceManager.GetString("state", resourceCulture);
-            }
-        }
-        
-        public static string settings {
-            get {
-                return ResourceManager.GetString("settings", resourceCulture);
             }
         }
         
@@ -420,6 +408,42 @@ namespace EasySave.GUI.Resources {
         public static string createJobTitle {
             get {
                 return ResourceManager.GetString("createJobTitle", resourceCulture);
+            }
+        }
+        
+        public static string cryptedExtensions {
+            get {
+                return ResourceManager.GetString("cryptedExtensions", resourceCulture);
+            }
+        }
+        
+        public static string chooseExt {
+            get {
+                return ResourceManager.GetString("chooseExt", resourceCulture);
+            }
+        }
+        
+        public static string remove {
+            get {
+                return ResourceManager.GetString("remove", resourceCulture);
+            }
+        }
+        
+        public static string easysave {
+            get {
+                return ResourceManager.GetString("easysave", resourceCulture);
+            }
+        }
+        
+        public static string easysaveSlogan {
+            get {
+                return ResourceManager.GetString("easysaveSlogan", resourceCulture);
+            }
+        }
+        
+        public static string settings {
+            get {
+                return ResourceManager.GetString("settings", resourceCulture);
             }
         }
     }

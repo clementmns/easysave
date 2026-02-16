@@ -39,22 +39,10 @@ public static class Program
             };
 
             var fileManager = new FileManager(sourcePath, destinationPath, key, algorithm, isEncryption);
-            var elapsedTime = fileManager.TransformFile();
-
-            if (elapsedTime >= 0)
-            {
-                Console.WriteLine($"SUCCESS:{elapsedTime}");
-                Environment.Exit(0);
-            }
-            else
-            {
-                Console.WriteLine("ERROR:Operation failed");
-                Environment.Exit(-2);
-            }
+            fileManager.TransformFile();
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            Console.WriteLine($"ERROR:{e.Message}");
             Environment.Exit(-99);
         }
     }

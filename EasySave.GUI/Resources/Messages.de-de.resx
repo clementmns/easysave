@@ -104,9 +104,6 @@
     <data name="selectTheSource" xml:space="preserve">
         <value>Quelle auswählen</value>
     </data>
-    <data name="settings" xml:space="preserve">
-        <value>Einstellungen</value>
-    </data>
     <data name="destination" xml:space="preserve">
         <value>Bestimmungsort</value>
     </data>
@@ -132,7 +129,7 @@
         <value>Keine Sicherungsarbeiten</value>
     </data>
     <data name="addInstruction" xml:space="preserve">
-        <value>Klicken Sie zunächst oben auf die Schaltfläche „+“, um einen Sicherungsauftrag hinzuzufügen.</value>
+        <value>Klicken Sie zunächst oben auf die Schaltfläche '+', um einen Sicherungsauftrag hinzuzufügen.</value>
     </data>
     <data name="executeAll" xml:space="preserve">
         <value>Alles ausführen</value>
@@ -169,5 +166,35 @@
     </data>
     <data name="createJobTitle" xml:space="preserve">
         <value>Neuen Auftrag erstellen</value>
+    </data>
+    <data name="ExecuteJobsFailed" xml:space="preserve">
+        <value>Die Ausführung ist fehlgeschlagen</value>
+    </data>
+    <data name="ExecuteJobsSuccess" xml:space="preserve">
+        <value>Die Ausführung war erfolgreich</value>
+    </data>
+    <data name="SelectSourcePathFile" xml:space="preserve">
+        <value>Quelldateipfad auswählen</value>
+    </data>
+    <data name="SelectSourcePathFolder" xml:space="preserve">
+        <value>Quellordnerpfad auswählen</value>
+    </data>
+    <data name="chooseExt" xml:space="preserve">
+        <value>Wählen Sie zu verschlüsselnde Erweiterungen:</value>
+    </data>
+    <data name="cryptedExtensions" xml:space="preserve">
+        <value>Verschlüsselte Erweiterungen</value>
+    </data>
+    <data name="remove" xml:space="preserve">
+        <value>Entfernen</value>
+    </data>
+    <data name="selectSource" xml:space="preserve">
+        <value>Quelle auswählen</value>
+    </data>
+    <data name="easysave" xml:space="preserve">
+        <value>EasySave</value>
+    </data>
+    <data name="easysaveSlogan" xml:space="preserve">
+        <value>Sichern Sie Ihre Backups</value>
     </data>
 </root>

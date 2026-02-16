@@ -146,7 +146,8 @@ namespace EasySave.Core.Service
             {
                 Language = CultureInfo.InstalledUICulture.Name,
                 Version = GetAppVersion(),
-                LogFormat = LogFormat.Json
+                LogFormat = LogFormat.Json,
+                CryptExtensions = []
             };
             SaveSettings(defaultSettings);
             return defaultSettings;

@@ -104,9 +104,6 @@
     <data name="selectTheSource" xml:space="preserve">
         <value>Seleccionar fuente </value>
     </data>
-    <data name="settings" xml:space="preserve">
-        <value>Configuración</value>
-    </data>
     <data name="destination" xml:space="preserve">
         <value>Destino</value>
     </data>
@@ -132,7 +129,7 @@
         <value>Sin trabajo de copia de seguridad</value>
     </data>
     <data name="addInstruction" xml:space="preserve">
-        <value>Para empezar, haz clic en el botón «+» de arriba para añadir una tarea de copia de seguridad.</value>
+        <value>Para empezar, haz clic en el botón '+' de arriba para añadir una tarea de copia de seguridad.</value>
     </data>
     <data name="executeAll" xml:space="preserve">
         <value>Ejecutar todo</value>
@@ -169,5 +166,35 @@
     </data>
     <data name="createJobTitle" xml:space="preserve">
         <value>Crear nuevo trabajo</value>
+    </data>
+    <data name="ExecuteJobsFailed" xml:space="preserve">
+        <value>La ejecución ha fallado</value>
+    </data>
+    <data name="ExecuteJobsSuccess" xml:space="preserve">
+        <value>La ejecución ha tenido éxito</value>
+    </data>
+    <data name="SelectSourcePathFile" xml:space="preserve">
+        <value>Seleccionar el archivo de la ruta de origen</value>
+    </data>
+    <data name="SelectSourcePathFolder" xml:space="preserve">
+        <value>Seleccionar la carpeta de la ruta de origen</value>
+    </data>
+    <data name="chooseExt" xml:space="preserve">
+        <value>Elija las extensiones a cifrar:</value>
+    </data>
+    <data name="cryptedExtensions" xml:space="preserve">
+        <value>Extensiones cifradas</value>
+    </data>
+    <data name="remove" xml:space="preserve">
+        <value>Eliminar</value>
+    </data>
+    <data name="selectSource" xml:space="preserve">
+        <value>Seleccionar fuente</value>
+    </data>
+    <data name="easysave" xml:space="preserve">
+        <value>EasySave</value>
+    </data>
+    <data name="easysaveSlogan" xml:space="preserve">
+        <value>Asegura tus copias de seguridad</value>
     </data>
 </root>
