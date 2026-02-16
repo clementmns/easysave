@@ -56,9 +56,6 @@
     <data name="customizeSettings" xml:space="preserve">
         <value>Personnaliser les paramètres de l'application</value>
     </data>
-    <data name="settings" xml:space="preserve">
-        <value>Paramètres</value>
-    </data>
     <data name="selectLanguage" xml:space="preserve">
         <value>Sélectionner la langue</value>
     </data>

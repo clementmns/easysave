@@ -12,6 +12,7 @@ public class FullBackupStrategy : IBackupStrategy
 {
     public bool Execute(BackupJob job)
     {
+        job.State.Status = RealTimeState.RealTimeStatus.OnGoing;
         job.State.IsActive = true;
         job.State.Progression = 0;
         
@@ -24,6 +25,7 @@ public class FullBackupStrategy : IBackupStrategy
             _ => throw new FileNotFoundException(Errors.ProcessingError)
         };
         
+        job.State.Status = result ? RealTimeState.RealTimeStatus.Done : RealTimeState.RealTimeStatus.Error;
         job.State.Reset();
         
         return result;

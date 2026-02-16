@@ -12,6 +12,7 @@ public class DifferentialBackupStrategy : IBackupStrategy
 {
     public bool Execute(BackupJob job)
     {
+        job.State.Status = RealTimeState.RealTimeStatus.OnGoing;
         job.State.IsActive = true;
         job.State.Progression = 0;
 
@@ -24,34 +25,35 @@ public class DifferentialBackupStrategy : IBackupStrategy
             _ => throw new FileNotFoundException(Errors.ProcessingError)
         };
 
+        job.State.Status = result ? RealTimeState.RealTimeStatus.Done : RealTimeState.RealTimeStatus.Error;
         job.State.Reset();
-        
+
         return result;
     }
     
-private static bool ProcessFile(BackupJob job, List<string> cryptExt)
-{
-    try
+    private static bool ProcessFile(BackupJob job, List<string> cryptExt)
     {
-        var fileInfo = new FileInfo(job.SourcePath);
-        
-        var sourcePath = fileInfo.FullName;
-        var sourceRoot = Path.GetDirectoryName(sourcePath);
-        var relativePath = string.IsNullOrWhiteSpace(sourceRoot) ? fileInfo.Name : Path.GetRelativePath(sourceRoot, sourcePath);
-        var destinationFilePath = Path.Combine(job.DestinationPath, relativePath);
-
-        var shouldCopy = !File.Exists(destinationFilePath) || fileInfo.LastWriteTime > File.GetLastWriteTime(destinationFilePath);
-        if (!shouldCopy)
+        try
         {
-            job.State.Progression = 100;
-            return true;
-        }
+            var fileInfo = new FileInfo(job.SourcePath);
+        
+            var sourcePath = fileInfo.FullName;
+            var sourceRoot = Path.GetDirectoryName(sourcePath);
+            var relativePath = string.IsNullOrWhiteSpace(sourceRoot) ? fileInfo.Name : Path.GetRelativePath(sourceRoot, sourcePath);
+            var destinationFilePath = Path.Combine(job.DestinationPath, relativePath);
 
-        job.State.TotalFiles = 1;
-        job.State.RemainingFiles = 1;
-        job.State.FileSize = fileInfo.Length;
-        job.State.RemainingFilesSize = fileInfo.Length;
-        job.State.Progression = 0;
+            var shouldCopy = !File.Exists(destinationFilePath) || fileInfo.LastWriteTime > File.GetLastWriteTime(destinationFilePath);
+            if (!shouldCopy)
+            {
+                job.State.Progression = 100;
+                return true;
+            }
+
+            job.State.TotalFiles = 1;
+            job.State.RemainingFiles = 1;
+            job.State.FileSize = fileInfo.Length;
+            job.State.RemainingFilesSize = fileInfo.Length;
+            job.State.Progression = 0;
 
         if (cryptExt.Contains(fileInfo.Extension))
         {
@@ -75,14 +77,14 @@ private static bool ProcessFile(BackupJob job, List<string> cryptExt)
             Logger.Instance.Write(new LogEntry($"File Copied : {job.DestinationPath}", job,false, resultCopy.Item2, null));
         }
         
-        job.State.Progression = 100;
-        return true;
+            job.State.Progression = 100;
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
     }
-    catch (Exception)
-    {
-        return false;
-    }
-}
 
     private static bool ProcessDirectory(BackupJob job, List<string> cryptExt)
     {

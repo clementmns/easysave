@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:EasySave.GUI.ViewModels;assembly=EasySave.GUI"
-             xmlns:ressources="clr-namespace:EasySave.GUI.Resources"
+             xmlns:resources="clr-namespace:EasySave.GUI.Resources"
              x:DataType="vm:SettingsDialogViewModel"
              mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="500"
              x:Class="EasySave.GUI.Views.DialogSettings"
@@ -15,21 +15,21 @@
         <ScrollViewer>
             <StackPanel Spacing="20">
                 <StackPanel Spacing="4">
-                    <TextBlock Text="{x:Static ressources:Messages.settings}" FontSize="20" FontWeight="SemiBold"
+                    <TextBlock Text="Settings" FontSize="20" FontWeight="SemiBold"
                                Foreground="{StaticResource TextPrimaryBrush}" />
-                    <TextBlock Text="{x:Static ressources:Messages.customizeSettings}"
+                    <TextBlock Text="{x:Static resources:Messages.customizeSettings}"
                                Foreground="{StaticResource TextSecondaryBrush}" />
                 </StackPanel>
 
                 <Border Padding="16" CornerRadius="8" Background="{StaticResource BackgroundBrush}"
                         BorderBrush="{StaticResource BorderSoftBrush}" BorderThickness="1">
                     <StackPanel Spacing="10">
-                        <TextBlock Text="{x:Static ressources:Messages.Language}" FontWeight="SemiBold"
+                        <TextBlock Text="{x:Static resources:Messages.Language}" FontWeight="SemiBold"
                                    Foreground="{StaticResource TextPrimaryBrush}" />
-                        <TextBlock Text="{x:Static ressources:Messages.languageText}"
+                        <TextBlock Text="{x:Static resources:Messages.languageText}"
                                    Foreground="{StaticResource TextSecondaryBrush}" />
                         <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding SelectedLanguageDisplay}"
-                                  PlaceholderText="{x:Static ressources:Messages.selectLanguage}"
+                                  PlaceholderText="{x:Static resources:Messages.selectLanguage}"
                                   HorizontalAlignment="Stretch" />
                     </StackPanel>
                 </Border>
@@ -37,9 +37,9 @@
                 <Border Padding="16" CornerRadius="8" Background="{StaticResource BackgroundBrush}"
                         BorderBrush="{StaticResource BorderSoftBrush}" BorderThickness="1">
                     <StackPanel Spacing="10">
-                        <TextBlock Text="{x:Static ressources:Messages.logFormat}" FontWeight="SemiBold"
+                        <TextBlock Text="{x:Static resources:Messages.logFormat}" FontWeight="SemiBold"
                                    Foreground="{StaticResource TextPrimaryBrush}" />
-                        <TextBlock Text="{x:Static ressources:Messages.chooseBackupText}"
+                        <TextBlock Text="{x:Static resources:Messages.chooseBackupText}"
                                    Foreground="{StaticResource TextSecondaryBrush}" />
                         <ComboBox ItemsSource="{Binding LogFormats}" SelectedItem="{Binding SelectedLogFormat}"
                                   PlaceholderText="Select log format" HorizontalAlignment="Stretch" />
@@ -49,9 +49,9 @@
                 <Border Padding="16" CornerRadius="8" Background="{StaticResource BackgroundBrush}"
                         BorderBrush="{StaticResource BorderSoftBrush}" BorderThickness="1">
                     <StackPanel Spacing="10">
-                        <TextBlock Text="{x:Static ressources:Messages.cryptedExtensions}" FontWeight="SemiBold"
+                        <TextBlock Text="{x:Static resources:Messages.cryptedExtensions}" FontWeight="SemiBold"
                                    Foreground="{StaticResource TextPrimaryBrush}" />
-                        <TextBlock Text="{x:Static ressources:Messages.chooseExt}"
+                        <TextBlock Text="{x:Static resources:Messages.chooseExt}"
                                    Foreground="{StaticResource TextSecondaryBrush}" />
                         
                         <!-- new extension -->
@@ -60,7 +60,7 @@
                                      Watermark="e.g., .pdf or pdf"
                                      Width="200" 
                                      VerticalContentAlignment="Center" />
-                            <Button Content="{x:Static ressources:Messages.add}" 
+                            <Button Content="{x:Static resources:Messages.add}" 
                                     Command="{Binding AddExtensionCommand}"
                                     Classes="primary" />
                         </StackPanel>
@@ -86,8 +86,8 @@
                                                                VerticalAlignment="Center"
                                                                Foreground="{StaticResource TextPrimaryBrush}" />
                                                     <Button Grid.Column="1" 
-                                                            Content="{x:Static ressources:Messages.remove}"
-                                                            Command="{Binding $parent[UserControl].DataContext.RemoveExtensionCommand}"
+                                                            Content="{x:Static resources:Messages.remove}"
+                                                            Command="{Binding ((vm:SettingsDialogViewModel)DataContext).RemoveExtensionCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                                             CommandParameter="{Binding .}"
                                                             Classes="ghost" 
                                                             Foreground="{StaticResource ErrorBrush}"
@@ -103,9 +103,9 @@
                 </Border>
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10" Margin="0,4,0,0">
-                    <Button Content="{x:Static ressources:Messages.cancel}" Command="{Binding CancelCommand}"
+                    <Button Content="{x:Static resources:Messages.cancel}" Command="{Binding CancelCommand}"
                             Classes="ghost" />
-                    <Button Content="{x:Static ressources:Messages.save}" Command="{Binding SaveCommand}"
+                    <Button Content="{x:Static resources:Messages.save}" Command="{Binding SaveCommand}"
                             Classes="primary" />
                 </StackPanel>
             </StackPanel>

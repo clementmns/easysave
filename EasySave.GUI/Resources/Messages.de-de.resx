@@ -104,9 +104,6 @@
     <data name="selectTheSource" xml:space="preserve">
         <value>Quelle auswählen</value>
     </data>
-    <data name="settings" xml:space="preserve">
-        <value>Einstellungen</value>
-    </data>
     <data name="destination" xml:space="preserve">
         <value>Bestimmungsort</value>
     </data>
