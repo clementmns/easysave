@@ -58,6 +58,7 @@ public partial class MainViewModel : ViewModelBase, IProgressionObserver
         if (SelectedJobs.Contains(job)) SelectedJobs.Remove(job);
         else SelectedJobs.Add(job);
         OnPropertyChanged(nameof(AreAllJobsSelected));
+        OnPropertyChanged(nameof(SelectedJobs));
     }
     
     [RelayCommand]
@@ -83,6 +84,8 @@ public partial class MainViewModel : ViewModelBase, IProgressionObserver
         if (SelectedJobs.Count == 0) return;
         foreach (var job in SelectedJobs.ToList()) DeleteJob(job);
         SelectedJobs.Clear();
+        OnPropertyChanged(nameof(AreAllJobsSelected));
+        OnPropertyChanged(nameof(SelectedJobs));
     }
     
     [RelayCommand]
@@ -148,14 +151,14 @@ public partial class MainViewModel : ViewModelBase, IProgressionObserver
     public void UpdateJob(BackupJob job)
     {
         _jobService.UpdateJob(job);
-        OnPropertyChanged(nameof(Jobs));
-        OnPropertyChanged(nameof(SelectedJobs));
+        // Job already implements INotifyPropertyChanged = no need to refresh entire collections
     }
 
     public void OnProgressionUpdated(int progression)
     {
-        OnPropertyChanged(nameof(Jobs));
-        OnPropertyChanged(nameof(SelectedJobs));
+        // no need to refresh the entire collections too
+        // BackupJob and RealTimeState already implement INotifyPropertyChanged
+        // the UI will automatically update when individual job properties change
     }
 
     /// <summary>
@@ -180,12 +183,11 @@ public partial class MainViewModel : ViewModelBase, IProgressionObserver
                 if (part.Contains('-'))
                 {
                     var range = part.Split('-');
-                    if (range.Length == 2 && int.TryParse(range[0], out var start) && int.TryParse(range[1], out var end))
+                    if (range.Length != 2 || !int.TryParse(range[0], out var start) ||
+                        !int.TryParse(range[1], out var end)) continue;
+                    for (var i = start; i <= end; i++)
                     {
-                        for (var i = start; i <= end; i++)
-                        {
-                            if (i > 0) requestedIndices.Add(i);
-                        }
+                        if (i > 0) requestedIndices.Add(i);
                     }
                 }
                 else if (int.TryParse(part, out var jobNumber) && jobNumber > 0)
