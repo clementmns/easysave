@@ -29,7 +29,7 @@ public class BackupJobService : IRealTimeStateObserver
         SubscribeToJobStates();
     }
     
-    public bool ExecuteJob(BackupJob job)
+    public async Task<bool> ExecuteJobAsync(BackupJob job, IProgressionObserver? progressionObserver = null)
     {
         Logger.Instance.Write(new LogEntry("Going to execute job", job));
         try
@@ -39,11 +39,17 @@ public class BackupJobService : IRealTimeStateObserver
             sw.Start();
             
             job.State.AttachStateObserver(this);
+            job.State.IsActive = true;
+            job.State.Progression = 0;
+            job.State.Status = RealTimeState.RealTimeStatus.OnGoing;
+            
+            if (progressionObserver != null) job.State.AttachProgressionObserver(progressionObserver);
             var executor = new BackupExecutor();
-            if (!executor.ExecuteJob(job))
-            {
-                throw new Exception("Failed to execute job");
-            }
+            var success = await executor.ExecuteJobAsync(job);
+            if (!success) throw new Exception("Failed to execute job");
+            
+            job.State.Status = RealTimeState.RealTimeStatus.Done;
+            
             sw.Stop();
             
             Logger.Instance.Write(new LogEntry("Job executed", job, false, sw.ElapsedMilliseconds));
@@ -52,8 +58,15 @@ public class BackupJobService : IRealTimeStateObserver
         }
         catch (Exception e)
         {
+            job.State.Status = RealTimeState.RealTimeStatus.Error;
             Logger.Instance.Write(new LogEntry($"Failed to execute job: {e.Message}", job, true));
             return false;
+        }
+        finally
+        {
+            job.State.Reset();
+            job.State.DetachStateObserver(this);
+            if (progressionObserver != null) job.State.DetachProgressionObserver(progressionObserver);
         }
     }
 
@@ -64,7 +77,6 @@ public class BackupJobService : IRealTimeStateObserver
         {
             Jobs?.Add(job);
             job.State.AttachStateObserver(this);
-            SortJobsById();
             if (Jobs != null) SaveJobs(Jobs);
             Logger.Instance.Write(new LogEntry("Job created", job));
             return true;
@@ -83,7 +95,6 @@ public class BackupJobService : IRealTimeStateObserver
         {
             RemoveStateSubscription(job);
             Jobs?.Remove(job);
-            SortJobsById();
             if (Jobs != null) SaveJobs(Jobs);
             Logger.Instance.Write(new LogEntry("Job deleted", job));
             return true;
@@ -100,16 +111,22 @@ public class BackupJobService : IRealTimeStateObserver
         Logger.Instance.Write(new LogEntry("Going to update job", job));
         try
         {
-            var oldJob = Jobs?.FirstOrDefault(j => j.Id == job.Id);
-            if (oldJob != null)
-            {
-                RemoveStateSubscription(oldJob);
-                Jobs?.Remove(oldJob);
-            }
+            if (Jobs == null) return;
 
-            Jobs?.Add(job);
-            job.State.AttachStateObserver(this);
-            SortJobsById();
+            var existingJob = Jobs.FirstOrDefault(j => j.Id == job.Id);
+            if (existingJob == null)
+            {
+                job.State.AttachStateObserver(this);
+                Jobs.Add(job);
+            }
+            else
+            {
+                existingJob.Name = job.Name;
+                existingJob.SourcePath = job.SourcePath;
+                existingJob.DestinationPath = job.DestinationPath;
+                existingJob.Type = job.Type;
+                existingJob.State = job.State;
+            }
             if (Jobs != null) SaveJobs(Jobs);
             Logger.Instance.Write(new LogEntry("Job updated", job));
         }
@@ -149,17 +166,8 @@ public class BackupJobService : IRealTimeStateObserver
         job.State.DetachStateObserver(this);
     }
 
-    private void SortJobsById()
-    {
-        if (Jobs == null) return;
-        var sorted = Jobs.OrderBy(j => j.Id).ToList();
-        Jobs.Clear();
-        foreach (var job in sorted) Jobs.Add(job);
-    }
-
     public void OnStateUpdated(RealTimeState state)
     {
-        SortJobsById();
         if (Jobs != null) SaveJobs(Jobs);
     }
 }

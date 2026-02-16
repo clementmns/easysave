@@ -1,14 +1,26 @@
 using EasySave.Core.Model;
 using EasySave.Core.Model.BackupStrategies;
+using EasyLog;
+using EasySave.Core.Resources;
 
 namespace EasySave.Core.Service;
 
 public class BackupExecutor
 {
-    public bool ExecuteJob(BackupJob job)
+    public async Task<bool> ExecuteJobAsync(BackupJob job)
     {
-        var strategy = GetStrategy(job);
-        return strategy.Execute(job);
+        return await Task.Run(() =>
+        {
+            // Check if business software is running
+            if (ProcessMonitorService.IsBusinessSoftwareRunning)
+            {
+                Logger.Instance.Write(new LogEntry(Errors.BackupBlocked, job, isError: true));
+                return false;
+            }
+            
+            var strategy = GetStrategy(job);
+            return strategy.Execute(job);
+        });
     }
 
     private static IBackupStrategy GetStrategy(BackupJob job)

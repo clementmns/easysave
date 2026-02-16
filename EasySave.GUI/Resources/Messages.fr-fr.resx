@@ -56,9 +56,6 @@
     <data name="customizeSettings" xml:space="preserve">
         <value>Personnaliser les paramètres de l'application</value>
     </data>
-    <data name="settings" xml:space="preserve">
-        <value>Paramètres</value>
-    </data>
     <data name="selectLanguage" xml:space="preserve">
         <value>Sélectionner la langue</value>
     </data>
@@ -121,5 +118,116 @@
     </data>
     <data name="browse" xml:space="preserve">
         <value>Parcourir</value>
+    </data>
+    <data name="noJobSelected" xml:space="preserve">
+        <value>Aucun job sélectionné</value>
+    </data>
+    <data name="selectJobText" xml:space="preserve">
+        <value>Sélectionnez un job dans la liste ci-dessus pour afficher ses détails</value>
+    </data>
+    <data name="noJobs" xml:space="preserve">
+        <value>Aucun travail de sauvegarde</value>
+    </data>
+    <data name="addInstruction" xml:space="preserve">
+        <value>Pour commencer, cliquez sur le bouton '+' ci-dessus pour ajouter un travail de sauvegarde</value>
+    </data>
+    <data name="executeAll" xml:space="preserve">
+        <value>Tout exécuter</value>
+    </data>
+    <data name="restartApp" xml:space="preserve">
+        <value>Redémarrer l'application</value>
+    </data>
+    <data name="restartAppText" xml:space="preserve">
+        <value>Pour que la modification soit prise en compte, cliquez sur le bouton afin de redémarrer automatiquement l'application.</value>
+    </data>
+    <data name="restart" xml:space="preserve">
+        <value>Redémarrer</value>
+    </data>
+    <data name="progression" xml:space="preserve">
+        <value>Progression</value>
+    </data>
+    <data name="saveDetails" xml:space="preserve">
+        <value>Détails de la sauvegarde</value>
+    </data>
+    <data name="sourceFolder" xml:space="preserve">
+        <value>Dossier source</value>
+    </data>
+    <data name="destinationFolder" xml:space="preserve">
+        <value>Dossier de destination</value>
+    </data>
+    <data name="edit" xml:space="preserve">
+        <value>Modifier</value>
+    </data>
+    <data name="editJob" xml:space="preserve">
+        <value>Modifier le travail</value>
+    </data>
+    <data name="editJobText" xml:space="preserve">
+        <value>Modifiez les informations ci-dessous</value>
+    </data>
+    <data name="createJobTitle" xml:space="preserve">
+        <value>Créer un nouveau job</value>
+    </data>
+    <data name="ExecuteJobsFailed" xml:space="preserve">
+        <value>L'exécution a échouée</value>
+    </data>
+    <data name="ExecuteJobsSuccess" xml:space="preserve">
+        <value>Exécution réussie</value>
+    </data>
+    <data name="SelectSourcePathFile" xml:space="preserve">
+        <value>Sélectionner le fichier source</value>
+    </data>
+    <data name="chooseExt" xml:space="preserve">
+        <value>Choisissez les extensions à chiffrer :</value>
+    </data>
+    <data name="cryptedExtensions" xml:space="preserve">
+        <value>Extensions chiffrées</value>
+    </data>
+    <data name="remove" xml:space="preserve">
+        <value>Supprimer</value>
+    </data>
+    <data name="selectSource" xml:space="preserve">
+        <value>Choisir la source</value>
+    </data>
+    <data name="easysave" xml:space="preserve">
+        <value>EasySave</value>
+    </data>
+    <data name="easysaveSlogan" xml:space="preserve">
+        <value>Sécurisez vos sauvegardes</value>
+    </data>
+    <data name="settings" xml:space="preserve">
+        <value>Paramètres</value>
+    </data>
+    <data name="StatusDone" xml:space="preserve">
+        <value>Fini</value>
+    </data>
+    <data name="StatusError" xml:space="preserve">
+        <value>Erreur</value>
+    </data>
+    <data name="StatusOnGoing" xml:space="preserve">
+        <value>En cours</value>
+    </data>
+    <data name="StatusReady" xml:space="preserve">
+        <value>Prêt</value>
+    </data>
+    <data name="Software" xml:space="preserve">
+        <value>Définissez le nom du processus du logiciel métier à surveiller (par exemple, 'calc' pour la calculatrice).</value>
+    </data>
+    <data name="SoftwareTitle" xml:space="preserve">
+        <value>Titre du logiciel</value>
+    </data>
+    <data name="SoftwareProcessName" xml:space="preserve">
+        <value>Entrer le nom du processus</value>
+    </data>
+    <data name="BackupBlocked" xml:space="preserve">
+        <value>Sauvegarde bloquée pour la tâche</value>
+    </data>
+    <data name="BusinessSoftwareDetected" xml:space="preserve">
+        <value>Logiciel métier détecté. L'exécution de la sauvegarde est bloquée pendant son fonctionnement.</value>
+    </data>
+    <data name="UnknownBackupType" xml:space="preserve">
+        <value>Type de sauvegarde non pris en charge</value>
+    </data>
+    <data name="SelectSourcePathFolder" xml:space="preserve">
+        <value>Sélectionner le dossier source</value>
     </data>
 </root>

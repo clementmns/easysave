@@ -40,7 +40,7 @@ public class BackupViewModel
         job.State.AttachStateObserver(_jobService);
         if (progressionObserver != null) job.State.AttachProgressionObserver(progressionObserver);
         
-        var result = _jobService.ExecuteJob(job);
+        var result = _jobService.ExecuteJobAsync(job).GetAwaiter().GetResult();
         
         // detach from observers to avoid memory leaks
         job.State.DetachStateObserver(_jobService);

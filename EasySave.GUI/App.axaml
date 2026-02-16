@@ -12,10 +12,32 @@
     <Application.Styles>
         <FluentTheme>
             <FluentTheme.Palettes>
-                <ColorPaletteResources x:Key="Light" Accent="#ff8961cc" AltHigh="White" AltLow="White" AltMedium="White" AltMediumHigh="White" AltMediumLow="White" BaseHigh="Black" BaseLow="#ffeeceff" BaseMedium="#ffa987bc" BaseMediumHigh="#ff7b5890" BaseMediumLow="#ff9270a6" ChromeAltLow="#ff7b5890" ChromeBlackHigh="Black" ChromeBlackLow="#ffeeceff" ChromeBlackMedium="#ff7b5890" ChromeBlackMediumLow="#ffa987bc" ChromeDisabledHigh="#ffeeceff" ChromeDisabledLow="#ffa987bc" ChromeGray="#ff9270a6" ChromeHigh="#ffeeceff" ChromeLow="#fffeeaff" ChromeMedium="#fffbe4ff" ChromeMediumLow="#fffeeaff" ChromeWhite="White" ListLow="#fffbe4ff" ListMedium="#ffeeceff" RegionColor="#fffef6ff" />
-                <ColorPaletteResources x:Key="Dark" Accent="#ff8961cc" AltHigh="Black" AltLow="Black" AltMedium="Black" AltMediumHigh="Black" AltMediumLow="Black" BaseHigh="White" BaseLow="#ff64576b" BaseMedium="#ffb6aabc" BaseMediumHigh="#ffcbbfd0" BaseMediumLow="#ff8d8193" ChromeAltLow="#ffcbbfd0" ChromeBlackHigh="Black" ChromeBlackLow="#ffcbbfd0" ChromeBlackMedium="Black" ChromeBlackMediumLow="Black" ChromeDisabledHigh="#ff64576b" ChromeDisabledLow="#ffb6aabc" ChromeGray="#ffa295a8" ChromeHigh="#ffa295a8" ChromeLow="#ff332041" ChromeMedium="#ff3f2e4b" ChromeMediumLow="#ff584960" ChromeWhite="White" ListLow="#ff3f2e4b" ListMedium="#ff64576b" RegionColor="#ff262738" />
+                <ColorPaletteResources x:Key="Light" Accent="#ff6366f1" AltHigh="White" AltLow="White"
+                                       AltMedium="White" AltMediumHigh="White" AltMediumLow="White" BaseHigh="Black"
+                                       BaseLow="#fff3f4f6" BaseMedium="#ffa5a8b9" BaseMediumHigh="#ff717591"
+                                       BaseMediumLow="#ff8b8ea5" ChromeAltLow="#ff717591" ChromeBlackHigh="Black"
+                                       ChromeBlackLow="#fff3f4f6" ChromeBlackMedium="#ff717591"
+                                       ChromeBlackMediumLow="#ffa5a8b9" ChromeDisabledHigh="#fff3f4f6"
+                                       ChromeDisabledLow="#ffa5a8b9" ChromeGray="#ff8b8ea5" ChromeHigh="#fff3f4f6"
+                                       ChromeLow="#fffafaff" ChromeMedium="#fff9f9fd" ChromeMediumLow="#fffafaff"
+                                       ChromeWhite="White" ListLow="#fff9f9fd" ListMedium="#fff3f4f6"
+                                       RegionColor="White" />
+                <ColorPaletteResources x:Key="Dark" Accent="#ff6366f1" AltHigh="Black" AltLow="Black" AltMedium="Black"
+                                       AltMediumHigh="Black" AltMediumLow="Black" BaseHigh="White" BaseLow="#ff767676"
+                                       BaseMedium="#ffbbbbbb" BaseMediumHigh="#ffcccccc" BaseMediumLow="#ff989898"
+                                       ChromeAltLow="#ffcccccc" ChromeBlackHigh="Black" ChromeBlackLow="#ffcccccc"
+                                       ChromeBlackMedium="Black" ChromeBlackMediumLow="Black"
+                                       ChromeDisabledHigh="#ff767676" ChromeDisabledLow="#ffbbbbbb"
+                                       ChromeGray="#ffaaaaaa" ChromeHigh="#ffaaaaaa" ChromeLow="#ff353535"
+                                       ChromeMedium="#ff454545" ChromeMediumLow="#ff666666" ChromeWhite="White"
+                                       ListLow="#ff454545" ListMedium="#ff767676" RegionColor="Black" />
             </FluentTheme.Palettes>
         </FluentTheme>
+        <Style Selector="Window">
+            <Setter Property="Icon" Value="avares://EasySave.GUI/Assets/ico/Logo.ico" />
+        </Style>
+
         <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
+        <StyleInclude Source="avares://EasySave.GUI/Resources/Styles.axaml" />
     </Application.Styles>
 </Application>

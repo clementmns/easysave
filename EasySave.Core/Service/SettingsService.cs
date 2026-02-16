@@ -90,6 +90,26 @@ namespace EasySave.Core.Service
         }
         
         /// <summary>
+        /// Set the business software process name to monitor
+        /// </summary>
+        /// <param name="processName">Process name (e.g., "calc" for calculator)</param>
+        public void SetBusinessSoftwareProcessName(string processName)
+        {
+            _settings.BusinessSoftwareProcessName = processName;
+            SaveSettings(_settings);
+        }
+        
+        /// <summary>
+        /// Set extensions that will be encrypted
+        /// </summary>
+        /// <param name="extensions">List of extensions</param>
+        public void SetCryptedExtensions(List<string> extensions)
+        {
+            _settings.CryptExtensions = extensions;
+            SaveSettings(_settings);
+        }
+        
+        /// <summary>
         /// Load or create the settings file
         /// </summary>
         /// <returns></returns>
@@ -136,7 +156,8 @@ namespace EasySave.Core.Service
             {
                 Language = CultureInfo.InstalledUICulture.Name,
                 Version = GetAppVersion(),
-                LogFormat = LogFormat.Json
+                LogFormat = LogFormat.Json,
+                CryptExtensions = []
             };
             SaveSettings(defaultSettings);
             return defaultSettings;

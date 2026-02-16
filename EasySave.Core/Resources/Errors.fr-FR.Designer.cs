@@ -68,5 +68,17 @@ namespace EasySave.Core.Resources {
                 return ResourceManager.GetString("FileCantBeCopied", resourceCulture);
             }
         }
+        
+        internal static string BackupBlocked {
+            get {
+                return ResourceManager.GetString("BackupBlocked", resourceCulture);
+            }
+        }
+        
+        internal static string FileCantBeCrypted {
+            get {
+                return ResourceManager.GetString("FileCantBeCrypted", resourceCulture);
+            }
+        }
     }
 }
