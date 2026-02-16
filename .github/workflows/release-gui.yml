@@ -32,9 +32,6 @@ jobs:
       - name: Run tests
         run: dotnet test --configuration Release --no-build
 
-      - name: Prepare publish directories
-        run: mkdir -p out/${{ matrix.runtime }}/fr-FR
-
       # publish self-contained for each runtime 
       - name: Publish
         run: |
