@@ -34,7 +34,7 @@ public class BackupJobFactory
         
         if (existingJobs.Count >= SettingsService.GetInstance.Settings.MaxJobs)
         {
-            throw new InvalidOperationException(Errors.MaxJobsReached);
+            throw new InvalidOperationException("Max jobs reached");
         }
         
         var newId = 0;

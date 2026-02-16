@@ -36,4 +36,7 @@
     <data name="UnknownBackupType" xml:space="preserve">
         <value>Type de sauvegarde non pris en charge</value>
     </data>
+    <data name="FileCantBeCrypted" xml:space="preserve">
+        <value>Le fichier ne peut pas être crypté.</value>
+    </data>
 </root>

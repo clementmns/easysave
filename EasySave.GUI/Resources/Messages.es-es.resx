@@ -104,9 +104,6 @@
     <data name="selectTheSource" xml:space="preserve">
         <value>Seleccionar fuente </value>
     </data>
-    <data name="settings" xml:space="preserve">
-        <value>Configuración</value>
-    </data>
     <data name="destination" xml:space="preserve">
         <value>Destino</value>
     </data>
@@ -121,6 +118,81 @@
     </data>
     <data name="browse" xml:space="preserve">
         <value>Explorar</value>
+    </data>
+    <data name="noJobSelected" xml:space="preserve">
+        <value>No hay trabajos seleccionados</value>
+    </data>
+    <data name="selectJobText" xml:space="preserve">
+        <value>Seleccione un trabajo de la lista anterior para ver sus detalles.</value>
+    </data>
+    <data name="noJobs" xml:space="preserve">
+        <value>Sin trabajo de copia de seguridad</value>
+    </data>
+    <data name="addInstruction" xml:space="preserve">
+        <value>Para empezar, haz clic en el botón '+' de arriba para añadir una tarea de copia de seguridad.</value>
+    </data>
+    <data name="executeAll" xml:space="preserve">
+        <value>Ejecutar todo</value>
+    </data>
+    <data name="restartApp" xml:space="preserve">
+        <value>Reiniciar la aplicación</value>
+    </data>
+    <data name="restartAppText" xml:space="preserve">
+        <value>Para que el cambio se aplique, haga clic en el botón para reiniciar automáticamente la aplicación.</value>
+    </data>
+    <data name="restart" xml:space="preserve">
+        <value>Reinicio</value>
+    </data>
+    <data name="progression" xml:space="preserve">
+        <value>Progresión</value>
+    </data>
+    <data name="saveDetails" xml:space="preserve">
+        <value>Detalles de la copia de seguridad</value>
+    </data>
+    <data name="sourceFolder" xml:space="preserve">
+        <value>Archivo fuente</value>
+    </data>
+    <data name="destinationFolder" xml:space="preserve">
+        <value>Carpeta de destino</value>
+    </data>
+    <data name="edit" xml:space="preserve">
+        <value>Modificar</value>
+    </data>
+    <data name="editJob" xml:space="preserve">
+        <value>Modificar el trabajo</value>
+    </data>
+    <data name="editJobText" xml:space="preserve">
+        <value>Modifique la siguiente información</value>
+    </data>
+    <data name="createJobTitle" xml:space="preserve">
+        <value>Crear nuevo trabajo</value>
+    </data>
+    <data name="ExecuteJobsFailed" xml:space="preserve">
+        <value>La ejecución ha fallado</value>
+    </data>
+    <data name="ExecuteJobsSuccess" xml:space="preserve">
+        <value>La ejecución ha tenido éxito</value>
+    </data>
+    <data name="SelectSourcePathFile" xml:space="preserve">
+        <value>Seleccionar el archivo de la ruta de origen</value>
+    </data>
+    <data name="chooseExt" xml:space="preserve">
+        <value>Elija las extensiones a cifrar:</value>
+    </data>
+    <data name="cryptedExtensions" xml:space="preserve">
+        <value>Extensiones cifradas</value>
+    </data>
+    <data name="remove" xml:space="preserve">
+        <value>Eliminar</value>
+    </data>
+    <data name="selectSource" xml:space="preserve">
+        <value>Seleccionar fuente</value>
+    </data>
+    <data name="easysave" xml:space="preserve">
+        <value>EasySave</value>
+    </data>
+    <data name="easysaveSlogan" xml:space="preserve">
+        <value>Asegura tus copias de seguridad</value>
     </data>
     <data name="Software" xml:space="preserve">
         <value>Defina el nombre del proceso del software empresarial que desea supervisar (por ejemplo, «calc» para la calculadora).</value>

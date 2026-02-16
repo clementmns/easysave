@@ -21,12 +21,19 @@ public class FileUtilsTests
 
         try
         {
-            var result = FileUtils.CopyFile(sourceFile, destRoot, sourceRoot);
-
+            var resultCopy = FileUtils.CopyFile(sourceFile, destRoot, sourceRoot);
             var expectedDest = Path.Combine(destRoot, "nested", "file.txt");
-            Assert.True(result);
+            Assert.True(resultCopy.Item1);
+            Assert.True(resultCopy.Item2 <= 5000); // Copy time must not exceed 5 seconds
             Assert.True(File.Exists(expectedDest));
             Assert.Equal(content, File.ReadAllText(expectedDest, Encoding.UTF8));
+            
+            // var resultEncryption = CryptoUtils.EncryptFile(sourceFile, destRoot, sourceRoot);
+            // expectedDest = Path.Combine(destRoot, "nested", "file.txt.lock");
+            // Assert.True(resultEncryption.Item1);
+            // Assert.True(resultEncryption.Item2 <= 1000); // Encryption time must not exceed 5 seconds
+            // Assert.True(File.Exists(expectedDest));
+            // Assert.NotEqual(content, File.ReadAllText(expectedDest, Encoding.UTF8));
         }
         finally
         {

@@ -104,9 +104,6 @@
     <data name="selectTheSource" xml:space="preserve">
         <value>Quelle auswählen</value>
     </data>
-    <data name="settings" xml:space="preserve">
-        <value>Einstellungen</value>
-    </data>
     <data name="destination" xml:space="preserve">
         <value>Bestimmungsort</value>
     </data>
@@ -121,6 +118,81 @@
     </data>
     <data name="browse" xml:space="preserve">
         <value>Durchsuchen</value>
+    </data>
+    <data name="noJobSelected" xml:space="preserve">
+        <value>Keine Jobs ausgewählt</value>
+    </data>
+    <data name="selectJobText" xml:space="preserve">
+        <value>Wählen Sie einen Job aus der obigen Liste aus, um dessen Details anzuzeigen.</value>
+    </data>
+    <data name="noJobs" xml:space="preserve">
+        <value>Keine Sicherungsarbeiten</value>
+    </data>
+    <data name="addInstruction" xml:space="preserve">
+        <value>Klicken Sie zunächst oben auf die Schaltfläche '+', um einen Sicherungsauftrag hinzuzufügen.</value>
+    </data>
+    <data name="executeAll" xml:space="preserve">
+        <value>Alles ausführen</value>
+    </data>
+    <data name="restartApp" xml:space="preserve">
+        <value>Anwendung neu starten</value>
+    </data>
+    <data name="restartAppText" xml:space="preserve">
+        <value>Damit die Änderung übernommen wird, klicken Sie auf die Schaltfläche, um die Anwendung automatisch neu zu starten.</value>
+    </data>
+    <data name="restart" xml:space="preserve">
+        <value>Neustart</value>
+    </data>
+    <data name="progression" xml:space="preserve">
+        <value>Fortschritt</value>
+    </data>
+    <data name="saveDetails" xml:space="preserve">
+        <value>Details zur Sicherung</value>
+    </data>
+    <data name="sourceFolder" xml:space="preserve">
+        <value>Quelldatei</value>
+    </data>
+    <data name="destinationFolder" xml:space="preserve">
+        <value>Zielordner</value>
+    </data>
+    <data name="edit" xml:space="preserve">
+        <value>Ändern</value>
+    </data>
+    <data name="editJob" xml:space="preserve">
+        <value>Arbeit ändern</value>
+    </data>
+    <data name="editJobText" xml:space="preserve">
+        <value>Ändern Sie die folgenden Informationen</value>
+    </data>
+    <data name="createJobTitle" xml:space="preserve">
+        <value>Neuen Auftrag erstellen</value>
+    </data>
+    <data name="ExecuteJobsFailed" xml:space="preserve">
+        <value>Die Ausführung ist fehlgeschlagen</value>
+    </data>
+    <data name="ExecuteJobsSuccess" xml:space="preserve">
+        <value>Die Ausführung war erfolgreich</value>
+    </data>
+    <data name="SelectSourcePathFile" xml:space="preserve">
+        <value>Quelldateipfad auswählen</value>
+    </data>
+    <data name="chooseExt" xml:space="preserve">
+        <value>Wählen Sie zu verschlüsselnde Erweiterungen:</value>
+    </data>
+    <data name="cryptedExtensions" xml:space="preserve">
+        <value>Verschlüsselte Erweiterungen</value>
+    </data>
+    <data name="remove" xml:space="preserve">
+        <value>Entfernen</value>
+    </data>
+    <data name="selectSource" xml:space="preserve">
+        <value>Quelle auswählen</value>
+    </data>
+    <data name="easysave" xml:space="preserve">
+        <value>EasySave</value>
+    </data>
+    <data name="easysaveSlogan" xml:space="preserve">
+        <value>Sichern Sie Ihre Backups</value>
     </data>
     <data name="Software" xml:space="preserve">
         <value>Definieren Sie den Prozessnamen der zu überwachenden Unternehmenssoftware (z. B. „calc” für Taschenrechner).</value>

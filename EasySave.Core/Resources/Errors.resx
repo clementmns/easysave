@@ -30,8 +30,8 @@
     <data name="FileCantBeCopied" xml:space="preserve">
         <value>The file can't be copied.</value>
     </data>
-    <data name="MaxJobsReached" xml:space="preserve">
-        <value>Max jobs reached</value>
+    <data name="FileCantBeCrypted" xml:space="preserve">
+        <value>The file can't be crypted.</value>
     </data>
     <data name="BackupBlocked" xml:space="preserve">
         <value>Backup blocked for job</value>

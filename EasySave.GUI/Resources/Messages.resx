@@ -18,12 +18,6 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="test" xml:space="preserve">
-        <value>test</value>
-    </data>
-    <data name="SelectSourcePathFolder" xml:space="preserve">
-        <value>Select source path folder</value>
-    </data>
     <data name="SelectSourcePathFile" xml:space="preserve">
         <value>Select source path file</value>
     </data>
@@ -50,9 +44,6 @@
     </data>
     <data name="state" xml:space="preserve">
         <value>State</value>
-    </data>
-    <data name="settings" xml:space="preserve">
-        <value>Settings</value>
     </data>
     <data name="customizeSettings" xml:space="preserve">
         <value>Customize app settings</value>
@@ -121,7 +112,7 @@
         <value>Choose a file or folder to back up.</value>
     </data>
     <data name="selectSource" xml:space="preserve">
-        <value />
+        <value>Select source</value>
     </data>
     <data name="selectTheSource" xml:space="preserve">
         <value>Select source</value>
@@ -141,6 +132,90 @@
     <data name="browse" xml:space="preserve">
         <value>Browse</value>
     </data>
+    <data name="executeAll" xml:space="preserve">
+        <value>Execute All</value>
+    </data>
+    <data name="noJobSelected" xml:space="preserve">
+        <value>No jobs selected</value>
+    </data>
+    <data name="selectJobText" xml:space="preserve">
+        <value>Select a job from the list above to view its details.</value>
+    </data>
+    <data name="noJobs" xml:space="preserve">
+        <value>No backup work</value>
+    </data>
+    <data name="addInstruction" xml:space="preserve">
+        <value>To get started, click the '+' button above to add a backup job.</value>
+    </data>
+    <data name="ExecuteJobsFailed" xml:space="preserve">
+        <value>The execution has failed</value>
+    </data>
+    <data name="ExecuteJobsSuccess" xml:space="preserve">
+        <value>The execution was successful</value>
+    </data>
+    <data name="restartApp" xml:space="preserve">
+        <value>Restart the application</value>
+    </data>
+    <data name="restartAppText" xml:space="preserve">
+        <value>For the change to take effect, click the button to automatically restart the application.</value>
+    </data>
+    <data name="restart" xml:space="preserve">
+        <value>Restart</value>
+    </data>
+    <data name="progression" xml:space="preserve">
+        <value>Progression</value>
+    </data>
+    <data name="saveDetails" xml:space="preserve">
+        <value>Backup details</value>
+    </data>
+    <data name="sourceFolder" xml:space="preserve">
+        <value>Source folder</value>
+    </data>
+    <data name="destinationFolder" xml:space="preserve">
+        <value>Destination folder</value>
+    </data>
+    <data name="edit" xml:space="preserve">
+        <value>Edit</value>
+    </data>
+    <data name="editJob" xml:space="preserve">
+        <value>Modify the work</value>
+    </data>
+    <data name="editJobText" xml:space="preserve">
+        <value>Change the information below</value>
+    </data>
+    <data name="StatusReady" xml:space="preserve">
+        <value>Ready</value>
+    </data>
+    <data name="StatusOnGoing" xml:space="preserve">
+        <value>OnGoing</value>
+    </data>
+    <data name="StatusDone" xml:space="preserve">
+        <value>Done</value>
+    </data>
+    <data name="StatusError" xml:space="preserve">
+        <value>Error</value>
+    </data>
+    <data name="createJobTitle" xml:space="preserve">
+        <value>Create New job</value>
+    </data>
+    <data name="cryptedExtensions" xml:space="preserve">
+        <value>Crypted Extensions</value>
+    </data>
+    <data name="chooseExt" xml:space="preserve">
+        <value>Choose extensions to be crypted :</value>
+    </data>
+    <data name="remove" xml:space="preserve">
+        <value>Remove</value>
+    </data>
+    <data name="easysave" xml:space="preserve">
+        <value>EasySave Backup</value>
+    </data>
+    <data name="easysaveSlogan" xml:space="preserve">
+        <value>Secure your backups</value>
+    </data>
+    <data name="settings" xml:space="preserve">
+        <value>Settings</value>
+    </data>
     <data name="SoftwareTitle" xml:space="preserve">
         <value>Software Title</value>
     </data>
@@ -151,6 +226,9 @@
         <value>Enter process name</value>
     </data>
     <data name="BusinessSoftwareDetected" xml:space="preserve">
-        <value>business software detected</value>
+        <value>Business software detected. Backup execution is blocked while it is running.</value>
+    </data>
+    <data name="Blocked" xml:space="preserve">
+        <value>Business software detected. Backup execution is blocked while it is running.</value>
     </data>
 </root>

@@ -11,6 +11,6 @@ public class BackupExecutorTests
         var executor = new BackupExecutor();
         var job = new BackupJob(1, "Job", "src", "dst", (BackupType)999);
 
-        Assert.Throws<InvalidOperationException>(() => executor.ExecuteJob(job));
+        Assert.Throws<InvalidOperationException>(() => executor.ExecuteJobAsync(job).GetAwaiter().GetResult());
     }
 }
