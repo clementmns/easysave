@@ -101,10 +101,13 @@
                     </StackPanel>
                 </Border>
 
-                <Border Padding="16" CornerRadius="8" Background="#0A000000">
+                <Border Padding="16" CornerRadius="8" Background="{StaticResource BackgroundBrush}"
+                        BorderBrush="{StaticResource BorderSoftBrush}" BorderThickness="1">
                     <StackPanel Spacing="10">
-                        <TextBlock Text="{DynamicResource SoftwareTitle}" FontWeight="SemiBold" />
-                        <TextBlock Text="{DynamicResource Software}" Opacity="0.7" />
+                        <TextBlock Text="{DynamicResource SoftwareTitle}" FontWeight="SemiBold"
+                                   Foreground="{StaticResource TextPrimaryBrush}" />
+                        <TextBlock Text="{DynamicResource Software}"
+                                   Foreground="{StaticResource TextSecondaryBrush}" />
                         <TextBox Text="{Binding BusinessSoftwareProcessName}"
                                  Watermark="{DynamicResource SoftwareProcessName}"
                                  HorizontalAlignment="Stretch" />
