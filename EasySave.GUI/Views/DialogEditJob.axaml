@@ -13,7 +13,7 @@
         <ScrollViewer>
             <StackPanel Spacing="20">
                 <StackPanel Spacing="4">
-                     <TextBlock Text="{DynamicResource editJob}" FontSize="20" FontWeight="SemiBold"
+                    <TextBlock Text="{DynamicResource editJob}" FontSize="20" FontWeight="SemiBold"
                                Foreground="{StaticResource TextPrimaryBrush}" />
                     <TextBlock Text="{DynamicResource editJobText}"
                                Foreground="{StaticResource TextSecondaryBrush}" />
@@ -24,18 +24,18 @@
                             Background="{StaticResource BackgroundBrush}"
                             BorderBrush="{StaticResource BorderSoftBrush}" BorderThickness="1">
                         <StackPanel Spacing="12">
-                             <TextBlock Text="{DynamicResource jobDetails}" FontWeight="SemiBold"
+                            <TextBlock Text="{DynamicResource jobDetails}" FontWeight="SemiBold"
                                        Foreground="{StaticResource TextPrimaryBrush}" />
 
                             <StackPanel Spacing="6">
-                                 <TextBlock Text="{DynamicResource jobName}" FontWeight="SemiBold"
+                                <TextBlock Text="{DynamicResource jobName}" FontWeight="SemiBold"
                                            Foreground="{StaticResource TextPrimaryBrush}" />
                                 <TextBox Text="{Binding Name}" />
                             </StackPanel>
 
                             <StackPanel Spacing="6">
-                             <TextBlock Text="{DynamicResource backupType}" FontWeight="SemiBold"
-                                       Foreground="{StaticResource TextPrimaryBrush}" />
+                                <TextBlock Text="{DynamicResource backupType}" FontWeight="SemiBold"
+                                           Foreground="{StaticResource TextPrimaryBrush}" />
                                 <ComboBox ItemsSource="{Binding BackupTypes}"
                                           SelectedItem="{Binding SelectedType}"
                                           HorizontalAlignment="Stretch" />
@@ -47,7 +47,7 @@
                             Background="{StaticResource BackgroundBrush}"
                             BorderBrush="{StaticResource BorderSoftBrush}" BorderThickness="1">
                         <StackPanel Spacing="12">
-                             <TextBlock Text="{DynamicResource source}" FontWeight="SemiBold"
+                            <TextBlock Text="{DynamicResource source}" FontWeight="SemiBold"
                                        Foreground="{StaticResource TextPrimaryBrush}" />
                             <StackPanel Spacing="6">
                                 <Grid ColumnDefinitions="*,Auto">
@@ -65,7 +65,7 @@
                             Background="{StaticResource BackgroundBrush}"
                             BorderBrush="{StaticResource BorderSoftBrush}" BorderThickness="1">
                         <StackPanel Spacing="12">
-                             <TextBlock Text="{DynamicResource destination}" FontWeight="SemiBold"
+                            <TextBlock Text="{DynamicResource destination}" FontWeight="SemiBold"
                                        Foreground="{StaticResource TextPrimaryBrush}" />
                             <StackPanel Spacing="6">
                                 <Grid ColumnDefinitions="*,Auto">
@@ -83,7 +83,7 @@
                 <Grid ColumnDefinitions="*,Auto" ColumnSpacing="16" VerticalAlignment="Center">
                     <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10">
 
-                         <Button Content="{DynamicResource cancel}"
+                        <Button Content="{DynamicResource cancel}"
                                 Command="{Binding CancelCommand}" Classes="ghost" />
 
                         <Button Content="{DynamicResource save}"

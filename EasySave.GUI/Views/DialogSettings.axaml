@@ -3,10 +3,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:EasySave.GUI.ViewModels;assembly=EasySave.GUI"
-              x:DataType="vm:SettingsDialogViewModel"
-              mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="500"
-              x:Class="EasySave.GUI.Views.DialogSettings"
-              x:Name="DialogSettingsRoot">
+             x:DataType="vm:SettingsDialogViewModel"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="500"
+             x:Class="EasySave.GUI.Views.DialogSettings"
+             x:Name="DialogSettingsRoot">
     <Design.DataContext>
         <vm:SettingsDialogViewModel></vm:SettingsDialogViewModel>
     </Design.DataContext>
@@ -14,8 +14,8 @@
         <ScrollViewer>
             <StackPanel Spacing="20">
                 <StackPanel Spacing="4">
-                     <TextBlock Text="Settings" FontSize="20" FontWeight="SemiBold"
-                                Foreground="{StaticResource TextPrimaryBrush}" />
+                    <TextBlock Text="Settings" FontSize="20" FontWeight="SemiBold"
+                               Foreground="{StaticResource TextPrimaryBrush}" />
                     <TextBlock Text="{DynamicResource customizeSettings}"
                                Foreground="{StaticResource TextSecondaryBrush}" />
                 </StackPanel>
@@ -55,18 +55,18 @@
 
                         <!-- new extension -->
                         <StackPanel Orientation="Horizontal" Spacing="8">
-                            <TextBox Text="{Binding NewExtension}" 
+                            <TextBox Text="{Binding NewExtension}"
                                      Watermark="e.g., .pdf or pdf"
-                                     Width="200" 
+                                     Width="200"
                                      VerticalContentAlignment="Center" />
-                             <Button Content="{DynamicResource add}" 
-                                     Command="{Binding AddExtensionCommand}"
-                                     Classes="primary" />
+                            <Button Content="{DynamicResource add}"
+                                    Command="{Binding AddExtensionCommand}"
+                                    Classes="primary" />
                         </StackPanel>
-                        
+
                         <!-- current extensions -->
-                        <Border BorderBrush="{StaticResource BorderSoftBrush}" 
-                                BorderThickness="1" 
+                        <Border BorderBrush="{StaticResource BorderSoftBrush}"
+                                BorderThickness="1"
                                 CornerRadius="4"
                                 Padding="8"
                                 MinHeight="100"
@@ -76,20 +76,20 @@
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate DataType="x:String"
                                                       x:DataType="vm:SettingsDialogViewModel">
-                                            <Border Padding="8,4" 
+                                            <Border Padding="8,4"
                                                     Margin="0,2"
                                                     Background="{StaticResource SurfaceBrush}"
                                                     CornerRadius="4">
                                                 <Grid ColumnDefinitions="*,Auto">
-                                                     <TextBlock Text="{Binding}" 
-                                                                VerticalAlignment="Center"
-                                                                Foreground="{StaticResource TextPrimaryBrush}" />
-                                                     <Button Grid.Column="1" 
-                                                             Content="{DynamicResource remove}"
-                                                             Command="{Binding ((vm:SettingsDialogViewModel)DataContext).RemoveExtensionCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                             CommandParameter="{Binding .}"
-                                                             Classes="ghost" 
-                                                             Foreground="{StaticResource ErrorBrush}"
+                                                    <TextBlock Text="{Binding}"
+                                                               VerticalAlignment="Center"
+                                                               Foreground="{StaticResource TextPrimaryBrush}" />
+                                                    <Button Grid.Column="1"
+                                                            Content="{DynamicResource remove}"
+                                                            Command="{Binding ((vm:SettingsDialogViewModel)DataContext).RemoveExtensionCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                            CommandParameter="{Binding .}"
+                                                            Classes="ghost"
+                                                            Foreground="{StaticResource ErrorBrush}"
                                                             Padding="8,4" />
                                                 </Grid>
                                             </Border>

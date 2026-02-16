@@ -91,6 +91,12 @@ public class RealTimeState : INotifyPropertyChanged
             observer.OnProgressionUpdated(Progression);
         }
     }
+    
+    public void RefreshDisplay()
+    {
+        NotifyStateObservers();
+        OnPropertyChanged(nameof(Status));
+    }
 
     private void SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
     {

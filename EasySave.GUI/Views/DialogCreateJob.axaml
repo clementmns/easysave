@@ -13,7 +13,7 @@
         <ScrollViewer>
             <StackPanel Spacing="20">
                 <StackPanel Spacing="4">
-                     <TextBlock Text="{DynamicResource createBackupJob}" FontSize="20" FontWeight="SemiBold"
+                    <TextBlock Text="{DynamicResource createBackupJob}" FontSize="20" FontWeight="SemiBold"
                                Foreground="{StaticResource TextPrimaryBrush}" />
                     <TextBlock Text="{DynamicResource createBackupText}"
                                Foreground="{StaticResource TextSecondaryBrush}" />
@@ -24,19 +24,19 @@
                             Background="{StaticResource BackgroundBrush}"
                             BorderBrush="{StaticResource BorderSoftBrush}" BorderThickness="1">
                         <StackPanel Spacing="12">
-                             <TextBlock Text="{DynamicResource jobDetails}" FontWeight="SemiBold"
+                            <TextBlock Text="{DynamicResource jobDetails}" FontWeight="SemiBold"
                                        Foreground="{StaticResource TextPrimaryBrush}" />
                             <StackPanel Spacing="6">
-                                 <TextBlock Text="{DynamicResource jobName}" FontWeight="SemiBold"
+                                <TextBlock Text="{DynamicResource jobName}" FontWeight="SemiBold"
                                            Foreground="{StaticResource TextPrimaryBrush}" />
-                                 <TextBlock Text="{DynamicResource giveName}"
+                                <TextBlock Text="{DynamicResource giveName}"
                                            Foreground="{StaticResource TextSecondaryBrush}" />
-                                 <TextBox Watermark="{DynamicResource enterJobName}" Text="{Binding Name}" />
+                                <TextBox Watermark="{DynamicResource enterJobName}" Text="{Binding Name}" />
                             </StackPanel>
                             <StackPanel Spacing="6">
-                                 <TextBlock Text="{DynamicResource backupType}" FontWeight="SemiBold"
+                                <TextBlock Text="{DynamicResource backupType}" FontWeight="SemiBold"
                                            Foreground="{StaticResource TextPrimaryBrush}" />
-                                 <TextBlock Text="{DynamicResource backupTypeText}"
+                                <TextBlock Text="{DynamicResource backupTypeText}"
                                            Foreground="{StaticResource TextSecondaryBrush}" />
                                 <ComboBox ItemsSource="{Binding BackupTypes}"
                                           SelectedItem="{Binding SelectedBackupType}"
@@ -49,11 +49,11 @@
                             Background="{StaticResource BackgroundBrush}"
                             BorderBrush="{StaticResource BorderSoftBrush}" BorderThickness="1">
                         <StackPanel Spacing="12">
-                             <TextBlock Text="{DynamicResource source}" FontWeight="SemiBold"
-                                        Foreground="{StaticResource TextPrimaryBrush}" />
-                             <StackPanel Spacing="6">
-                                 <TextBlock Text="{DynamicResource sourceText}"
-                                            Foreground="{StaticResource TextSecondaryBrush}" />
+                            <TextBlock Text="{DynamicResource source}" FontWeight="SemiBold"
+                                       Foreground="{StaticResource TextPrimaryBrush}" />
+                            <StackPanel Spacing="6">
+                                <TextBlock Text="{DynamicResource sourceText}"
+                                           Foreground="{StaticResource TextSecondaryBrush}" />
                                 <StackPanel Orientation="Horizontal" Spacing="14">
                                     <RadioButton Content="File" IsChecked="{Binding IsFileSelected}"
                                                  GroupName="SaveType" />
@@ -61,11 +61,11 @@
                                                  GroupName="SaveType" />
                                 </StackPanel>
                                 <Grid ColumnDefinitions="*,Auto">
-                                     <TextBox Grid.Column="0" Watermark="{DynamicResource selectTheSource}"
-                                              Text="{Binding SourcePath}"
-                                              IsReadOnly="True" />
-                                     <Button Grid.Column="1" Content="{DynamicResource browse}"
-                                             Command="{Binding BrowseSourceCommand}" Margin="8,0,0,0" />
+                                    <TextBox Grid.Column="0" Watermark="{DynamicResource selectTheSource}"
+                                             Text="{Binding SourcePath}"
+                                             IsReadOnly="True" />
+                                    <Button Grid.Column="1" Content="{DynamicResource browse}"
+                                            Command="{Binding BrowseSourceCommand}" Margin="8,0,0,0" />
                                 </Grid>
                             </StackPanel>
                         </StackPanel>
@@ -75,19 +75,19 @@
                             Background="{StaticResource BackgroundBrush}"
                             BorderBrush="{StaticResource BorderSoftBrush}" BorderThickness="1">
                         <StackPanel Spacing="12">
-                             <TextBlock Text="{DynamicResource destination}" FontWeight="SemiBold"
-                                        Foreground="{StaticResource TextPrimaryBrush}" />
-                             <StackPanel Spacing="6">
-                                 <TextBlock Text="{DynamicResource destinationText}"
-                                            Foreground="{StaticResource TextSecondaryBrush}" />
+                            <TextBlock Text="{DynamicResource destination}" FontWeight="SemiBold"
+                                       Foreground="{StaticResource TextPrimaryBrush}" />
+                            <StackPanel Spacing="6">
+                                <TextBlock Text="{DynamicResource destinationText}"
+                                           Foreground="{StaticResource TextSecondaryBrush}" />
                                 <Grid ColumnDefinitions="*,Auto">
-                                     <TextBox Grid.Column="0"
-                                              Watermark="{DynamicResource selectDestination}"
-                                              Text="{Binding DestinationPath}"
-                                              IsReadOnly="True" />
-                                     <Button Grid.Column="1" Content="{DynamicResource browse}"
-                                             Margin="8,0,0,0"
-                                             Command="{Binding BrowseDestinationCommand}" />
+                                    <TextBox Grid.Column="0"
+                                             Watermark="{DynamicResource selectDestination}"
+                                             Text="{Binding DestinationPath}"
+                                             IsReadOnly="True" />
+                                    <Button Grid.Column="1" Content="{DynamicResource browse}"
+                                            Margin="8,0,0,0"
+                                            Command="{Binding BrowseDestinationCommand}" />
                                 </Grid>
                             </StackPanel>
                         </StackPanel>
