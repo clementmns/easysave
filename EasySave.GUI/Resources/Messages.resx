@@ -234,4 +234,10 @@
     <data name="SelectSourcePathFolder" xml:space="preserve">
         <value>Select source path folder</value>
     </data>
+    <data name="BackupBlocked" xml:space="preserve">
+        <value>Backup blocked for job</value>
+    </data>
+    <data name="UnknownBackupType" xml:space="preserve">
+        <value>Unknown Backup type</value>
+    </data>
 </root>
