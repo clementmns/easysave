@@ -195,7 +195,7 @@
         <value>Proteggi i tuoi backup</value>
     </data>
     <data name="Software" xml:space="preserve">
-        <value>Definire il nome del processo del software aziendale da monitorare (ad esempio, “calc” per la calcolatrice).</value>
+        <value>Definire il nome del processo del software aziendale da monitorare (ad esempio, 'calc' per la calcolatrice).</value>
     </data>
     <data name="SoftwareTitle" xml:space="preserve">
         <value>Titolo del software</value>
@@ -207,9 +207,27 @@
         <value>Backup bloccato per il lavoro</value>
     </data>
     <data name="BusinessSoftwareDetected" xml:space="preserve">
-        <value>software aziendale rilevato</value>
+        <value>Software aziendale rilevato. L'esecuzione del backup è bloccata mentre è in esecuzione.</value>
     </data>
     <data name="UnknownBackupType" xml:space="preserve">
         <value>Tipo di backup non supportato</value>
+    </data>
+    <data name="SelectSourcePathFolder" xml:space="preserve">
+        <value>Seleziona la cartella del percorso sorgente</value>
+    </data>
+    <data name="settings" xml:space="preserve">
+        <value>Impostazioni</value>
+    </data>
+    <data name="StatusDone" xml:space="preserve">
+        <value>Fatto</value>
+    </data>
+    <data name="StatusError" xml:space="preserve">
+        <value>Errore</value>
+    </data>
+    <data name="StatusOnGoing" xml:space="preserve">
+        <value>In corso</value>
+    </data>
+    <data name="StatusReady" xml:space="preserve">
+        <value>Pronto</value>
     </data>
 </root>

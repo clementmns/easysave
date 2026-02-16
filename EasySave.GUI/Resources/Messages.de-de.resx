@@ -195,7 +195,7 @@
         <value>Sichern Sie Ihre Backups</value>
     </data>
     <data name="Software" xml:space="preserve">
-        <value>Definieren Sie den Prozessnamen der zu überwachenden Unternehmenssoftware (z. B. „calc” für Taschenrechner).</value>
+        <value>Definieren Sie den Prozessnamen der zu überwachenden Unternehmenssoftware (z. B. 'calc' für Taschenrechner).</value>
     </data>
     <data name="SoftwareTitle" xml:space="preserve">
         <value>Softwaretitel</value>
@@ -207,9 +207,27 @@
         <value>Sicherung für Auftrag blockiert</value>
     </data>
     <data name="BusinessSoftwareDetected" xml:space="preserve">
-        <value>geschäftliche Software erkannt</value>
+        <value>Unternehmenssoftware erkannt. Die Sicherung ist blockiert, solange sie ausgefühlt wird.</value>
     </data>
     <data name="UnknownBackupType" xml:space="preserve">
         <value>Backup-Typ wird nicht unterstützt</value>
+    </data>
+    <data name="SelectSourcePathFolder" xml:space="preserve">
+        <value>Quellordnerpfad auswählen</value>
+    </data>
+    <data name="settings" xml:space="preserve">
+        <value>Einstellungen</value>
+    </data>
+    <data name="StatusDone" xml:space="preserve">
+        <value>Fertig</value>
+    </data>
+    <data name="StatusError" xml:space="preserve">
+        <value>Fehler</value>
+    </data>
+    <data name="StatusOnGoing" xml:space="preserve">
+        <value>Läuft</value>
+    </data>
+    <data name="StatusReady" xml:space="preserve">
+        <value>Bereit</value>
     </data>
 </root>

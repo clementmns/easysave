@@ -210,7 +210,7 @@
         <value>Prêt</value>
     </data>
     <data name="Software" xml:space="preserve">
-        <value>Définissez le nom du processus du logiciel métier à surveiller (par exemple, « calc » pour la calculatrice).</value>
+        <value>Définissez le nom du processus du logiciel métier à surveiller (par exemple, 'calc' pour la calculatrice).</value>
     </data>
     <data name="SoftwareTitle" xml:space="preserve">
         <value>Titre du logiciel</value>
@@ -222,9 +222,12 @@
         <value>Sauvegarde bloquée pour la tâche</value>
     </data>
     <data name="BusinessSoftwareDetected" xml:space="preserve">
-        <value>logiciel  détecté</value>
+        <value>Logiciel métier détecté. L'exécution de la sauvegarde est bloquée pendant son fonctionnement.</value>
     </data>
     <data name="UnknownBackupType" xml:space="preserve">
         <value>Type de sauvegarde non pris en charge</value>
+    </data>
+    <data name="SelectSourcePathFolder" xml:space="preserve">
+        <value>Sélectionner le dossier source</value>
     </data>
 </root>

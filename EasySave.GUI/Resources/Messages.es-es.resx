@@ -195,7 +195,7 @@
         <value>Asegura tus copias de seguridad</value>
     </data>
     <data name="Software" xml:space="preserve">
-        <value>Defina el nombre del proceso del software empresarial que desea supervisar (por ejemplo, «calc» para la calculadora).</value>
+        <value>Defina el nombre del proceso del software empresarial que desea supervisar (por ejemplo, 'calc' para la calculadora).</value>
     </data>
     <data name="SoftwareTitle" xml:space="preserve">
         <value>Título del software</value>
@@ -207,9 +207,27 @@
         <value>Copia de seguridad bloqueada para el trabajo</value>
     </data>
     <data name="BusinessSoftwareDetected" xml:space="preserve">
-        <value>software empresarial detectado</value>
+        <value>Software empresarial detectado. La ejecución del backup está bloqueada mientras esté en ejecución.</value>
     </data>
     <data name="UnknownBackupType" xml:space="preserve">
         <value>Tipo de copia de seguridad no compatible</value>
+    </data>
+    <data name="SelectSourcePathFolder" xml:space="preserve">
+        <value>Seleccionar la carpeta de la ruta de origen</value>
+    </data>
+    <data name="settings" xml:space="preserve">
+        <value>Configuración</value>
+    </data>
+    <data name="StatusDone" xml:space="preserve">
+        <value>Hecho</value>
+    </data>
+    <data name="StatusError" xml:space="preserve">
+        <value>Error</value>
+    </data>
+    <data name="StatusOnGoing" xml:space="preserve">
+        <value>En curso</value>
+    </data>
+    <data name="StatusReady" xml:space="preserve">
+        <value>Listo</value>
     </data>
 </root>
