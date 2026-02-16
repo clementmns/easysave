@@ -194,4 +194,22 @@
     <data name="easysaveSlogan" xml:space="preserve">
         <value>Sichern Sie Ihre Backups</value>
     </data>
+    <data name="Software" xml:space="preserve">
+        <value>Definieren Sie den Prozessnamen der zu überwachenden Unternehmenssoftware (z. B. „calc” für Taschenrechner).</value>
+    </data>
+    <data name="SoftwareTitle" xml:space="preserve">
+        <value>Softwaretitel</value>
+    </data>
+    <data name="SoftwareProcessName" xml:space="preserve">
+        <value>Prozessnamen eingeben</value>
+    </data>
+    <data name="BackupBlocked" xml:space="preserve">
+        <value>Sicherung für Auftrag blockiert</value>
+    </data>
+    <data name="BusinessSoftwareDetected" xml:space="preserve">
+        <value>geschäftliche Software erkannt</value>
+    </data>
+    <data name="UnknownBackupType" xml:space="preserve">
+        <value>Backup-Typ wird nicht unterstützt</value>
+    </data>
 </root>

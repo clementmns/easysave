@@ -33,7 +33,10 @@
     <data name="FileCantBeCrypted" xml:space="preserve">
         <value>The file can't be crypted.</value>
     </data>
+    <data name="BackupBlocked" xml:space="preserve">
+        <value>Backup blocked for job</value>
+    </data>
     <data name="MaxJobsReached" xml:space="preserve">
-        <value>Max jobs reached</value>
+        <value />
     </data>
 </root>

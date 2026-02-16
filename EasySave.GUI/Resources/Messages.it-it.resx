@@ -194,4 +194,22 @@
     <data name="easysaveSlogan" xml:space="preserve">
         <value>Proteggi i tuoi backup</value>
     </data>
+    <data name="Software" xml:space="preserve">
+        <value>Definire il nome del processo del software aziendale da monitorare (ad esempio, “calc” per la calcolatrice).</value>
+    </data>
+    <data name="SoftwareTitle" xml:space="preserve">
+        <value>Titolo del software</value>
+    </data>
+    <data name="SoftwareProcessName" xml:space="preserve">
+        <value>Inserisci il nome del processo</value>
+    </data>
+    <data name="BackupBlocked" xml:space="preserve">
+        <value>Backup bloccato per il lavoro</value>
+    </data>
+    <data name="BusinessSoftwareDetected" xml:space="preserve">
+        <value>software aziendale rilevato</value>
+    </data>
+    <data name="UnknownBackupType" xml:space="preserve">
+        <value>Tipo di backup non supportato</value>
+    </data>
 </root>

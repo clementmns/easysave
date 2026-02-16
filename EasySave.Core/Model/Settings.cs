@@ -18,6 +18,11 @@ public class Settings
     
     public List<string> CryptExtensions { get; set; } = []; 
     
+    /// <summary>
+    /// Name of the business software process to monitor (e.g., "CalculatorApp" for Windows calculator)
+    /// </summary>
+    public string BusinessSoftwareProcessName { get; set; } = "CalculatorApp";
+    
     [JsonIgnore]
     public int MaxJobs { get; set; }
     

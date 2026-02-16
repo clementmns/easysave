@@ -441,6 +441,36 @@ namespace EasySave.GUI.Resources {
             }
         }
         
+        public static string SoftwareTitle {
+            get {
+                return ResourceManager.GetString("SoftwareTitle", resourceCulture);
+            }
+        }
+        
+        public static string Software {
+            get {
+                return ResourceManager.GetString("Software", resourceCulture);
+            }
+        }
+        
+        public static string SoftwareProcessName {
+            get {
+                return ResourceManager.GetString("SoftwareProcessName", resourceCulture);
+            }
+        }
+        
+        public static string BusinessSoftwareDetected {
+            get {
+                return ResourceManager.GetString("BusinessSoftwareDetected", resourceCulture);
+            }
+        }
+        
+        public static string Blocked {
+            get {
+                return ResourceManager.GetString("Blocked", resourceCulture);
+            }
+        }
+        
         public static string SelectSourcePathFolder {
             get {
                 return ResourceManager.GetString("SelectSourcePathFolder", resourceCulture);

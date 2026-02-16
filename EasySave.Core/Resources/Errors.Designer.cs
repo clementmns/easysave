@@ -75,6 +75,12 @@ namespace EasySave.Core.Resources {
             }
         }
         
+        internal static string BackupBlocked {
+            get {
+                return ResourceManager.GetString("BackupBlocked", resourceCulture);
+            }
+        }
+        
         internal static string MaxJobsReached {
             get {
                 return ResourceManager.GetString("MaxJobsReached", resourceCulture);

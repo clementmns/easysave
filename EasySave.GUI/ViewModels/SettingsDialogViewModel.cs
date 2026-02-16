@@ -30,6 +30,7 @@ public partial class SettingsDialogViewModel : DialogViewModel
 
         _selectedLanguage = SettingsService.GetInstance.Settings.Language;
         _selectedLogFormat = SettingsService.GetInstance.Settings.LogFormat;
+        _businessSoftwareProcessName = SettingsService.GetInstance.Settings.BusinessSoftwareProcessName;
         
         // Load existing crypted extensions
         var existingExtensions = SettingsService.GetInstance.Settings.CryptExtensions;
@@ -53,6 +54,8 @@ public partial class SettingsDialogViewModel : DialogViewModel
 
     public List<LogFormat> LogFormats { get; } = [LogFormat.Json, LogFormat.Xml];
     [ObservableProperty] private LogFormat _selectedLogFormat;
+    
+    [ObservableProperty] private string _businessSoftwareProcessName = string.Empty;
     
     // Crypted Extensions Management
     [ObservableProperty] private ObservableCollection<string> _cryptedExtensions = [];
@@ -98,7 +101,11 @@ public partial class SettingsDialogViewModel : DialogViewModel
 
         if (SelectedLogFormat != SettingsService.GetInstance.Settings.LogFormat)
             SettingsService.GetInstance.ChangeLogFormat(SelectedLogFormat);
-
+        
+        if (!string.IsNullOrWhiteSpace(BusinessSoftwareProcessName) && 
+            BusinessSoftwareProcessName != SettingsService.GetInstance.Settings.BusinessSoftwareProcessName)
+            SettingsService.GetInstance.SetBusinessSoftwareProcessName(BusinessSoftwareProcessName);
+        
         if (languageChanged)
         {
             SettingsService.GetInstance.SetLanguage(SelectedLanguage);

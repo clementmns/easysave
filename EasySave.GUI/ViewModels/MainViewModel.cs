@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Timers;
 using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -13,9 +14,21 @@ using EasySave.GUI.Views;
 
 namespace EasySave.GUI.ViewModels;
 
-public partial class MainViewModel : ViewModelBase, IProgressionObserver
+public partial class MainViewModel : ViewModelBase, IProgressionObserver, IDisposable
 {
+    /// <summary>
+    /// Singleton instance of the BackupJobService.
+    /// </summary>
     private BackupJobService _jobService { get; set; }
+    
+    /// <summary>
+    /// Timer for refreshing business software status
+    /// </summary>
+    private readonly Timer _businessSoftwareTimer;
+    
+    /// <summary>
+    /// List of current backup jobs.
+    /// </summary>
     public ObservableCollection<BackupJob>? Jobs => _jobService.Jobs;
     
     [ObservableProperty] private ObservableCollection<BackupJob> _selectedJobs = [];
@@ -23,8 +36,17 @@ public partial class MainViewModel : ViewModelBase, IProgressionObserver
     public MainViewModel()
     {
         _jobService = new BackupJobService();
+        
+        // Initialize timer for business software monitoring
+        _businessSoftwareTimer = new Timer(2000); // Check every 2 seconds
+        _businessSoftwareTimer.Elapsed += (sender, e) => RefreshBusinessSoftwareStatus();
+        _businessSoftwareTimer.AutoReset = true;
+        _businessSoftwareTimer.Start();
+        
         LanguageManager.LanguageChanged += OnLanguageChanged;
         OnPropertyChanged(nameof(Jobs));
+        
+        RefreshBusinessSoftwareStatus();
     }
 
     private void OnLanguageChanged()
@@ -73,6 +95,7 @@ public partial class MainViewModel : ViewModelBase, IProgressionObserver
     public async Task ExecuteSelectedJobs()
     {
         if (SelectedJobs.Count == 0) return;
+        RefreshBusinessSoftwareStatus();
         foreach (var job in SelectedJobs.ToList())  await ExecuteJob(job, this);
     }
     
@@ -95,7 +118,7 @@ public partial class MainViewModel : ViewModelBase, IProgressionObserver
         OnPropertyChanged(nameof(AreAllJobsSelected));
         OnPropertyChanged(nameof(SelectedJobs));
     }
-    
+
     [RelayCommand]
     public void OpenCreateJobDialog(Window mainWindow)
     {
@@ -112,7 +135,6 @@ public partial class MainViewModel : ViewModelBase, IProgressionObserver
         dialog.ShowDialog(mainWindow);
     }
 
-    
     [RelayCommand]
     public void OpenEditJobDialog(BackupJob jobToEdit)
     {
@@ -146,13 +168,29 @@ public partial class MainViewModel : ViewModelBase, IProgressionObserver
     }
 
     public void AddJob(BackupJob job) => _jobService.CreateJob(job);
-
+    
+    public bool IsBusinessSoftwareRunning => ProcessMonitorService.IsBusinessSoftwareRunning;
+    
+    /// <summary>
+    /// Refresh the business software running status for UI updates
+    /// </summary>
+    public void RefreshBusinessSoftwareStatus()
+    {
+        try
+        {
+            OnPropertyChanged(nameof(IsBusinessSoftwareRunning));
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error refreshing business software status: {ex.Message}");
+        }
+    }
+    
     private void DeleteJob(BackupJob job) => _jobService.DeleteJob(job);
-
+    
     public async Task<bool> ExecuteJob(BackupJob job, IProgressionObserver? progressionObserver = null)
     {
         var result = await _jobService.ExecuteJobAsync(job, progressionObserver);
-
         return result;
     }
 
@@ -223,5 +261,11 @@ public partial class MainViewModel : ViewModelBase, IProgressionObserver
         {
             return resultMap;
         }
+    }
+    
+    public void Dispose()
+    {
+        _businessSoftwareTimer?.Stop();
+        _businessSoftwareTimer?.Dispose();
     }
 }

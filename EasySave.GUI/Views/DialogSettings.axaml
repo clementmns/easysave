@@ -101,6 +101,16 @@
                     </StackPanel>
                 </Border>
 
+                <Border Padding="16" CornerRadius="8" Background="#0A000000">
+                    <StackPanel Spacing="10">
+                        <TextBlock Text="{DynamicResource SoftwareTitle}" FontWeight="SemiBold" />
+                        <TextBlock Text="{DynamicResource Software}" Opacity="0.7" />
+                        <TextBox Text="{Binding BusinessSoftwareProcessName}"
+                                 Watermark="{DynamicResource SoftwareProcessName}"
+                                 HorizontalAlignment="Stretch" />
+                    </StackPanel>
+                </Border>
+
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10" Margin="0,4,0,0">
                     <Button Content="{DynamicResource cancel}" Command="{Binding CancelCommand}"
                             Classes="ghost" />
