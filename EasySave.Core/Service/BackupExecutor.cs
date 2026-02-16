@@ -12,7 +12,7 @@ public class BackupExecutor
         return await Task.Run(() =>
         {
             // Check if business software is running
-            if (ProcessMonitorService.Instance.IsBusinessSoftwareRunning)
+            if (ProcessMonitorService.IsBusinessSoftwareRunning)
             {
                 Logger.Instance.Write(new LogEntry(Errors.BackupBlocked, job, isError: true));
                 return false;

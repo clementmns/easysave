@@ -1,5 +1,7 @@
 using System.Diagnostics;
-using System.Linq;
+using EasyLog;
+using EasySave.Core.Model;
+using EasySave.Core.Resources;
 
 namespace EasySave.Core.Service;
 
@@ -9,7 +11,7 @@ public class ProcessMonitorService
 
     public static ProcessMonitorService Instance => _instance ??= new ProcessMonitorService();
 
-    public bool IsBusinessSoftwareRunning
+    public static bool IsBusinessSoftwareRunning
     {
         get
         {
@@ -19,20 +21,12 @@ public class ProcessMonitorService
                 if (string.IsNullOrWhiteSpace(processName)) return false;
                 
                 var processes = Process.GetProcesses();
-                var isRunning = processes.Any(p => 
-                    p.ProcessName.Contains(processName, StringComparison.OrdinalIgnoreCase));
-                
-                // Debug information
-                if (isRunning)
-                {
-                    Console.WriteLine($"[ProcessMonitor] Business software '{processName}' detected!");
-                }
+                var isRunning = processes.Any(p => p.ProcessName.Contains(processName, StringComparison.OrdinalIgnoreCase));
                 
                 return isRunning;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"[ProcessMonitor] Error checking business software: {ex.Message}");
                 return false;
             }
         }

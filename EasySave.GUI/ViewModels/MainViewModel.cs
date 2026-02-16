@@ -11,7 +11,6 @@ using EasySave.Core.Model;
 using EasySave.Core.Service;
 using EasySave.GUI.Resources;
 using EasySave.GUI.Views;
-using EasyLog;
 
 namespace EasySave.GUI.ViewModels;
 
@@ -23,14 +22,9 @@ public partial class MainViewModel : ViewModelBase, IProgressionObserver, IDispo
     private BackupJobService _jobService { get; set; }
     
     /// <summary>
-    /// Singleton instance of the BackupExecutor.
-    /// </summary>
-    private BackupExecutor _backupExecutor { get; set; }
-    
-    /// <summary>
     /// Timer for refreshing business software status
     /// </summary>
-    private Timer _businessSoftwareTimer;
+    private readonly Timer _businessSoftwareTimer;
     
     /// <summary>
     /// List of current backup jobs.
@@ -175,9 +169,7 @@ public partial class MainViewModel : ViewModelBase, IProgressionObserver, IDispo
 
     public void AddJob(BackupJob job) => _jobService.CreateJob(job);
     
-    public ProcessMonitorService ProcessMonitor { get; } = ProcessMonitorService.Instance;
-    
-    public bool IsBusinessSoftwareRunning => ProcessMonitor.IsBusinessSoftwareRunning;
+    public bool IsBusinessSoftwareRunning => ProcessMonitorService.IsBusinessSoftwareRunning;
     
     /// <summary>
     /// Refresh the business software running status for UI updates
@@ -186,11 +178,7 @@ public partial class MainViewModel : ViewModelBase, IProgressionObserver, IDispo
     {
         try
         {
-            // Use Avalonia's dispatcher to ensure UI updates happen on the correct thread
-            Avalonia.Threading.Dispatcher.UIThread.Post(() =>
-            {
-                OnPropertyChanged(nameof(IsBusinessSoftwareRunning));
-            });
+            OnPropertyChanged(nameof(IsBusinessSoftwareRunning));
         }
         catch (Exception ex)
         {
@@ -202,14 +190,7 @@ public partial class MainViewModel : ViewModelBase, IProgressionObserver, IDispo
     
     public async Task<bool> ExecuteJob(BackupJob job, IProgressionObserver? progressionObserver = null)
     {
-        if (ProcessMonitor.IsBusinessSoftwareRunning)
-        {
-            Console.WriteLine($"Backup {job.Name} blocked: business software detected");
-            Logger.Instance.Write($"Backup blocked for job {job.Name}: business software detected");
-            return false;
-        }
         var result = await _jobService.ExecuteJobAsync(job, progressionObserver);
-
         return result;
     }
 
