@@ -48,7 +48,7 @@
                         <StackPanel Orientation="Horizontal" Spacing="6">
                             <Svg Path="avares://EasySave.GUI/Assets/svg/settings.svg"
                                  Width="18" Height="18" Css="* { stroke: #FFFFFF; }" />
-                            <TextBlock Text="Settings" Foreground="White" />
+                            <TextBlock Text="{x:Static resources:Messages.settings}" Foreground="White" />
                         </StackPanel>
                     </Button>
                 </StackPanel>

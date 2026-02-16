@@ -216,4 +216,7 @@
     <data name="easysaveSlogan" xml:space="preserve">
         <value>Secure your backups</value>
     </data>
+    <data name="settings" xml:space="preserve">
+        <value>Settings</value>
+    </data>
 </root>

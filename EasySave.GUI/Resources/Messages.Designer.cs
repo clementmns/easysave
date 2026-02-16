@@ -440,5 +440,11 @@ namespace EasySave.GUI.Resources {
                 return ResourceManager.GetString("easysaveSlogan", resourceCulture);
             }
         }
+        
+        public static string settings {
+            get {
+                return ResourceManager.GetString("settings", resourceCulture);
+            }
+        }
     }
 }
