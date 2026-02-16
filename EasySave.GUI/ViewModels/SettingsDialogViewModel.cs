@@ -28,6 +28,7 @@ public partial class SettingsDialogViewModel : DialogViewModel
 
         _selectedLanguage = SettingsService.GetInstance.Settings.Language;
         _selectedLogFormat = SettingsService.GetInstance.Settings.LogFormat;
+        _businessSoftwareProcessName = SettingsService.GetInstance.Settings.BusinessSoftwareProcessName;
     }
 
     public List<string> Languages => LanguageMap.Values.ToList();
@@ -48,6 +49,8 @@ public partial class SettingsDialogViewModel : DialogViewModel
     public List<LogFormat> LogFormats { get; } = [LogFormat.Json, LogFormat.Xml];
     [ObservableProperty] private LogFormat _selectedLogFormat;
     
+    [ObservableProperty] private string _businessSoftwareProcessName = string.Empty;
+    
     [RelayCommand]
     public void CancelCommand() => _dialogWindow?.Close();
     
@@ -58,6 +61,10 @@ public partial class SettingsDialogViewModel : DialogViewModel
 
         if (SelectedLogFormat != SettingsService.GetInstance.Settings.LogFormat)
             SettingsService.GetInstance.ChangeLogFormat(SelectedLogFormat);
+        
+        if (!string.IsNullOrWhiteSpace(BusinessSoftwareProcessName) && 
+            BusinessSoftwareProcessName != SettingsService.GetInstance.Settings.BusinessSoftwareProcessName)
+            SettingsService.GetInstance.SetBusinessSoftwareProcessName(BusinessSoftwareProcessName);
         
         if (languageChanged)
             SettingsService.GetInstance.SetLanguage(SelectedLanguage);

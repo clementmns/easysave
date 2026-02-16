@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Timers;
 using Avalonia.Controls;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Core.Model;
@@ -15,7 +16,7 @@ namespace EasySave.GUI.ViewModels;
 /// <summary>
 /// ViewModel for managing backup jobs, providing methods to add, delete, update, and execute backup jobs.
 /// </summary>
-public partial class MainViewModel : ViewModelBase
+public partial class MainViewModel : ViewModelBase, IDisposable
 {
     /// <summary>
     /// Singleton instance of the BackupJobService.
@@ -26,6 +27,11 @@ public partial class MainViewModel : ViewModelBase
     /// Singleton instance of the BackupExecutor.
     /// </summary>
     private BackupExecutor _backupExecutor { get; set; }
+    
+    /// <summary>
+    /// Timer for refreshing business software status
+    /// </summary>
+    private Timer _businessSoftwareTimer;
     
     /// <summary>
     /// List of current backup jobs.
@@ -52,6 +58,15 @@ public partial class MainViewModel : ViewModelBase
     {
         _jobService = new BackupJobService();
         _backupExecutor = new BackupExecutor();
+        
+        // Initialize timer for business software monitoring
+        _businessSoftwareTimer = new Timer(2000); // Check every 2 seconds
+        _businessSoftwareTimer.Elapsed += (sender, e) => RefreshBusinessSoftwareStatus();
+        _businessSoftwareTimer.AutoReset = true;
+        _businessSoftwareTimer.Start();
+        
+        // Initial refresh
+        RefreshBusinessSoftwareStatus();
     }
 
     [RelayCommand]
@@ -76,6 +91,9 @@ public partial class MainViewModel : ViewModelBase
     public async Task ExecuteSelectedJobs()
     {
         if (SelectedJobs.Count == 0) return;
+        
+        // Refresh the business software status for UI
+        RefreshBusinessSoftwareStatus();
     
         foreach (var job in SelectedJobs.ToList())
         {
@@ -104,6 +122,28 @@ public partial class MainViewModel : ViewModelBase
     public bool AddJob(BackupJob job) => _jobService.CreateJob(job);
     
     public ProcessMonitorService ProcessMonitor { get; } = ProcessMonitorService.Instance;
+    
+    public bool IsBusinessSoftwareRunning => ProcessMonitor.IsBusinessSoftwareRunning;
+    
+    /// <summary>
+    /// Refresh the business software running status for UI updates
+    /// </summary>
+    public void RefreshBusinessSoftwareStatus()
+    {
+        try
+        {
+            // Use Avalonia's dispatcher to ensure UI updates happen on the correct thread
+            Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+            {
+                OnPropertyChanged(nameof(IsBusinessSoftwareRunning));
+            });
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error refreshing business software status: {ex.Message}");
+        }
+    }
+    
     public bool DeleteJob(BackupJob job) => _jobService.DeleteJob(job); 
     
     public bool ExecuteJob(BackupJob job, IProgressionObserver? progressionObserver = null)
@@ -207,5 +247,11 @@ public partial class MainViewModel : ViewModelBase
         {
             return resultMap;
         }
+    }
+    
+    public void Dispose()
+    {
+        _businessSoftwareTimer?.Stop();
+        _businessSoftwareTimer?.Dispose();
     }
 }

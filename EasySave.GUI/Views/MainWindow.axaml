@@ -15,15 +15,16 @@
 
     <Grid RowDefinitions="Auto, Auto, Auto, *">
         
-        
+        <!-- Business software detected -->
         <Border Grid.Row="0" 
                 Background="#FF6B6B" 
                 Padding="10,8"
-                IsVisible="{Binding ProcessMonitor.IsBusinessSoftwareRunning}">
+                IsVisible="{Binding IsBusinessSoftwareRunning}"
+                Name="BusinessSoftwareNotification">
             <StackPanel Orientation="Horizontal" 
                         Spacing="10" 
                         HorizontalAlignment="Center">
-                <TextBlock Text="A software has been detected. EasySave will not execute any backup job while it is running."
+                <TextBlock Text="Business software detected. Backup execution is blocked while it is running."
                            Foreground="White" 
                            FontWeight="Bold"/>
             </StackPanel>
@@ -66,7 +67,6 @@
                 <Button Content="{x:Static ressources:Messages.execute}" 
                         Background="Transparent" 
                         BorderThickness="0"
-                        IsEnabled="{Binding !ProcessMonitor.IsBusinessSoftwareRunning}"
                         Command="{Binding ExecuteSelectedJobsCommand}"/>
                 <Button Content="{x:Static ressources:Messages._break}" Background="Transparent" BorderThickness="0"/>
                 

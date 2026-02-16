@@ -1,62 +1,42 @@
 using System.Diagnostics;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using System.Linq;
 
 namespace EasySave.Core.Service;
 
-public class ProcessMonitorService : INotifyPropertyChanged
+public class ProcessMonitorService
 {
     private static ProcessMonitorService? _instance;
-    private readonly Timer _monitorTimer;
-    private bool _isBusinessSoftwareRunning;
-    private readonly string[] _businessProcessNames = { "calc", "calculator", "Calculator" };
 
     public static ProcessMonitorService Instance => _instance ??= new ProcessMonitorService();
 
     public bool IsBusinessSoftwareRunning
     {
-        get => _isBusinessSoftwareRunning;
-        private set
+        get
         {
-            if (_isBusinessSoftwareRunning != value)
+            try
             {
-                _isBusinessSoftwareRunning = value;
-                OnPropertyChanged();
+                var processName = SettingsService.GetInstance.Settings.BusinessSoftwareProcessName;
+                if (string.IsNullOrWhiteSpace(processName)) return false;
+                
+                var processes = Process.GetProcesses();
+                var isRunning = processes.Any(p => 
+                    p.ProcessName.Contains(processName, StringComparison.OrdinalIgnoreCase));
+                
+                // Debug information
+                if (isRunning)
+                {
+                    Console.WriteLine($"[ProcessMonitor] Business software '{processName}' detected!");
+                }
+                
+                return isRunning;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ProcessMonitor] Error checking business software: {ex.Message}");
+                return false;
             }
         }
     }
 
-    private ProcessMonitorService()
-    {
-        _monitorTimer = new Timer(CheckBusinessSoftware, null, TimeSpan.Zero, TimeSpan.FromSeconds(2));
-    }
-
-    private void CheckBusinessSoftware(object? state)
-    {
-        try
-        {
-            var processes = Process.GetProcesses();
-            var isRunning = processes.Any(p => 
-                _businessProcessNames.Any(name => 
-                    p.ProcessName.Contains(name, StringComparison.OrdinalIgnoreCase)));
-            
-            IsBusinessSoftwareRunning = isRunning;
-        }
-        catch (Exception)
-        {
-            IsBusinessSoftwareRunning = false;
-        }
-    }
-
-    public event PropertyChangedEventHandler? PropertyChanged;
-
-    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-
-    public void Dispose()
-    {
-        _monitorTimer?.Dispose();
-    }
+    private ProcessMonitorService() { }
 }

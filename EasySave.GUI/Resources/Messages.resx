@@ -141,4 +141,16 @@
     <data name="browse" xml:space="preserve">
         <value>Browse</value>
     </data>
+    <data name="SoftwareTitle" xml:space="preserve">
+        <value>Software Title</value>
+    </data>
+    <data name="Software" xml:space="preserve">
+        <value>Define the process name of the business software to monitor (e.g., 'calc' for calculator)</value>
+    </data>
+    <data name="SoftwareProcessName" xml:space="preserve">
+        <value>Enter process name</value>
+    </data>
+    <data name="BusinessSoftwareDetected" xml:space="preserve">
+        <value>business software detected</value>
+    </data>
 </root>

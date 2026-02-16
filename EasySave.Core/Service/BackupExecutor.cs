@@ -1,6 +1,7 @@
 using EasySave.Core.Model;
 using EasySave.Core.Model.BackupStrategies;
 using EasyLog;
+using EasySave.Core.Resources;
 
 namespace EasySave.Core.Service;
 
@@ -11,10 +12,10 @@ public class BackupExecutor
         // Check if business software is running
         if (ProcessMonitorService.Instance.IsBusinessSoftwareRunning)
         {
-            Logger.Instance.Write($"Backup blocked for job {job.Name}: business software detected");
+            Logger.Instance.Write(new LogEntry(Errors.BackupBlocked, job, isError: true));
             return false;
         }
-        
+
         var strategy = GetStrategy(job);
         return strategy.Execute(job);
     }
@@ -25,7 +26,7 @@ public class BackupExecutor
         {
             BackupType.Full => new FullBackupStrategy(),
             BackupType.Differential => new DifferentialBackupStrategy(),
-            _ => throw new InvalidOperationException("Backup type not supported")
+            _ => throw new InvalidOperationException(Errors.UnknownBackupType)
         };
     }
 }

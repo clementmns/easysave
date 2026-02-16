@@ -90,6 +90,16 @@ namespace EasySave.Core.Service
         }
         
         /// <summary>
+        /// Set the business software process name to monitor
+        /// </summary>
+        /// <param name="processName">Process name (e.g., "calc" for calculator)</param>
+        public void SetBusinessSoftwareProcessName(string processName)
+        {
+            _settings.BusinessSoftwareProcessName = processName;
+            SaveSettings(_settings);
+        }
+        
+        /// <summary>
         /// Load or create the settings file
         /// </summary>
         /// <returns></returns>

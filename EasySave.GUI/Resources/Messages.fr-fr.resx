@@ -122,4 +122,22 @@
     <data name="browse" xml:space="preserve">
         <value>Parcourir</value>
     </data>
+    <data name="Software" xml:space="preserve">
+        <value>Définissez le nom du processus du logiciel métier à surveiller (par exemple, « calc » pour la calculatrice).</value>
+    </data>
+    <data name="SoftwareTitle" xml:space="preserve">
+        <value>Titre du logiciel</value>
+    </data>
+    <data name="SoftwareProcessName" xml:space="preserve">
+        <value>Entrer le nom du processus</value>
+    </data>
+    <data name="BackupBlocked" xml:space="preserve">
+        <value>Sauvegarde bloquée pour la tâche</value>
+    </data>
+    <data name="BusinessSoftwareDetected" xml:space="preserve">
+        <value>logiciel  détecté</value>
+    </data>
+    <data name="UnknownBackupType" xml:space="preserve">
+        <value>Type de sauvegarde non pris en charge</value>
+    </data>
 </root>

@@ -105,6 +105,15 @@ namespace EasySave.GUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to business software detected.
+        /// </summary>
+        public static string BusinessSoftwareDetected {
+            get {
+                return ResourceManager.GetString("BusinessSoftwareDetected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string cancel {
@@ -389,6 +398,33 @@ namespace EasySave.GUI.Resources {
         public static string size {
             get {
                 return ResourceManager.GetString("size", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Define the process name of the business software to monitor (e.g., &apos;calc&apos; for calculator).
+        /// </summary>
+        public static string Software {
+            get {
+                return ResourceManager.GetString("Software", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter process name.
+        /// </summary>
+        public static string SoftwareProcessName {
+            get {
+                return ResourceManager.GetString("SoftwareProcessName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Software Title.
+        /// </summary>
+        public static string SoftwareTitle {
+            get {
+                return ResourceManager.GetString("SoftwareTitle", resourceCulture);
             }
         }
         
