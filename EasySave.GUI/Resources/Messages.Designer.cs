@@ -440,5 +440,11 @@ namespace EasySave.GUI.Resources {
                 return ResourceManager.GetString("settings", resourceCulture);
             }
         }
+        
+        public static string SelectSourcePathFolder {
+            get {
+                return ResourceManager.GetString("SelectSourcePathFolder", resourceCulture);
+            }
+        }
     }
 }
