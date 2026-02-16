@@ -470,5 +470,11 @@ namespace EasySave.GUI.Resources {
                 return ResourceManager.GetString("Blocked", resourceCulture);
             }
         }
+        
+        public static string SelectSourcePathFolder {
+            get {
+                return ResourceManager.GetString("SelectSourcePathFolder", resourceCulture);
+            }
+        }
     }
 }

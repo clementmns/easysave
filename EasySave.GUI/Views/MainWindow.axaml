@@ -22,21 +22,6 @@
 
     <Grid RowDefinitions="Auto, Auto, *">
 
-        <!-- Business software detected -->
-        <Border Grid.Row="0"
-                Background="#FF6B6B"
-                Padding="10,8"
-                IsVisible="{Binding IsBusinessSoftwareRunning}"
-                Name="BusinessSoftwareNotification">
-            <StackPanel Orientation="Horizontal"
-                        Spacing="10"
-                        HorizontalAlignment="Center">
-                <TextBlock Text="{DynamicResource BusinessSoftwareDetected}"
-                           Foreground="White"
-                           FontWeight="Bold" />
-            </StackPanel>
-        </Border>
-
         <Border Grid.Row="0" Padding="16, 12, 16,20">
             <Border.Background>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">

@@ -36,7 +36,7 @@
     <data name="BackupBlocked" xml:space="preserve">
         <value>Backup blocked for job</value>
     </data>
-    <data name="UnknownBackupType" xml:space="preserve">
-        <value>Backup type not supported</value>
+    <data name="MaxJobsReached" xml:space="preserve">
+        <value />
     </data>
 </root>

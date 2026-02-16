@@ -14,7 +14,4 @@
     <data name="BackupBlocked" xml:space="preserve">
         <value>Sicherung für Auftrag blockiert</value>
     </data>
-    <data name="UnknownBackupType" xml:space="preserve">
-        <value>Backup-Typ wird nicht unterstützt</value>
-    </data>
 </root>

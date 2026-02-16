@@ -29,7 +29,7 @@ public class BackupExecutor
         {
             BackupType.Full => new FullBackupStrategy(),
             BackupType.Differential => new DifferentialBackupStrategy(),
-            _ => throw new InvalidOperationException(Errors.UnknownBackupType)
+            _ => throw new InvalidOperationException("Backup type not supported")
         };
     }
 }

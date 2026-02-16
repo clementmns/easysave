@@ -231,4 +231,7 @@
     <data name="Blocked" xml:space="preserve">
         <value>Business software detected. Backup execution is blocked while it is running.</value>
     </data>
+    <data name="SelectSourcePathFolder" xml:space="preserve">
+        <value>Select source path folder</value>
+    </data>
 </root>

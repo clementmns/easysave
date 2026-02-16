@@ -75,12 +75,6 @@ namespace EasySave.Core.Resources {
             }
         }
         
-        internal static string UnknownBackupType {
-            get {
-                return ResourceManager.GetString("UnknownBackupType", resourceCulture);
-            }
-        }
-        
         internal static string FileCantBeCrypted {
             get {
                 return ResourceManager.GetString("FileCantBeCrypted", resourceCulture);

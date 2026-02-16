@@ -81,9 +81,9 @@ namespace EasySave.Core.Resources {
             }
         }
         
-        internal static string UnknownBackupType {
+        internal static string MaxJobsReached {
             get {
-                return ResourceManager.GetString("UnknownBackupType", resourceCulture);
+                return ResourceManager.GetString("MaxJobsReached", resourceCulture);
             }
         }
     }

@@ -14,7 +14,4 @@
     <data name="BackupBlocked" xml:space="preserve">
         <value>Copia de seguridad bloqueada para el trabajo</value>
     </data>
-    <data name="UnknownBackupType" xml:space="preserve">
-        <value>Tipo de copia de seguridad no compatible</value>
-    </data>
 </root>
