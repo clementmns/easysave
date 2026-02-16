@@ -21,19 +21,19 @@
     </Window.Resources>
 
     <Grid RowDefinitions="Auto, Auto, *">
-        
+
         <!-- Business software detected -->
-        <Border Grid.Row="0" 
-                Background="#FF6B6B" 
+        <Border Grid.Row="0"
+                Background="#FF6B6B"
                 Padding="10,8"
                 IsVisible="{Binding IsBusinessSoftwareRunning}"
                 Name="BusinessSoftwareNotification">
-            <StackPanel Orientation="Horizontal" 
-                        Spacing="10" 
+            <StackPanel Orientation="Horizontal"
+                        Spacing="10"
                         HorizontalAlignment="Center">
                 <TextBlock Text="{DynamicResource BusinessSoftwareDetected}"
-                           Foreground="White" 
-                           FontWeight="Bold"/>
+                           Foreground="White"
+                           FontWeight="Bold" />
             </StackPanel>
         </Border>
 
@@ -55,6 +55,35 @@
                         <TextBlock Text="{DynamicResource easysaveSlogan}" FontSize="14" Foreground="White"
                                    Opacity="0.9" />
                     </StackPanel>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal"
+                            Spacing="8" HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            IsVisible="{Binding IsBusinessSoftwareRunning}">
+
+                    <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                        <Border Background="#FCF0E4" Padding="10,4" CornerRadius="999">
+                            <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
+                                <Grid Width="12" Height="12" ClipToBounds="True" VerticalAlignment="Center">
+                                    <Ellipse Classes="ripple" Width="6" Height="6" Fill="#E17100" VerticalAlignment="Center" />
+                                </Grid>
+                                <TextBlock Text="{DynamicResource BusinessSoftwareDetected}" Foreground="#E17100"
+                                           FontWeight="Medium" VerticalAlignment="Center" FontSize="14" />
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+
+                    <Button Classes="ghost" Foreground="White" Padding="10,8"
+                            Command="{Binding OpenSettingsDialogCommand}" CommandParameter="{Binding $parent[Window]}">
+                        <StackPanel Orientation="Horizontal" Spacing="6">
+                            <Svg Path="avares://EasySave.GUI/Assets/svg/settings.svg" Width="18" Height="18"
+                                 Css="* { stroke: #FFFFFF; }" />
+                            <TextBlock Text="{DynamicResource settings}" Foreground="White" />
+                        </StackPanel>
+                    </Button>
+
                 </StackPanel>
 
                 <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8"
