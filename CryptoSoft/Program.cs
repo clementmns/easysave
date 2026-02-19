@@ -1,25 +1,42 @@
-﻿namespace CryptoSoft;
+using System.Security.Cryptography;
+using System.Text;
+
+namespace CryptoSoft;
 
 public static class Program
 {
+    private const int TIMESTAMP_TOLERANCE_SECONDS = 5;
+    
     public static void Main(string[] args)
     {
+        var timestamp      = Environment.GetEnvironmentVariable("EASYSAVE_TIMESTAMP");
+        var signatureBase64 = Environment.GetEnvironmentVariable("EASYSAVE_SIGNATURE");
+        var publicKeyPath  = Environment.GetEnvironmentVariable("EASYSAVE_PUBLIC_KEY_PATH");
+        
+        if (string.IsNullOrEmpty(timestamp) || string.IsNullOrEmpty(signatureBase64) || string.IsNullOrEmpty(publicKeyPath))
+        {
+            Environment.Exit(-1);
+        }
+
+        if (!IsTimestampFresh(timestamp))
+        {
+            Environment.Exit(-1);
+        }
+
+        if (!IsSignatureValid(timestamp, signatureBase64, publicKeyPath))
+        {
+            Environment.Exit(-1);
+        }
+
         try
         {
             if (args.Length < 5)
             {
-                Console.WriteLine("Usage: CryptoSoft.exe <algorithm> <action> <sourcePath> <destinationPath> <key>");
-                Console.WriteLine("  algorithm: xor ou aes");
-                Console.WriteLine("  action: encrypt ou decrypt");
-                Console.WriteLine("  sourcePath: file source path");
-                Console.WriteLine("  destinationPath: directory destination path");
-                Console.WriteLine("  key: sha256 encryption key");
                 Environment.Exit(-1);
-                return;
             }
 
             var algorithmInput = args[0].ToLower();
-            var actionInput = args[1].ToLower();
+            var actionInput= args[1].ToLower();
             var sourcePath = args[2];
             var destinationPath = args[3];
             var key = args[4];
@@ -45,5 +62,29 @@ public static class Program
         {
             Environment.Exit(-99);
         }
+    }
+    
+    private static bool IsTimestampFresh(string timestamp)
+    {
+        var currentTime  = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        var receivedTime = long.Parse(timestamp);
+        return Math.Abs(currentTime - receivedTime) <= TIMESTAMP_TOLERANCE_SECONDS;
+    }
+    
+    
+    private static bool IsSignatureValid(string timestamp, string signatureBase64, string publicKeyPath)
+    {
+        if (!File.Exists(publicKeyPath))
+            return false;
+
+        var publicKeyXml = File.ReadAllText(publicKeyPath);
+
+        using var rsa = RSA.Create();
+        rsa.FromXmlString(publicKeyXml);
+
+        var data      = Encoding.UTF8.GetBytes(timestamp);
+        var signature = Convert.FromBase64String(signatureBase64);
+        
+        return rsa.VerifyData(data, signature, HashAlgorithmName.SHA256, RSASignaturePadding.Pss);
     }
 }
