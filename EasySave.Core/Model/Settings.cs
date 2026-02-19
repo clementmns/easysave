@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using EasyLog;
 
 namespace EasySave.Core.Model;
 
@@ -15,7 +16,22 @@ public class Settings
     public string Language { get; set; } = "en-US";
     
     public LogFormat LogFormat { get; set; } = LogFormat.Json;
-    
+
+    /// <summary>
+    /// Log destination: Local, Remote, or Both.
+    /// </summary>
+    public LogMode LogMode { get; set; } = LogMode.Remote;
+
+    /// <summary>
+    /// Hostname or IP of the EasyLog.Server instance.
+    /// </summary>
+    public string LogServerHost { get; set; } = "localhost";
+
+    /// <summary>
+    /// TCP port of the EasyLog.Server instance.
+    /// </summary>
+    public int LogServerPort { get; set; } = 5092;
+
     public List<string> CryptExtensions { get; set; } = []; 
     
     /// <summary>

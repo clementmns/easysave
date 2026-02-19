@@ -42,7 +42,12 @@ namespace EasySave.Core.Service
             if (_instance != null) return;
             {
                 _instance ??= new SettingsService(properties);
-                Logger.Init(properties.AppSaveDirectory, [GetLoggerStrategyFromLogFormat(_instance.Settings.LogFormat)], LogMode.Local);
+                Logger.Init(
+                    properties.AppSaveDirectory,
+                    [GetLoggerStrategyFromLogFormat(_instance.Settings.LogFormat)],
+                    _instance.Settings.LogMode,
+                    _instance.Settings.LogServerHost,
+                    _instance.Settings.LogServerPort);
             }
         }
         
@@ -73,9 +78,48 @@ namespace EasySave.Core.Service
         public void ChangeLogFormat(LogFormat format)
         {
             if (_settings.LogFormat == format) return;
-
+            _settings.LogFormat = format;
             SaveSettings(_settings);
-            Logger.ModifyStrategies([GetLoggerStrategyFromLogFormat(format)]);
+            Logger.Init(
+                _settings.AppSaveDirectory,
+                [GetLoggerStrategyFromLogFormat(format)],
+                _settings.LogMode,
+                _settings.LogServerHost,
+                _settings.LogServerPort);
+        }
+
+        /// <summary>
+        /// Change the log mode (Local, Remote or Both).
+        /// Reinitializes the logger with the current strategy and new mode.
+        /// </summary>
+        public void SetLogMode(LogMode mode)
+        {
+            if (_settings.LogMode == mode) return;
+            _settings.LogMode = mode;
+            SaveSettings(_settings);
+            Logger.Init(
+                _settings.AppSaveDirectory,
+                [GetLoggerStrategyFromLogFormat(_settings.LogFormat)],
+                _settings.LogMode,
+                _settings.LogServerHost,
+                _settings.LogServerPort);
+        }
+
+        /// <summary>
+        /// Change the remote log server address.
+        /// Reinitializes the logger with the updated connection info.
+        /// </summary>
+        public void SetLogServer(string host, int port)
+        {
+            _settings.LogServerHost = host;
+            _settings.LogServerPort = port;
+            SaveSettings(_settings);
+            Logger.Init(
+                _settings.AppSaveDirectory,
+                [GetLoggerStrategyFromLogFormat(_settings.LogFormat)],
+                _settings.LogMode,
+                _settings.LogServerHost,
+                _settings.LogServerPort);
         }
         
         /// <summary>

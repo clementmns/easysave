@@ -1,5 +1,4 @@
-﻿FROM mcr.microsoft.com/dotnet/runtime:10.0 AS base
-USER $APP_UID
+FROM mcr.microsoft.com/dotnet/runtime:10.0 AS base
 WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
@@ -18,4 +17,9 @@ RUN dotnet publish "./EasyLog.Server.csproj" -c $BUILD_CONFIGURATION -o /app/pub
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+# Create the logs directory as root and give write access to all users,
+# so the non-root runtime user can write log files even when a Docker
+# volume is mounted on /app/logs.
+RUN mkdir -p /app/logs && chmod 777 /app/logs
+USER $APP_UID
 ENTRYPOINT ["dotnet", "EasyLog.Server.dll"]

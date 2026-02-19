@@ -1,8 +1,8 @@
-﻿services:
+services:
   log-server:
     build:
-      context: ./EasySave.LogServer
-      dockerfile: dockerfile
+      context: .
+      dockerfile: EasyLog.Server/Dockerfile
     ports:
       - "5092:5092"
     volumes:
