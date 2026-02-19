@@ -1,4 +1,4 @@
-﻿namespace EasySave.LogServer;
+﻿namespace EasyLog.Server;
 
 internal static class Program
 {

@@ -17,7 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		docker-compose.yaml = docker-compose.yaml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasySave.LogServer", "EasySave.LogServer\EasySave.LogServer.csproj", "{106E1D7F-BD0E-4E0F-A31A-BA406874894D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyLog.Server", "EasyLog.Server\EasyLog.Server.csproj", "{106E1D7F-BD0E-4E0F-A31A-BA406874894D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
