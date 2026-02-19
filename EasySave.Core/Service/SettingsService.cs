@@ -1,7 +1,7 @@
 using System.Globalization;
 using System.Text.Json;
 using EasyLog;
-using EasyLog.Strategies;
+using EasyLog.LoggerStrategies;
 using EasySave.Core.Model;
 using EasySave.Core.Utils;
 
@@ -42,7 +42,7 @@ namespace EasySave.Core.Service
             if (_instance != null) return;
             {
                 _instance ??= new SettingsService(properties);
-                Logger.Init(properties.AppSaveDirectory, [GetLoggerStrategyFromLogFormat(_instance.Settings.LogFormat)]);
+                Logger.Init(properties.AppSaveDirectory, [GetLoggerStrategyFromLogFormat(_instance.Settings.LogFormat)], LogMode.Local);
             }
         }
         

@@ -8,5 +8,7 @@ public interface ILoggerStrategy
     /// <param name="logEntry">Log content</param>
     /// <param name="fullPath">Log file path</param>
     /// <typeparam name="T">Object to log</typeparam>
-    void Write<T>(T logEntry, string fullPath);
+    void LocalWrite<T>(T logEntry, string fullPath);
+    
+    void RemoteWrite<T>(T logEntry);
 }

@@ -9,6 +9,8 @@ public class Logger
     
     private List<ILoggerStrategy> _strategies = [];
     
+    private LogMode _logMode = LogMode.Local;
+    
     private string? _logFilePath;
 
     /// <summary>
@@ -22,13 +24,25 @@ public class Logger
     /// </summary>
     /// <param name="appSaveDirectory">Name of the application</param>
     /// <param name="strategies">List of logging strategies</param>
-    public static void Init(string appSaveDirectory, List<ILoggerStrategy> strategies)
+    /// <param name="logMode">Log mode</param>
+    public static void Init(string appSaveDirectory, List<ILoggerStrategy> strategies, LogMode? logMode)
     {
         _instance ??= new Logger();
         _instance._strategies = strategies;
-        _instance._logFilePath = Path.Combine(appSaveDirectory, "Logs");
+        _instance._logMode = logMode ?? LogMode.Local;
 
-        if (!Directory.Exists(_instance._logFilePath)) Directory.CreateDirectory(_instance._logFilePath);
+        switch (_instance._logMode)
+        {
+            case LogMode.Both :
+            case LogMode.Local:
+            default:
+                _instance._logFilePath = Path.Combine(appSaveDirectory, "Logs");
+                if (!Directory.Exists(_instance._logFilePath)) Directory.CreateDirectory(_instance._logFilePath);
+                break;
+            case LogMode.Remote:
+                // Create socket connection with remote server
+                break;
+        }
     }
 
     /// <summary>
@@ -49,11 +63,20 @@ public class Logger
     /// <typeparam name="T">Object to log</typeparam>
     public void Write<T>(T logEntry)
     {
-        if (_strategies.Count == 0 || _logFilePath is null) return;
+        if (_strategies.Count == 0) return;
+
+        switch (_logMode)
+        {
+            case LogMode.Local:
+            case LogMode.Both:
+                var fileName = $"{DateTime.Now:yyyy-MM-dd}";
+                var fullPath = Path.Combine(_logFilePath, fileName);
         
-        var fileName = $"{DateTime.Now:yyyy-MM-dd}";
-        var fullPath = Path.Combine(_logFilePath, fileName);
+                foreach (var strategy in _strategies) strategy.LocalWrite(logEntry, fullPath);
+                break;
+            case LogMode.Remote: break;
+        }
         
-        foreach (var strategy in _strategies) strategy.Write(logEntry, fullPath);
+        
     }
 }
