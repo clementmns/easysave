@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace EasyLog;
 
 /// <summary>
@@ -13,8 +15,8 @@ public class Logger
 
     private string? _logFilePath;
 
-    private string _remoteHost = "localhost";
-    private int _remotePort = 5092;
+    private string? _remoteHost;
+    private int? _remotePort;
 
     /// <summary>
     /// Get the singleton instance of the logger.
@@ -27,28 +29,34 @@ public class Logger
     /// </summary>
     /// <param name="appSaveDirectory">Directory where local log files are stored.</param>
     /// <param name="strategies">List of logging strategies.</param>
-    /// <param name="logMode">Log mode (Local, Remote or Both).</param>
+    /// <param name="logMode">Log mode (Local, Remote, or Both).</param>
     /// <param name="remoteHost">Remote server hostname or IP (used for Remote/Both modes).</param>
     /// <param name="remotePort">Remote server port (used for Remote/Both modes).</param>
     public static void Init(
         string appSaveDirectory,
         List<ILoggerStrategy> strategies,
-        LogMode? logMode = null,
-        string remoteHost = "localhost",
-        int remotePort = 5092)
+        LogMode? logMode, 
+        string? remoteHost,
+        int? remotePort)
     {
         _instance ??= new Logger();
         _instance._strategies = strategies;
         _instance._logMode = logMode ?? LogMode.Local;
-        _instance._remoteHost = remoteHost;
-        _instance._remotePort = remotePort;
+        
+        if (logMode is LogMode.Remote or LogMode.Both && (remoteHost is null || remotePort is null))
+            throw new ArgumentException("Remote host and port must be provided for Remote or Both log modes.");
 
-        if (_instance._logMode is LogMode.Local or LogMode.Both)
+        if (logMode is LogMode.Remote or LogMode.Both)
         {
-            _instance._logFilePath = Path.Combine(appSaveDirectory, "Logs");
-            if (!Directory.Exists(_instance._logFilePath))
-                Directory.CreateDirectory(_instance._logFilePath);
+            _instance._remoteHost = remoteHost;
+            _instance._remotePort = remotePort;
         }
+
+        if (_instance._logMode is not (LogMode.Local or LogMode.Both)) return;
+        
+        _instance._logFilePath = Path.Combine(appSaveDirectory, "Logs");
+        if (!Directory.Exists(_instance._logFilePath))
+            Directory.CreateDirectory(_instance._logFilePath);
     }
 
     /// <summary>
@@ -59,26 +67,23 @@ public class Logger
     public void Write<T>(T logEntry)
     {
         if (_strategies.Count == 0) return;
-
-        var fileName = $"{DateTime.Now:yyyy-MM-dd}";
-
         foreach (var strategy in _strategies)
         {
             if (_logMode is LogMode.Local or LogMode.Both)
             {
+                var fileName = $"{DateTime.Now:yyyy-MM-dd}";
                 var fullPath = Path.Combine(_logFilePath!, fileName);
                 strategy.LocalWrite(logEntry, fullPath);
             }
-
-            if (_logMode is LogMode.Remote or LogMode.Both)
-            {
+            else {
+                if (_remoteHost is null || _remotePort is null) return;
                 try
                 {
-                    strategy.RemoteWrite(logEntry, _remoteHost, _remotePort);
+                    strategy.RemoteWrite(logEntry, _remoteHost, _remotePort.Value);
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine($"[EasyLog] Remote write failed: {ex.Message}");
+                    Debug.WriteLine($"[EasyLog] Remote write failed: {ex.Message}");
                 }
             }
         }

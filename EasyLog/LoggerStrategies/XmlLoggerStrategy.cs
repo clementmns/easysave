@@ -1,5 +1,6 @@
 using System.Net.Sockets;
 using System.Text;
+using System.Text.Json;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -10,8 +11,6 @@ namespace EasyLog.LoggerStrategies;
 /// </summary>
 public class XmlLoggerStrategy : ILoggerStrategy
 {
-    public string Extension => "xml";
-
     private static readonly XmlWriterSettings CachedOptions = new()
     {
         Indent = true,
@@ -36,9 +35,6 @@ public class XmlLoggerStrategy : ILoggerStrategy
         }
     }
 
-    /// <summary>
-    /// Protocol: "xml\n{payload}"
-    /// </summary>
     public void RemoteWrite<T>(T logEntry, string host, int port)
     {
         var xmlSerializer = new XmlSerializer(typeof(T));
@@ -47,11 +43,17 @@ public class XmlLoggerStrategy : ILoggerStrategy
         using (var xmlWriter = XmlWriter.Create(writer, CachedOptions))
             xmlSerializer.Serialize(xmlWriter, logEntry);
 
-        var payload = Extension + "\n" + Encoding.UTF8.GetString(memStream.ToArray());
+        var envelope = new RemoteLogEntry
+        {
+            Format  = "xml",
+            Content = Encoding.UTF8.GetString(memStream.ToArray())
+        };
+
+        var message = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(envelope));
 
         using var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         socket.Connect(host, port);
-        socket.Send(Encoding.UTF8.GetBytes(payload));
+        socket.Send(message);
         socket.Shutdown(SocketShutdown.Both);
     }
 }

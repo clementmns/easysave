@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.Json;
 
 namespace EasyLog.Server;
 
@@ -9,8 +10,8 @@ internal static class Program
     private const int Port = 5092;
     private const string LogDirectory = "logs";
 
-    private static readonly object JsonLock = new();
-    private static readonly object XmlLock  = new();
+    private static readonly Lock DefaultLock = new();
+    private static readonly Dictionary<string, object> FileLocks = new();
 
     static async Task Main(string[] args)
     {
@@ -45,19 +46,15 @@ internal static class Program
             while ((n = client.Receive(buffer)) > 0)
                 memStream.Write(buffer, 0, n);
 
-            var message = Encoding.UTF8.GetString(memStream.ToArray());
-            if (string.IsNullOrWhiteSpace(message)) return;
+            var raw = Encoding.UTF8.GetString(memStream.ToArray());
+            if (string.IsNullOrWhiteSpace(raw)) return;
 
-            // First line = extension, rest = payload
-            var newlineIndex = message.IndexOf('\n');
-            if (newlineIndex < 0) return;
+            var entry = JsonSerializer.Deserialize<RemoteLogEntry>(raw);
+            if (entry is null) return;
 
-            var extension = message[..newlineIndex].Trim();
-            var content   = message[(newlineIndex + 1)..];
+            AppendToLog(entry.Content, entry.Format);
 
-            AppendToLog(content, extension);
-
-            Console.WriteLine($"[INFO] - Wrote {content.Length} bytes (format={extension}) from {endpoint}");
+            Console.WriteLine($"[INFO] - Wrote {entry.Content.Length} bytes (format={entry.Format}) from {endpoint}");
         }
         catch (SocketException ex)
         {
@@ -75,11 +72,25 @@ internal static class Program
         }
     }
 
-    private static void AppendToLog(string content, string extension)
+    private static void AppendToLog(string content, string format)
     {
-        var fileLock = extension == "xml" ? XmlLock : JsonLock;
-        var filePath = Path.Combine(LogDirectory, DateTime.Now.ToString("yyyy-MM-dd") + "." + extension);
+        var fileLock = GetFileLock(format);
+        var filePath = Path.Combine(LogDirectory, DateTime.Now.ToString("yyyy-MM-dd") + "." + format);
 
         lock (fileLock) File.AppendAllText(filePath, content + Environment.NewLine, Encoding.UTF8);
+    }
+
+    /// <summary>
+    /// Returns a per-format lock, creating one on first use.
+    /// Any new format (csv, YAML, ...) is handled automatically.
+    /// </summary>
+    private static object GetFileLock(string format)
+    {
+        lock (DefaultLock)
+        {
+            if (!FileLocks.TryGetValue(format, out var fileLock))
+                FileLocks[format] = fileLock = new object();
+            return fileLock;
+        }
     }
 }
