@@ -1,22 +1,19 @@
-using System.Diagnostics;
+using System.Net.Sockets;
 
 namespace EasyLog;
 
 /// <summary>
 /// Singleton Logger class for logging messages using different strategies.
 /// </summary>
-public class Logger
+public class Logger : IDisposable
 {
     private static Logger? _instance;
-
     private List<ILoggerStrategy> _strategies = [];
 
     private LogMode _logMode = LogMode.Local;
-
     private string? _logFilePath;
 
-    private string? _remoteHost;
-    private int? _remotePort;
+    private Socket? _socket;
 
     /// <summary>
     /// Get the singleton instance of the logger.
@@ -42,15 +39,14 @@ public class Logger
         _instance ??= new Logger();
         _instance._strategies = strategies;
         _instance._logMode = logMode ?? LogMode.Local;
-        
-        if (logMode is LogMode.Remote or LogMode.Both && (remoteHost is null || remotePort is null))
-            throw new ArgumentException("Remote host and port must be provided for Remote or Both log modes.");
 
-        if (logMode is LogMode.Remote or LogMode.Both)
+        _instance._socket = logMode switch
         {
-            _instance._remoteHost = remoteHost;
-            _instance._remotePort = remotePort;
-        }
+            LogMode.Remote or LogMode.Both when (remoteHost is null || remotePort is null) => throw
+                new ArgumentException("Remote host and port must be provided for Remote or Both log modes."),
+            LogMode.Remote or LogMode.Both => InitRemoteConnection(remoteHost, remotePort.Value),
+            _ => _instance._socket
+        };
 
         if (_instance._logMode is not (LogMode.Local or LogMode.Both)) return;
         
@@ -67,25 +63,35 @@ public class Logger
     public void Write<T>(T logEntry)
     {
         if (_strategies.Count == 0) return;
+
+        var filePath = _logMode is LogMode.Local or LogMode.Both 
+            ? Path.Combine(_logFilePath!, DateTime.Now.ToString("yyyy-MM-dd")) 
+            : null;
+
         foreach (var strategy in _strategies)
         {
-            if (_logMode is LogMode.Local or LogMode.Both)
-            {
-                var fileName = $"{DateTime.Now:yyyy-MM-dd}";
-                var fullPath = Path.Combine(_logFilePath!, fileName);
-                strategy.LocalWrite(logEntry, fullPath);
-            }
-            else {
-                if (_remoteHost is null || _remotePort is null) return;
-                try
-                {
-                    strategy.RemoteWrite(logEntry, _remoteHost, _remotePort.Value);
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine($"[EasyLog] Remote write failed: {ex.Message}");
-                }
-            }
+            if (filePath is not null)
+                strategy.LocalWrite(logEntry, filePath);
+
+            if (_logMode is LogMode.Remote or LogMode.Both)
+                strategy.RemoteWrite(logEntry, GetSocket());
         }
     }
+
+    private Socket GetSocket()
+    {
+        return _socket ?? throw new InvalidOperationException("Socket not initialized. Call Logger.Init() with remote configuration first.");
+    }
+
+    private static Socket InitRemoteConnection(string host, int port)
+    {
+        var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        socket.NoDelay = true;
+        socket.Connect(host, port);
+        return socket;
+    }
+
+    private static void CloseRemoteConnection(Socket? socket = null) =>socket?.Shutdown(SocketShutdown.Both);
+    
+    public void Dispose() => CloseRemoteConnection(_socket);
 }

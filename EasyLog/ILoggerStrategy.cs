@@ -1,3 +1,5 @@
+using System.Net.Sockets;
+
 namespace EasyLog;
 
 public interface ILoggerStrategy
@@ -10,5 +12,5 @@ public interface ILoggerStrategy
     /// <summary>
     /// Wraps the serialized entry in a <see cref="RemoteLogEntry"/> envelope and sends it as format.
     /// </summary>
-    void RemoteWrite<T>(T logEntry, string host, int port);
+    void RemoteWrite<T>(T logEntry, Socket socket);
 }

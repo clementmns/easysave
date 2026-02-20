@@ -24,19 +24,15 @@ public class JsonLoggerStrategy : ILoggerStrategy
         }
     }
 
-    public void RemoteWrite<T>(T logEntry, string host, int port)
+    public void RemoteWrite<T>(T logEntry, Socket socket)
     {
         var envelope = new RemoteLogEntry
         {
             Format  = "json",
             Content = JsonSerializer.Serialize(logEntry, CachedOptions)
         };
-
+        
         var message = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(envelope));
-
-        using var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-        socket.Connect(host, port);
         socket.Send(message);
-        socket.Shutdown(SocketShutdown.Both);
     }
 }

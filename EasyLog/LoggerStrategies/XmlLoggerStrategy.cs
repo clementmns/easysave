@@ -35,7 +35,7 @@ public class XmlLoggerStrategy : ILoggerStrategy
         }
     }
 
-    public void RemoteWrite<T>(T logEntry, string host, int port)
+    public void RemoteWrite<T>(T logEntry, Socket socket)
     {
         var xmlSerializer = new XmlSerializer(typeof(T));
         using var memStream = new MemoryStream();
@@ -48,12 +48,8 @@ public class XmlLoggerStrategy : ILoggerStrategy
             Format  = "xml",
             Content = Encoding.UTF8.GetString(memStream.ToArray())
         };
-
+        
         var message = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(envelope));
-
-        using var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-        socket.Connect(host, port);
         socket.Send(message);
-        socket.Shutdown(SocketShutdown.Both);
     }
 }

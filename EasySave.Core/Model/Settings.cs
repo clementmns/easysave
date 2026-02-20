@@ -20,7 +20,7 @@ public class Settings
     /// <summary>
     /// Log destination: Local, Remote, or Both.
     /// </summary>
-    public LogMode LogMode { get; set; } = LogMode.Remote;
+    public LogMode LogMode { get; set; } = LogMode.Local;
 
     /// <summary>
     /// Hostname or IP of the EasyLog.Server instance.

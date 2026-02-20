@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -7,28 +8,40 @@ namespace EasyLog.Server;
 
 internal static class Program
 {
+    private const int MaxConnections = 10;
     private const int Port = 5092;
     private const string LogDirectory = "logs";
 
-    private static readonly Lock DefaultLock = new();
-    private static readonly Dictionary<string, object> FileLocks = new();
-
-    static async Task Main(string[] args)
+    private static readonly ConcurrentDictionary<string, object> FileLocks = new();
+    
+    private static void Main(string[] args)
     {
         Directory.CreateDirectory(LogDirectory);
 
         var serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         serverSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-        serverSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Linger, new LingerOption(true, 0));
         serverSocket.Bind(new IPEndPoint(IPAddress.Any, Port));
         serverSocket.Listen(128);
 
         Console.WriteLine($"[INFO] - Listening on port {Port}");
 
+        var semaphore = new SemaphoreSlim(MaxConnections);
         while (true)
         {
-            var client = await Task.Run(() => serverSocket.Accept());
-            _ = Task.Run(() => HandleClient(client));
+            var client = serverSocket.Accept();
+            semaphore.Wait();
+
+            Task.Run(() =>
+            {
+                try
+                {
+                    HandleClient(client);
+                }
+                finally
+                {
+                    semaphore.Release();
+                }
+            });
         }
     }
 
@@ -39,36 +52,49 @@ internal static class Program
 
         try
         {
-            // Read until EOF
-            using var memStream = new MemoryStream();
+            var pendingData = new List<byte>();
             var buffer = new byte[4096];
-            int n;
-            while ((n = client.Receive(buffer)) > 0)
-                memStream.Write(buffer, 0, n);
 
-            var raw = Encoding.UTF8.GetString(memStream.ToArray());
-            if (string.IsNullOrWhiteSpace(raw)) return;
-
-            var entry = JsonSerializer.Deserialize<RemoteLogEntry>(raw);
-            if (entry is null) return;
-
-            AppendToLog(entry.Content, entry.Format);
-
-            Console.WriteLine($"[INFO] - Wrote {entry.Content.Length} bytes (format={entry.Format}) from {endpoint}");
+            int bytesRead;
+            while ((bytesRead = client.Receive(buffer)) > 0)
+            {
+                pendingData.AddRange(buffer.Take(bytesRead));
+                ProcessPendingData(pendingData, endpoint);
+            }
         }
         catch (SocketException ex)
         {
             Console.WriteLine($"[ERROR] - Socket error from {endpoint}: {ex.Message}");
         }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"[ERROR] - Error handling client {endpoint}: {ex.Message}");
-        }
         finally
         {
-            try { client.Shutdown(SocketShutdown.Both); } catch { /* ignore */ }
             client.Close();
             Console.WriteLine($"[INFO] - Client disconnected: {endpoint}");
+        }
+    }
+
+    private static void ProcessPendingData(List<byte> pendingData, string endpoint)
+    {
+        while (pendingData.Count > 0)
+        {
+            var reader = new Utf8JsonReader(pendingData.ToArray(), isFinalBlock: false, state: default);
+
+            if (!reader.Read() || reader.TokenType != JsonTokenType.StartObject)
+                return;
+
+            try
+            {
+                var entry = JsonSerializer.Deserialize<RemoteLogEntry>(ref reader);
+                if (entry is null) return;
+
+                AppendToLog(entry.Content, entry.Format);
+                Console.WriteLine($"[INFO] - Wrote {entry.Content.Length} bytes (format={entry.Format}) from {endpoint}");
+                pendingData.RemoveRange(0, (int)reader.BytesConsumed);
+            }
+            catch (JsonException)
+            {
+                return;
+            }
         }
     }
 
@@ -80,17 +106,6 @@ internal static class Program
         lock (fileLock) File.AppendAllText(filePath, content + Environment.NewLine, Encoding.UTF8);
     }
 
-    /// <summary>
-    /// Returns a per-format lock, creating one on first use.
-    /// Any new format (csv, YAML, ...) is handled automatically.
-    /// </summary>
-    private static object GetFileLock(string format)
-    {
-        lock (DefaultLock)
-        {
-            if (!FileLocks.TryGetValue(format, out var fileLock))
-                FileLocks[format] = fileLock = new object();
-            return fileLock;
-        }
-    }
+    private static object GetFileLock(string format) => 
+        FileLocks.GetOrAdd(format, _ => new object());
 }
