@@ -83,12 +83,21 @@ public class Logger : IDisposable
         return _socket ?? throw new InvalidOperationException("Socket not initialized. Call Logger.Init() with remote configuration first.");
     }
 
-    private static Socket InitRemoteConnection(string host, int port)
+    private static Socket? InitRemoteConnection(string host, int port)
     {
-        var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-        socket.NoDelay = true;
-        socket.Connect(host, port);
-        return socket;
+        try
+        {
+            var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            socket.NoDelay = true;
+            socket.Connect(host, port);
+            return socket;
+        }
+        catch (Exception e)
+        {
+            _instance?._logMode = LogMode.Local;
+            Console.WriteLine($"[ERROR] - Failed to connect to remote server: {e.Message}");
+            return null;
+        }
     }
 
     private static void CloseRemoteConnection(Socket? socket = null) =>socket?.Shutdown(SocketShutdown.Both);
