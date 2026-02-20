@@ -48,8 +48,6 @@ public class Logger : IDisposable
             _ => _instance._socket
         };
 
-        if (_instance._logMode is not (LogMode.Local or LogMode.Both)) return;
-        
         _instance._logFilePath = Path.Combine(appSaveDirectory, "Logs");
         if (!Directory.Exists(_instance._logFilePath))
             Directory.CreateDirectory(_instance._logFilePath);
