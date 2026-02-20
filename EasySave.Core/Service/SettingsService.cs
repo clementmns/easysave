@@ -164,23 +164,20 @@ public class SettingsService
         {
             var json = File.ReadAllText(_settingsFilePath);
             var settings = JsonSerializer.Deserialize<Settings>(json, JsonOptions);
-            if (settings != null)
+            if (settings == null) return CreateDefaultSettings();
+            if (settings.Version == GetAppVersion())
             {
-                if (settings.Version == GetAppVersion())
-                {
-                    ApplyCulture(settings.Language);
-                    return settings;
-                }
-                var newSettings = CreateDefaultSettings();
-                SaveSettings(newSettings);
-                return newSettings;
+                ApplyCulture(settings.Language);
+                return settings;
             }
+            var newSettings = CreateDefaultSettings();
+            SaveSettings(newSettings);
+            return newSettings;
         }
         catch
         {
-            throw new Exception();
+            return CreateDefaultSettings();
         }
-        return CreateDefaultSettings();
     }
 
     /// <summary>
