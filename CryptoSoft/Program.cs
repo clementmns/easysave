@@ -1,5 +1,6 @@
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 
 namespace CryptoSoft;
 
@@ -8,8 +9,19 @@ public static class Program
     private const int TIMESTAMP_TOLERANCE_SECONDS = 2;
     private const string KEY = "953cce052755512752a654d330a506ad4296aff67219bb7f706fb50f878268f0";
     
+    private static string MutexName = $"Global\\CryptoSoft_MonoInstance\\{typeof(Program).Assembly.GetType().GUID}";
+
     public static void Main(string[] args)
     {
+        using var mutex = new Mutex(initiallyOwned: true, MutexName, out var createdNew);
+        if (!createdNew)
+        {
+            if (!mutex.WaitOne(TimeSpan.Zero, false))
+            {
+                // Another instance of CryptoSoft is already running
+                Environment.Exit(-2);
+            }
+        }
         var timestamp = Environment.GetEnvironmentVariable("EASYSAVE_TIMESTAMP");
         var signatureBase64 = Environment.GetEnvironmentVariable("EASYSAVE_SIGNATURE");
         var publicKeyPath = Environment.GetEnvironmentVariable("EASYSAVE_PUBLIC_KEY_PATH");
@@ -47,7 +59,7 @@ public static class Program
                 "aes" => CryptoAlgorithm.Aes,
                 _ => throw new ArgumentException("Invalid algorithm. Use 'xor' or 'aes'.")
             };
-            
+
             var isEncryption = actionInput switch
             {
                 "encrypt" => true,
@@ -61,6 +73,10 @@ public static class Program
         catch (Exception)
         {
             Environment.Exit(-99);
+        }
+        finally
+        {
+            if (createdNew) mutex.ReleaseMutex();
         }
     }
     
