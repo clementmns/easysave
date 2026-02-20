@@ -94,9 +94,11 @@ public partial class MainViewModel : ViewModelBase, IProgressionObserver, IDispo
     [RelayCommand]
     public async Task ExecuteSelectedJobs()
     {
-        if (SelectedJobs.Count == 0) return;
-        RefreshBusinessSoftwareStatus();
-        foreach (var job in SelectedJobs.ToList())  await ExecuteJob(job, this);
+        var tasks = SelectedJobs
+            .ToList()
+            .Select(job => ExecuteJob(job, this));
+
+        await Task.WhenAll(tasks);
     }
     
     [RelayCommand]
@@ -105,8 +107,11 @@ public partial class MainViewModel : ViewModelBase, IProgressionObserver, IDispo
     [RelayCommand]
     public async Task ExecuteAllJobs()
     {
-        if (Jobs == null) return;
-        foreach (var job in Jobs.ToList()) await ExecuteJob(job, this);
+        var tasks = Jobs
+            .ToList()
+            .Select(job => ExecuteJob(job, this));
+
+        await Task.WhenAll(tasks);
     }
 
     [RelayCommand]

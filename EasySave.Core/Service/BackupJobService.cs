@@ -12,6 +12,7 @@ public class BackupJobService : IRealTimeStateObserver
     public ObservableCollection<BackupJob>? Jobs { get; set; }
     
     private string _stateFilePath { get; set; }
+    private readonly object _lock = new();
     
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
@@ -27,6 +28,16 @@ public class BackupJobService : IRealTimeStateObserver
         _stateFilePath = Path.Combine(appSaveDirectory, "state.json");
         Jobs = LoadJobs();
         SubscribeToJobStates();
+    }
+
+    public async Task<Dictionary<BackupJob, bool>> ExecuteJobAsync(IEnumerable<BackupJob> jobs, IProgressionObserver? progressionObserver = null)
+    {
+        var tasks = jobs.Select(job => ExecuteJobAsync(job, progressionObserver)
+            .ContinueWith(t => (job, success: t.Result)))
+            .ToList();
+        
+        var results = await Task.WhenAll(tasks);
+        return results.ToDictionary(r => r.job, r => r.success);
     }
     
     public async Task<bool> ExecuteJobAsync(BackupJob job, IProgressionObserver? progressionObserver = null)
@@ -75,11 +86,14 @@ public class BackupJobService : IRealTimeStateObserver
         Logger.Instance.Write(new LogEntry("Going to create job", job));
         try
         {
-            Jobs?.Add(job);
-            job.State.AttachStateObserver(this);
-            if (Jobs != null) SaveJobs(Jobs);
-            Logger.Instance.Write(new LogEntry("Job created", job));
-            return true;
+            lock (_lock)
+            {
+                Jobs?.Add(job);
+                job.State.AttachStateObserver(this);
+                if (Jobs != null) SaveJobs(Jobs);
+                Logger.Instance.Write(new LogEntry("Job created", job));
+                return true; 
+            }
         }
         catch (Exception)
         {
@@ -93,11 +107,14 @@ public class BackupJobService : IRealTimeStateObserver
         Logger.Instance.Write(new LogEntry("Going to delete job", job));
         try
         {
-            RemoveStateSubscription(job);
-            Jobs?.Remove(job);
-            if (Jobs != null) SaveJobs(Jobs);
-            Logger.Instance.Write(new LogEntry("Job deleted", job));
-            return true;
+            lock (_lock)
+            {
+                RemoveStateSubscription(job);
+                Jobs?.Remove(job);
+                if (Jobs != null) SaveJobs(Jobs);
+                Logger.Instance.Write(new LogEntry("Job deleted", job));
+                return true;
+            }
         }
         catch (Exception)
         {
@@ -108,35 +125,38 @@ public class BackupJobService : IRealTimeStateObserver
 
     public void UpdateJob(BackupJob job)
     {
-        Logger.Instance.Write(new LogEntry("Going to update job", job));
-        try
+        lock (_lock)
         {
-            if (Jobs == null) return;
+            Logger.Instance.Write(new LogEntry("Going to update job", job));
+            try
+            {
+                if (Jobs == null) return;
 
-            var existingJob = Jobs.FirstOrDefault(j => j.Id == job.Id);
-            if (existingJob == null)
-            {
-                job.State.AttachStateObserver(this);
-                Jobs.Add(job);
+                var existingJob = Jobs.FirstOrDefault(j => j.Id == job.Id);
+                if (existingJob == null)
+                {
+                    job.State.AttachStateObserver(this);
+                    Jobs.Add(job);
+                }
+                else
+                {
+                    existingJob.Name = job.Name;
+                    existingJob.SourcePath = job.SourcePath;
+                    existingJob.DestinationPath = job.DestinationPath;
+                    existingJob.Type = job.Type;
+                    existingJob.State = job.State;
+                }
+                if (Jobs != null) SaveJobs(Jobs);
+                Logger.Instance.Write(new LogEntry("Job updated", job));
             }
-            else
+            catch (Exception)
             {
-                existingJob.Name = job.Name;
-                existingJob.SourcePath = job.SourcePath;
-                existingJob.DestinationPath = job.DestinationPath;
-                existingJob.Type = job.Type;
-                existingJob.State = job.State;
+                Logger.Instance.Write(new LogEntry("Failed to update job", job, true));
+                throw;
             }
-            if (Jobs != null) SaveJobs(Jobs);
-            Logger.Instance.Write(new LogEntry("Job updated", job));
-        }
-        catch (Exception)
-        {
-            Logger.Instance.Write(new LogEntry("Failed to update job", job, true));
-            throw;
         }
     }
-
+    
     private ObservableCollection<BackupJob>? LoadJobs()
     {
         if (!File.Exists(_stateFilePath)) SaveJobs([]);
@@ -150,9 +170,9 @@ public class BackupJobService : IRealTimeStateObserver
 
     private void SaveJobs(ObservableCollection<BackupJob> jobs)
     {
-        var orderedJobs = jobs.OrderBy(j => j.Id).ToList();
-        var json = JsonSerializer.Serialize(orderedJobs, JsonOptions);
-        File.WriteAllText(_stateFilePath, json);
+            var orderedJobs = jobs.OrderBy(j => j.Id).ToList();
+            var json = JsonSerializer.Serialize(orderedJobs, JsonOptions);
+            File.WriteAllText(_stateFilePath, json);
     }
 
     private void SubscribeToJobStates()
@@ -168,6 +188,9 @@ public class BackupJobService : IRealTimeStateObserver
 
     public void OnStateUpdated(RealTimeState state)
     {
-        if (Jobs != null) SaveJobs(Jobs);
+        lock (_lock)
+        { 
+            if (Jobs != null) SaveJobs(Jobs);
+        }
     }
 }
