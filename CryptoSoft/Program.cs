@@ -5,13 +5,14 @@ namespace CryptoSoft;
 
 public static class Program
 {
-    private const int TIMESTAMP_TOLERANCE_SECONDS = 5;
+    private const int TIMESTAMP_TOLERANCE_SECONDS = 2;
+    private const string KEY = "953cce052755512752a654d330a506ad4296aff67219bb7f706fb50f878268f0";
     
     public static void Main(string[] args)
     {
-        var timestamp      = Environment.GetEnvironmentVariable("EASYSAVE_TIMESTAMP");
+        var timestamp = Environment.GetEnvironmentVariable("EASYSAVE_TIMESTAMP");
         var signatureBase64 = Environment.GetEnvironmentVariable("EASYSAVE_SIGNATURE");
-        var publicKeyPath  = Environment.GetEnvironmentVariable("EASYSAVE_PUBLIC_KEY_PATH");
+        var publicKeyPath = Environment.GetEnvironmentVariable("EASYSAVE_PUBLIC_KEY_PATH");
         
         if (string.IsNullOrEmpty(timestamp) || string.IsNullOrEmpty(signatureBase64) || string.IsNullOrEmpty(publicKeyPath))
         {
@@ -30,7 +31,7 @@ public static class Program
 
         try
         {
-            if (args.Length < 5)
+            if (args.Length < 4)
             {
                 Environment.Exit(-1);
             }
@@ -39,7 +40,6 @@ public static class Program
             var actionInput= args[1].ToLower();
             var sourcePath = args[2];
             var destinationPath = args[3];
-            var key = args[4];
 
             var algorithm = algorithmInput switch
             {
@@ -55,7 +55,7 @@ public static class Program
                 _ => throw new ArgumentException("Invalid action. Use 'encrypt' or 'decrypt'.")
             };
 
-            var fileManager = new FileManager(sourcePath, destinationPath, key, algorithm, isEncryption);
+            var fileManager = new FileManager(sourcePath, destinationPath, KEY, algorithm, isEncryption);
             fileManager.TransformFile();
         }
         catch (Exception)
@@ -70,7 +70,6 @@ public static class Program
         var receivedTime = long.Parse(timestamp);
         return Math.Abs(currentTime - receivedTime) <= TIMESTAMP_TOLERANCE_SECONDS;
     }
-    
     
     private static bool IsSignatureValid(string timestamp, string signatureBase64, string publicKeyPath)
     {

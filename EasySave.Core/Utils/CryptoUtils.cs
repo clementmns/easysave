@@ -10,7 +10,6 @@ namespace EasySave.Core.Utils;
 public static class CryptoUtils
 {
     private const string CRYPTO_EXE_NAME = @"CryptoSoft.exe";
-    private const string DEFAULT_KEY = "dda272ea2cc4fe8774d834acc05f78149ab55ac0e32804377b1c06b1d4ba1e39"; // hash of "EasySaveCore"
     private const string DEFAULT_ALGORITHM = "xor";
     private const string ENCRYPT_EXTENSION = ".lock";
 
@@ -60,7 +59,7 @@ public static class CryptoUtils
         }
     }
 
-    public static (bool, long) EncryptFile(string sourcePath, string destinationPath, string? sourceRoot = null, string key = DEFAULT_KEY, string algorithm = DEFAULT_ALGORITHM)
+    public static (bool, long) EncryptFile(string sourcePath, string destinationPath, string? sourceRoot = null, string algorithm = DEFAULT_ALGORITHM)
     {
         var stopwatch = new Stopwatch();
         stopwatch.Start();
@@ -74,7 +73,7 @@ public static class CryptoUtils
         
         var destFile = destinationPath + ENCRYPT_EXTENSION;
 
-        var result = ExecuteCryptoCommand(algorithm, "encrypt", sourcePath, destFile, key);
+        var result = ExecuteCryptoCommand(algorithm, "encrypt", sourcePath, destFile);
         
         stopwatch.Stop();
 
@@ -82,12 +81,12 @@ public static class CryptoUtils
         return (result, ms);
     }
 
-    public static bool DecryptFile(string sourcePath, string destinationPath, string key = DEFAULT_KEY, string algorithm = DEFAULT_ALGORITHM)
+    public static bool DecryptFile(string sourcePath, string destinationPath, string algorithm = DEFAULT_ALGORITHM)
     {
-        return ExecuteCryptoCommand(algorithm, "decrypt", sourcePath, destinationPath, key);
+        return ExecuteCryptoCommand(algorithm, "decrypt", sourcePath, destinationPath);
     }
 
-    private static bool ExecuteCryptoCommand(string algorithm, string action, string sourcePath, string destinationPath, string key)
+    private static bool ExecuteCryptoCommand(string algorithm, string action, string sourcePath, string destinationPath)
     {
         try
         {
@@ -103,7 +102,7 @@ public static class CryptoUtils
             var processInfo = new ProcessStartInfo
             {
                 FileName = cryptoExePath,
-                Arguments = $"{algorithm} {action} \"{sourcePath}\" \"{destinationPath}\" \"{key}\"",
+                Arguments = $"{algorithm} {action} \"{sourcePath}\" \"{destinationPath}\"",
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
