@@ -13,6 +13,9 @@ public class BackupJobService : IRealTimeStateObserver
     
     private string _stateFilePath { get; set; }
     private readonly object _lock = new();
+    private readonly System.Timers.Timer _saveDebounceTimer;
+    private const double SaveDebounceMs = 300;
+    private readonly SynchronizationContext? _uiContext;
     
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
@@ -22,6 +25,17 @@ public class BackupJobService : IRealTimeStateObserver
     
     public BackupJobService()
     {
+        _uiContext = SynchronizationContext.Current;
+        
+        _saveDebounceTimer = new System.Timers.Timer(SaveDebounceMs) { AutoReset = false };
+        _saveDebounceTimer.Elapsed += (_, _) =>
+        {
+            lock (_lock)
+            {
+                if (Jobs != null) SaveJobs(Jobs);
+            }
+        };
+
         var appSaveDirectory = SettingsService.GetInstance.Settings.AppSaveDirectory;
         if (!Directory.Exists(appSaveDirectory)) FileUtils.CreateDirectory(appSaveDirectory);
 
@@ -33,7 +47,7 @@ public class BackupJobService : IRealTimeStateObserver
     public async Task<Dictionary<BackupJob, bool>> ExecuteJobAsync(IEnumerable<BackupJob> jobs, IProgressionObserver? progressionObserver = null)
     {
         var tasks = jobs.Select(job => ExecuteJobAsync(job, progressionObserver)
-            .ContinueWith(t => (job, success: t.Result)))
+            .ContinueWith(t => (job, success: t.Result), TaskScheduler.Default))
             .ToList();
         
         var results = await Task.WhenAll(tasks);
@@ -88,12 +102,12 @@ public class BackupJobService : IRealTimeStateObserver
         {
             lock (_lock)
             {
-                Jobs?.Add(job);
                 job.State.AttachStateObserver(this);
                 if (Jobs != null) SaveJobs(Jobs);
                 Logger.Instance.Write(new LogEntry("Job created", job));
-                return true; 
             }
+            PostToUiThread(() => Jobs?.Add(job));
+            return true;
         }
         catch (Exception)
         {
@@ -110,11 +124,11 @@ public class BackupJobService : IRealTimeStateObserver
             lock (_lock)
             {
                 RemoveStateSubscription(job);
-                Jobs?.Remove(job);
                 if (Jobs != null) SaveJobs(Jobs);
                 Logger.Instance.Write(new LogEntry("Job deleted", job));
-                return true;
             }
+            PostToUiThread(() => Jobs?.Remove(job));
+            return true;
         }
         catch (Exception)
         {
@@ -136,7 +150,7 @@ public class BackupJobService : IRealTimeStateObserver
                 if (existingJob == null)
                 {
                     job.State.AttachStateObserver(this);
-                    Jobs.Add(job);
+                    PostToUiThread(() => Jobs?.Add(job));
                 }
                 else
                 {
@@ -185,12 +199,22 @@ public class BackupJobService : IRealTimeStateObserver
     {
         job.State.DetachStateObserver(this);
     }
+    
+    private void PostToUiThread(Action action)
+    {
+        if (_uiContext != null)
+            _uiContext.Post(_ => action(), null);
+        else
+            action();
+    }
 
     public void OnStateUpdated(RealTimeState state)
     {
+        // Restart the debounce window: the actual write fires 300 ms after the last update.
         lock (_lock)
-        { 
-            if (Jobs != null) SaveJobs(Jobs);
+        {
+            _saveDebounceTimer.Stop();
+            _saveDebounceTimer.Start();
         }
     }
 }

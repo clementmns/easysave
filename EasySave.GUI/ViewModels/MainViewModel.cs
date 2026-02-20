@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
 using Avalonia.Controls;
+using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Core.Model;
@@ -39,7 +40,7 @@ public partial class MainViewModel : ViewModelBase, IProgressionObserver, IDispo
         
         // Initialize timer for business software monitoring
         _businessSoftwareTimer = new Timer(2000); // Check every 2 seconds
-        _businessSoftwareTimer.Elapsed += (sender, e) => RefreshBusinessSoftwareStatus();
+        _businessSoftwareTimer.Elapsed += (sender, e) => Dispatcher.UIThread.Post(RefreshBusinessSoftwareStatus);
         _businessSoftwareTimer.AutoReset = true;
         _businessSoftwareTimer.Start();
         
@@ -215,11 +216,10 @@ public partial class MainViewModel : ViewModelBase, IProgressionObserver, IDispo
     /// <summary>
     /// Execute jobs from command line arguments.
     /// </summary>
-    /// <param name="args">1-3 for 1 to 3 or 1;3 for 1 and 3</param>
+    /// <param name="args">1-3 for 1 to 3 or 1,3 for 1 and 3</param>
     /// <returns></returns>
-    public Dictionary<int, bool> ExecuteJobsFromArgs(string? args)
+    public async Task<Dictionary<int, bool>> ExecuteJobsFromArgs(string? args)
     {
-        // use a dictionary to return the result of each job
         var resultMap = new Dictionary<int, bool>();
         try
         {
@@ -230,7 +230,7 @@ public partial class MainViewModel : ViewModelBase, IProgressionObserver, IDispo
 
             foreach (var part in parts)
             {
-                // check for a list of indices
+                // check for a range (e.g. "1-3")
                 if (part.Contains('-'))
                 {
                     var range = part.Split('-');
@@ -247,19 +247,22 @@ public partial class MainViewModel : ViewModelBase, IProgressionObserver, IDispo
                 }
             }
 
-            foreach (var idx in requestedIndices)
-            {
-                var jobIdx = idx - 1;
-                if (Jobs != null && jobIdx >= 0 && jobIdx < Jobs.Count)
+            // Build tasks for all valid indices and run them in parallel
+            var tasks = requestedIndices
+                .Select(idx =>
                 {
-                    // execute job and store result in the map
-                    resultMap[idx] = _jobService.ExecuteJobAsync(Jobs[jobIdx]).GetAwaiter().GetResult();
-                }
-                else
-                {
-                    resultMap[idx] = false;
-                }
-            }
+                    var jobIdx = idx - 1;
+                    if (Jobs != null && jobIdx >= 0 && jobIdx < Jobs.Count)
+                        return _jobService.ExecuteJobAsync(Jobs[jobIdx])
+                            .ContinueWith(t => (idx, success: t.Result), TaskScheduler.Default);
+                    return Task.FromResult((idx, success: false));
+                })
+                .ToList();
+
+            var results = await Task.WhenAll(tasks);
+            foreach (var (idx, success) in results)
+                resultMap[idx] = success;
+
             return resultMap;
         }
         catch (Exception)
@@ -270,7 +273,7 @@ public partial class MainViewModel : ViewModelBase, IProgressionObserver, IDispo
     
     public void Dispose()
     {
-        _businessSoftwareTimer?.Stop();
+        _businessSoftwareTimer.Stop();
         _businessSoftwareTimer?.Dispose();
     }
 }
