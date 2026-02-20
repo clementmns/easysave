@@ -35,6 +35,10 @@ public partial class SettingsDialogViewModel : DialogViewModel
         // Load existing crypted extensions
         var existingExtensions = SettingsService.GetInstance.Settings.CryptExtensions;
         _cryptedExtensions = new ObservableCollection<string>(existingExtensions);
+        
+        // Load existing priority extensions
+        var existingPriorityExtensions = SettingsService.GetInstance.Settings.PriorityExtensions;
+        _priorityExtensions = new ObservableCollection<string>(existingPriorityExtensions);
     }
 
     public List<string> Languages => LanguageMap.Values.ToList();
@@ -60,6 +64,10 @@ public partial class SettingsDialogViewModel : DialogViewModel
     // Crypted Extensions Management
     [ObservableProperty] private ObservableCollection<string> _cryptedExtensions = [];
     [ObservableProperty] private string _newExtension = string.Empty;
+    
+    // Priority Extensions Management
+    [ObservableProperty] private ObservableCollection<string> _priorityExtensions = [];
+    [ObservableProperty] private string _newPriorityExtension = string.Empty;
     
     
     [RelayCommand]
@@ -95,6 +103,35 @@ public partial class SettingsDialogViewModel : DialogViewModel
     }
     
     [RelayCommand]
+    private void AddPriorityExtension()
+    {
+        if (string.IsNullOrWhiteSpace(NewPriorityExtension))
+            return;
+        
+        // Ensure extension starts with a dot
+        var extension = NewPriorityExtension.Trim();
+        if (!extension.StartsWith("."))
+            extension = "." + extension;
+        
+        // Check if extension already exists
+        if (PriorityExtensions.Contains(extension))
+        {
+            NewPriorityExtension = string.Empty;
+            return;
+        }
+        
+        PriorityExtensions.Add(extension);
+        NewPriorityExtension = string.Empty;
+    }
+    
+    [RelayCommand]
+    private void RemovePriorityExtension(string? extension)
+    {
+        if (extension != null && PriorityExtensions.Contains(extension))
+            PriorityExtensions.Remove(extension);
+    }
+    
+    [RelayCommand]
     public async Task SaveCommand()
     {
         var languageChanged = SelectedLanguage != SettingsService.GetInstance.Settings.Language;
@@ -114,6 +151,9 @@ public partial class SettingsDialogViewModel : DialogViewModel
         
         // Save crypted extensions
         SettingsService.GetInstance.SetCryptedExtensions(CryptedExtensions.ToList());
+        
+        // Save priority extensions
+        SettingsService.GetInstance.SetPriorityExtensions(PriorityExtensions.ToList());
 
         _dialogWindow?.Close();
     }

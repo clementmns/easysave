@@ -5,5 +5,7 @@
 /// </summary>
 public interface IBackupStrategy
 {
-    bool Execute(BackupJob job);
+    bool Execute(BackupJob job); 
+    Task ExecuteAsync(BackupJob job, List<string> priorityExtensions);
 }
+

@@ -168,6 +168,15 @@ namespace EasySave.GUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Choose extensions to be processed with priority during backups:.
+        /// </summary>
+        public static string choosePriorityExt {
+            get {
+                return ResourceManager.GetString("choosePriorityExt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create.
         /// </summary>
         public static string create {
@@ -461,6 +470,15 @@ namespace EasySave.GUI.Resources {
         public static string noJobSelected {
             get {
                 return ResourceManager.GetString("noJobSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Priority Extensions.
+        /// </summary>
+        public static string priorityExtensions {
+            get {
+                return ResourceManager.GetString("priorityExtensions", resourceCulture);
             }
         }
         

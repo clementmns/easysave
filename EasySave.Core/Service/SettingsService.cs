@@ -110,6 +110,16 @@ namespace EasySave.Core.Service
         }
         
         /// <summary>
+        /// Set extensions that should be processed with priority
+        /// </summary>
+        /// <param name="extensions">List of priority extensions</param>
+        public void SetPriorityExtensions(List<string> extensions)
+        {
+            _settings.PriorityExtensions = extensions;
+            SaveSettings(_settings);
+        }
+        
+        /// <summary>
         /// Load or create the settings file
         /// </summary>
         /// <returns></returns>

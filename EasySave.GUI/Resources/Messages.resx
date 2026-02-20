@@ -207,6 +207,12 @@
     <data name="remove" xml:space="preserve">
         <value>Remove</value>
     </data>
+    <data name="priorityExtensions" xml:space="preserve">
+        <value>Priority Extensions</value>
+    </data>
+    <data name="choosePriorityExt" xml:space="preserve">
+        <value>Choose extensions to be processed with priority during backups:</value>
+    </data>
     <data name="easysave" xml:space="preserve">
         <value>EasySave Backup</value>
     </data>

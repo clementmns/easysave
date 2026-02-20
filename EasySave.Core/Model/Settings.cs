@@ -16,7 +16,12 @@ public class Settings
     
     public LogFormat LogFormat { get; set; } = LogFormat.Json;
     
-    public List<string> CryptExtensions { get; set; } = []; 
+    public List<string> CryptExtensions { get; set; } = [];
+    
+    /// <summary>
+    /// Extensions that should be processed with priority during backups
+    /// </summary>
+    public List<string> PriorityExtensions { get; set; } = [];
     
     /// <summary>
     /// Name of the business software process to monitor (e.g., "CalculatorApp" for Windows calculator)
