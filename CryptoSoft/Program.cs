@@ -37,7 +37,7 @@ public static class Program
             }
 
             var algorithmInput = args[0].ToLower();
-            var actionInput= args[1].ToLower();
+            var actionInput = args[1].ToLower();
             var sourcePath = args[2];
             var destinationPath = args[3];
 
@@ -66,7 +66,7 @@ public static class Program
     
     private static bool IsTimestampFresh(string timestamp)
     {
-        var currentTime  = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        var currentTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
         var receivedTime = long.Parse(timestamp);
         return Math.Abs(currentTime - receivedTime) <= TIMESTAMP_TOLERANCE_SECONDS;
     }
@@ -81,7 +81,7 @@ public static class Program
         using var rsa = RSA.Create();
         rsa.FromXmlString(publicKeyXml);
 
-        var data      = Encoding.UTF8.GetBytes(timestamp);
+        var data = Encoding.UTF8.GetBytes(timestamp);
         var signature = Convert.FromBase64String(signatureBase64);
         
         return rsa.VerifyData(data, signature, HashAlgorithmName.SHA256, RSASignaturePadding.Pss);

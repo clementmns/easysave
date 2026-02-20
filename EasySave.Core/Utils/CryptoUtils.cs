@@ -45,7 +45,6 @@ public static class CryptoUtils
         {
             Directory.CreateDirectory(filePath);
         }
-        
 
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
