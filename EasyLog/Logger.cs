@@ -32,7 +32,7 @@ public class Logger : IDisposable
     public static void Init(
         string appSaveDirectory,
         List<ILoggerStrategy> strategies,
-        LogMode? logMode, 
+        LogMode? logMode,
         string? remoteHost,
         int? remotePort)
     {

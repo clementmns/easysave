@@ -31,6 +31,9 @@ public partial class SettingsDialogViewModel : DialogViewModel
         _selectedLanguage = SettingsService.GetInstance.Settings.Language;
         _selectedLogFormat = SettingsService.GetInstance.Settings.LogFormat;
         _businessSoftwareProcessName = SettingsService.GetInstance.Settings.BusinessSoftwareProcessName;
+        _selectedLogMode = SettingsService.GetInstance.Settings.LogMode;
+        _logServerHost = SettingsService.GetInstance.Settings.LogServerHost;
+        _logServerPort = SettingsService.GetInstance.Settings.LogServerPort;
         
         // Load existing crypted extensions
         var existingExtensions = SettingsService.GetInstance.Settings.CryptExtensions;

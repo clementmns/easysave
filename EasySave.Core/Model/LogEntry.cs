@@ -33,5 +33,15 @@ public class LogEntry
         CryptDuration = cryptDuration;
     }
     
-    public LogEntry( string message, BackupJob job, bool? isError = false, long? copyDuration = null, long? cryptDuration = null) : this(message, job.Name, ConvertToUnc(job.SourcePath), ConvertToUnc(job.DestinationPath), job.State.FileSize, isError, copyDuration, cryptDuration) { }
+    public LogEntry( string message, BackupJob job, bool? isError = false, long? copyDuration = null, long? cryptDuration = null) : 
+        this(
+            message, 
+            job.Name, 
+            ConvertToUnc(job.SourcePath), 
+            ConvertToUnc(job.DestinationPath), 
+            job.State.FileSize, 
+            isError, 
+            copyDuration, 
+            cryptDuration
+        ) { }
 }
