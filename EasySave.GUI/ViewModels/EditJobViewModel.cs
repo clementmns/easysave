@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
@@ -10,16 +11,31 @@ using EasySave.GUI.Resources;
 
 namespace EasySave.GUI.ViewModels;
 
-public partial class EditJobViewModel : ObservableObject
+public partial class EditJobViewModel : ViewModelBase
 {
     private readonly BackupJob _originalJob;
     private readonly MainViewModel _mainViewModel;
     private readonly Window _dialogWindow;
     
-    [ObservableProperty] private string _name;
-    [ObservableProperty] private string _sourcePath;
-    [ObservableProperty] private string _destinationPath;
-    [ObservableProperty] private string _selectedType;
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required]
+    private string _name;
+
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required]
+    private string _sourcePath;
+
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required]
+    private string _destinationPath;
+
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required]
+    private string _selectedType;
     
     public ObservableCollection<string> BackupTypes { get; } = new()
     {

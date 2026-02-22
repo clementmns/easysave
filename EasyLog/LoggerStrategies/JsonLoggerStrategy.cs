@@ -20,7 +20,7 @@ public class JsonLoggerStrategy : ILoggerStrategy
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"[EasyLog] Error writing JSON log: {ex.Message}");
+            Console.WriteLine($"[EasyLog] Error writing JSON log: {ex.Message}");
         }
     }
 

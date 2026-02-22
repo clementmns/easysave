@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -11,7 +12,7 @@ using EasySave.GUI.Resources;
 
 namespace EasySave.GUI.ViewModels;
 
-public partial class SettingsDialogViewModel : DialogViewModel
+public partial class SettingsDialogViewModel : ViewModelBase
 {
     private readonly Window? _dialogWindow;
     
@@ -41,7 +42,9 @@ public partial class SettingsDialogViewModel : DialogViewModel
     }
 
     public List<string> Languages => LanguageMap.Values.ToList();
-    [ObservableProperty] private string _selectedLanguage;
+    [ObservableProperty]
+    [Required]
+    private string _selectedLanguage;
     
     public string SelectedLanguageDisplay
     {
@@ -54,13 +57,24 @@ public partial class SettingsDialogViewModel : DialogViewModel
     }
 
     public List<LogFormat> LogFormats { get; } = [LogFormat.Json, LogFormat.Xml];
-    [ObservableProperty] private LogFormat _selectedLogFormat;
+    [ObservableProperty]
+    [Required]
+    private LogFormat _selectedLogFormat;
     
     public List<LogMode> LogModes { get; } = [LogMode.Local, LogMode.Remote, LogMode.Both];
-    [ObservableProperty] private LogMode _selectedLogMode;
+    [ObservableProperty]
+    [Required]
+    private LogMode _selectedLogMode;
     
-    [ObservableProperty] private string? _logServerHost;
-    [ObservableProperty] private int _logServerPort;
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required]
+    private string? _logServerHost;
+
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required]
+    private int? _logServerPort;
     
     [ObservableProperty] private string _businessSoftwareProcessName;
     
@@ -75,12 +89,13 @@ public partial class SettingsDialogViewModel : DialogViewModel
     
     partial void OnSelectedLogModeChanged(LogMode value)
     {
+        _ = value; // Suppress unused parameter warning
         OnPropertyChanged(nameof(IsRemoteSettingsVisible));
         OnPropertyChanged(nameof(CanSaveSettings));
     }
     
     partial void OnLogServerHostChanged(string? value) => OnPropertyChanged(nameof(CanSaveSettings));
-    partial void OnLogServerPortChanged(int value) => OnPropertyChanged(nameof(CanSaveSettings));
+    partial void OnLogServerPortChanged(int? value) => OnPropertyChanged(nameof(CanSaveSettings));
     partial void OnSelectedLanguageChanged(string value) => OnPropertyChanged(nameof(SelectedLanguageDisplay));
 
     [RelayCommand]
@@ -129,9 +144,9 @@ public partial class SettingsDialogViewModel : DialogViewModel
         if (SelectedLogMode is LogMode.Both or LogMode.Remote)
         {
             if (LogServerHost != SettingsService.GetInstance.Settings.LogServerHost || LogServerPort != SettingsService.GetInstance.Settings.LogServerPort)
-                if (LogServerHost != null)
+                if (LogServerHost != null && LogServerPort != null )
                 {
-                    SettingsService.GetInstance.SetLogServer(LogServerHost, LogServerPort);
+                    SettingsService.GetInstance.SetLogServer(LogServerHost, LogServerPort.Value);
                 }
         }
         

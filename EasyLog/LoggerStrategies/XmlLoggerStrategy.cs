@@ -31,7 +31,7 @@ public class XmlLoggerStrategy : ILoggerStrategy
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"[EasyLog] Error writing XML log: {ex.Message}");
+            Console.WriteLine($"[EasyLog] Error writing XML log: {ex.Message}");
         }
     }
 

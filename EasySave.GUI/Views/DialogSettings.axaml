@@ -3,7 +3,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:EasySave.GUI.ViewModels;assembly=EasySave.GUI"
-             xmlns:converters="clr-namespace:EasySave.GUI.Converters;assembly=EasySave.GUI"
              x:DataType="vm:SettingsDialogViewModel"
              mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="500"
              x:Class="EasySave.GUI.Views.DialogSettings"
@@ -11,9 +10,6 @@
     <Design.DataContext>
         <vm:SettingsDialogViewModel></vm:SettingsDialogViewModel>
     </Design.DataContext>
-    <UserControl.Resources>
-        <converters:StringToIntConverter x:Key="StringToIntConverter" />
-    </UserControl.Resources>
     <Border Padding="20" Background="{StaticResource SurfaceBrush}">
         <ScrollViewer>
             <StackPanel Spacing="20">
@@ -78,7 +74,7 @@
                             <StackPanel Grid.Column="1" Grid.Row="0" Spacing="4">
                                 <TextBlock Text="{DynamicResource remotePort}"
                                            Foreground="{StaticResource TextSecondaryBrush}" />
-                                <TextBox Text="{Binding LogServerPort, Converter={StaticResource StringToIntConverter}}" Watermark="3000" />
+                                <NumericUpDown Value="{Binding LogServerPort}" FormatString="0" Minimum="0" Maximum="65535" />
                             </StackPanel>
                         </Grid>
                     </StackPanel>

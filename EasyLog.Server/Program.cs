@@ -12,8 +12,8 @@ internal static class Program
     private const int Port = 5092;
     private const string LogDirectory = "logs";
 
-    private static readonly ConcurrentDictionary<string, object> FileLocks = new();
-    
+    private static readonly ConcurrentDictionary<(string, string), ReaderWriterLockSlim> FileLocks = new();
+
     private static void Main(string[] args)
     {
         Directory.CreateDirectory(LogDirectory);
@@ -100,12 +100,24 @@ internal static class Program
 
     private static void AppendToLog(string content, string format)
     {
-        var fileLock = GetFileLock(format);
         var filePath = Path.Combine(LogDirectory, DateTime.Now.ToString("yyyy-MM-dd") + "." + format);
+        var fileLock = GetFileLock(format, filePath);
 
-        lock (fileLock) File.AppendAllText(filePath, content + Environment.NewLine, Encoding.UTF8);
+        fileLock.EnterWriteLock();
+        try
+        {
+            File.AppendAllText(filePath, content + Environment.NewLine, Encoding.UTF8);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"[ERROR] - Failed to write to log file {filePath}: {e.Message}");
+        }
+        finally
+        {
+            fileLock.ExitWriteLock();
+        }
     }
 
-    private static object GetFileLock(string format) => 
-        FileLocks.GetOrAdd(format, _ => new object());
+    private static ReaderWriterLockSlim GetFileLock(string format, string filePath) =>
+        FileLocks.GetOrAdd((format, filePath), _ => new ReaderWriterLockSlim());
 }
