@@ -185,6 +185,12 @@
     <data name="remove" xml:space="preserve">
         <value>Supprimer</value>
     </data>
+    <data name="priorityExtensions" xml:space="preserve">
+        <value>Extensions prioritaires</value>
+    </data>
+    <data name="choosePriorityExt" xml:space="preserve">
+        <value>Choisissez les extensions à traiter en priorité lors des sauvegardes :</value>
+    </data>
     <data name="selectSource" xml:space="preserve">
         <value>Choisir la source</value>
     </data>

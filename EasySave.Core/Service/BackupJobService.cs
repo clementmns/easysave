@@ -9,12 +9,10 @@ namespace EasySave.Core.Service;
 
 public class BackupJobService : IRealTimeStateObserver
 {
-    public ObservableCollection<BackupJob>? Jobs { get; set; }
+    public ObservableCollection<BackupJob>? Jobs { get; }
     
-    private string _stateFilePath { get; set; }
-    private readonly object _lock = new();
-    private readonly System.Timers.Timer _saveDebounceTimer;
-    private const double SaveDebounceMs = 300;
+    private string _stateFilePath { get; }
+    private readonly ReaderWriterLockSlim _lock = new();
     private readonly SynchronizationContext? _uiContext;
     
     private static readonly JsonSerializerOptions JsonOptions = new()
@@ -27,14 +25,7 @@ public class BackupJobService : IRealTimeStateObserver
     {
         _uiContext = SynchronizationContext.Current;
         
-        _saveDebounceTimer = new System.Timers.Timer(SaveDebounceMs) { AutoReset = false };
-        _saveDebounceTimer.Elapsed += (_, _) =>
-        {
-            lock (_lock)
-            {
-                if (Jobs != null) SaveJobs(Jobs);
-            }
-        };
+        if (Jobs != null) SaveJobs(Jobs);
 
         var appSaveDirectory = SettingsService.GetInstance.Settings.AppSaveDirectory;
         if (!Directory.Exists(appSaveDirectory)) FileUtils.CreateDirectory(appSaveDirectory);
@@ -48,7 +39,22 @@ public class BackupJobService : IRealTimeStateObserver
         IEnumerable<BackupJob> jobs,
         IProgressionObserver? progressionObserver = null)
     {
-        var tasks = jobs.Select(async job =>
+        var jobsList = jobs.ToList();
+        
+        var priorityExtensions = SettingsService.GetInstance.Settings.PriorityExtensions;
+        
+        var priorityJobs = new List<BackupJob>();
+        var nonPriorityJobs = new List<BackupJob>();
+        
+        foreach (var job in jobsList)
+        {
+            if (FileUtils.HasPriorityFiles(job.SourcePath, priorityExtensions)) priorityJobs.Add(job);
+            else nonPriorityJobs.Add(job);
+        }
+        
+        var orderedJobs = priorityJobs.Concat(nonPriorityJobs).ToList();
+        
+        var tasks = orderedJobs.Select(async job =>
         {
             Logger.Instance.Write(new LogEntry("Going to execute job", job));
 
@@ -65,8 +71,7 @@ public class BackupJobService : IRealTimeStateObserver
                 if (progressionObserver != null)
                     job.State.AttachProgressionObserver(progressionObserver);
 
-                var executor = new BackupExecutor();
-                var success = await executor.ExecuteJobAsync(job);
+                var success = await BackupExecutor.ExecuteJobAsync(job);
 
                 if (!success)
                     throw new Exception("Failed to execute job");
@@ -111,12 +116,10 @@ public class BackupJobService : IRealTimeStateObserver
         Logger.Instance.Write(new LogEntry("Going to create job", job));
         try
         {
-            lock (_lock)
-            {
-                job.State.AttachStateObserver(this);
-                if (Jobs != null) SaveJobs(Jobs);
-                Logger.Instance.Write(new LogEntry("Job created", job));
-            }
+            job.State.AttachStateObserver(this);
+            if (Jobs != null) SaveJobs(Jobs);
+
+            Logger.Instance.Write(new LogEntry("Job created", job));
             PostToUiThread(() => Jobs?.Add(job));
             return true;
         }
@@ -132,12 +135,10 @@ public class BackupJobService : IRealTimeStateObserver
         Logger.Instance.Write(new LogEntry("Going to delete job", job));
         try
         {
-            lock (_lock)
-            {
-                RemoveStateSubscription(job);
-                if (Jobs != null) SaveJobs(Jobs);
-                Logger.Instance.Write(new LogEntry("Job deleted", job));
-            }
+            RemoveStateSubscription(job);
+            if (Jobs != null) SaveJobs(Jobs);
+
+            Logger.Instance.Write(new LogEntry("Job deleted", job));
             PostToUiThread(() => Jobs?.Remove(job));
             return true;
         }
@@ -150,35 +151,32 @@ public class BackupJobService : IRealTimeStateObserver
 
     public void UpdateJob(BackupJob job)
     {
-        lock (_lock)
+        Logger.Instance.Write(new LogEntry("Going to update job", job));
+        try
         {
-            Logger.Instance.Write(new LogEntry("Going to update job", job));
-            try
-            {
-                if (Jobs == null) return;
+            if (Jobs == null) return;
 
-                var existingJob = Jobs.FirstOrDefault(j => j.Id == job.Id);
-                if (existingJob == null)
-                {
-                    job.State.AttachStateObserver(this);
-                    PostToUiThread(() => Jobs?.Add(job));
-                }
-                else
-                {
-                    existingJob.Name = job.Name;
-                    existingJob.SourcePath = job.SourcePath;
-                    existingJob.DestinationPath = job.DestinationPath;
-                    existingJob.Type = job.Type;
-                    existingJob.State = job.State;
-                }
-                if (Jobs != null) SaveJobs(Jobs);
-                Logger.Instance.Write(new LogEntry("Job updated", job));
-            }
-            catch (Exception)
+            var existingJob = Jobs.FirstOrDefault(j => j.Id == job.Id);
+            if (existingJob == null)
             {
-                Logger.Instance.Write(new LogEntry("Failed to update job", job, true));
-                throw;
+                job.State.AttachStateObserver(this);
+                PostToUiThread(() => Jobs?.Add(job));
             }
+            else
+            {
+                existingJob.Name = job.Name;
+                existingJob.SourcePath = job.SourcePath;
+                existingJob.DestinationPath = job.DestinationPath;
+                existingJob.Type = job.Type;
+                existingJob.State = job.State;
+            }
+            if (Jobs != null) SaveJobs(Jobs);
+            Logger.Instance.Write(new LogEntry("Job updated", job));
+        }
+        catch (Exception)
+        {
+            Logger.Instance.Write(new LogEntry("Failed to update job", job, true));
+            throw;
         }
     }
     
@@ -189,15 +187,32 @@ public class BackupJobService : IRealTimeStateObserver
         var jobs = JsonSerializer.Deserialize<ObservableCollection<BackupJob>>(json, JsonOptions);
         if (jobs == null) return jobs;
         var sorted = jobs.OrderBy(j => j.Id).ToList();
+
+        foreach (var job in sorted)
+        {
+            // Reset job state
+            job.State.Reset();
+            job.State.Progression = 0;
+            job.State.Status = RealTimeState.RealTimeStatus.Ready;
+        }
+
         jobs = new ObservableCollection<BackupJob>(sorted);
         return jobs;
     }
 
     private void SaveJobs(ObservableCollection<BackupJob> jobs)
     {
+        _lock.EnterWriteLock();
+        try
+        {
             var orderedJobs = jobs.OrderBy(j => j.Id).ToList();
             var json = JsonSerializer.Serialize(orderedJobs, JsonOptions);
             File.WriteAllText(_stateFilePath, json);
+        }
+        finally
+        {
+            _lock.ExitWriteLock();
+        }
     }
 
     private void SubscribeToJobStates()
@@ -213,19 +228,12 @@ public class BackupJobService : IRealTimeStateObserver
     
     private void PostToUiThread(Action action)
     {
-        if (_uiContext != null)
-            _uiContext.Post(_ => action(), null);
-        else
-            action();
+        if (_uiContext != null) _uiContext.Post(_ => action(), null);
+        else action();
     }
 
     public void OnStateUpdated(RealTimeState state)
     {
-        // Restart the debounce window: the actual write fires 300 ms after the last update.
-        lock (_lock)
-        {
-            _saveDebounceTimer.Stop();
-            _saveDebounceTimer.Start();
-        }
+        if (Jobs != null) SaveJobs(Jobs);
     }
 }

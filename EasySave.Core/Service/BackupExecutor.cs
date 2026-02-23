@@ -7,7 +7,7 @@ namespace EasySave.Core.Service;
 
 public class BackupExecutor
 {
-    public async Task<bool> ExecuteJobAsync(BackupJob job)
+    public static async Task<bool> ExecuteJobAsync(BackupJob job)
     {
         return await Task.Run(() =>
         {
@@ -17,7 +17,7 @@ public class BackupExecutor
                 Logger.Instance.Write(new LogEntry(Errors.BackupBlocked, job, isError: true));
                 return false;
             }
-            
+
             var strategy = GetStrategy(job);
             return strategy.Execute(job);
         });
