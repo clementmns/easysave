@@ -85,7 +85,8 @@ public class DifferentialBackupStrategy : IBackupStrategy
     
         if (File.Exists(job.SourcePath))
         {
-            await ProcessFileAsync(job, cryptedExtensions);
+            
+            await Task.Run(() => ProcessFile(job, cryptedExtensions));
         }
         else if (Directory.Exists(job.SourcePath))
         {
@@ -97,52 +98,6 @@ public class DifferentialBackupStrategy : IBackupStrategy
         }
     }
 
-    private static async Task ProcessFileAsync(BackupJob job, List<string> cryptExt)
-    {
-        var fileInfo = new FileInfo(job.SourcePath);
-    
-        var sourcePath = fileInfo.FullName;
-        var sourceRoot = Path.GetDirectoryName(sourcePath);
-        var relativePath = string.IsNullOrWhiteSpace(sourceRoot) ? fileInfo.Name : Path.GetRelativePath(sourceRoot, sourcePath);
-        var destinationFilePath = Path.Combine(job.DestinationPath, relativePath);
-
-        var shouldCopy = !File.Exists(destinationFilePath) || fileInfo.LastWriteTime > File.GetLastWriteTime(destinationFilePath);
-        if (!shouldCopy)
-        {
-            job.State.Progression = 100;
-            return;
-        }
-
-        job.State.TotalFiles = 1;
-        job.State.RemainingFiles = 1;
-        job.State.FileSize = fileInfo.Length;
-        job.State.RemainingFilesSize = fileInfo.Length;
-        job.State.Progression = 0;
-
-        if (cryptExt.Contains(fileInfo.Extension))
-        {
-            var resultEncryption = await Task.Run(() => CryptoUtils.EncryptFile(sourcePath, destinationFilePath));
-            if (!resultEncryption.Item1)
-            {
-                Logger.Instance.Write(new LogEntry($"Encryption failed : {Path.GetFileName(destinationFilePath)}", job, true));
-                throw new Exception(Errors.FileCantBeCrypted);
-            }
-            Logger.Instance.Write(new LogEntry($"File Encrypted : {job.DestinationPath}", job, false, null, resultEncryption.Item2));
-        }
-        else
-        {
-            var resultCopy = await Task.Run(() => FileUtils.CopyFile(fileInfo.FullName, job.DestinationPath,
-                Path.GetDirectoryName(fileInfo.FullName)));
-            if (!resultCopy.Item1)
-            {
-                Logger.Instance.Write(new LogEntry($"Copy failed : {job.DestinationPath}", job, true));
-                throw new Exception(Errors.FileCantBeCopied);
-            } 
-            Logger.Instance.Write(new LogEntry($"File Copied : {job.DestinationPath}", job, false, resultCopy.Item2, null));
-        }
-    
-        job.State.Progression = 100;
-    }
 
     private static async Task ProcessDirectoryAsync(BackupJob job, List<string> cryptExt, List<string> priorityExt)
     {
