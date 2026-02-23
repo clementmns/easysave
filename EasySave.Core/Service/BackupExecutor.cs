@@ -11,6 +11,8 @@ public class BackupExecutor
 
     public async Task<bool> ExecuteJobAsync(BackupJob job)
     {
+        var strategy = GetStrategy(job);
+        
         // Check if business software is running
         if (ProcessMonitorService.IsBusinessSoftwareRunning)
         {
@@ -20,6 +22,7 @@ public class BackupExecutor
 
         var settings = SettingsService.GetInstance.Settings;
         var priorityExtensions = settings.PriorityExtensions ?? new List<string>();
+        
         var hasPriority = HasPriorityFiles(job, priorityExtensions);
 
         if (hasPriority)
@@ -37,7 +40,6 @@ public class BackupExecutor
 
         try
         {
-            var strategy = GetStrategy(job);
             await strategy.ExecuteAsync(job, priorityExtensions);
             return true;
         }
