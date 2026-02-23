@@ -44,55 +44,66 @@ public class BackupJobService : IRealTimeStateObserver
         SubscribeToJobStates();
     }
 
-    public async Task<Dictionary<BackupJob, bool>> ExecuteJobAsync(IEnumerable<BackupJob> jobs, IProgressionObserver? progressionObserver = null)
+    public async Task<Dictionary<BackupJob, bool>> ExecuteJobsAsync(
+        IEnumerable<BackupJob> jobs,
+        IProgressionObserver? progressionObserver = null)
     {
-        var tasks = jobs.Select(job => ExecuteJobAsync(job, progressionObserver)
-            .ContinueWith(t => (job, success: t.Result), TaskScheduler.Default))
-            .ToList();
-        
+        var tasks = jobs.Select(async job =>
+        {
+            Logger.Instance.Write(new LogEntry("Going to execute job", job));
+
+            try
+            {
+                Stopwatch sw = new();
+                sw.Start();
+
+                job.State.AttachStateObserver(this);
+                job.State.IsActive = true;
+                job.State.Progression = 0;
+                job.State.Status = RealTimeState.RealTimeStatus.OnGoing;
+
+                if (progressionObserver != null)
+                    job.State.AttachProgressionObserver(progressionObserver);
+
+                var executor = new BackupExecutor();
+                var success = await executor.ExecuteJobAsync(job);
+
+                if (!success)
+                    throw new Exception("Failed to execute job");
+
+                job.State.Status = RealTimeState.RealTimeStatus.Done;
+
+                sw.Stop();
+
+                Logger.Instance.Write(
+                    new LogEntry("Job executed", job, false, sw.ElapsedMilliseconds));
+
+                UpdateJob(job);
+
+                return (job, true);
+            }
+            catch (Exception e)
+            {
+                job.State.Status = RealTimeState.RealTimeStatus.Error;
+
+                Logger.Instance.Write(
+                    new LogEntry($"Failed to execute job: {e.Message}", job, true));
+
+                return (job, false);
+            }
+            finally
+            {
+                job.State.Reset();
+                job.State.DetachStateObserver(this);
+
+                if (progressionObserver != null)
+                    job.State.DetachProgressionObserver(progressionObserver);
+            }
+        });
+
         var results = await Task.WhenAll(tasks);
-        return results.ToDictionary(r => r.job, r => r.success);
-    }
-    
-    public async Task<bool> ExecuteJobAsync(BackupJob job, IProgressionObserver? progressionObserver = null)
-    {
-        Logger.Instance.Write(new LogEntry("Going to execute job", job));
-        try
-        {
-            // get execution time
-            Stopwatch sw = new();
-            sw.Start();
-            
-            job.State.AttachStateObserver(this);
-            job.State.IsActive = true;
-            job.State.Progression = 0;
-            job.State.Status = RealTimeState.RealTimeStatus.OnGoing;
-            
-            if (progressionObserver != null) job.State.AttachProgressionObserver(progressionObserver);
-            var executor = new BackupExecutor();
-            var success = await executor.ExecuteJobAsync(job);
-            if (!success) throw new Exception("Failed to execute job");
-            
-            job.State.Status = RealTimeState.RealTimeStatus.Done;
-            
-            sw.Stop();
-            
-            Logger.Instance.Write(new LogEntry("Job executed", job, false, sw.ElapsedMilliseconds));
-            UpdateJob(job);
-            return true;
-        }
-        catch (Exception e)
-        {
-            job.State.Status = RealTimeState.RealTimeStatus.Error;
-            Logger.Instance.Write(new LogEntry($"Failed to execute job: {e.Message}", job, true));
-            return false;
-        }
-        finally
-        {
-            job.State.Reset();
-            job.State.DetachStateObserver(this);
-            if (progressionObserver != null) job.State.DetachProgressionObserver(progressionObserver);
-        }
+
+        return results.ToDictionary(r => r.job, r => r.Item2);
     }
 
     public bool CreateJob(BackupJob job)

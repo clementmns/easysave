@@ -36,17 +36,12 @@ public class BackupViewModel
     
     public bool ExecuteJob(BackupJob job, IProgressionObserver? progressionObserver = null)
     {
-        // attach to needed observers
-        job.State.AttachStateObserver(_jobService);
-        if (progressionObserver != null) job.State.AttachProgressionObserver(progressionObserver);
-        
-        var result = _jobService.ExecuteJobAsync(job).GetAwaiter().GetResult();
-        
-        // detach from observers to avoid memory leaks
-        job.State.DetachStateObserver(_jobService);
-        if (progressionObserver != null) job.State.DetachProgressionObserver(progressionObserver);
+        var result = _jobService
+            .ExecuteJobsAsync(new[] { job }, progressionObserver)
+            .GetAwaiter()
+            .GetResult();
 
-        return result;
+        return result.TryGetValue(job, out var success) && success;
     }
     
     /// <summary>

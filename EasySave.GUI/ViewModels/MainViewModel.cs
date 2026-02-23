@@ -95,11 +95,10 @@ public partial class MainViewModel : ViewModelBase, IProgressionObserver, IDispo
     [RelayCommand]
     public async Task ExecuteSelectedJobs()
     {
-        var tasks = SelectedJobs
-            .ToList()
-            .Select(job => ExecuteJob(job, this));
+        if (SelectedJobs.Count == 0)
+            return;
 
-        await Task.WhenAll(tasks);
+        await _jobService.ExecuteJobsAsync(SelectedJobs.ToList(), this);
     }
     
     [RelayCommand]
@@ -108,11 +107,10 @@ public partial class MainViewModel : ViewModelBase, IProgressionObserver, IDispo
     [RelayCommand]
     public async Task ExecuteAllJobs()
     {
-        var tasks = Jobs
-            .ToList()
-            .Select(job => ExecuteJob(job, this));
+        if (Jobs == null || Jobs.Count == 0)
+            return;
 
-        await Task.WhenAll(tasks);
+        await _jobService.ExecuteJobsAsync(Jobs.ToList(), this);
     }
 
     [RelayCommand]
@@ -196,8 +194,8 @@ public partial class MainViewModel : ViewModelBase, IProgressionObserver, IDispo
     
     public async Task<bool> ExecuteJob(BackupJob job, IProgressionObserver? progressionObserver = null)
     {
-        var result = await _jobService.ExecuteJobAsync(job, progressionObserver);
-        return result;
+        var result = await _jobService.ExecuteJobsAsync(new[] { job }, progressionObserver);
+        return result.TryGetValue(job, out var success) && success;
     }
 
     public void UpdateJob(BackupJob job)
@@ -221,54 +219,48 @@ public partial class MainViewModel : ViewModelBase, IProgressionObserver, IDispo
     public async Task<Dictionary<int, bool>> ExecuteJobsFromArgs(string? args)
     {
         var resultMap = new Dictionary<int, bool>();
-        try
+
+        if (string.IsNullOrWhiteSpace(args) || Jobs == null)
+            return resultMap;
+
+        var requestedIndices = new List<int>();
+        var parts = args.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+        foreach (var part in parts)
         {
-            if (string.IsNullOrWhiteSpace(args)) return resultMap;
-
-            var requestedIndices = new List<int>();
-            var parts = args.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-
-            foreach (var part in parts)
+            if (part.Contains('-'))
             {
-                // check for a range (e.g. "1-3")
-                if (part.Contains('-'))
+                var range = part.Split('-');
+                if (range.Length == 2 &&
+                    int.TryParse(range[0], out var start) &&
+                    int.TryParse(range[1], out var end))
                 {
-                    var range = part.Split('-');
-                    if (range.Length != 2 || !int.TryParse(range[0], out var start) ||
-                        !int.TryParse(range[1], out var end)) continue;
                     for (var i = start; i <= end; i++)
-                    {
                         if (i > 0) requestedIndices.Add(i);
-                    }
-                }
-                else if (int.TryParse(part, out var jobNumber) && jobNumber > 0)
-                {
-                    requestedIndices.Add(jobNumber);
                 }
             }
-
-            // Build tasks for all valid indices and run them in parallel
-            var tasks = requestedIndices
-                .Select(idx =>
-                {
-                    var jobIdx = idx - 1;
-                    if (Jobs != null && jobIdx >= 0 && jobIdx < Jobs.Count)
-                        return _jobService.ExecuteJobAsync(Jobs[jobIdx])
-                            .ContinueWith(t => (idx, success: t.Result), TaskScheduler.Default);
-                    return Task.FromResult((idx, success: false));
-                })
-                .ToList();
-
-            var results = await Task.WhenAll(tasks);
-            foreach (var (idx, success) in results)
-                resultMap[idx] = success;
-
-            return resultMap;
+            else if (int.TryParse(part, out var value) && value > 0)
+            {
+                requestedIndices.Add(value);
+            }
         }
-        catch (Exception)
+
+        var jobsToExecute = requestedIndices
+            .Select(idx => (idx, jobIdx: idx - 1))
+            .Where(x => x.jobIdx >= 0 && x.jobIdx < Jobs.Count)
+            .ToList();
+
+        var jobs = jobsToExecute.Select(x => Jobs[x.jobIdx]).ToList();
+
+        var executionResults = await _jobService.ExecuteJobsAsync(jobs, this);
+
+        foreach (var (idx, jobIdx) in jobsToExecute)
         {
-            return resultMap;
+            var job = Jobs[jobIdx];
+            resultMap[idx] = executionResults.TryGetValue(job, out var success) && success;
         }
+
+        return resultMap;
     }
     
     public void Dispose()
