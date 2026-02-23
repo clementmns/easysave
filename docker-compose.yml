@@ -1,0 +1,12 @@
+services:
+  log-server:
+    build:
+      context: .
+      dockerfile: EasyLog.Server/Dockerfile
+    ports:
+      - "5092:5092"
+    volumes:
+      - server-logs:/app/logs
+
+volumes:
+  server-logs:

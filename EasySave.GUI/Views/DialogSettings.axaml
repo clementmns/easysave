@@ -41,9 +41,45 @@
                         <TextBlock Text="{DynamicResource chooseBackupText}"
                                    Foreground="{StaticResource TextSecondaryBrush}" />
                         <ComboBox ItemsSource="{Binding LogFormats}" SelectedItem="{Binding SelectedLogFormat}"
-                                  PlaceholderText="Select log format" HorizontalAlignment="Stretch" />
+                                  PlaceholderText="{DynamicResource selectLogFormat}" HorizontalAlignment="Stretch" />
                     </StackPanel>
                 </Border>
+
+                <Border Padding="16" CornerRadius="8" Background="{StaticResource BackgroundBrush}"
+                        BorderBrush="{StaticResource BorderSoftBrush}" BorderThickness="1">
+                    <StackPanel Spacing="10">
+                        <TextBlock Text="{DynamicResource logMode}" FontWeight="SemiBold"
+                                   Foreground="{StaticResource TextPrimaryBrush}" />
+                        <TextBlock Text="{DynamicResource logModeText}"
+                                   Foreground="{StaticResource TextSecondaryBrush}" />
+                        <ComboBox ItemsSource="{Binding LogModes}" SelectedItem="{Binding SelectedLogMode}"
+                                  PlaceholderText="{DynamicResource selectLogMode}" HorizontalAlignment="Stretch" />
+                    </StackPanel>
+                </Border>
+
+                <Border Padding="16" CornerRadius="8" Background="{StaticResource BackgroundBrush}"
+                        BorderBrush="{StaticResource BorderSoftBrush}" BorderThickness="1"
+                        IsVisible="{Binding IsRemoteSettingsVisible}">
+                    <StackPanel Spacing="10">
+                        <TextBlock Text="{DynamicResource remoteServer}" FontWeight="SemiBold"
+                                   Foreground="{StaticResource TextPrimaryBrush}" />
+                        <TextBlock Text="{DynamicResource remoteServerText}"
+                                   Foreground="{StaticResource TextSecondaryBrush}" />
+                        <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto">
+                            <StackPanel Grid.Column="0" Grid.Row="0" Spacing="4" Margin="0,0,8,0">
+                                <TextBlock Text="{DynamicResource remoteHost}"
+                                           Foreground="{StaticResource TextSecondaryBrush}" />
+                                <TextBox Text="{Binding LogServerHost}" Watermark="localhost" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Grid.Row="0" Spacing="4">
+                                <TextBlock Text="{DynamicResource remotePort}"
+                                           Foreground="{StaticResource TextSecondaryBrush}" />
+                                <NumericUpDown Value="{Binding LogServerPort}" FormatString="0" Minimum="0" Maximum="65535" />
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
                 <!-- Ressources -->
                 <Border Padding="16" CornerRadius="8" Background="{StaticResource BackgroundBrush}"
                         BorderBrush="{StaticResource BorderSoftBrush}" BorderThickness="1">
@@ -118,7 +154,7 @@
                     <Button Content="{DynamicResource cancel}" Command="{Binding CancelCommand}"
                             Classes="ghost" />
                     <Button Content="{DynamicResource save}" Command="{Binding SaveCommand}"
-                            Classes="primary" />
+                            Classes="primary" IsEnabled="{Binding CanSaveSettings}" />
                 </StackPanel>
             </StackPanel>
         </ScrollViewer>
