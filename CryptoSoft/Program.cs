@@ -1,28 +1,57 @@
-﻿namespace CryptoSoft;
+using System.Security.Cryptography;
+using System.Text;
+using System.Threading;
+
+namespace CryptoSoft;
 
 public static class Program
 {
+    private const int TIMESTAMP_TOLERANCE_SECONDS = 2;
+    private const string KEY = "953cce052755512752a654d330a506ad4296aff67219bb7f706fb50f878268f0";
+    
+    private static string MutexName = $"Global\\CryptoSoft_MonoInstance\\{typeof(Program).Assembly.GetType().GUID}";
+
     public static void Main(string[] args)
     {
+        using var mutex = new Mutex(initiallyOwned: true, MutexName, out var createdNew);
+        if (!createdNew)
+        {
+            if (!mutex.WaitOne(TimeSpan.Zero, false))
+            {
+                // Another instance of CryptoSoft is already running
+                Environment.Exit(-2);
+            }
+        }
+        var timestamp = Environment.GetEnvironmentVariable("EASYSAVE_TIMESTAMP");
+        var signatureBase64 = Environment.GetEnvironmentVariable("EASYSAVE_SIGNATURE");
+        var publicKeyPath = Environment.GetEnvironmentVariable("EASYSAVE_PUBLIC_KEY_PATH");
+        
+        if (string.IsNullOrEmpty(timestamp) || string.IsNullOrEmpty(signatureBase64) || string.IsNullOrEmpty(publicKeyPath))
+        {
+            Environment.Exit(-1);
+        }
+
+        if (!IsTimestampFresh(timestamp))
+        {
+            Environment.Exit(-1);
+        }
+
+        if (!IsSignatureValid(timestamp, signatureBase64, publicKeyPath))
+        {
+            Environment.Exit(-1);
+        }
+
         try
         {
-            if (args.Length < 5)
+            if (args.Length < 4)
             {
-                Console.WriteLine("Usage: CryptoSoft.exe <algorithm> <action> <sourcePath> <destinationPath> <key>");
-                Console.WriteLine("  algorithm: xor ou aes");
-                Console.WriteLine("  action: encrypt ou decrypt");
-                Console.WriteLine("  sourcePath: file source path");
-                Console.WriteLine("  destinationPath: directory destination path");
-                Console.WriteLine("  key: sha256 encryption key");
                 Environment.Exit(-1);
-                return;
             }
 
             var algorithmInput = args[0].ToLower();
             var actionInput = args[1].ToLower();
             var sourcePath = args[2];
             var destinationPath = args[3];
-            var key = args[4];
 
             var algorithm = algorithmInput switch
             {
@@ -30,7 +59,7 @@ public static class Program
                 "aes" => CryptoAlgorithm.Aes,
                 _ => throw new ArgumentException("Invalid algorithm. Use 'xor' or 'aes'.")
             };
-            
+
             var isEncryption = actionInput switch
             {
                 "encrypt" => true,
@@ -38,12 +67,39 @@ public static class Program
                 _ => throw new ArgumentException("Invalid action. Use 'encrypt' or 'decrypt'.")
             };
 
-            var fileManager = new FileManager(sourcePath, destinationPath, key, algorithm, isEncryption);
+            var fileManager = new FileManager(sourcePath, destinationPath, KEY, algorithm, isEncryption);
             fileManager.TransformFile();
         }
         catch (Exception)
         {
             Environment.Exit(-99);
         }
+        finally
+        {
+            if (createdNew) mutex.ReleaseMutex();
+        }
+    }
+    
+    private static bool IsTimestampFresh(string timestamp)
+    {
+        var currentTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        var receivedTime = long.Parse(timestamp);
+        return Math.Abs(currentTime - receivedTime) <= TIMESTAMP_TOLERANCE_SECONDS;
+    }
+    
+    private static bool IsSignatureValid(string timestamp, string signatureBase64, string publicKeyPath)
+    {
+        if (!File.Exists(publicKeyPath))
+            return false;
+
+        var publicKeyXml = File.ReadAllText(publicKeyPath);
+
+        using var rsa = RSA.Create();
+        rsa.FromXmlString(publicKeyXml);
+
+        var data = Encoding.UTF8.GetBytes(timestamp);
+        var signature = Convert.FromBase64String(signatureBase64);
+        
+        return rsa.VerifyData(data, signature, HashAlgorithmName.SHA256, RSASignaturePadding.Pss);
     }
 }
