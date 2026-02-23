@@ -47,27 +47,7 @@ public class DifferentialBackupStrategy : IBackupStrategy
             job.State.RemainingFilesSize = fileInfo.Length;
             job.State.Progression = 0;
 
-            if (cryptExt.Contains(fileInfo.Extension))
-            {
-                var resultEncryption = CryptoUtils.EncryptFile(sourcePath, destinationFilePath);
-                if (!resultEncryption.Item1)
-                {
-                    Logger.Instance.Write(new LogEntry($"Encryption failed : {Path.GetFileName(destinationFilePath)}", job, true));
-                    throw new Exception(Errors.FileCantBeCrypted);
-                }
-                Logger.Instance.Write(new LogEntry($"File Encrypted : {job.DestinationPath}", job,false, resultEncryption.Item2));
-            }
-            else
-            {
-                var resultCopy = FileUtils.CopyFile(fileInfo.FullName, job.DestinationPath,
-                    Path.GetDirectoryName(fileInfo.FullName));
-                if (!resultCopy.Item1)
-                {
-                    Logger.Instance.Write(new LogEntry($"Copy failed : {job.DestinationPath}", job, true));
-                    throw new Exception(Errors.FileCantBeCopied);
-                } 
-                Logger.Instance.Write(new LogEntry($"File Copied : {job.DestinationPath}", job,false, resultCopy.Item2, null));
-            }
+            CopyOrEncryptFile(sourcePath, destinationFilePath, sourceRoot ?? string.Empty, job.DestinationPath, cryptExt, job);
         
             job.State.Progression = 100;
             return true;
@@ -75,6 +55,36 @@ public class DifferentialBackupStrategy : IBackupStrategy
         catch (Exception)
         {
             return false;
+        }
+    }
+    
+    private static void CopyOrEncryptFile(string sourceFile, string destFile, string sourceRoot, string destFolder, List<string> cryptExt, BackupJob job)
+    {
+        var fileInfo = new FileInfo(sourceFile);
+        var dirName = Path.GetDirectoryName(destFile);
+        
+        if (!string.IsNullOrEmpty(dirName))
+            Directory.CreateDirectory(dirName);
+
+        if (cryptExt.Contains(fileInfo.Extension))
+        {
+            var resultEncryption = CryptoUtils.EncryptFile(sourceFile, destFile);
+            if (!resultEncryption.Item1)
+            {
+                Logger.Instance.Write(new LogEntry($"Encryption failed : {Path.GetFileName(destFile)}", job, true));
+                throw new Exception(Errors.FileCantBeCrypted);
+            }
+            Logger.Instance.Write(new LogEntry($"File Encrypted : {destFolder}", job, false, null, resultEncryption.Item2));
+        }
+        else
+        {
+            var resultCopy = FileUtils.CopyFile(sourceFile, destFolder, sourceRoot);
+            if (!resultCopy.Item1)
+            {
+                Logger.Instance.Write(new LogEntry($"Copy failed : {destFolder}", job, true));
+                throw new Exception(Errors.FileCantBeCopied);
+            }
+            Logger.Instance.Write(new LogEntry($"File Copied : {destFolder}", job, false, resultCopy.Item2, null));
         }
     }
     
@@ -153,31 +163,8 @@ public class DifferentialBackupStrategy : IBackupStrategy
         {
             var relativePath = Path.GetRelativePath(job.SourcePath, file.FullName);
             var destinationFilePath = Path.Combine(destFolder, relativePath);
-            var dirName = Path.GetDirectoryName(destinationFilePath);
 
-            if (!string.IsNullOrEmpty(dirName))
-                Directory.CreateDirectory(dirName);
-
-            if (cryptExt.Contains(file.Extension))
-            {
-                var resultEncryption = await Task.Run(() => CryptoUtils.EncryptFile(file.FullName, destinationFilePath));
-                if (!resultEncryption.Item1)
-                {
-                    Logger.Instance.Write(new LogEntry($"Encryption failed : {Path.GetFileName(destinationFilePath)}", job, true));
-                    throw new Exception(Errors.FileCantBeCrypted);
-                }
-                Logger.Instance.Write(new LogEntry($"File Encrypted : {job.DestinationPath}", job, false, null, resultEncryption.Item2));
-            }
-            else
-            {
-                var resultCopy = await Task.Run(() => FileUtils.CopyFile(file.FullName, destFolder, job.SourcePath));
-                if (!resultCopy.Item1)
-                {
-                    Logger.Instance.Write(new LogEntry($"Copy failed : {job.DestinationPath}", job, true));
-                    throw new Exception(Errors.FileCantBeCopied);
-                }
-                Logger.Instance.Write(new LogEntry($"File Copied : {job.DestinationPath}", job, false, resultCopy.Item2, null));
-            }   
+            await Task.Run(() => CopyOrEncryptFile(file.FullName, destinationFilePath, job.SourcePath, destFolder, cryptExt, job));
             
             lock (job.State)
             {
@@ -221,37 +208,8 @@ public class DifferentialBackupStrategy : IBackupStrategy
             {
                 var relativePath = Path.GetRelativePath(job.SourcePath, file.FullName);
                 var destinationFilePath = Path.Combine(destinationBackupFolder, relativePath);
-            
-                var dirName = Path.GetDirectoryName(destinationFilePath);
 
-                if (string.IsNullOrEmpty(dirName))
-                {
-                    throw new Exception();
-                }
-                
-                Directory.CreateDirectory(dirName);
-
-                if (cryptExt.Contains(file.Extension))
-                {
-                    var resultEncryption = CryptoUtils.EncryptFile(file.FullName, destinationFilePath);
-                    if (!resultEncryption.Item1)
-                    {
-                        Logger.Instance.Write(new LogEntry($"Encryption failed : {Path.GetFileName(destinationFilePath)}", job, true));
-                        throw new Exception(Errors.FileCantBeCrypted);
-                    }
-                    Logger.Instance.Write(new LogEntry($"File Encrypted : {job.DestinationPath}", job,false, null, resultEncryption.Item2));
-                }
-                else
-                {
-                    var resultCopy = FileUtils.CopyFile(file.FullName, destinationBackupFolder, job.SourcePath);
-                    if (!resultCopy.Item1)
-                    {
-                        Logger.Instance.Write(new LogEntry($"Copy failed : {job.DestinationPath}", job, true));
-                        throw new Exception(Errors.FileCantBeCopied);
-                    }
-                    Logger.Instance.Write(new LogEntry($"File Copied : {job.DestinationPath}", job,false, resultCopy.Item2, null));
-                }   
-                
+                CopyOrEncryptFile(file.FullName, destinationFilePath, job.SourcePath, destinationBackupFolder, cryptExt, job);
                 
                 job.State.RemainingFiles -= 1;
                 job.State.RemainingFilesSize -= file.Length;
