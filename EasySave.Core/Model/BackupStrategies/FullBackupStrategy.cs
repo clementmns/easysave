@@ -92,21 +92,9 @@ public class FullBackupStrategy : IBackupStrategy
             
             Directory.CreateDirectory(destinationBackupFolder);
             
-            var files = directoryInfo.GetFiles("*", SearchOption.AllDirectories);
+            var files = directoryInfo.GetFiles("*", SearchOption.AllDirectories).ToList();
 
-            List<FileInfo> filesToCopy = [];
-
-            foreach (var file in files)
-            {
-                var relativePath = Path.GetRelativePath(job.SourcePath, file.FullName);
-                var destinationFilePath = Path.Combine(destinationBackupFolder, relativePath);
-                if (!File.Exists(destinationFilePath) || file.LastWriteTime > File.GetLastWriteTime(destinationFilePath))
-                {
-                    filesToCopy.Add(file);
-                }
-            }
-
-            var (priorityFiles, nonPriorityFiles) = FileUtils.SeparatePriorityFiles(filesToCopy, priorityExtensions);
+            var (priorityFiles, nonPriorityFiles) = FileUtils.SeparatePriorityFiles(files, priorityExtensions);
             
             var orderedFiles = priorityFiles.Concat(nonPriorityFiles).ToList();
 
