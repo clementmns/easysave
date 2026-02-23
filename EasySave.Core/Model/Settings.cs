@@ -37,6 +37,11 @@ public class Settings
     public string? CryptoSoftPath { get; set; }
     
     /// <summary>
+    /// Extensions that should be processed with priority during backups
+    /// </summary>
+    public List<string> PriorityExtensions { get; set; } = [];
+
+    /// <summary>
     /// Name of the business software process to monitor (e.g., "CalculatorApp" for Windows calculator)
     /// </summary>
     public string BusinessSoftwareProcessName { get; set; } = "CalculatorApp";

@@ -201,4 +201,69 @@ public static class FileUtils
             return null;
         }
     }
+
+    /// <summary>
+    /// Check if a file has a priority extension.
+    /// </summary>
+    /// <param name="filePath">File path</param>
+    /// <param name="priorityExtensions">List of priority extensions</param>
+    /// <returns></returns>
+    private static bool HasPriorityExtension(string filePath, List<string> priorityExtensions)
+    {
+        try
+        {
+            var extension = Path.GetExtension(filePath);
+            return priorityExtensions.Contains(extension, StringComparer.OrdinalIgnoreCase);
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Separate files into priority and non-priority lists.
+    /// </summary>
+    /// <param name="files">List of files</param>
+    /// <param name="priorityExtensions">List of priority extensions</param>
+    /// <returns>Tuple of (priorityFiles, nonPriorityFiles)</returns>
+    public static (List<FileInfo> priorityFiles, List<FileInfo> nonPriorityFiles) SeparatePriorityFiles(
+        List<FileInfo> files,
+        List<string> priorityExtensions)
+    {
+        var priorityFiles = new List<FileInfo>();
+        var nonPriorityFiles = new List<FileInfo>();
+
+        foreach (var file in files)
+        {
+            if (HasPriorityExtension(file.FullName, priorityExtensions)) priorityFiles.Add(file);
+            else nonPriorityFiles.Add(file);
+        }
+
+        return (priorityFiles, nonPriorityFiles);
+    }
+
+    /// <summary>
+    /// Check if a job has any priority files in its source path.
+    /// </summary>
+    /// <param name="sourcePath">Source path (file or directory)</param>
+    /// <param name="priorityExtensions">List of priority extensions</param>
+    /// <returns></returns>
+    public static bool HasPriorityFiles(string sourcePath, List<string> priorityExtensions)
+    {
+        try
+        {
+            if (priorityExtensions.Count == 0) return false;
+
+            if (File.Exists(sourcePath)) return HasPriorityExtension(sourcePath, priorityExtensions);
+
+            if (!Directory.Exists(sourcePath)) return false;
+            var files = GetAllFiles(sourcePath);
+            return files.Any(f => HasPriorityExtension(f.FullName, priorityExtensions));
+        }
+        catch
+        {
+            return false;
+        }
+    }
 }

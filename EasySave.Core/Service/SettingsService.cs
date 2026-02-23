@@ -18,11 +18,13 @@ public class SettingsService
         WriteIndented = true,
         PropertyNameCaseInsensitive = true
     };
-        
+
+    private static readonly ReaderWriterLockSlim Lock = new();
+
     public Settings Settings { get; }
-        
+
     public static SettingsService GetInstance => _instance ?? throw new Exception();
-        
+
     private SettingsService(IAppProperties properties)
     {
         if (!Directory.Exists(properties.AppSaveDirectory))
@@ -120,7 +122,7 @@ public class SettingsService
             Settings.LogServerHost,
             Settings.LogServerPort);
     }
-        
+
     /// <summary>
     /// Set the application language
     /// </summary>
@@ -157,7 +159,17 @@ public class SettingsService
         Settings.CryptoSoftPath = path;
         SaveSettings(Settings);
     }
-        
+
+    /// <summary>
+    /// Set extensions that should be processed with priority
+    /// </summary>
+    /// <param name="extensions">List of priority extensions</param>
+    public void SetPriorityExtensions(List<string> extensions)
+    {
+        Settings.PriorityExtensions = extensions;
+        SaveSettings(Settings);
+    }
+
     /// <summary>
     /// Load or create the settings file
     /// </summary>
@@ -212,8 +224,16 @@ public class SettingsService
 
     private void SaveSettings(Settings settings)
     {
-        var json = JsonSerializer.Serialize(settings, JsonOptions);
-        File.WriteAllText(_settingsFilePath, json);
+        Lock.EnterWriteLock();
+        try
+        {
+            var json = JsonSerializer.Serialize(settings, JsonOptions);
+            File.WriteAllText(_settingsFilePath, json);
+        }
+        finally
+        {
+            Lock.ExitWriteLock();
+        }
     }
 
     private static void ApplyCulture(string language)

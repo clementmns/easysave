@@ -5,5 +5,6 @@
 /// </summary>
 public interface IBackupStrategy
 {
-    bool Execute(BackupJob job);
+    bool Execute(BackupJob job); 
 }
+
