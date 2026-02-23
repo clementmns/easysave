@@ -181,9 +181,9 @@ public class FullBackupStrategy : IBackupStrategy
             var files = directoryInfo.GetFiles("*", SearchOption.AllDirectories); 
 
             job.State.TotalFiles = files.Length;
-            job.State.FileSize = job.State.FileSize = files.Sum(f => f.Length);
+            job.State.FileSize = files.Sum(f => f.Length);
             job.State.RemainingFiles = files.Length;
-            job.State.RemainingFilesSize = job.State.FileSize = files.Sum(f => f.Length);
+            job.State.RemainingFilesSize = job.State.FileSize;
             job.State.Progression = 0;
 
             foreach (var file in files)
