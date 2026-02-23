@@ -49,14 +49,11 @@ public class BackupJobService : IRealTimeStateObserver
         var priorityJobs = new List<BackupJob>();
         var nonPriorityJobs = new List<BackupJob>();
         
-        await Task.Run(() =>
+        foreach (var job in jobsList)
         {
-            foreach (var job in jobsList)
-            {
-                if (FileUtils.HasPriorityFiles(job.SourcePath, priorityExtensions)) priorityJobs.Add(job);
-                else nonPriorityJobs.Add(job);
-            }
-        });
+            if (FileUtils.HasPriorityFiles(job.SourcePath, priorityExtensions)) priorityJobs.Add(job);
+            else nonPriorityJobs.Add(job);
+        }
         
         var orderedJobs = priorityJobs.Concat(nonPriorityJobs).ToList();
         

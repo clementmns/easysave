@@ -16,12 +16,12 @@ public class TransferLimitService
     {
         get
         {
-            if (field != null) return field;
+            var instance = field;
+            if (instance != null) return instance;
             lock (Lock)
             {
-                field ??= new TransferLimitService();
+                return field ??= new TransferLimitService();
             }
-            return field;
         }
     }
 
@@ -41,7 +41,8 @@ public class TransferLimitService
         var isLargeFile = fileSizeInBytes > sizeThresholdBytes;
         
         var semaphore = isLargeFile ? _largeFileSemaphore : _smallFileSemaphore;
-        semaphore?.Wait();
+        if (semaphore == null) throw new InvalidOperationException("TransferLimitService not initialized");
+        semaphore.Wait();
     }
 
     public void ReleaseFileTransfer(long fileSizeInBytes)
@@ -50,7 +51,8 @@ public class TransferLimitService
         var isLargeFile = fileSizeInBytes > sizeThresholdBytes;
         
         var semaphore = isLargeFile ? _largeFileSemaphore : _smallFileSemaphore;
-        semaphore?.Release();
+        if (semaphore == null) throw new InvalidOperationException("TransferLimitService not initialized");
+        semaphore.Release();
     }
 
     public void WaitForPriorityFile(bool isPriorityFile)
