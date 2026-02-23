@@ -13,10 +13,12 @@ public class DifferentialBackupStrategy : IBackupStrategy
     public bool Execute(BackupJob job)
     {
         var cryptedExtensions = SettingsService.GetInstance.Settings.CryptExtensions;
+        var priorityExtensions = SettingsService.GetInstance.Settings.PriorityExtensions;
+        
         var result = (File.Exists(job.SourcePath), Directory.Exists(job.SourcePath)) switch
         {
             (true, false) => ProcessFile(job, cryptedExtensions),
-            (false, true) => ProcessDirectory(job,  cryptedExtensions),
+            (false, true) => ProcessDirectory(job, cryptedExtensions, priorityExtensions),
             _ => throw new FileNotFoundException(Errors.ProcessingError)
         };
 
@@ -88,15 +90,15 @@ public class DifferentialBackupStrategy : IBackupStrategy
         }
     }
 
-    private static bool ProcessDirectory(BackupJob job, List<string> cryptExt)
+    private static bool ProcessDirectory(BackupJob job, List<string> cryptExt, List<string> priorityExtensions)
     {
         try
         {
             var directoryInfo = new DirectoryInfo(job.SourcePath);
             var destinationBackupFolder = Path.Combine(job.DestinationPath, Path.GetFileName(job.SourcePath));
-            
+
             Directory.CreateDirectory(destinationBackupFolder);
-            
+
             var files = directoryInfo.GetFiles("*", SearchOption.AllDirectories);
 
             List<FileInfo> filesToCopy = [];
@@ -111,19 +113,22 @@ public class DifferentialBackupStrategy : IBackupStrategy
                 }
             }
 
-            job.State.TotalFiles = filesToCopy.Count;
-            job.State.FileSize = filesToCopy.Sum(f => f.Length);
-            job.State.RemainingFiles = filesToCopy.Count;
+            var (priorityFiles, nonPriorityFiles) = FileUtils.SeparatePriorityFiles(filesToCopy, priorityExtensions);
+            var orderedFiles = priorityFiles.Concat(nonPriorityFiles).ToList();
+
+            job.State.TotalFiles = orderedFiles.Count;
+            job.State.FileSize = orderedFiles.Sum(f => f.Length);
+            job.State.RemainingFiles = orderedFiles.Count;
             job.State.RemainingFilesSize = job.State.FileSize;
             job.State.Progression = 0;
 
-            foreach (var file in filesToCopy)
+            foreach (var file in orderedFiles)
             {
                 var relativePath = Path.GetRelativePath(job.SourcePath, file.FullName);
                 var destinationFilePath = Path.Combine(destinationBackupFolder, relativePath);
 
                 CopyOrEncryptFile(file.FullName, destinationFilePath, job.SourcePath, destinationBackupFolder, cryptExt, job);
-                
+
                 job.State.RemainingFiles -= 1;
                 job.State.RemainingFilesSize -= file.Length;
                 job.State.Progression = (int)(100.0 * (1.0 - ((double)job.State.RemainingFilesSize / job.State.FileSize)));

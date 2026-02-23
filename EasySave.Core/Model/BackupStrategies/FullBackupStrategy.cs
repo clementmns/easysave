@@ -13,10 +13,12 @@ public class FullBackupStrategy : IBackupStrategy
     public bool Execute(BackupJob job)
     {
         var cryptedExtensions = SettingsService.GetInstance.Settings.CryptExtensions;
+        var priorityExtensions = SettingsService.GetInstance.Settings.PriorityExtensions;
+        
         var result = (File.Exists(job.SourcePath), Directory.Exists(job.SourcePath)) switch
         {
             (true, false) => ProcessFile(job, cryptedExtensions),
-            (false, true) => ProcessDirectory(job,cryptedExtensions),
+            (false, true) => ProcessDirectory(job, cryptedExtensions, priorityExtensions),
             _ => throw new FileNotFoundException(Errors.ProcessingError)
         };
 
@@ -81,7 +83,7 @@ public class FullBackupStrategy : IBackupStrategy
         }
     }
 
-    private static bool ProcessDirectory(BackupJob job, List<string> cryptExt)
+    private static bool ProcessDirectory(BackupJob job, List<string> cryptExt, List<string> priorityExtensions)
     {
         try
         {
@@ -90,15 +92,31 @@ public class FullBackupStrategy : IBackupStrategy
             
             Directory.CreateDirectory(destinationBackupFolder);
             
-            var files = directoryInfo.GetFiles("*", SearchOption.AllDirectories); 
+            var files = directoryInfo.GetFiles("*", SearchOption.AllDirectories);
 
-            job.State.TotalFiles = files.Length;
-            job.State.FileSize = files.Sum(f => f.Length);
-            job.State.RemainingFiles = files.Length;
+            List<FileInfo> filesToCopy = [];
+
+            foreach (var file in files)
+            {
+                var relativePath = Path.GetRelativePath(job.SourcePath, file.FullName);
+                var destinationFilePath = Path.Combine(destinationBackupFolder, relativePath);
+                if (!File.Exists(destinationFilePath) || file.LastWriteTime > File.GetLastWriteTime(destinationFilePath))
+                {
+                    filesToCopy.Add(file);
+                }
+            }
+
+            var (priorityFiles, nonPriorityFiles) = FileUtils.SeparatePriorityFiles(filesToCopy, priorityExtensions);
+            
+            var orderedFiles = priorityFiles.Concat(nonPriorityFiles).ToList();
+
+            job.State.TotalFiles = orderedFiles.Count;
+            job.State.FileSize = orderedFiles.Sum(f => f.Length);
+            job.State.RemainingFiles = orderedFiles.Count;
             job.State.RemainingFilesSize = job.State.FileSize;
             job.State.Progression = 0;
 
-            foreach (var file in files)
+            foreach (var file in orderedFiles)
             {
                 var relativePath = Path.GetRelativePath(job.SourcePath, file.FullName);
                 var destinationFilePath = Path.Combine(destinationBackupFolder, relativePath);
