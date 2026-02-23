@@ -13,6 +13,8 @@ public static class CryptoUtils
     private const string DefaultAlgorithm = "xor";
     private const string EncryptExtension = ".lock";
 
+    private static readonly Lock Lock = new();
+
     // RSA key stored in %AppData%
     private static string KeyDirectory => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ProSoft", "EasySave", "keys");
 
@@ -91,29 +93,32 @@ public static class CryptoUtils
             if (cryptoExePath == null || !File.Exists(cryptoExePath))
                 return false;
 
-            var processInfo = new ProcessStartInfo
+            lock (Lock)
             {
-                FileName = cryptoExePath,
-                Arguments = $"{algorithm} {action} \"{sourcePath}\" \"{destinationPath}\"",
-                UseShellExecute = false,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                CreateNoWindow = true,
-                EnvironmentVariables =
+                var processInfo = new ProcessStartInfo
                 {
-                    ["EASYSAVE_TIMESTAMP"] = timestamp,
-                    ["EASYSAVE_SIGNATURE"] = signature,
-                    ["EASYSAVE_PUBLIC_KEY_PATH"] = PublicKeyPath
-                }
-            };
+                    FileName = cryptoExePath,
+                    Arguments = $"{algorithm} {action} \"{sourcePath}\" \"{destinationPath}\"",
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    CreateNoWindow = true,
+                    EnvironmentVariables =
+                    {
+                        ["EASYSAVE_TIMESTAMP"] = timestamp,
+                        ["EASYSAVE_SIGNATURE"] = signature,
+                        ["EASYSAVE_PUBLIC_KEY_PATH"] = PublicKeyPath
+                    }
+                };
 
-            using var process = Process.Start(processInfo);
-            if (process == null) return false;
+                using var process = Process.Start(processInfo);
+                if (process == null) return false;
 
-            process.StandardOutput.ReadToEnd();
-            process.WaitForExit();
+                process.StandardOutput.ReadToEnd();
+                process.WaitForExit();
 
-            return process is { HasExited: true, ExitCode: 0 };
+                return process is { HasExited: true, ExitCode: 0 };
+            }
         }
         catch (Exception)
         {
