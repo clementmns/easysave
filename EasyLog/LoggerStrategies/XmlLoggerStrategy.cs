@@ -18,8 +18,11 @@ public class XmlLoggerStrategy : ILoggerStrategy
         OmitXmlDeclaration = true
     };
 
+    public ReaderWriterLockSlim Lock { get; } = new();
+
     public void LocalWrite<T>(T logEntry, string logFilePath)
     {
+        Lock.EnterWriteLock();
         try
         {
             var xmlSerializer = new XmlSerializer(typeof(T));
@@ -32,6 +35,10 @@ public class XmlLoggerStrategy : ILoggerStrategy
         catch (Exception ex)
         {
             Console.WriteLine($"[EasyLog] Error writing XML log: {ex.Message}");
+        }
+        finally
+        {
+            Lock.ExitWriteLock();
         }
     }
 

@@ -4,6 +4,8 @@ namespace EasyLog;
 
 public interface ILoggerStrategy
 {
+    ReaderWriterLockSlim Lock { get; }
+
     /// <summary>
     /// Write a log entry to the local file system.
     /// </summary>

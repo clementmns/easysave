@@ -11,8 +11,11 @@ public class JsonLoggerStrategy : ILoggerStrategy
 {
     private static readonly JsonSerializerOptions CachedOptions = new() { WriteIndented = true };
 
+    public ReaderWriterLockSlim Lock { get; } = new();
+
     public void LocalWrite<T>(T logEntry, string logFilePath)
     {
+        Lock.EnterWriteLock();
         try
         {
             File.AppendAllText(logFilePath + ".json",
@@ -21,6 +24,10 @@ public class JsonLoggerStrategy : ILoggerStrategy
         catch (Exception ex)
         {
             Console.WriteLine($"[EasyLog] Error writing JSON log: {ex.Message}");
+        }
+        finally
+        {
+            Lock.ExitWriteLock();
         }
     }
 
