@@ -230,4 +230,16 @@
     <data name="StatusReady" xml:space="preserve">
         <value>Listo</value>
     </data>
+    <data name="StatusPaused" xml:space="preserve">
+        <value>En pausa</value>
+    </data>
+    <data name="pause" xml:space="preserve">
+        <value>Pausar</value>
+    </data>
+    <data name="resume" xml:space="preserve">
+        <value>Reanudar</value>
+    </data>
+    <data name="stop" xml:space="preserve">
+        <value>Detener</value>
+    </data>
 </root>

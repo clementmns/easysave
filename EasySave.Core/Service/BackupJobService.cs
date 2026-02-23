@@ -50,6 +50,11 @@ public class BackupJobService : IRealTimeStateObserver
     {
         var tasks = jobs.Select(async job =>
         {
+            // Skip jobs that are already running or paused — do not restart them.
+            if (job.State.Status is RealTimeState.RealTimeStatus.OnGoing
+                                 or RealTimeState.RealTimeStatus.Paused)
+                return (job, false);
+
             Logger.Instance.Write(new LogEntry("Going to execute job", job));
 
             try
@@ -81,6 +86,11 @@ public class BackupJobService : IRealTimeStateObserver
                 UpdateJob(job);
 
                 return (job, true);
+            }
+            catch (OperationCanceledException)
+            {
+                job.State.Status = RealTimeState.RealTimeStatus.Ready;
+                return (job, false);
             }
             catch (Exception e)
             {
@@ -227,5 +237,31 @@ public class BackupJobService : IRealTimeStateObserver
             _saveDebounceTimer.Stop();
             _saveDebounceTimer.Start();
         }
+    }
+    
+    public void PauseJob(BackupJob job)
+    {
+        if (job.State.Status != RealTimeState.RealTimeStatus.OnGoing) return;
+        job.PauseGate.Reset();
+        job.State.Status = RealTimeState.RealTimeStatus.Paused;
+        Logger.Instance.Write(new LogEntry("Job paused", job));
+    }
+    
+    public void ResumeJob(BackupJob job)
+    {
+        if (job.State.Status != RealTimeState.RealTimeStatus.Paused) return;
+        job.State.Status = RealTimeState.RealTimeStatus.OnGoing;
+        job.PauseGate.Set();
+        Logger.Instance.Write(new LogEntry("Job resumed", job));
+    }
+    
+    public void StopJob(BackupJob job)
+    {
+        if (job.State.Status is not (RealTimeState.RealTimeStatus.OnGoing or RealTimeState.RealTimeStatus.Paused))
+            return;
+        
+        job.PauseGate.Set();
+        job.CancellationTokenSource.Cancel();
+        Logger.Instance.Write(new LogEntry("Job stopped", job));
     }
 }
