@@ -19,6 +19,8 @@ public class SettingsService
         PropertyNameCaseInsensitive = true
     };
 
+    private static readonly ReaderWriterLockSlim Lock = new();
+
     public Settings Settings { get; }
 
     public static SettingsService GetInstance => _instance ?? throw new Exception();
@@ -222,8 +224,16 @@ public class SettingsService
 
     private void SaveSettings(Settings settings)
     {
-        var json = JsonSerializer.Serialize(settings, JsonOptions);
-        File.WriteAllText(_settingsFilePath, json);
+        Lock.EnterWriteLock();
+        try
+        {
+            var json = JsonSerializer.Serialize(settings, JsonOptions);
+            File.WriteAllText(_settingsFilePath, json);
+        }
+        finally
+        {
+            Lock.ExitWriteLock();
+        }
     }
 
     private static void ApplyCulture(string language)

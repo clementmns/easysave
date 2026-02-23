@@ -187,6 +187,15 @@ public class BackupJobService : IRealTimeStateObserver
         var jobs = JsonSerializer.Deserialize<ObservableCollection<BackupJob>>(json, JsonOptions);
         if (jobs == null) return jobs;
         var sorted = jobs.OrderBy(j => j.Id).ToList();
+
+        foreach (var job in sorted)
+        {
+            // Reset job state
+            job.State.Reset();
+            job.State.Progression = 0;
+            job.State.Status = RealTimeState.RealTimeStatus.Ready;
+        }
+
         jobs = new ObservableCollection<BackupJob>(sorted);
         return jobs;
     }
