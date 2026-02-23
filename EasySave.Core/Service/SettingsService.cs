@@ -152,6 +152,12 @@ public class SettingsService
         SaveSettings(Settings);
     }
 
+    public void SetCryptoSoftPath(string path)
+    {
+        Settings.CryptoSoftPath = path;
+        SaveSettings(Settings);
+    }
+
     /// <summary>
     /// Set extensions that should be processed with priority
     /// </summary>
@@ -161,7 +167,7 @@ public class SettingsService
         Settings.PriorityExtensions = extensions;
         SaveSettings(Settings);
     }
-        
+
     /// <summary>
     /// Load or create the settings file
     /// </summary>

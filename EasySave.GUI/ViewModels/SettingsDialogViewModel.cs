@@ -2,7 +2,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Threading.Tasks;
 using Avalonia.Controls;
+using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EasyLog;
@@ -39,6 +41,7 @@ public partial class SettingsDialogViewModel : ViewModelBase
         // Load existing crypted extensions
         var existingExtensions = SettingsService.GetInstance.Settings.CryptExtensions;
         _cryptedExtensions = new ObservableCollection<string>(existingExtensions);
+        _cryptoSoftPath = SettingsService.GetInstance.Settings.CryptoSoftPath;
 
         // Load existing priority extensions
         var existingPriorityExtensions = SettingsService.GetInstance.Settings.PriorityExtensions;
@@ -79,6 +82,8 @@ public partial class SettingsDialogViewModel : ViewModelBase
     [NotifyDataErrorInfo]
     [Required]
     private int? _logServerPort;
+
+    [ObservableProperty] private string? _cryptoSoftPath;
 
     [ObservableProperty] private string _businessSoftwareProcessName;
     
@@ -137,7 +142,24 @@ public partial class SettingsDialogViewModel : ViewModelBase
         if (extension != null && CryptedExtensions.Contains(extension))
             CryptedExtensions.Remove(extension);
     }
-    
+
+    [RelayCommand]
+    public async Task BrowseSourceCommand()
+    {
+        var topLevel = TopLevel.GetTopLevel(_dialogWindow);
+
+        IReadOnlyList<IStorageItem> selected = await topLevel?.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+        {
+            Title = Messages.SelectSourcePathFile,
+            AllowMultiple = false
+        })!;
+
+        if (selected.Count < 1) return;
+
+        var path = selected[0].Path.LocalPath;
+        CryptoSoftPath = path;
+    }
+
     [RelayCommand]
     private void AddPriorityExtension()
     {
@@ -177,6 +199,9 @@ public partial class SettingsDialogViewModel : ViewModelBase
         
         if (SelectedLogMode != SettingsService.GetInstance.Settings.LogMode)
             SettingsService.GetInstance.SetLogMode(SelectedLogMode);
+
+        if (CryptoSoftPath != null && CryptoSoftPath != SettingsService.GetInstance.Settings.CryptoSoftPath)
+            SettingsService.GetInstance.SetCryptoSoftPath(CryptoSoftPath);
 
         if (SelectedLogMode is LogMode.Both or LogMode.Remote)
         {

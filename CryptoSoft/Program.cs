@@ -9,7 +9,14 @@ public static class Program
     private const int TIMESTAMP_TOLERANCE_SECONDS = 2;
     private const string KEY = "953cce052755512752a654d330a506ad4296aff67219bb7f706fb50f878268f0";
     
-    private static string MutexName = $"Global\\CryptoSoft_MonoInstance\\{typeof(Program).Assembly.GetType().GUID}";
+    private static readonly string MutexName = GetMutexName();
+
+    private static string GetMutexName()
+    {
+        var machineName = Environment.MachineName;
+        var userName = Environment.UserName;
+        return $"CryptoSoft_MonoInstance_{machineName}_{userName}";
+    }
 
     public static void Main(string[] args)
     {
@@ -18,7 +25,6 @@ public static class Program
         {
             if (!mutex.WaitOne(TimeSpan.Zero, false))
             {
-                // Another instance of CryptoSoft is already running
                 Environment.Exit(-2);
             }
         }

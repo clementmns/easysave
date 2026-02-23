@@ -34,6 +34,8 @@ public class Settings
 
     public List<string> CryptExtensions { get; set; } = [];
 
+    public string? CryptoSoftPath { get; set; }
+    
     /// <summary>
     /// Extensions that should be processed with priority during backups
     /// </summary>
