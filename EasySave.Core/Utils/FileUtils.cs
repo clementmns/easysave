@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace EasySave.Core.Utils;
 
@@ -93,17 +94,31 @@ public static class FileUtils
 
             var root = Path.GetPathRoot(fullPath);
 
-            // If the root is not a drive (no “:”), it cannot be converted simply.
-            if (string.IsNullOrEmpty(root) || !root.Contains(':'))
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                throw new ArgumentException("The path is not a valid absolute");
+                if (string.IsNullOrEmpty(root) || !root.Contains(':'))
+                {
+                    throw new ArgumentException("The path is not a valid absolute");
+                }
+
+                var driveLetter = root.Replace(":", "$").TrimEnd('\\');
+                var pathWithoutRoot = fullPath.Substring(root.Length);
+                var machineName = Environment.MachineName;
+
+                return $@"\\{machineName}\{driveLetter}\{pathWithoutRoot}";
             }
+            else
+            {
+                if (string.IsNullOrEmpty(root) || root != "/")
+                {
+                    throw new ArgumentException("The path is not a valid absolute Unix path");
+                }
 
-            var driveLetter = root.Replace(":", "$").TrimEnd('\\');
-            var pathWithoutRoot = fullPath.Substring(root.Length); // Retrieve the rest of the path (without the root)
-            var machineName = Environment.MachineName;
+                var pathWithoutRoot = fullPath.TrimStart('/');
+                var machineName = Environment.MachineName;
 
-            return $@"\\{machineName}\{driveLetter}\{pathWithoutRoot}";
+                return $@"//{machineName}/{pathWithoutRoot}";
+            }
         }
         catch
         {
