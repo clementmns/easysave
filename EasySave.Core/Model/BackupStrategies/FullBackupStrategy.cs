@@ -27,6 +27,7 @@ public class FullBackupStrategy : IBackupStrategy
 
     private static void CopyOrEncryptFile(string sourceFile, string destFile, string sourceRoot, string destFolder, List<string> cryptExt, BackupJob job, bool isPriority = false)
     {
+        Console.WriteLine($"Copying {sourceFile} to {destFile}");
         var fileInfo = new FileInfo(sourceFile);
         var dirName = Path.GetDirectoryName(destFile);
 
@@ -62,6 +63,7 @@ public class FullBackupStrategy : IBackupStrategy
         }
         finally
         {
+            Console.WriteLine($"File transfered : {destFile}");
             TransferLimitService.Instance.ReleaseFileTransfer(fileInfo.Length);
             if (isPriority) TransferLimitService.Instance.RemovePendingPriorityFile();
         }

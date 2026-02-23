@@ -62,6 +62,7 @@ public class DifferentialBackupStrategy : IBackupStrategy
         }
         finally
         {
+            Console.WriteLine($"File transfered : {destFile}");
             TransferLimitService.Instance.ReleaseFileTransfer(fileInfo.Length);
             if (isPriority) TransferLimitService.Instance.RemovePendingPriorityFile();
         }
