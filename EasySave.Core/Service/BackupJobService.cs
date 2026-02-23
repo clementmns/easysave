@@ -35,10 +35,10 @@ public class BackupJobService : IRealTimeStateObserver
         SubscribeToJobStates();
     }
 
-    public async Task<Dictionary<BackupJob, bool>> ExecuteJobsAsync(
-        IEnumerable<BackupJob> jobs,
-        IProgressionObserver? progressionObserver = null)
+    public async Task<Dictionary<BackupJob, bool>> ExecuteJobsAsync(IEnumerable<BackupJob> jobs, IProgressionObserver? progressionObserver = null)
     {
+        var executor = new BackupExecutor();
+        
         var jobsList = jobs.ToList();
         
         var priorityExtensions = SettingsService.GetInstance.Settings.PriorityExtensions;
@@ -76,7 +76,7 @@ public class BackupJobService : IRealTimeStateObserver
                 if (progressionObserver != null)
                     job.State.AttachProgressionObserver(progressionObserver);
 
-                var success = await BackupExecutor.ExecuteJobAsync(job);
+                var success = await executor.ExecuteJobAsync(job);
 
                 if (!success)
                     throw new Exception("Failed to execute job");
