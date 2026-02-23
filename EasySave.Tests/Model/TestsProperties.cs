@@ -6,4 +6,5 @@ public class TestsProperties : IAppProperties
 {
     public string AppSaveDirectory { get; } = "";
     public int MaxJobs { get; } = 5;
+    public string? CryptoSoftPath { get; } = null;
 }
