@@ -4,27 +4,24 @@ using System.Security.AccessControl;
 using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Text;
+using EasySave.Core.Service;
 
 namespace EasySave.Core.Utils;
 
 public static class CryptoUtils
 {
-    private const string CRYPTO_EXE_NAME = @"CryptoSoft.exe";
-    private const string DEFAULT_ALGORITHM = "xor";
-    private const string ENCRYPT_EXTENSION = ".lock";
+    private const string DefaultAlgorithm = "xor";
+    private const string EncryptExtension = ".lock";
 
     // RSA key stored in %AppData%
-    private static string KeyDirectory =>
-        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                     "ProSoft", "EasySave", "keys");
+    private static string KeyDirectory => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ProSoft", "EasySave", "keys");
 
     private static string PrivateKeyPath => Path.Combine(KeyDirectory, "private_key.xml");
     private static string PublicKeyPath  => Path.Combine(KeyDirectory, "public_key.xml");
 
     private static void EnsureKeysExist()
     {
-        if (File.Exists(PrivateKeyPath) && File.Exists(PublicKeyPath))
-            return;
+        if (File.Exists(PrivateKeyPath) && File.Exists(PublicKeyPath)) return;
 
         Directory.CreateDirectory(KeyDirectory);
 
@@ -41,10 +38,7 @@ public static class CryptoUtils
     
     private static void RestrictFileToCurrentUser(string filePath)
     {
-        if (!Directory.Exists(filePath))
-        {
-            Directory.CreateDirectory(filePath);
-        }
+        if (!Directory.Exists(filePath)) Directory.CreateDirectory(filePath);
 
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
@@ -58,7 +52,7 @@ public static class CryptoUtils
         }
     }
 
-    public static (bool, long) EncryptFile(string sourcePath, string destinationPath, string? sourceRoot = null, string algorithm = DEFAULT_ALGORITHM)
+    public static (bool, long) EncryptFile(string sourcePath, string destinationPath, string? sourceRoot = null, string algorithm = DefaultAlgorithm)
     {
         var stopwatch = new Stopwatch();
         stopwatch.Start();
@@ -67,10 +61,9 @@ public static class CryptoUtils
             ? Path.GetFileName(sourcePath)
             : Path.GetRelativePath(sourceRoot, sourcePath);
         
-        if (relativePath.Contains(".."))
-            return (false, 0);
+        if (relativePath.Contains("..")) return (false, 0);
         
-        var destFile = destinationPath + ENCRYPT_EXTENSION;
+        var destFile = destinationPath + EncryptExtension;
 
         var result = ExecuteCryptoCommand(algorithm, "encrypt", sourcePath, destFile);
         
@@ -80,7 +73,7 @@ public static class CryptoUtils
         return (result, ms);
     }
 
-    public static bool DecryptFile(string sourcePath, string destinationPath, string algorithm = DEFAULT_ALGORITHM)
+    public static bool DecryptFile(string sourcePath, string destinationPath, string algorithm = DefaultAlgorithm)
     {
         return ExecuteCryptoCommand(algorithm, "decrypt", sourcePath, destinationPath);
     }
@@ -94,8 +87,8 @@ public static class CryptoUtils
             var timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();
             var signature = SignTimestamp(timestamp);
             
-            var cryptoExePath = GetCryptoSoftPath();
-            if (cryptoExePath == null)
+            var cryptoExePath = SettingsService.GetInstance.Settings.CryptoSoftPath;
+            if (cryptoExePath == null || !File.Exists(cryptoExePath))
                 return false;
 
             var processInfo = new ProcessStartInfo
@@ -105,12 +98,14 @@ public static class CryptoUtils
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
-                CreateNoWindow = true
+                CreateNoWindow = true,
+                EnvironmentVariables =
+                {
+                    ["EASYSAVE_TIMESTAMP"] = timestamp,
+                    ["EASYSAVE_SIGNATURE"] = signature,
+                    ["EASYSAVE_PUBLIC_KEY_PATH"] = PublicKeyPath
+                }
             };
-            
-            processInfo.EnvironmentVariables["EASYSAVE_TIMESTAMP"] = timestamp;
-            processInfo.EnvironmentVariables["EASYSAVE_SIGNATURE"] = signature;
-            processInfo.EnvironmentVariables["EASYSAVE_PUBLIC_KEY_PATH"] = PublicKeyPath;
 
             using var process = Process.Start(processInfo);
             if (process == null) return false;
@@ -140,31 +135,6 @@ public static class CryptoUtils
         return Convert.ToBase64String(signature);
     }
 
-    private static string? GetCryptoSoftPath()
-    {
-        var assemblyBaseDir = AppDomain.CurrentDomain.BaseDirectory;
-        var currentDir = new DirectoryInfo(assemblyBaseDir);
-        DirectoryInfo? solutionRoot = null;
-        
-        for (var i = 0; i < 4 && currentDir?.Parent != null; i++)
-        {
-            currentDir = currentDir.Parent;
-        }
-        solutionRoot = currentDir;
-        
-        var searchPaths = new List<string>
-        {
-            Path.Combine(assemblyBaseDir, CRYPTO_EXE_NAME),
-            Path.Combine(Environment.CurrentDirectory, CRYPTO_EXE_NAME)
-        };
-
-        if (solutionRoot is not { Exists: true }) return searchPaths.FirstOrDefault(File.Exists);
-        searchPaths.Add(Path.Combine(solutionRoot.FullName, "CryptoSoft", "bin", "Debug", "net10.0", "win-x64", CRYPTO_EXE_NAME));
-        searchPaths.Add(Path.Combine(solutionRoot.FullName, "CryptoSoft", "bin", "Release", "net10.0", "win-x64", CRYPTO_EXE_NAME));
-
-        return searchPaths.FirstOrDefault(File.Exists);
-    }
-    
     private static void SecureWindowsDirectory(string path)
     {
         var directoryInfo = new DirectoryInfo(path);
