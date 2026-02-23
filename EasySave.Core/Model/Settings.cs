@@ -32,7 +32,9 @@ public class Settings
     /// </summary>
     public int LogServerPort { get; set; } = 5092;
 
-    public List<string> CryptExtensions { get; set; } = []; 
+    public List<string> CryptExtensions { get; set; } = [];
+
+    public string? CryptoSoftPath { get; set; }
     
     /// <summary>
     /// Name of the business software process to monitor (e.g., "CalculatorApp" for Windows calculator)

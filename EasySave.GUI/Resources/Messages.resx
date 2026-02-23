@@ -264,4 +264,10 @@
     <data name="remotePort" xml:space="preserve">
         <value>Remote Port</value>
     </data>
+    <data name="cryptoSoftPath" xml:space="preserve">
+        <value>CryptoSoft path</value>
+    </data>
+    <data name="cryptoSoftPathText" xml:space="preserve">
+        <value>Put the cryptoSoft path to crypt files with selected extensions</value>
+    </data>
 </root>

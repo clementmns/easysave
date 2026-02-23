@@ -80,14 +80,16 @@ public class FileUtilsTests
 
         var result = FileUtils.ConvertToUnc(input);
 
+        Assert.False(string.IsNullOrWhiteSpace(result));
+        
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
-            Assert.False(string.IsNullOrWhiteSpace(result));
             Assert.StartsWith("\\\\", result);
+            Assert.Contains("$", result);
         }
         else
         {
-            Assert.Null(result);
+            Assert.StartsWith("//", result);
         }
     }
 

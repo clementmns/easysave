@@ -536,5 +536,17 @@ namespace EasySave.GUI.Resources {
                 return ResourceManager.GetString("remotePort", resourceCulture);
             }
         }
+        
+        public static string cryptoSoftPath {
+            get {
+                return ResourceManager.GetString("cryptoSoftPath", resourceCulture);
+            }
+        }
+        
+        public static string cryptoSoftPathText {
+            get {
+                return ResourceManager.GetString("cryptoSoftPathText", resourceCulture);
+            }
+        }
     }
 }

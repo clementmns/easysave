@@ -151,6 +151,12 @@ public class SettingsService
         Settings.CryptExtensions = extensions;
         SaveSettings(Settings);
     }
+
+    public void SetCryptoSoftPath(string path)
+    {
+        Settings.CryptoSoftPath = path;
+        SaveSettings(Settings);
+    }
         
     /// <summary>
     /// Load or create the settings file
