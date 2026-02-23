@@ -19,7 +19,7 @@ sealed class Program
         if (args.Length > 0)
         {
             var vm = new MainViewModel();
-            var executed = vm.ExecuteJobsFromArgs(args[0]);
+            var executed = vm.ExecuteJobsFromArgs(args[0]).GetAwaiter().GetResult();
             foreach (var (requestedIndex, result) in executed)
             {
                 Console.WriteLine(!result

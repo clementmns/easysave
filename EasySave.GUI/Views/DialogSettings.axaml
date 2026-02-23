@@ -124,7 +124,7 @@
                                                             Content="{DynamicResource remove}"
                                                             Command="{Binding ((vm:SettingsDialogViewModel)DataContext).RemoveExtensionCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                                             CommandParameter="{Binding .}"
-                                                            Classes="ghost"
+                                                            Classes="danger"
                                                             Foreground="{StaticResource ErrorBrush}"
                                                             Padding="8,4" />
                                                 </Grid>
