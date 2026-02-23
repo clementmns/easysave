@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
@@ -12,7 +13,7 @@ using EasySave.GUI.Resources;
 
 namespace EasySave.GUI.ViewModels;
 
-public partial class CreateJobDialogViewModel : DialogViewModel
+public partial class CreateJobDialogViewModel : ViewModelBase
 {
     private readonly MainViewModel _mainViewModel;
     private readonly Window? _dialogWindow;
@@ -23,13 +24,28 @@ public partial class CreateJobDialogViewModel : DialogViewModel
         _dialogWindow = dialogWindow;
     }
     
-    [ObservableProperty] private string? _name;
-    [ObservableProperty] private string? _sourcePath;
-    [ObservableProperty] private string? _destinationPath;
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required]
+    private string? _name;
+
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required]
+    private string? _sourcePath;
+
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required]
+    private string? _destinationPath;
+
     [ObservableProperty] private bool _isFileSelected = true;
     [ObservableProperty] private bool _isFolderSelected;
     public List<BackupType> BackupTypes { get; } = [BackupType.Full, BackupType.Differential];
-    [ObservableProperty] private BackupType _selectedBackupType = BackupType.Full;
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required]
+    private BackupType _selectedBackupType = BackupType.Full;
     
     [ObservableProperty] private string? _errorMessage;
     partial void OnErrorMessageChanged(string? value) => OnPropertyChanged(nameof(IsErrorVisible));

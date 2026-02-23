@@ -1,12 +1,18 @@
+using System.Net.Sockets;
+
 namespace EasyLog;
 
 public interface ILoggerStrategy
 {
+    ReaderWriterLockSlim Lock { get; }
+
     /// <summary>
-    /// Write a log entry to the specified path.
+    /// Write a log entry to the local file system.
     /// </summary>
-    /// <param name="logEntry">Log content</param>
-    /// <param name="fullPath">Log file path</param>
-    /// <typeparam name="T">Object to log</typeparam>
-    void Write<T>(T logEntry, string fullPath);
+    void LocalWrite<T>(T logEntry, string fullPath);
+
+    /// <summary>
+    /// Wraps the serialized entry in a <see cref="RemoteLogEntry"/> envelope and sends it as format.
+    /// </summary>
+    void RemoteWrite<T>(T logEntry, Socket socket);
 }

@@ -12,6 +12,10 @@ public class BackupJobService : IRealTimeStateObserver
     public ObservableCollection<BackupJob>? Jobs { get; set; }
     
     private string _stateFilePath { get; set; }
+    private readonly object _lock = new();
+    private readonly System.Timers.Timer _saveDebounceTimer;
+    private const double SaveDebounceMs = 300;
+    private readonly SynchronizationContext? _uiContext;
     
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
@@ -21,6 +25,17 @@ public class BackupJobService : IRealTimeStateObserver
     
     public BackupJobService()
     {
+        _uiContext = SynchronizationContext.Current;
+        
+        _saveDebounceTimer = new System.Timers.Timer(SaveDebounceMs) { AutoReset = false };
+        _saveDebounceTimer.Elapsed += (_, _) =>
+        {
+            lock (_lock)
+            {
+                if (Jobs != null) SaveJobs(Jobs);
+            }
+        };
+
         var appSaveDirectory = SettingsService.GetInstance.Settings.AppSaveDirectory;
         if (!Directory.Exists(appSaveDirectory)) FileUtils.CreateDirectory(appSaveDirectory);
 
@@ -28,46 +43,67 @@ public class BackupJobService : IRealTimeStateObserver
         Jobs = LoadJobs();
         SubscribeToJobStates();
     }
-    
-    public async Task<bool> ExecuteJobAsync(BackupJob job, IProgressionObserver? progressionObserver = null)
+
+    public async Task<Dictionary<BackupJob, bool>> ExecuteJobsAsync(
+        IEnumerable<BackupJob> jobs,
+        IProgressionObserver? progressionObserver = null)
     {
-        Logger.Instance.Write(new LogEntry("Going to execute job", job));
-        try
+        var tasks = jobs.Select(async job =>
         {
-            // get execution time
-            Stopwatch sw = new();
-            sw.Start();
-            
-            job.State.AttachStateObserver(this);
-            job.State.IsActive = true;
-            job.State.Progression = 0;
-            job.State.Status = RealTimeState.RealTimeStatus.OnGoing;
-            
-            if (progressionObserver != null) job.State.AttachProgressionObserver(progressionObserver);
-            var executor = new BackupExecutor();
-            var success = await executor.ExecuteJobAsync(job);
-            if (!success) throw new Exception("Failed to execute job");
-            
-            job.State.Status = RealTimeState.RealTimeStatus.Done;
-            
-            sw.Stop();
-            
-            Logger.Instance.Write(new LogEntry("Job executed", job, false, sw.ElapsedMilliseconds));
-            UpdateJob(job);
-            return true;
-        }
-        catch (Exception e)
-        {
-            job.State.Status = RealTimeState.RealTimeStatus.Error;
-            Logger.Instance.Write(new LogEntry($"Failed to execute job: {e.Message}", job, true));
-            return false;
-        }
-        finally
-        {
-            job.State.Reset();
-            job.State.DetachStateObserver(this);
-            if (progressionObserver != null) job.State.DetachProgressionObserver(progressionObserver);
-        }
+            Logger.Instance.Write(new LogEntry("Going to execute job", job));
+
+            try
+            {
+                Stopwatch sw = new();
+                sw.Start();
+
+                job.State.AttachStateObserver(this);
+                job.State.IsActive = true;
+                job.State.Progression = 0;
+                job.State.Status = RealTimeState.RealTimeStatus.OnGoing;
+
+                if (progressionObserver != null)
+                    job.State.AttachProgressionObserver(progressionObserver);
+
+                var executor = new BackupExecutor();
+                var success = await executor.ExecuteJobAsync(job);
+
+                if (!success)
+                    throw new Exception("Failed to execute job");
+
+                job.State.Status = RealTimeState.RealTimeStatus.Done;
+
+                sw.Stop();
+
+                Logger.Instance.Write(
+                    new LogEntry("Job executed", job, false, sw.ElapsedMilliseconds));
+
+                UpdateJob(job);
+
+                return (job, true);
+            }
+            catch (Exception e)
+            {
+                job.State.Status = RealTimeState.RealTimeStatus.Error;
+
+                Logger.Instance.Write(
+                    new LogEntry($"Failed to execute job: {e.Message}", job, true));
+
+                return (job, false);
+            }
+            finally
+            {
+                job.State.Reset();
+                job.State.DetachStateObserver(this);
+
+                if (progressionObserver != null)
+                    job.State.DetachProgressionObserver(progressionObserver);
+            }
+        });
+
+        var results = await Task.WhenAll(tasks);
+
+        return results.ToDictionary(r => r.job, r => r.Item2);
     }
 
     public bool CreateJob(BackupJob job)
@@ -75,10 +111,13 @@ public class BackupJobService : IRealTimeStateObserver
         Logger.Instance.Write(new LogEntry("Going to create job", job));
         try
         {
-            Jobs?.Add(job);
-            job.State.AttachStateObserver(this);
-            if (Jobs != null) SaveJobs(Jobs);
-            Logger.Instance.Write(new LogEntry("Job created", job));
+            lock (_lock)
+            {
+                job.State.AttachStateObserver(this);
+                if (Jobs != null) SaveJobs(Jobs);
+                Logger.Instance.Write(new LogEntry("Job created", job));
+            }
+            PostToUiThread(() => Jobs?.Add(job));
             return true;
         }
         catch (Exception)
@@ -93,10 +132,13 @@ public class BackupJobService : IRealTimeStateObserver
         Logger.Instance.Write(new LogEntry("Going to delete job", job));
         try
         {
-            RemoveStateSubscription(job);
-            Jobs?.Remove(job);
-            if (Jobs != null) SaveJobs(Jobs);
-            Logger.Instance.Write(new LogEntry("Job deleted", job));
+            lock (_lock)
+            {
+                RemoveStateSubscription(job);
+                if (Jobs != null) SaveJobs(Jobs);
+                Logger.Instance.Write(new LogEntry("Job deleted", job));
+            }
+            PostToUiThread(() => Jobs?.Remove(job));
             return true;
         }
         catch (Exception)
@@ -108,35 +150,38 @@ public class BackupJobService : IRealTimeStateObserver
 
     public void UpdateJob(BackupJob job)
     {
-        Logger.Instance.Write(new LogEntry("Going to update job", job));
-        try
+        lock (_lock)
         {
-            if (Jobs == null) return;
+            Logger.Instance.Write(new LogEntry("Going to update job", job));
+            try
+            {
+                if (Jobs == null) return;
 
-            var existingJob = Jobs.FirstOrDefault(j => j.Id == job.Id);
-            if (existingJob == null)
-            {
-                job.State.AttachStateObserver(this);
-                Jobs.Add(job);
+                var existingJob = Jobs.FirstOrDefault(j => j.Id == job.Id);
+                if (existingJob == null)
+                {
+                    job.State.AttachStateObserver(this);
+                    PostToUiThread(() => Jobs?.Add(job));
+                }
+                else
+                {
+                    existingJob.Name = job.Name;
+                    existingJob.SourcePath = job.SourcePath;
+                    existingJob.DestinationPath = job.DestinationPath;
+                    existingJob.Type = job.Type;
+                    existingJob.State = job.State;
+                }
+                if (Jobs != null) SaveJobs(Jobs);
+                Logger.Instance.Write(new LogEntry("Job updated", job));
             }
-            else
+            catch (Exception)
             {
-                existingJob.Name = job.Name;
-                existingJob.SourcePath = job.SourcePath;
-                existingJob.DestinationPath = job.DestinationPath;
-                existingJob.Type = job.Type;
-                existingJob.State = job.State;
+                Logger.Instance.Write(new LogEntry("Failed to update job", job, true));
+                throw;
             }
-            if (Jobs != null) SaveJobs(Jobs);
-            Logger.Instance.Write(new LogEntry("Job updated", job));
-        }
-        catch (Exception)
-        {
-            Logger.Instance.Write(new LogEntry("Failed to update job", job, true));
-            throw;
         }
     }
-
+    
     private ObservableCollection<BackupJob>? LoadJobs()
     {
         if (!File.Exists(_stateFilePath)) SaveJobs([]);
@@ -150,9 +195,9 @@ public class BackupJobService : IRealTimeStateObserver
 
     private void SaveJobs(ObservableCollection<BackupJob> jobs)
     {
-        var orderedJobs = jobs.OrderBy(j => j.Id).ToList();
-        var json = JsonSerializer.Serialize(orderedJobs, JsonOptions);
-        File.WriteAllText(_stateFilePath, json);
+            var orderedJobs = jobs.OrderBy(j => j.Id).ToList();
+            var json = JsonSerializer.Serialize(orderedJobs, JsonOptions);
+            File.WriteAllText(_stateFilePath, json);
     }
 
     private void SubscribeToJobStates()
@@ -165,9 +210,22 @@ public class BackupJobService : IRealTimeStateObserver
     {
         job.State.DetachStateObserver(this);
     }
+    
+    private void PostToUiThread(Action action)
+    {
+        if (_uiContext != null)
+            _uiContext.Post(_ => action(), null);
+        else
+            action();
+    }
 
     public void OnStateUpdated(RealTimeState state)
     {
-        if (Jobs != null) SaveJobs(Jobs);
+        // Restart the debounce window: the actual write fires 300 ms after the last update.
+        lock (_lock)
+        {
+            _saveDebounceTimer.Stop();
+            _saveDebounceTimer.Start();
+        }
     }
 }

@@ -246,4 +246,28 @@
     <data name="UnknownBackupType" xml:space="preserve">
         <value>Unknown Backup type</value>
     </data>
+    <data name="selectLogFormat" xml:space="preserve">
+        <value>Select Log Format</value>
+    </data>
+    <data name="logMode" xml:space="preserve">
+        <value>Log Mode</value>
+    </data>
+    <data name="logModeText" xml:space="preserve">
+        <value>Select where logs are saved</value>
+    </data>
+    <data name="selectLogMode" xml:space="preserve">
+        <value>Select Log Mode</value>
+    </data>
+    <data name="remoteServer" xml:space="preserve">
+        <value>Log Remote Server</value>
+    </data>
+    <data name="remoteServerText" xml:space="preserve">
+        <value>Select remote server where logs will be saved</value>
+    </data>
+    <data name="remoteHost" xml:space="preserve">
+        <value>Remote Host</value>
+    </data>
+    <data name="remotePort" xml:space="preserve">
+        <value>Remote Port</value>
+    </data>
 </root>
