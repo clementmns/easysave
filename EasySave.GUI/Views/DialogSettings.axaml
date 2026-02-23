@@ -154,6 +154,19 @@
                     </StackPanel>
                 </Border>
 
+                <Border Padding="16" CornerRadius="8" Background="{StaticResource BackgroundBrush}"
+                        BorderBrush="{StaticResource BorderSoftBrush}" BorderThickness="1">
+                    <StackPanel Spacing="10">
+                        <TextBlock Text="{DynamicResource maxTransferSize}" FontWeight="SemiBold"
+                                   Foreground="{StaticResource TextPrimaryBrush}" />
+                        <TextBlock Text="{DynamicResource maxTransferSizeText}"
+                                   Foreground="{StaticResource TextSecondaryBrush}" />
+                        <Grid ColumnDefinitions="*,Auto">
+                            <NumericUpDown Value="{Binding MaxTransferSizeForParallel}" FormatString="0" Minimum="0" />
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
                 <!-- Ressources -->
                 <Border Padding="16" CornerRadius="8" Background="{StaticResource BackgroundBrush}"
                         BorderBrush="{StaticResource BorderSoftBrush}" BorderThickness="1">
