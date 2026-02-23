@@ -7,79 +7,20 @@ namespace EasySave.Core.Service;
 
 public class BackupExecutor
 {
-    private static int _activePriorityJobs;
-
-    public async Task<bool> ExecuteJobAsync(BackupJob job)
+    public static async Task<bool> ExecuteJobAsync(BackupJob job)
     {
-        var strategy = GetStrategy(job);
-        
-        // Check if business software is running
-        if (ProcessMonitorService.IsBusinessSoftwareRunning)
+        return await Task.Run(() =>
         {
-            Logger.Instance.Write(new LogEntry(Errors.BackupBlocked, job, isError: true));
-            return false;
-        }
-
-        var settings = SettingsService.GetInstance.Settings;
-        var priorityExtensions = settings.PriorityExtensions ?? new List<string>();
-        
-        var hasPriority = HasPriorityFiles(job, priorityExtensions);
-
-        if (hasPriority)
-        {
-            Interlocked.Increment(ref _activePriorityJobs);
-        }
-        else
-        {
-            // Wait for the active priority jobs to finish before starting a non-priority job
-            while (Interlocked.CompareExchange(ref _activePriorityJobs, 0, 0) > 0)
+            // Check if business software is running
+            if (ProcessMonitorService.IsBusinessSoftwareRunning)
             {
-                await Task.Delay(100);
-            }
-        }
-
-        try
-        {
-            await strategy.ExecuteAsync(job, priorityExtensions);
-            return true;
-        }
-        catch (Exception ex)
-        {
-            Logger.Instance.Write(new LogEntry($"Error during backup: {ex.Message}", job, isError: true));
-            return false;
-        }
-        finally
-        {
-            if (hasPriority)
-                Interlocked.Decrement(ref _activePriorityJobs);
-        }
-    }
-
-    private static bool HasPriorityFiles(BackupJob job, List<string> priorityExtensions)
-    {
-        if (priorityExtensions.Count == 0)
-            return false;
-
-        try
-        {
-            if (File.Exists(job.SourcePath))
-            {
-                var ext = Path.GetExtension(job.SourcePath);
-                return priorityExtensions.Contains(ext, StringComparer.OrdinalIgnoreCase);
+                Logger.Instance.Write(new LogEntry(Errors.BackupBlocked, job, isError: true));
+                return false;
             }
 
-            if (Directory.Exists(job.SourcePath))
-            {
-                return Directory.EnumerateFiles(job.SourcePath, "*.*", SearchOption.AllDirectories)
-                    .Any(f => priorityExtensions.Contains(Path.GetExtension(f), StringComparer.OrdinalIgnoreCase));
-            }
-
-            return false;
-        }
-        catch
-        {
-            return false;
-        }
+            var strategy = GetStrategy(job);
+            return strategy.Execute(job);
+        });
     }
 
     private static IBackupStrategy GetStrategy(BackupJob job)
