@@ -37,6 +37,7 @@ public partial class SettingsDialogViewModel : ViewModelBase
         _selectedLogMode = SettingsService.GetInstance.Settings.LogMode;
         _logServerHost = SettingsService.GetInstance.Settings.LogServerHost;
         _logServerPort = SettingsService.GetInstance.Settings.LogServerPort;
+        _maxTransferSizeForParallel = SettingsService.GetInstance.Settings.MaxTransferSizeForParallel;
 
         // Load existing crypted extensions
         var existingExtensions = SettingsService.GetInstance.Settings.CryptExtensions;
@@ -86,6 +87,8 @@ public partial class SettingsDialogViewModel : ViewModelBase
     [ObservableProperty] private string? _cryptoSoftPath;
 
     [ObservableProperty] private string _businessSoftwareProcessName;
+
+    [ObservableProperty] private long _maxTransferSizeForParallel;
     
     // Crypted Extensions Management
     [ObservableProperty] private ObservableCollection<string> _cryptedExtensions;
@@ -202,6 +205,9 @@ public partial class SettingsDialogViewModel : ViewModelBase
 
         if (CryptoSoftPath != null && CryptoSoftPath != SettingsService.GetInstance.Settings.CryptoSoftPath)
             SettingsService.GetInstance.SetCryptoSoftPath(CryptoSoftPath);
+
+        if (MaxTransferSizeForParallel != SettingsService.GetInstance.Settings.MaxTransferSizeForParallel)
+            SettingsService.GetInstance.SetMaxTransferSizeForParallel(MaxTransferSizeForParallel);
 
         if (SelectedLogMode is LogMode.Both or LogMode.Remote)
         {

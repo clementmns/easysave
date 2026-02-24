@@ -45,6 +45,12 @@ public class Settings
     /// Name of the business software process to monitor (e.g., "CalculatorApp" for Windows calculator)
     /// </summary>
     public string BusinessSoftwareProcessName { get; set; } = "CalculatorApp";
+
+    /// <summary>
+    /// Maximum file size in KB for parallel transfers.
+    /// Files larger than this cannot be transferred in parallel with other large files.
+    /// </summary>
+    public long MaxTransferSizeForParallel { get; set; } = 5096;
     
     [JsonIgnore]
     public int MaxJobs { get; set; }

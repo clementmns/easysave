@@ -9,4 +9,6 @@ public sealed class AppProperties : IAppProperties
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/ProSoft/EasySave";
 
     public int MaxJobs { get; } = int.MaxValue;
+
+    public string? CryptoSoftPath { get; } = null;
 }

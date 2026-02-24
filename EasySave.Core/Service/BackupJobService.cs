@@ -25,6 +25,8 @@ public class BackupJobService : IRealTimeStateObserver
     {
         _uiContext = SynchronizationContext.Current;
         
+        TransferLimitService.Instance.Initialize();
+        
         if (Jobs != null) SaveJobs(Jobs);
 
         var appSaveDirectory = SettingsService.GetInstance.Settings.AppSaveDirectory;
@@ -41,7 +43,8 @@ public class BackupJobService : IRealTimeStateObserver
         
         var jobsList = jobs.ToList();
         
-        var priorityExtensions = SettingsService.GetInstance.Settings.PriorityExtensions;
+        var settings = SettingsService.GetInstance.Settings;
+        var priorityExtensions = settings.PriorityExtensions;
         
         var priorityJobs = new List<BackupJob>();
         var nonPriorityJobs = new List<BackupJob>();

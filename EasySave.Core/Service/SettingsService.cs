@@ -160,6 +160,12 @@ public class SettingsService
         SaveSettings(Settings);
     }
 
+    public void SetMaxTransferSizeForParallel(long sizeInKb)
+    {
+        Settings.MaxTransferSizeForParallel = sizeInKb;
+        SaveSettings(Settings);
+    }
+
     /// <summary>
     /// Set extensions that should be processed with priority
     /// </summary>
