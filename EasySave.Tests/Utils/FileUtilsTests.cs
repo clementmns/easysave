@@ -21,7 +21,7 @@ public class FileUtilsTests
 
         try
         {
-            var resultCopy = FileUtils.CopyFile(sourceFile, destRoot, sourceRoot);
+            var resultCopy = FileUtils.CopyFile(sourceFile, destRoot, sourceRoot, (l, l1) => {});
             var expectedDest = Path.Combine(destRoot, "nested", "file.txt");
             Assert.True(resultCopy.Item1);
             Assert.True(resultCopy.Item2 <= 5000); // Copy time must not exceed 5 seconds

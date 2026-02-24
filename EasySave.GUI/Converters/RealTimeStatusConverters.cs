@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using Avalonia;
 using Avalonia.Controls;
@@ -99,39 +100,6 @@ public class RealTimeStatusToTextConverter : IValueConverter
         var palette = RealTimeStatusPalette.From(value);
         return Application.Current?.FindResource(palette.TextResourceKey) ?? palette.TextResourceKey;
     }
-    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => BindingOperations.DoNothing;
-}
-
-public class StatusIsOnGoingConverter : IValueConverter
-{
-    public static readonly StatusIsOnGoingConverter Instance = new();
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-        => value is RealTimeState.RealTimeStatus.OnGoing;
-    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => BindingOperations.DoNothing;
-}
-
-public class StatusIsPausedConverter : IValueConverter
-{
-    public static readonly StatusIsPausedConverter Instance = new();
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-        => value is RealTimeState.RealTimeStatus.Paused;
-    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => BindingOperations.DoNothing;
-}
-
-
-public class StatusIsActiveConverter : IValueConverter
-{
-    public static readonly StatusIsActiveConverter Instance = new();
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-        => value is RealTimeState.RealTimeStatus.OnGoing or RealTimeState.RealTimeStatus.Paused;
-    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => BindingOperations.DoNothing;
-}
-
-public class StatusIsNotActiveConverter : IValueConverter
-{
-    public static readonly StatusIsNotActiveConverter Instance = new();
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-        => value is not (RealTimeState.RealTimeStatus.OnGoing or RealTimeState.RealTimeStatus.Paused);
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => BindingOperations.DoNothing;
 }
 

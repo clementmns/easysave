@@ -25,7 +25,15 @@ public class FullBackupStrategy : IBackupStrategy
         return result;
     }
 
-    private static void CopyOrEncryptFile(string sourceFile, string destFile, string sourceRoot, string destFolder, List<string> cryptExt, BackupJob job, bool isPriority = false)
+    private static void CopyOrEncryptFile(
+        string sourceFile,
+        string destFile,
+        string sourceRoot,
+        string destFolder,
+        List<string> cryptExt,
+        BackupJob job,
+        bool isPriority = false,
+        Action<long, long>? onProgress = null)
     {
         var fileInfo = new FileInfo(sourceFile);
         var dirName = Path.GetDirectoryName(destFile);
@@ -51,7 +59,7 @@ public class FullBackupStrategy : IBackupStrategy
             }
             else
             {
-                var resultCopy = FileUtils.CopyFile(sourceFile, destFolder, sourceRoot);
+                var resultCopy = FileUtils.CopyFile(sourceFile, destFolder, sourceRoot, onProgress);
                 if (!resultCopy.Item1)
                 {
                     Logger.Instance.Write(new LogEntry($"Copy failed : {destFolder}", job, true));
@@ -78,6 +86,8 @@ public class FullBackupStrategy : IBackupStrategy
             job.State.FileSize = fileInfo.Length;
             job.State.RemainingFilesSize = fileInfo.Length;
             job.State.Progression = 0;
+            job.State.CurrentFileName = fileInfo.Name;
+            job.State.CurrentFileSize = fileInfo.Length;
             
             var sourcePath = fileInfo.FullName;
             var sourceRoot = Path.GetDirectoryName(sourcePath);
@@ -86,11 +96,19 @@ public class FullBackupStrategy : IBackupStrategy
 
             var extension = fileInfo.Extension;
             var isPriority = priorityExtensions.Contains(extension, StringComparer.OrdinalIgnoreCase);
-            
-            CopyOrEncryptFile(sourcePath, destinationFilePath, sourceRoot ?? string.Empty, job.DestinationPath, cryptExt, job, isPriority);
 
+            CopyOrEncryptFile(sourcePath, destinationFilePath, sourceRoot ?? string.Empty, job.DestinationPath, cryptExt, job, isPriority, OnProgress);
+
+            job.State.RemainingFiles = 0;
+            job.State.RemainingFilesSize = 0;
             job.State.Progression = 100;
             return true;
+
+            void OnProgress(long bytesTransferred, long totalBytes)
+            {
+                job.State.RemainingFilesSize = totalBytes - bytesTransferred;
+                job.State.Progression = (int)(100.0 * bytesTransferred / totalBytes);
+            }
         }
         catch (Exception)
         {
@@ -118,21 +136,33 @@ public class FullBackupStrategy : IBackupStrategy
             job.State.RemainingFiles = orderedFiles.Count;
             job.State.RemainingFilesSize = job.State.FileSize;
             job.State.Progression = 0;
+            job.State.CurrentFileName = string.Empty;
+            job.State.CurrentFileSize = 0;
 
             foreach (var file in orderedFiles)
             {
                 job.PauseGate.Wait(job.CancellationTokenSource.Token);
                 job.CancellationTokenSource.Token.ThrowIfCancellationRequested();
 
+                job.State.CurrentFileName = file.Name;
+                job.State.CurrentFileSize = file.Length;
+
                 var relativePath = Path.GetRelativePath(job.SourcePath, file.FullName);
                 var destinationFilePath = Path.Combine(destinationBackupFolder, relativePath);
 
                 var isPriority = priorityFiles.Contains(file);
-                CopyOrEncryptFile(file.FullName, destinationFilePath, job.SourcePath, destinationBackupFolder, cryptExt, job, isPriority);
+
+                CopyOrEncryptFile(file.FullName, destinationFilePath, job.SourcePath, destinationBackupFolder, cryptExt, job, isPriority, OnFileProgress);
                 
                 job.State.RemainingFiles -= 1;
                 job.State.RemainingFilesSize -= file.Length;
                 job.State.Progression = (int)(100.0 * (1.0 - ((double)job.State.RemainingFilesSize / job.State.FileSize)));
+
+                void OnFileProgress(long bytesTransferred, long totalBytes)
+                {
+                    var overallProgress = 1.0 - ((double)job.State.RemainingFilesSize - (totalBytes - bytesTransferred)) / job.State.FileSize;
+                    job.State.Progression = (int)(100.0 * overallProgress);
+                }
             }
             
             job.State.Progression = 100;
