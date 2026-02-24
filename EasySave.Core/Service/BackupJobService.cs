@@ -25,6 +25,8 @@ public class BackupJobService : IRealTimeStateObserver
     {
         _uiContext = SynchronizationContext.Current;
         
+        TransferLimitService.Instance.Initialize();
+        
         if (Jobs != null) SaveJobs(Jobs);
 
         var appSaveDirectory = SettingsService.GetInstance.Settings.AppSaveDirectory;
@@ -35,13 +37,14 @@ public class BackupJobService : IRealTimeStateObserver
         SubscribeToJobStates();
     }
 
-    public async Task<Dictionary<BackupJob, bool>> ExecuteJobsAsync(
-        IEnumerable<BackupJob> jobs,
-        IProgressionObserver? progressionObserver = null)
+    public async Task<Dictionary<BackupJob, bool>> ExecuteJobsAsync(IEnumerable<BackupJob> jobs, IProgressionObserver? progressionObserver = null)
     {
+        var executor = new BackupExecutor();
+        
         var jobsList = jobs.ToList();
         
-        var priorityExtensions = SettingsService.GetInstance.Settings.PriorityExtensions;
+        var settings = SettingsService.GetInstance.Settings;
+        var priorityExtensions = settings.PriorityExtensions;
         
         var priorityJobs = new List<BackupJob>();
         var nonPriorityJobs = new List<BackupJob>();
@@ -56,6 +59,11 @@ public class BackupJobService : IRealTimeStateObserver
         
         var tasks = orderedJobs.Select(async job =>
         {
+            // Skip jobs that are already running or paused — do not restart them.
+            if (job.State.Status is RealTimeState.RealTimeStatus.OnGoing
+                                 or RealTimeState.RealTimeStatus.Paused)
+                return (job, false);
+
             Logger.Instance.Write(new LogEntry("Going to execute job", job));
 
             try
@@ -71,7 +79,7 @@ public class BackupJobService : IRealTimeStateObserver
                 if (progressionObserver != null)
                     job.State.AttachProgressionObserver(progressionObserver);
 
-                var success = await BackupExecutor.ExecuteJobAsync(job);
+                var success = await executor.ExecuteJobAsync(job);
 
                 if (!success)
                     throw new Exception("Failed to execute job");
@@ -86,6 +94,11 @@ public class BackupJobService : IRealTimeStateObserver
                 UpdateJob(job);
 
                 return (job, true);
+            }
+            catch (OperationCanceledException)
+            {
+                job.State.Status = RealTimeState.RealTimeStatus.Ready;
+                return (job, false);
             }
             catch (Exception e)
             {
@@ -235,5 +248,31 @@ public class BackupJobService : IRealTimeStateObserver
     public void OnStateUpdated(RealTimeState state)
     {
         if (Jobs != null) SaveJobs(Jobs);
+    }
+    
+    public void PauseJob(BackupJob job)
+    {
+        if (job.State.Status != RealTimeState.RealTimeStatus.OnGoing) return;
+        job.PauseGate.Reset();
+        job.State.Status = RealTimeState.RealTimeStatus.Paused;
+        Logger.Instance.Write(new LogEntry("Job paused", job));
+    }
+    
+    public void ResumeJob(BackupJob job)
+    {
+        if (job.State.Status != RealTimeState.RealTimeStatus.Paused) return;
+        job.State.Status = RealTimeState.RealTimeStatus.OnGoing;
+        job.PauseGate.Set();
+        Logger.Instance.Write(new LogEntry("Job resumed", job));
+    }
+    
+    public void StopJob(BackupJob job)
+    {
+        if (job.State.Status is not (RealTimeState.RealTimeStatus.OnGoing or RealTimeState.RealTimeStatus.Paused))
+            return;
+        
+        job.PauseGate.Set();
+        job.CancellationTokenSource.Cancel();
+        Logger.Instance.Write(new LogEntry("Job stopped", job));
     }
 }

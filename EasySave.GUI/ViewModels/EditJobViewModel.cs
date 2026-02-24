@@ -37,6 +37,12 @@ public partial class EditJobViewModel : ViewModelBase
     [Required]
     private string _selectedType;
     
+    [ObservableProperty] 
+    private bool _isFileSelected;
+
+    [ObservableProperty] 
+    private bool _isFolderSelected;
+    
     public ObservableCollection<string> BackupTypes { get; } = new()
     {
         "Full",
@@ -53,6 +59,10 @@ public partial class EditJobViewModel : ViewModelBase
         SourcePath = job.SourcePath;
         DestinationPath = job.DestinationPath;
         SelectedType = job.Type.ToString();
+        
+        bool isFile = System.IO.File.Exists(job.SourcePath);
+        IsFileSelected = isFile;
+        IsFolderSelected = !isFile;
     }
     
     [RelayCommand]
@@ -75,23 +85,6 @@ public partial class EditJobViewModel : ViewModelBase
     }
     
     [RelayCommand]
-    public async Task BrowseSource()
-    {
-        var topLevel = TopLevel.GetTopLevel(_dialogWindow);
-    
-        var selected = await topLevel?.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
-        {
-            Title = Messages.SelectSourcePathFolder,
-            AllowMultiple = false
-        })!;
-    
-        if (selected.Count < 1) return;
-
-        var path = selected[0].Path.LocalPath;
-        SourcePath = path;
-    }
-
-    [RelayCommand]
     public async Task BrowseDestination()
     {
         var topLevel = TopLevel.GetTopLevel(_dialogWindow);
@@ -106,5 +99,39 @@ public partial class EditJobViewModel : ViewModelBase
 
         var path = selected[0].Path.LocalPath;
         DestinationPath = path;
+    }
+    
+    [RelayCommand]
+    public async Task BrowseSource()
+    {
+        var topLevel = TopLevel.GetTopLevel(_dialogWindow);
+        if (topLevel == null) return;
+
+        if (IsFileSelected)
+        {
+            var selected = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+            {
+                Title = Messages.selectFile, 
+                AllowMultiple = false
+            });
+
+            if (selected.Count > 0)
+            {
+                SourcePath = selected[0].Path.LocalPath;
+            }
+        }
+        else
+        {
+            var selected = await topLevel.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
+            {
+                Title = Messages.selectFolder, 
+                AllowMultiple = false
+            });
+
+            if (selected.Count > 0)
+            {
+                SourcePath = selected[0].Path.LocalPath;
+            }
+        }
     }
 }

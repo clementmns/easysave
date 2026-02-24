@@ -230,4 +230,22 @@
     <data name="StatusReady" xml:space="preserve">
         <value>Bereit</value>
     </data>
+    <data name="StatusPaused" xml:space="preserve">
+        <value>Pausiert</value>
+    </data>
+    <data name="pause" xml:space="preserve">
+        <value>Pause</value>
+    </data>
+    <data name="resume" xml:space="preserve">
+        <value>Fortsetzen</value>
+    </data>
+    <data name="stop" xml:space="preserve">
+        <value>Stopp</value>
+    </data>
+    <data name="selectFile" xml:space="preserve">
+        <value>Datei auswählen</value>
+    </data>
+    <data name="selectFolder" xml:space="preserve">
+        <value>Ordner auswählen</value>
+    </data>
 </root>

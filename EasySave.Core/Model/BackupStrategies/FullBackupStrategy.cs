@@ -17,7 +17,7 @@ public class FullBackupStrategy : IBackupStrategy
         
         var result = (File.Exists(job.SourcePath), Directory.Exists(job.SourcePath)) switch
         {
-            (true, false) => ProcessFile(job, cryptedExtensions),
+            (true, false) => ProcessFile(job, cryptedExtensions, priorityExtensions),
             (false, true) => ProcessDirectory(job, cryptedExtensions, priorityExtensions),
             _ => throw new FileNotFoundException(Errors.ProcessingError)
         };
@@ -25,7 +25,7 @@ public class FullBackupStrategy : IBackupStrategy
         return result;
     }
 
-    private static void CopyOrEncryptFile(string sourceFile, string destFile, string sourceRoot, string destFolder, List<string> cryptExt, BackupJob job)
+    private static void CopyOrEncryptFile(string sourceFile, string destFile, string sourceRoot, string destFolder, List<string> cryptExt, BackupJob job, bool isPriority = false)
     {
         var fileInfo = new FileInfo(sourceFile);
         var dirName = Path.GetDirectoryName(destFile);
@@ -33,29 +33,41 @@ public class FullBackupStrategy : IBackupStrategy
         if (!string.IsNullOrEmpty(dirName))
             Directory.CreateDirectory(dirName);
 
-        if (cryptExt.Contains(fileInfo.Extension))
+        TransferLimitService.Instance.WaitForPriorityFile(isPriority);
+        if (isPriority) TransferLimitService.Instance.AddPendingPriorityFile();
+        TransferLimitService.Instance.WaitForFileTransfer(fileInfo.Length);
+        
+        try
         {
-            var resultEncryption = CryptoUtils.EncryptFile(sourceFile, destFile);
-            if (!resultEncryption.Item1)
+            if (cryptExt.Contains(fileInfo.Extension))
             {
-                Logger.Instance.Write(new LogEntry($"Encryption failed : {Path.GetFileName(destFile)}", job, true));
-                throw new Exception(Errors.FileCantBeCrypted);
+                var resultEncryption = CryptoUtils.EncryptFile(sourceFile, destFile);
+                if (!resultEncryption.Item1)
+                {
+                    Logger.Instance.Write(new LogEntry($"Encryption failed : {Path.GetFileName(destFile)}", job, true));
+                    throw new Exception(Errors.FileCantBeCrypted);
+                }
+                Logger.Instance.Write(new LogEntry($"File Encrypted : {destFolder}", job, false, null, resultEncryption.Item2));
             }
-            Logger.Instance.Write(new LogEntry($"File Encrypted : {destFolder}", job, false, null, resultEncryption.Item2));
+            else
+            {
+                var resultCopy = FileUtils.CopyFile(sourceFile, destFolder, sourceRoot);
+                if (!resultCopy.Item1)
+                {
+                    Logger.Instance.Write(new LogEntry($"Copy failed : {destFolder}", job, true));
+                    throw new Exception(Errors.FileCantBeCopied);
+                }
+                Logger.Instance.Write(new LogEntry($"File Copied : {destFolder}", job, false, resultCopy.Item2, null));
+            }
         }
-        else
+        finally
         {
-            var resultCopy = FileUtils.CopyFile(sourceFile, destFolder, sourceRoot);
-            if (!resultCopy.Item1)
-            {
-                Logger.Instance.Write(new LogEntry($"Copy failed : {destFolder}", job, true));
-                throw new Exception(Errors.FileCantBeCopied);
-            }
-            Logger.Instance.Write(new LogEntry($"File Copied : {destFolder}", job, false, resultCopy.Item2, null));
+            TransferLimitService.Instance.ReleaseFileTransfer(fileInfo.Length);
+            if (isPriority) TransferLimitService.Instance.RemovePendingPriorityFile();
         }
     }
 
-    private static bool ProcessFile(BackupJob job, List<string> cryptExt)
+    private static bool ProcessFile(BackupJob job, List<string> cryptExt, List<string> priorityExtensions)
     {
         try
         {
@@ -72,7 +84,10 @@ public class FullBackupStrategy : IBackupStrategy
             var relativePath = string.IsNullOrWhiteSpace(sourceRoot) ? fileInfo.Name : Path.GetRelativePath(sourceRoot, sourcePath);
             var destinationFilePath = Path.Combine(job.DestinationPath, relativePath);
 
-            CopyOrEncryptFile(sourcePath, destinationFilePath, sourceRoot ?? string.Empty, job.DestinationPath, cryptExt, job);
+            var extension = fileInfo.Extension;
+            var isPriority = priorityExtensions.Contains(extension, StringComparer.OrdinalIgnoreCase);
+            
+            CopyOrEncryptFile(sourcePath, destinationFilePath, sourceRoot ?? string.Empty, job.DestinationPath, cryptExt, job, isPriority);
 
             job.State.Progression = 100;
             return true;
@@ -106,10 +121,14 @@ public class FullBackupStrategy : IBackupStrategy
 
             foreach (var file in orderedFiles)
             {
+                job.PauseGate.Wait(job.CancellationTokenSource.Token);
+                job.CancellationTokenSource.Token.ThrowIfCancellationRequested();
+
                 var relativePath = Path.GetRelativePath(job.SourcePath, file.FullName);
                 var destinationFilePath = Path.Combine(destinationBackupFolder, relativePath);
 
-                CopyOrEncryptFile(file.FullName, destinationFilePath, job.SourcePath, destinationBackupFolder, cryptExt, job);
+                var isPriority = priorityFiles.Contains(file);
+                CopyOrEncryptFile(file.FullName, destinationFilePath, job.SourcePath, destinationBackupFolder, cryptExt, job, isPriority);
                 
                 job.State.RemainingFiles -= 1;
                 job.State.RemainingFilesSize -= file.Length;
@@ -118,6 +137,10 @@ public class FullBackupStrategy : IBackupStrategy
             
             job.State.Progression = 100;
             return true;
+        }
+        catch (OperationCanceledException)
+        {
+            throw;
         }
         catch (Exception)
         {

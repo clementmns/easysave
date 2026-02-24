@@ -1,16 +1,9 @@
 using System.Diagnostics;
-using EasyLog;
-using EasySave.Core.Model;
-using EasySave.Core.Resources;
 
 namespace EasySave.Core.Service;
 
-public class ProcessMonitorService
+public static class ProcessMonitorService
 {
-    private static ProcessMonitorService? _instance;
-
-    public static ProcessMonitorService Instance => _instance ??= new ProcessMonitorService();
-
     public static bool IsBusinessSoftwareRunning
     {
         get
@@ -31,6 +24,4 @@ public class ProcessMonitorService
             }
         }
     }
-
-    private ProcessMonitorService() { }
 }

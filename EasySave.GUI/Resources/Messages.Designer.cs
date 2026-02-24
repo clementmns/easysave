@@ -423,6 +423,18 @@ namespace EasySave.GUI.Resources {
             }
         }
         
+        public static string priorityExtensions {
+            get {
+                return ResourceManager.GetString("priorityExtensions", resourceCulture);
+            }
+        }
+        
+        public static string choosePriorityExt {
+            get {
+                return ResourceManager.GetString("choosePriorityExt", resourceCulture);
+            }
+        }
+        
         public static string easysave {
             get {
                 return ResourceManager.GetString("easysave", resourceCulture);
@@ -546,6 +558,42 @@ namespace EasySave.GUI.Resources {
         public static string cryptoSoftPathText {
             get {
                 return ResourceManager.GetString("cryptoSoftPathText", resourceCulture);
+            }
+        }
+        
+        public static string StatusPaused {
+            get {
+                return ResourceManager.GetString("StatusPaused", resourceCulture);
+            }
+        }
+        
+        public static string pause {
+            get {
+                return ResourceManager.GetString("pause", resourceCulture);
+            }
+        }
+        
+        public static string resume {
+            get {
+                return ResourceManager.GetString("resume", resourceCulture);
+            }
+        }
+        
+        public static string stop {
+            get {
+                return ResourceManager.GetString("stop", resourceCulture);
+            }
+        }
+        
+        public static string selectFile {
+            get {
+                return ResourceManager.GetString("selectFile", resourceCulture);
+            }
+        }
+        
+        public static string selectFolder {
+            get {
+                return ResourceManager.GetString("selectFolder", resourceCulture);
             }
         }
     }

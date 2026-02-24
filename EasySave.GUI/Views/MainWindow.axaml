@@ -97,16 +97,20 @@
                 </Button>
                 <Rectangle Width="1" Fill="{StaticResource BorderSoftBrush}" Margin="6,0" VerticalAlignment="Stretch" />
                 <Button Classes="primary"
-                        Command="{Binding ExecuteSelectedJobs}">
-                    <Svg Path="/Assets/svg/play.svg"
+                        Command="{Binding TogglePlayPauseSelectedJobsCommand}"
+                        ToolTip.Tip="{DynamicResource execute}">
+                    <Svg Path="{Binding HasAnyOnGoingSelectedJob, Converter={x:Static converters:StatusToPlayPauseIconConverter.Instance}}"
                          Width="16"
                          Height="16" />
                 </Button>
-                <!-- <Button Classes="ghost" IsEnabled="False"> -->
-                <!--     <Svg Path="/Assets/svg/pause.svg" -->
-                <!--          Width="16" -->
-                <!--          Height="16" /> -->
-                <!-- </Button> -->
+                <Button Classes="danger"
+                        Command="{Binding StopSelectedJobsCommand}"
+                        IsEnabled="{Binding HasAnyActiveSelectedJob}"
+                        ToolTip.Tip="{DynamicResource stop}">
+                    <Svg Path="/Assets/svg/stop.svg"
+                         Width="16"
+                         Height="16" />
+                </Button>
                 <Button Classes="danger"
                         Command="{Binding DeleteSelectedJobsCommand}">
                     <Svg Path="/Assets/svg/trash.svg"
@@ -330,7 +334,6 @@
 
                                     <Border Grid.Row="2" Padding="0,15,0,0">
                                         <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Right">
-
                                             <Button
                                                 Command="{Binding ((vm:MainViewModel)DataContext).OpenEditJobDialogCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                                 CommandParameter="{Binding .}">

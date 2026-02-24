@@ -276,4 +276,22 @@
     <data name="cryptoSoftPathText" xml:space="preserve">
         <value>Put the cryptoSoft path to crypt files with selected extensions</value>
     </data>
+    <data name="StatusPaused" xml:space="preserve">
+        <value>Paused</value>
+    </data>
+    <data name="pause" xml:space="preserve">
+        <value>Pause</value>
+    </data>
+    <data name="resume" xml:space="preserve">
+        <value>Resume</value>
+    </data>
+    <data name="stop" xml:space="preserve">
+        <value>Stop</value>
+    </data>
+    <data name="selectFile" xml:space="preserve">
+        <value>Select a file</value>
+    </data>
+    <data name="selectFolder" xml:space="preserve">
+        <value />
+    </data>
 </root>
