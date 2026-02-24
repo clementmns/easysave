@@ -53,7 +53,7 @@ public class Settings
     public long MaxTransferSizeForParallel { get; set; } = 5096;
     
     [JsonIgnore]
-    public int MaxJobs { get; set; }
+    public int MaxJobs { get; set; } = 10;
     
     [JsonIgnore]
     public string AppSaveDirectory { get; set; } = "";

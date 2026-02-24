@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using Avalonia;
 using Avalonia.Controls;
@@ -102,39 +103,6 @@ public class RealTimeStatusToTextConverter : IValueConverter
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => BindingOperations.DoNothing;
 }
 
-public class StatusIsOnGoingConverter : IValueConverter
-{
-    public static readonly StatusIsOnGoingConverter Instance = new();
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-        => value is RealTimeState.RealTimeStatus.OnGoing;
-    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => BindingOperations.DoNothing;
-}
-
-public class StatusIsPausedConverter : IValueConverter
-{
-    public static readonly StatusIsPausedConverter Instance = new();
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-        => value is RealTimeState.RealTimeStatus.Paused;
-    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => BindingOperations.DoNothing;
-}
-
-
-public class StatusIsActiveConverter : IValueConverter
-{
-    public static readonly StatusIsActiveConverter Instance = new();
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-        => value is RealTimeState.RealTimeStatus.OnGoing or RealTimeState.RealTimeStatus.Paused;
-    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => BindingOperations.DoNothing;
-}
-
-public class StatusIsNotActiveConverter : IValueConverter
-{
-    public static readonly StatusIsNotActiveConverter Instance = new();
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-        => value is not (RealTimeState.RealTimeStatus.OnGoing or RealTimeState.RealTimeStatus.Paused);
-    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => BindingOperations.DoNothing;
-}
-
 public class StatusToPlayPauseIconConverter : IValueConverter
 {
     public static readonly StatusToPlayPauseIconConverter Instance = new();
@@ -143,4 +111,45 @@ public class StatusToPlayPauseIconConverter : IValueConverter
             ? "/Assets/svg/pause.svg"
             : "/Assets/svg/play.svg";
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => BindingOperations.DoNothing;
+}
+
+public class FileProgressConverter : IMultiValueConverter
+{
+    private static string FormatSize(long bytes)
+    {
+        string[] sizes = ["B", "KB", "MB", "GB", "TB"];
+        double len = bytes;
+        var order = 0;
+        while (len >= 1024 && order < sizes.Length - 1)
+        {
+            order++;
+            len /= 1024;
+        }
+        return $"{len:0.##} {sizes[order]}";
+    }
+
+    public object? Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
+    {
+        if (values.Count < 5) return null;
+        
+        if (values[0] is not int totalFiles ||
+            values[1] is not long remainingFiles ||
+            values[2] is not long totalSize ||
+            values[3] is not long remainingSize ||
+            values[4] is not int progression)
+        {
+            return string.Empty;
+        }
+
+        var currentFiles = totalFiles - (int)remainingFiles;
+        var transferredSize = totalSize - remainingSize;
+
+        var sizeText = $"{FormatSize(transferredSize)} / {FormatSize(totalSize)}";
+        var fileText = $"{currentFiles} / {totalFiles}";
+
+        var currentFileName = values[5] as string;
+
+        if (!string.IsNullOrEmpty(currentFileName)) return $"{currentFileName} | {fileText} | {sizeText}";
+        return $"{fileText} | {sizeText}";
+    }
 }

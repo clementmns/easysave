@@ -9,13 +9,9 @@ namespace EasySave.Core.Utils;
 public static class FileUtils
 {
     /// <summary>
-    /// Copy a file to a new location.
+    /// Copy a file to a new location with progress reporting.
     /// </summary>
-    /// <param name="sourceFile">SourceFile</param>
-    /// <param name="destinationDir">Destination Directory</param>
-    /// <param name="sourceRoot">Source root</param>
-    /// <returns></returns>
-    public static (bool, long) CopyFile(string sourceFile, string destinationDir, string? sourceRoot = null) // path/to/text.txt -> path/to/dir 
+    public static (bool, long) CopyFile(string sourceFile, string destinationDir, string? sourceRoot, Action<long, long>? onProgress)
     {
         try
         {
@@ -45,8 +41,32 @@ public static class FileUtils
                 }
             }
             
-            // Use the Path.Combine method to safely append the file name to the path.
-            File.Copy(sourceFile, destinationFileName, true); // true if the destination file should be replaced if it already exists; otherwise, false
+            var fileSize = new FileInfo(sourceFile).Length;
+
+            // size threshold for progress reporting (1 MB)
+            if (onProgress != null && fileSize > 1024 * 1024)
+            {
+                const int bufferSize = 1024 * 1024;
+                var buffer = new byte[bufferSize];
+                
+                using var sourceStream = new FileStream(sourceFile, FileMode.Open, FileAccess.Read);
+                using var destinationStream = new FileStream(destinationFileName, FileMode.Create, FileAccess.Write);
+                
+                long totalBytesRead = 0;
+                int bytesRead;
+                
+                while ((bytesRead = sourceStream.Read(buffer, 0, bufferSize)) > 0)
+                {
+                    destinationStream.Write(buffer, 0, bytesRead);
+                    totalBytesRead += bytesRead;
+                    onProgress(totalBytesRead, fileSize);
+                }
+            }
+            else
+            {
+                File.Copy(sourceFile, destinationFileName, true);
+            }
+            
             return (true, ms);
         }
         catch

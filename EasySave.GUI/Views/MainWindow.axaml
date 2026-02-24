@@ -18,6 +18,7 @@
         <converters:RealTimeStatusToBorderBrushConverter x:Key="RealTimeStatusToBorderBrushConverter" />
         <converters:RealTimeStatusToForegroundConverter x:Key="RealTimeStatusToForegroundConverter" />
         <converters:RealTimeStatusToTextConverter x:Key="RealTimeStatusToTextConverter" />
+        <converters:FileProgressConverter x:Key="FileProgressConverter" />
     </Window.Resources>
 
     <Grid RowDefinitions="Auto, Auto, *">
@@ -221,9 +222,25 @@
                                                 Width="3*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <ProgressBar Margin="20 10" Height="20"
-                                                 Minimum="0" Maximum="100" Value="{Binding State.Progression}"
-                                                 ShowProgressText="True" />
+                                    <StackPanel Margin="20 10">
+                                        <ProgressBar Height="20"
+                                                     Minimum="0" Maximum="100" Value="{Binding State.Progression}" />
+                                        <TextBlock Margin="0,4,0,0" FontSize="11" 
+                                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                                   HorizontalAlignment="Center">
+                                            <TextBlock.Text>
+                                                <MultiBinding Converter="{StaticResource FileProgressConverter}">
+                                                    <Binding Path="State.TotalFiles" />
+                                                    <Binding Path="State.RemainingFiles" />
+                                                    <Binding Path="State.FileSize" />
+                                                    <Binding Path="State.RemainingFilesSize" />
+                                                    <Binding Path="State.Progression" />
+                                                    <Binding Path="State.CurrentFileName" />
+                                                    <Binding Path="State.CurrentFileSize" />
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </StackPanel>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
