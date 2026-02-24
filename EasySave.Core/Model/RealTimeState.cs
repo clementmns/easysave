@@ -13,7 +13,8 @@ public class RealTimeState : INotifyPropertyChanged
         Ready,
         Done,
         Error,
-        OnGoing
+        OnGoing,
+        Paused
     }
 
     private readonly List<IRealTimeStateObserver> _stateObservers = [];
