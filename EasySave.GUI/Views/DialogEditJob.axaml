@@ -50,6 +50,12 @@
                             <TextBlock Text="{DynamicResource source}" FontWeight="SemiBold"
                                        Foreground="{StaticResource TextPrimaryBrush}" />
                             <StackPanel Spacing="6">
+            
+                                <StackPanel Orientation="Horizontal" Spacing="14">
+                                    <RadioButton Content="Fichier" IsChecked="{Binding IsFileSelected}" GroupName="EditSourceType" />
+                                    <RadioButton Content="Dossier" IsChecked="{Binding IsFolderSelected}" GroupName="EditSourceType" />
+                                </StackPanel>
+
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBox Grid.Column="0" Text="{Binding SourcePath}" />
                                     <Button Grid.Column="1"

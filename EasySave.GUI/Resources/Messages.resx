@@ -288,4 +288,10 @@
     <data name="stop" xml:space="preserve">
         <value>Stop</value>
     </data>
+    <data name="selectFile" xml:space="preserve">
+        <value>Select a file</value>
+    </data>
+    <data name="selectFolder" xml:space="preserve">
+        <value />
+    </data>
 </root>

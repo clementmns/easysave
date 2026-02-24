@@ -242,4 +242,10 @@
     <data name="stop" xml:space="preserve">
         <value>Detener</value>
     </data>
+    <data name="selectFile" xml:space="preserve">
+        <value>Seleccionar un archivo</value>
+    </data>
+    <data name="selectFolder" xml:space="preserve">
+        <value>Seleccionar una carpeta</value>
+    </data>
 </root>
