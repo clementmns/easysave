@@ -118,7 +118,7 @@ public partial class EditJobViewModel : ViewModelBase
         {
             var selected = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
             {
-                Title = "Sélectionner un fichier",
+                Title = Messages.selectFile, 
                 AllowMultiple = false
             });
 
@@ -131,7 +131,7 @@ public partial class EditJobViewModel : ViewModelBase
         {
             var selected = await topLevel.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
             {
-                Title = "Sélectionner un dossier", 
+                Title = Messages.selectFolder, 
                 AllowMultiple = false
             });
 

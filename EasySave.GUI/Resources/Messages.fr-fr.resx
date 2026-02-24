@@ -236,4 +236,10 @@
     <data name="SelectSourcePathFolder" xml:space="preserve">
         <value>Sélectionner le dossier source</value>
     </data>
+    <data name="selectFile" xml:space="preserve">
+        <value>Sélectionner un fichier</value>
+    </data>
+    <data name="selectFolder" xml:space="preserve">
+        <value>Sélectionner un dossier</value>
+    </data>
 </root>

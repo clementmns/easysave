@@ -230,4 +230,10 @@
     <data name="StatusReady" xml:space="preserve">
         <value>Pronto</value>
     </data>
+    <data name="selectFile" xml:space="preserve">
+        <value>Selezionare un file</value>
+    </data>
+    <data name="selectFolder" xml:space="preserve">
+        <value>Selezionare una cartella</value>
+    </data>
 </root>
