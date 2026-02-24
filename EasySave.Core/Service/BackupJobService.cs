@@ -167,7 +167,6 @@ public class BackupJobService : IRealTimeStateObserver
             var fileSizeAndCount = FileUtils.GetFileSizeAndCount(job.SourcePath);
             job.State.UpdateFileSize(fileSizeAndCount.fileSize, fileSizeAndCount.count);
             job.State.AttachStateObserver(this);
-            Console.WriteLine($"Creating job {job.Id}");
             PostToUiThread(() =>
             {
                 Jobs?.Add(job);
