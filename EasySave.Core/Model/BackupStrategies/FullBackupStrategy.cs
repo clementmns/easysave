@@ -152,16 +152,18 @@ public class FullBackupStrategy : IBackupStrategy
 
                 var isPriority = priorityFiles.Contains(file);
 
+                job.State.RemainingFilesSize -= file.Length;
+                
                 CopyOrEncryptFile(file.FullName, destinationFilePath, job.SourcePath, destinationBackupFolder, cryptExt, job, isPriority, OnFileProgress);
                 
                 job.State.RemainingFiles -= 1;
-                job.State.RemainingFilesSize -= file.Length;
                 job.State.Progression = (int)(100.0 * (1.0 - ((double)job.State.RemainingFilesSize / job.State.FileSize)));
 
                 void OnFileProgress(long bytesTransferred, long totalBytes)
                 {
-                    var remainingOfCurrentFile = totalBytes - bytesTransferred;
-                    var overallProgress = 1.0 - ((job.State.RemainingFilesSize - totalBytes + remainingOfCurrentFile) / job.State.FileSize);
+                    var bytesRemainingInCurrentFile = totalBytes - bytesTransferred;
+                    var totalBytesRemaining = job.State.RemainingFilesSize + bytesRemainingInCurrentFile;
+                    var overallProgress = 1.0 - ((double)totalBytesRemaining / job.State.FileSize);
                     job.State.Progression = (int)(100.0 * overallProgress);
                 }
             }
