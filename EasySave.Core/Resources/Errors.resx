@@ -37,6 +37,6 @@
         <value>Backup blocked for job</value>
     </data>
     <data name="MaxJobsReached" xml:space="preserve">
-        <value />
+        <value>The maximum number of tasks has been reached.</value>
     </data>
 </root>
