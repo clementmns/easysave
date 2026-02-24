@@ -190,8 +190,8 @@ public class BackupJobService : IRealTimeStateObserver
             RemoveStateSubscription(job);
             PostToUiThread(() =>
             {
-                if (Jobs != null) SaveJobs(Jobs);
                 Jobs?.Remove(job);
+                if (Jobs != null) SaveJobs(Jobs);
             });
             Logger.Instance.Write(new LogEntry("Job deleted", job));
             return true;
