@@ -60,16 +60,9 @@ public partial class EditJobViewModel : ViewModelBase
         DestinationPath = job.DestinationPath;
         SelectedType = job.Type.ToString();
         
-        if (System.IO.File.Exists(job.SourcePath))
-        {
-            IsFileSelected = true;
-            IsFolderSelected = false;
-        }
-        else 
-        {
-            IsFileSelected = false;
-            IsFolderSelected = true;
-        }
+        bool isFile = System.IO.File.Exists(job.SourcePath);
+        IsFileSelected = isFile;
+        IsFolderSelected = !isFile;
     }
     
     [RelayCommand]
