@@ -14,4 +14,22 @@
     <data name="BackupBlocked" xml:space="preserve">
         <value>Sicherung für Auftrag blockiert</value>
     </data>
+    <data name="FileCantBeCrypted" xml:space="preserve">
+        <value>Die Datei kann nicht verschlüsselt werden.</value>
+    </data>
+    <data name="FileCantBeCopied" xml:space="preserve">
+        <value>Die Datei kann nicht kopiert werden.</value>
+    </data>
+    <data name="NameCantBeNull" xml:space="preserve">
+        <value>Der Name darf nicht null oder leer sein.</value>
+    </data>
+    <data name="ProcessingError" xml:space="preserve">
+        <value>Der Pfad kann nicht verarbeitet werden.</value>
+    </data>
+    <data name="SourceCantBeNull" xml:space="preserve">
+        <value>Quelle und Ziel dürfen nicht null oder leer sein.</value>
+    </data>
+    <data name="MaxJobsReached" xml:space="preserve">
+        <value>Die maximale Anzahl an Aufgaben wurde erreicht.</value>
+    </data>
 </root>
