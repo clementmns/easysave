@@ -287,4 +287,13 @@
     <data name="selectLogMode" xml:space="preserve">
         <value>Sélectionner le mode journal</value>
     </data>
+    <data name="maxTransferSize" xml:space="preserve">
+        <value>Taille maximale de transfert (Ko)</value>
+    </data>
+    <data name="maxTransferSizeText" xml:space="preserve">
+        <value>Taille maximale des fichiers pour le transfert parallèle (Ko)</value>
+    </data>
+    <data name="ChoiceExtension" xml:space="preserve">
+        <value>par exemple, .pdf ou pdf</value>
+    </data>
 </root>

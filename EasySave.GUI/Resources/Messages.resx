@@ -294,4 +294,13 @@
     <data name="selectFolder" xml:space="preserve">
         <value>Select folder</value>
     </data>
+    <data name="maxTransferSize" xml:space="preserve">
+        <value>Max Transfer Size (KB)</value>
+    </data>
+    <data name="maxTransferSizeText" xml:space="preserve">
+        <value>Maximum file size for parallel transfer (KB)</value>
+    </data>
+    <data name="ChoiceExtension" xml:space="preserve">
+        <value>e.g., .pdf or pdf</value>
+    </data>
 </root>

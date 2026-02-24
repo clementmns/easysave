@@ -287,4 +287,13 @@
     <data name="selectLogMode" xml:space="preserve">
         <value>Protokollmodus auswählen</value>
     </data>
+    <data name="maxTransferSize" xml:space="preserve">
+        <value>Maximale Übertragungsgröße (KB)</value>
+    </data>
+    <data name="maxTransferSizeText" xml:space="preserve">
+        <value>Maximale Dateigröße für parallele Übertragung (KB)</value>
+    </data>
+    <data name="ChoiceExtension" xml:space="preserve">
+        <value>z. B. .pdf oder pdf</value>
+    </data>
 </root>

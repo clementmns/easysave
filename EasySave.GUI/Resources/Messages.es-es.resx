@@ -287,4 +287,13 @@
     <data name="selectLogMode" xml:space="preserve">
         <value>Seleccionar modo de registro</value>
     </data>
+    <data name="maxTransferSize" xml:space="preserve">
+        <value>Tamaño máximo de transferencia (KB)</value>
+    </data>
+    <data name="maxTransferSizeText" xml:space="preserve">
+        <value>Tamaño máximo de archivo para transferencia paralela (KB)</value>
+    </data>
+    <data name="ChoiceExtension" xml:space="preserve">
+        <value>Por ejemplo, .pdf o pdf.</value>
+    </data>
 </root>
