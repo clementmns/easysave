@@ -248,4 +248,52 @@
     <data name="selectFolder" xml:space="preserve">
         <value>Seleccionar una carpeta</value>
     </data>
+    <data name="Blocked" xml:space="preserve">
+        <value>Se ha detectado software empresarial. La ejecución de la copia de seguridad se bloquea mientras se está ejecutando.</value>
+    </data>
+    <data name="choosePriorityExt" xml:space="preserve">
+        <value>Elija las extensiones que se procesarán con prioridad durante las copias de seguridad:</value>
+    </data>
+    <data name="cryptoSoftPath" xml:space="preserve">
+        <value>Ruta CryptoSoft</value>
+    </data>
+    <data name="cryptoSoftPathText" xml:space="preserve">
+        <value>Pon la ruta cryptoSoft a los archivos criptográficos con las extensiones seleccionadas.</value>
+    </data>
+    <data name="logMode" xml:space="preserve">
+        <value>Modo de registro</value>
+    </data>
+    <data name="logModeText" xml:space="preserve">
+        <value>Selecciona dónde se guardan los registros.</value>
+    </data>
+    <data name="priorityExtensions" xml:space="preserve">
+        <value>Extensiones prioritarias</value>
+    </data>
+    <data name="remoteHost" xml:space="preserve">
+        <value>Host remoto</value>
+    </data>
+    <data name="remotePort" xml:space="preserve">
+        <value>Puerto remoto</value>
+    </data>
+    <data name="remoteServer" xml:space="preserve">
+        <value>Iniciar sesión en el servidor remoto</value>
+    </data>
+    <data name="remoteServerText" xml:space="preserve">
+        <value>Seleccione el servidor remoto donde se guardarán los registros.</value>
+    </data>
+    <data name="selectLogFormat" xml:space="preserve">
+        <value>Seleccionar formato de registro</value>
+    </data>
+    <data name="selectLogMode" xml:space="preserve">
+        <value>Seleccionar modo de registro</value>
+    </data>
+    <data name="maxTransferSize" xml:space="preserve">
+        <value>Tamaño máximo de transferencia (KB)</value>
+    </data>
+    <data name="maxTransferSizeText" xml:space="preserve">
+        <value>Tamaño máximo de archivo para transferencia paralela (KB)</value>
+    </data>
+    <data name="ChoiceExtension" xml:space="preserve">
+        <value>Por ejemplo, .pdf o pdf.</value>
+    </data>
 </root>

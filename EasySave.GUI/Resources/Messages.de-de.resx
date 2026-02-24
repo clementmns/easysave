@@ -248,4 +248,52 @@
     <data name="selectFolder" xml:space="preserve">
         <value>Ordner auswählen</value>
     </data>
+    <data name="Blocked" xml:space="preserve">
+        <value>Business-Software erkannt. Die Ausführung der Sicherung wird während des Betriebs blockiert.</value>
+    </data>
+    <data name="choosePriorityExt" xml:space="preserve">
+        <value>Wählen Sie Erweiterungen aus, die bei Backups vorrangig verarbeitet werden sollen:</value>
+    </data>
+    <data name="cryptoSoftPath" xml:space="preserve">
+        <value>CryptoSoft-Pfad</value>
+    </data>
+    <data name="cryptoSoftPathText" xml:space="preserve">
+        <value>Fügen Sie den cryptoSoft-Pfad zu Crypt-Dateien mit ausgewählten Erweiterungen hinzu.</value>
+    </data>
+    <data name="logMode" xml:space="preserve">
+        <value>Protokollmodus</value>
+    </data>
+    <data name="logModeText" xml:space="preserve">
+        <value>Wählen Sie aus, wo Protokolle gespeichert werden sollen.</value>
+    </data>
+    <data name="priorityExtensions" xml:space="preserve">
+        <value>Prioritätsverlängerungen</value>
+    </data>
+    <data name="remoteHost" xml:space="preserve">
+        <value>Remote-Host</value>
+    </data>
+    <data name="remotePort" xml:space="preserve">
+        <value>Fernanschluss</value>
+    </data>
+    <data name="remoteServer" xml:space="preserve">
+        <value>Remote-Server protokollieren</value>
+    </data>
+    <data name="remoteServerText" xml:space="preserve">
+        <value>Wählen Sie den Remote-Server aus, auf dem die Protokolle gespeichert werden sollen.</value>
+    </data>
+    <data name="selectLogFormat" xml:space="preserve">
+        <value>Protokollformat auswählen</value>
+    </data>
+    <data name="selectLogMode" xml:space="preserve">
+        <value>Protokollmodus auswählen</value>
+    </data>
+    <data name="maxTransferSize" xml:space="preserve">
+        <value>Maximale Übertragungsgröße (KB)</value>
+    </data>
+    <data name="maxTransferSizeText" xml:space="preserve">
+        <value>Maximale Dateigröße für parallele Übertragung (KB)</value>
+    </data>
+    <data name="ChoiceExtension" xml:space="preserve">
+        <value>z. B. .pdf oder pdf</value>
+    </data>
 </root>

@@ -45,7 +45,7 @@
                         
                         <StackPanel Orientation="Horizontal" Spacing="8">
                             <TextBox Text="{Binding NewPriorityExtension}"
-                                     Watermark="e.g., .pdf or pdf"
+                                     Watermark="{DynamicResource ChoiceExtension}"
                                      Width="200"
                                      VerticalContentAlignment="Center" />
                             <Button Content="{DynamicResource add}"
@@ -179,7 +179,7 @@
                         <!-- new extension -->
                         <StackPanel Orientation="Horizontal" Spacing="8">
                             <TextBox Text="{Binding NewExtension}"
-                                     Watermark="e.g., .pdf or pdf"
+                                     Watermark="{DynamicResource ChoiceExtension}"
                                      Width="200"
                                      VerticalContentAlignment="Center" />
                             <Button Content="{DynamicResource add}"

@@ -150,6 +150,15 @@ namespace EasySave.GUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to e.g., .pdf or pdf.
+        /// </summary>
+        public static string ChoiceExtension {
+            get {
+                return ResourceManager.GetString("ChoiceExtension", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Choose how backup logs are stored.
         /// </summary>
         public static string chooseBackupText {
@@ -483,6 +492,24 @@ namespace EasySave.GUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Max Transfer Size (KB).
+        /// </summary>
+        public static string maxTransferSize {
+            get {
+                return ResourceManager.GetString("maxTransferSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum file size for parallel transfer (KB).
+        /// </summary>
+        public static string maxTransferSizeText {
+            get {
+                return ResourceManager.GetString("maxTransferSizeText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         public static string name {
@@ -663,7 +690,7 @@ namespace EasySave.GUI.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Select folder.
         /// </summary>
         public static string selectFolder {
             get {

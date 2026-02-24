@@ -254,4 +254,46 @@
     <data name="selectFolder" xml:space="preserve">
         <value>Sélectionner un dossier</value>
     </data>
+    <data name="Blocked" xml:space="preserve">
+        <value>Logiciel professionnel détecté. L'exécution de la sauvegarde est bloquée pendant son fonctionnement.</value>
+    </data>
+    <data name="cryptoSoftPath" xml:space="preserve">
+        <value>Chemin CryptoSoft</value>
+    </data>
+    <data name="cryptoSoftPathText" xml:space="preserve">
+        <value>Indiquez le chemin d'accès cryptoSoft vers les fichiers cryptés avec les extensions sélectionnées.</value>
+    </data>
+    <data name="logMode" xml:space="preserve">
+        <value>Mode journal</value>
+    </data>
+    <data name="logModeText" xml:space="preserve">
+        <value>Sélectionnez l'emplacement où les journaux sont enregistrés.</value>
+    </data>
+    <data name="remoteHost" xml:space="preserve">
+        <value>Hôte distant</value>
+    </data>
+    <data name="remotePort" xml:space="preserve">
+        <value>Port distant</value>
+    </data>
+    <data name="remoteServer" xml:space="preserve">
+        <value>Serveur distant de connexion</value>
+    </data>
+    <data name="remoteServerText" xml:space="preserve">
+        <value>Sélectionnez le serveur distant où les journaux seront enregistrés.</value>
+    </data>
+    <data name="selectLogFormat" xml:space="preserve">
+        <value>Sélectionner le format du journal</value>
+    </data>
+    <data name="selectLogMode" xml:space="preserve">
+        <value>Sélectionner le mode journal</value>
+    </data>
+    <data name="maxTransferSize" xml:space="preserve">
+        <value>Taille maximale de transfert (Ko)</value>
+    </data>
+    <data name="maxTransferSizeText" xml:space="preserve">
+        <value>Taille maximale des fichiers pour le transfert parallèle (Ko)</value>
+    </data>
+    <data name="ChoiceExtension" xml:space="preserve">
+        <value>par exemple, .pdf ou pdf</value>
+    </data>
 </root>
