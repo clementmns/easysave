@@ -248,4 +248,43 @@
     <data name="selectFolder" xml:space="preserve">
         <value>Selezionare una cartella</value>
     </data>
+    <data name="Blocked" xml:space="preserve">
+        <value>Rilevato software aziendale. L'esecuzione del backup è bloccata mentre è in esecuzione.</value>
+    </data>
+    <data name="choosePriorityExt" xml:space="preserve">
+        <value>Scegli le estensioni da elaborare con priorità durante i backup:</value>
+    </data>
+    <data name="cryptoSoftPath" xml:space="preserve">
+        <value>Percorso CryptoSoft</value>
+    </data>
+    <data name="cryptoSoftPathText" xml:space="preserve">
+        <value>Inserisci il percorso cryptoSoft nei file crittografati con le estensioni selezionate</value>
+    </data>
+    <data name="logMode" xml:space="preserve">
+        <value>Modalità registro</value>
+    </data>
+    <data name="logModeText" xml:space="preserve">
+        <value>Seleziona dove salvare i registri</value>
+    </data>
+    <data name="priorityExtensions" xml:space="preserve">
+        <value>Estensioni prioritarie</value>
+    </data>
+    <data name="remoteHost" xml:space="preserve">
+        <value>Host remoto</value>
+    </data>
+    <data name="remotePort" xml:space="preserve">
+        <value>Porta remota</value>
+    </data>
+    <data name="remoteServer" xml:space="preserve">
+        <value>Accedi al server remoto</value>
+    </data>
+    <data name="remoteServerText" xml:space="preserve">
+        <value>Selezionare il server remoto su cui salvare i registri</value>
+    </data>
+    <data name="selectLogFormat" xml:space="preserve">
+        <value>Seleziona formato registro</value>
+    </data>
+    <data name="selectLogMode" xml:space="preserve">
+        <value>Seleziona modalità registro</value>
+    </data>
 </root>

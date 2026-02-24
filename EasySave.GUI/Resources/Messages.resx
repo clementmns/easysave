@@ -292,6 +292,6 @@
         <value>Select a file</value>
     </data>
     <data name="selectFolder" xml:space="preserve">
-        <value />
+        <value>Select folder</value>
     </data>
 </root>

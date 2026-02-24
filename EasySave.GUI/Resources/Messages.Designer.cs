@@ -663,7 +663,7 @@ namespace EasySave.GUI.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Select folder.
         /// </summary>
         public static string selectFolder {
             get {
