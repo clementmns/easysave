@@ -147,7 +147,7 @@ public partial class MainViewModel : ViewModelBase, IProgressionObserver, IDispo
             Title = Messages.editJob,
             Content = new DialogEditJob(),
             Width = 1000,
-            Height = 400,
+            Height = 450,
             WindowStartupLocation = WindowStartupLocation.CenterOwner,
         };
         
