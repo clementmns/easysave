@@ -157,7 +157,6 @@ public class FullBackupStrategy : IBackupStrategy
                 job.State.RemainingFiles -= 1;
                 job.State.RemainingFilesSize -= file.Length;
                 job.State.Progression = (int)(100.0 * (1.0 - ((double)job.State.RemainingFilesSize / job.State.FileSize)));
-                continue;
 
                 void OnFileProgress(long bytesTransferred, long totalBytes)
                 {
