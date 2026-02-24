@@ -216,13 +216,13 @@
         <value>Prêt</value>
     </data>
     <data name="Software" xml:space="preserve">
-        <value>Définissez le nom du processus du logiciel métier à surveiller (par exemple, 'calc' pour la calculatrice).</value>
+        <value>Définissez le(s) nom(s) de processus des logiciels métiers à surveiller (par exemple, 'calc, notepad').</value>
     </data>
     <data name="SoftwareTitle" xml:space="preserve">
         <value>Titre du logiciel</value>
     </data>
     <data name="SoftwareProcessName" xml:space="preserve">
-        <value>Entrer le nom du processus</value>
+        <value>Entrer le(s) nom(s) du processus</value>
     </data>
     <data name="BackupBlocked" xml:space="preserve">
         <value>Sauvegarde bloquée pour la tâche</value>

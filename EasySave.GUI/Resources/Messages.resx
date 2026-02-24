@@ -226,10 +226,10 @@
         <value>Software Title</value>
     </data>
     <data name="Software" xml:space="preserve">
-        <value>Define the process name of the business software to monitor (e.g., 'calc' for calculator)</value>
+        <value>Define the process name(s) of the business software to monitor (e.g., 'calc, notepad').</value>
     </data>
     <data name="SoftwareProcessName" xml:space="preserve">
-        <value>Enter process name</value>
+        <value>Enter process name(s)</value>
     </data>
     <data name="BusinessSoftwareDetected" xml:space="preserve">
         <value>Business software detected. Backup execution is blocked while it is running.</value>

@@ -10,11 +10,14 @@ public static class ProcessMonitorService
         {
             try
             {
-                var processName = SettingsService.GetInstance.Settings.BusinessSoftwareProcessName;
-                if (string.IsNullOrWhiteSpace(processName)) return false;
+                var processNames = SettingsService.GetInstance.Settings.BusinessSoftwareProcessName;
+                if (string.IsNullOrWhiteSpace(processNames)) return false;
+
+                var names = processNames.Split([',', ';'], StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                if (names.Length == 0) return false;
                 
                 var processes = Process.GetProcesses();
-                var isRunning = processes.Any(p => p.ProcessName.Contains(processName, StringComparison.OrdinalIgnoreCase));
+                var isRunning = processes.Any(p => names.Any(n => p.ProcessName.Contains(n, StringComparison.OrdinalIgnoreCase)));
                 
                 return isRunning;
             }

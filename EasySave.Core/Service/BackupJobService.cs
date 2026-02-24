@@ -14,7 +14,9 @@ public class BackupJobService : IRealTimeStateObserver
     private string _stateFilePath { get; }
     private readonly ReaderWriterLockSlim _lock = new();
     private readonly SynchronizationContext? _uiContext;
-    
+    private readonly Timer _businessSoftwareTimer;
+    private readonly List<BackupJob> _pausedByBusinessSoftware = [];
+
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
         WriteIndented = true,
@@ -35,7 +37,41 @@ public class BackupJobService : IRealTimeStateObserver
         _stateFilePath = Path.Combine(appSaveDirectory, "state.json");
         Jobs = LoadJobs();
         SubscribeToJobStates();
+        
+        _businessSoftwareTimer = new Timer(CheckBusinessSoftware!, null, 0, 2000);
     }
+
+    private void CheckBusinessSoftware(object state)
+    {
+        var isRunning = ProcessMonitorService.IsBusinessSoftwareRunning;
+        
+        if (isRunning)
+        {
+            if (Jobs == null) return;
+            foreach (var job in Jobs.Where(j => j.State.Status == RealTimeState.RealTimeStatus.OnGoing))
+            {
+                PauseJob(job);
+                if (!_pausedByBusinessSoftware.Contains(job))
+                {
+                    _pausedByBusinessSoftware.Add(job);
+                }
+            }
+        }
+        else
+        {
+            if (_pausedByBusinessSoftware.Count > 0)
+            {
+                var jobsToResume = _pausedByBusinessSoftware.ToList();
+                _pausedByBusinessSoftware.Clear();
+                
+                foreach (var job in jobsToResume)
+                {
+                    ResumeJob(job);
+                }
+            }
+        }
+    }
+
 
     public async Task<Dictionary<BackupJob, bool>> ExecuteJobsAsync(IEnumerable<BackupJob> jobs, IProgressionObserver? progressionObserver = null)
     {
@@ -59,7 +95,7 @@ public class BackupJobService : IRealTimeStateObserver
         
         var tasks = orderedJobs.Select(async job =>
         {
-            // Skip jobs that are already running or paused — do not restart them.
+            // Skip jobs that are already running or paused 
             if (job.State.Status is RealTimeState.RealTimeStatus.OnGoing
                                  or RealTimeState.RealTimeStatus.Paused)
                 return (job, false);
@@ -261,6 +297,14 @@ public class BackupJobService : IRealTimeStateObserver
     public void ResumeJob(BackupJob job)
     {
         if (job.State.Status != RealTimeState.RealTimeStatus.Paused) return;
+        
+        // Prevent manual resume if the job was paused by business software
+        if (_pausedByBusinessSoftware.Contains(job))
+        {
+            Logger.Instance.Write(new LogEntry("Cannot resume job: blocked by business software", job, true));
+            return;
+        }
+
         job.State.Status = RealTimeState.RealTimeStatus.OnGoing;
         job.PauseGate.Set();
         Logger.Instance.Write(new LogEntry("Job resumed", job));
