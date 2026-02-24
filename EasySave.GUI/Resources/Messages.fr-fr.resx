@@ -105,7 +105,7 @@
         <value>Choisir la source</value>
     </data>
     <data name="destination" xml:space="preserve">
-        <value>Destination.</value>
+        <value>Destination</value>
     </data>
     <data name="destinationText" xml:space="preserve">
         <value>Choisissez un emplacement cible pour la sauvegarde.</value>
