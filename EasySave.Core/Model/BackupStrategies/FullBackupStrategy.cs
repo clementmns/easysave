@@ -106,6 +106,9 @@ public class FullBackupStrategy : IBackupStrategy
 
             foreach (var file in orderedFiles)
             {
+                job.PauseGate.Wait(job.CancellationTokenSource.Token);
+                job.CancellationTokenSource.Token.ThrowIfCancellationRequested();
+
                 var relativePath = Path.GetRelativePath(job.SourcePath, file.FullName);
                 var destinationFilePath = Path.Combine(destinationBackupFolder, relativePath);
 
@@ -118,6 +121,10 @@ public class FullBackupStrategy : IBackupStrategy
             
             job.State.Progression = 100;
             return true;
+        }
+        catch (OperationCanceledException)
+        {
+            throw;
         }
         catch (Exception)
         {
