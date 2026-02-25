@@ -203,6 +203,26 @@ public static class FileUtils
             return 0;
         }
     }
+
+    /// <summary>
+    /// Get the total size of a directory and the number of files in it.
+    /// </summary>
+    /// <param name="path">Path of the job</param>
+    /// <returns>File Size and Count</returns>
+    public static (long fileSize, int count) GetFileSizeAndCount(string path)
+    {
+        try
+        {
+            if (File.Exists(path)) return (GetFileSize(path), 1);
+
+            var files = GetAllFiles(path);
+            return (files.Sum(f => f.Length), files.Count);
+        }
+        catch
+        {
+            return (0, 0);
+        }
+    }
     
     /// <summary>
     /// Check if a path is a directory.

@@ -89,6 +89,14 @@ public class RealTimeState : INotifyPropertyChanged
         CurrentFileName = string.Empty;
         CurrentFileSize = 0;
     }
+
+    public void UpdateFileSize(long fileSize, int totalFiles)
+    {
+        FileSize = fileSize;
+        TotalFiles = totalFiles;
+        RemainingFiles = totalFiles;
+        RemainingFilesSize = fileSize;
+    }
     
     private void NotifyStateObservers()
     {

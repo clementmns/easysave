@@ -58,6 +58,8 @@ public class BackupJob : INotifyPropertyChanged
         set => SetField(ref _state, value);
     }
 
+    public BackupJob() { }
+
     public BackupJob(int id, string name, string sourcePath, string destinationPath, BackupType type)
     {
         _id = id;

@@ -72,7 +72,6 @@ public class BackupJobService : IRealTimeStateObserver
         }
     }
 
-
     public async Task<Dictionary<BackupJob, bool>> ExecuteJobsAsync(IEnumerable<BackupJob> jobs, IProgressionObserver? progressionObserver = null)
     {
         var executor = new BackupExecutor();
@@ -165,11 +164,15 @@ public class BackupJobService : IRealTimeStateObserver
         Logger.Instance.Write(new LogEntry("Going to create job", job));
         try
         {
+            var fileSizeAndCount = FileUtils.GetFileSizeAndCount(job.SourcePath);
+            job.State.UpdateFileSize(fileSizeAndCount.fileSize, fileSizeAndCount.count);
             job.State.AttachStateObserver(this);
-            if (Jobs != null) SaveJobs(Jobs);
-
+            PostToUiThread(() =>
+            {
+                Jobs?.Add(job);
+                if (Jobs != null) SaveJobs(Jobs);
+            });
             Logger.Instance.Write(new LogEntry("Job created", job));
-            PostToUiThread(() => Jobs?.Add(job));
             return true;
         }
         catch (Exception)
@@ -185,10 +188,12 @@ public class BackupJobService : IRealTimeStateObserver
         try
         {
             RemoveStateSubscription(job);
-            if (Jobs != null) SaveJobs(Jobs);
-
+            PostToUiThread(() =>
+            {
+                Jobs?.Remove(job);
+                if (Jobs != null) SaveJobs(Jobs);
+            });
             Logger.Instance.Write(new LogEntry("Job deleted", job));
-            PostToUiThread(() => Jobs?.Remove(job));
             return true;
         }
         catch (Exception)
@@ -206,20 +211,32 @@ public class BackupJobService : IRealTimeStateObserver
             if (Jobs == null) return;
 
             var existingJob = Jobs.FirstOrDefault(j => j.Id == job.Id);
+
             if (existingJob == null)
             {
                 job.State.AttachStateObserver(this);
-                PostToUiThread(() => Jobs?.Add(job));
+                var fileSizeAndCount = FileUtils.GetFileSizeAndCount(job.SourcePath);
+                job.State.UpdateFileSize(fileSizeAndCount.fileSize, fileSizeAndCount.count);
+                PostToUiThread(() =>
+                {
+                    Jobs?.Add(job);
+                    if (Jobs != null) SaveJobs(Jobs);
+                });
             }
             else
             {
+                var fileSizeAndCount = FileUtils.GetFileSizeAndCount(job.SourcePath);
+                existingJob.State.UpdateFileSize(fileSizeAndCount.fileSize, fileSizeAndCount.count);
+
                 existingJob.Name = job.Name;
                 existingJob.SourcePath = job.SourcePath;
                 existingJob.DestinationPath = job.DestinationPath;
                 existingJob.Type = job.Type;
                 existingJob.State = job.State;
+
+                if (Jobs != null) SaveJobs(Jobs);
             }
-            if (Jobs != null) SaveJobs(Jobs);
+
             Logger.Instance.Write(new LogEntry("Job updated", job));
         }
         catch (Exception)
@@ -239,6 +256,9 @@ public class BackupJobService : IRealTimeStateObserver
 
         foreach (var job in sorted)
         {
+            var fileSizeAndCount = FileUtils.GetFileSizeAndCount(job.SourcePath);
+            job.State.UpdateFileSize(fileSizeAndCount.fileSize, fileSizeAndCount.count);
+
             // Reset job state
             job.State.Reset();
             job.State.Progression = 0;
