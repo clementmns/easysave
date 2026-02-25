@@ -53,7 +53,7 @@ public class SettingsTests
     {
         var settings = new Settings();
 
-        Assert.Equal("localhost", settings.LogServerHost);
+        Assert.Null(settings.LogServerHost);
     }
 
     [Fact]
@@ -61,7 +61,7 @@ public class SettingsTests
     {
         var settings = new Settings();
 
-        Assert.Equal(5092, settings.LogServerPort);
+        Assert.Null(settings.LogServerPort);
     }
 
     [Fact]
