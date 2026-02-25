@@ -214,7 +214,7 @@ All settings are stored in `%AppData%\ProSoft\EasySave\settings.json`.
 dotnet test EasySave.Tests
 ```
 
-The test suite covers `BackupExecutor`, `BackupJobFactory`, and `TransferLimitService` using xUnit.
+The test suite covers all features including EasyLog and CryptoSoft.
 
 ---
 
