@@ -296,4 +296,13 @@
     <data name="ChoiceExtension" xml:space="preserve">
         <value>z. B. .pdf oder pdf</value>
     </data>
+    <data name="cryptoAlgorithm" xml:space="preserve">
+        <value>Verschlüsselungsalgorithmus</value>
+    </data>
+    <data name="cryptoAlgorithmText" xml:space="preserve">
+        <value>Wählen Sie den von CryptoSoft verwendeten Verschlüsselungsalgorithmus (AES oder XOR)</value>
+    </data>
+    <data name="selectCryptoAlgorithm" xml:space="preserve">
+        <value>Algorithmus auswählen</value>
+    </data>
 </root>

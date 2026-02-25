@@ -4,14 +4,25 @@ using System.Security.AccessControl;
 using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Text;
+using EasySave.Core.Model;
 using EasySave.Core.Service;
 
 namespace EasySave.Core.Utils;
 
 public static class CryptoUtils
 {
-    private const string DefaultAlgorithm = "aes";
     private const string EncryptExtension = ".lock";
+
+    /// Get the string of the encryption algorithm 
+    private static string GetAlgorithmString()
+    {
+        return SettingsService.GetInstance.Settings.CryptoAlgorithm switch
+        {
+            CryptoAlgorithm.Aes => "aes",
+            CryptoAlgorithm.Xor => "xor",
+            _ => "aes"
+        };
+    }
 
     private static readonly Lock Lock = new();
 
@@ -53,7 +64,7 @@ public static class CryptoUtils
         }
     }
 
-    public static (bool, long) EncryptFile(string sourcePath, string destinationPath, string? sourceRoot = null, string algorithm = DefaultAlgorithm)
+    public static (bool, long) EncryptFile(string sourcePath, string destinationPath, string? sourceRoot = null)
     {
         var stopwatch = new Stopwatch();
         stopwatch.Start();
@@ -66,7 +77,7 @@ public static class CryptoUtils
         
         var destFile = destinationPath + EncryptExtension;
 
-        var result = ExecuteCryptoCommand(algorithm, "encrypt", sourcePath, destFile);
+        var result = ExecuteCryptoCommand(GetAlgorithmString(), "encrypt", sourcePath, destFile);
         
         stopwatch.Stop();
 
@@ -74,9 +85,9 @@ public static class CryptoUtils
         return (result, ms);
     }
 
-    public static bool DecryptFile(string sourcePath, string destinationPath, string algorithm = DefaultAlgorithm)
+    public static bool DecryptFile(string sourcePath, string destinationPath)
     {
-        return ExecuteCryptoCommand(algorithm, "decrypt", sourcePath, destinationPath);
+        return ExecuteCryptoCommand(GetAlgorithmString(), "decrypt", sourcePath, destinationPath);
     }
 
     private static bool ExecuteCryptoCommand(string algorithm, string action, string sourcePath, string destinationPath)

@@ -160,6 +160,13 @@ public class SettingsService
         SaveSettings(Settings);
     }
 
+    public void SetCryptoAlgorithm(CryptoAlgorithm algorithm)
+    {
+        if (Settings.CryptoAlgorithm == algorithm) return;
+        Settings.CryptoAlgorithm = algorithm;
+        SaveSettings(Settings);
+    }
+
     public void SetMaxTransferSizeForParallel(long sizeInKb)
     {
         Settings.MaxTransferSizeForParallel = sizeInKb;

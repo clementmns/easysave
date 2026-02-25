@@ -35,6 +35,11 @@ public class Settings
     public List<string> CryptExtensions { get; set; } = [];
 
     public string? CryptoSoftPath { get; set; }
+
+    /// <summary>
+    /// Encryption algorithm used by CryptoSoft (Aes or Xor).
+    /// </summary>
+    public CryptoAlgorithm CryptoAlgorithm { get; set; } = CryptoAlgorithm.Aes;
     
     /// <summary>
     /// Extensions that should be processed with priority during backups
