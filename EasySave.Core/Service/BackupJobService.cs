@@ -132,7 +132,13 @@ public class BackupJobService : IRealTimeStateObserver
             }
             catch (OperationCanceledException)
             {
+                job.State.Progression = 0;
+                job.State.IsActive = false;
+                job.State.CurrentFileSize = 0;
+                job.State.RemainingFilesSize = job.State.FileSize;
+                job.State.RemainingFiles = job.State.TotalFiles;
                 job.State.Status = RealTimeState.RealTimeStatus.Ready;
+
                 return (job, false);
             }
             catch (Exception e)

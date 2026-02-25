@@ -84,8 +84,6 @@ public class RealTimeState : INotifyPropertyChanged
     {
         LastUpdate = DateTime.Now;
         IsActive = false;
-        RemainingFiles = 0;
-        RemainingFilesSize = 0;
         CurrentFileName = string.Empty;
         CurrentFileSize = 0;
     }
