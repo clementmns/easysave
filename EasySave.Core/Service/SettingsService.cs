@@ -244,6 +244,12 @@ public class SettingsService
 
     private static void ApplyCulture(string language)
     {
+        var validCultures = CultureInfo.GetCultures(CultureTypes.AllCultures);
+        if (!validCultures.Any(c => c.Name.Equals(language, StringComparison.OrdinalIgnoreCase)))
+        {
+            throw new Exception();
+        }
+
         try
         {
             var culture = CultureInfo.GetCultureInfo(language);
