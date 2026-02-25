@@ -10,14 +10,13 @@ namespace EasySave.Core.Utils;
 
 public static class CryptoUtils
 {
-    private const string DefaultAlgorithm = "xor";
+    private const string DefaultAlgorithm = "aes";
     private const string EncryptExtension = ".lock";
 
     private static readonly Lock Lock = new();
 
     // RSA key stored in %AppData%
     private static string KeyDirectory => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ProSoft", "EasySave", "keys");
-
     private static string PrivateKeyPath => Path.Combine(KeyDirectory, "private_key.xml");
     private static string PublicKeyPath  => Path.Combine(KeyDirectory, "public_key.xml");
 
