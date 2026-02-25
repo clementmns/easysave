@@ -303,4 +303,13 @@
     <data name="ChoiceExtension" xml:space="preserve">
         <value>e.g., .pdf or pdf</value>
     </data>
+    <data name="cryptoAlgorithm" xml:space="preserve">
+        <value>Encryption Algorithm</value>
+    </data>
+    <data name="cryptoAlgorithmText" xml:space="preserve">
+        <value>Choose the encryption algorithm used by CryptoSoft (AES or XOR)</value>
+    </data>
+    <data name="selectCryptoAlgorithm" xml:space="preserve">
+        <value>Select algorithm</value>
+    </data>
 </root>

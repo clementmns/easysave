@@ -25,16 +25,21 @@ public class Settings
     /// <summary>
     /// Hostname or IP of the EasyLog.Server instance.
     /// </summary>
-    public string LogServerHost { get; set; } = "localhost";
+    public string? LogServerHost { get; set; }
 
     /// <summary>
     /// TCP port of the EasyLog.Server instance.
     /// </summary>
-    public int LogServerPort { get; set; } = 5092;
+    public int? LogServerPort { get; set; }
 
     public List<string> CryptExtensions { get; set; } = [];
 
     public string? CryptoSoftPath { get; set; }
+
+    /// <summary>
+    /// Encryption algorithm used by CryptoSoft (Aes or Xor).
+    /// </summary>
+    public CryptoAlgorithm CryptoAlgorithm { get; set; } = CryptoAlgorithm.Aes;
     
     /// <summary>
     /// Extensions that should be processed with priority during backups

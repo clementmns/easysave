@@ -42,7 +42,9 @@ public partial class SettingsDialogViewModel : ViewModelBase
         // Load existing crypted extensions
         var existingExtensions = SettingsService.GetInstance.Settings.CryptExtensions;
         _cryptedExtensions = new ObservableCollection<string>(existingExtensions);
+        
         _cryptoSoftPath = SettingsService.GetInstance.Settings.CryptoSoftPath;
+        _selectedCryptoAlgorithm = SettingsService.GetInstance.Settings.CryptoAlgorithm;
 
         // Load existing priority extensions
         var existingPriorityExtensions = SettingsService.GetInstance.Settings.PriorityExtensions;
@@ -85,6 +87,11 @@ public partial class SettingsDialogViewModel : ViewModelBase
     private int? _logServerPort;
 
     [ObservableProperty] private string? _cryptoSoftPath;
+    
+    // Encryption Algorithm
+    public List<CryptoAlgorithm> CryptoAlgorithms { get; } = [CryptoAlgorithm.Aes, CryptoAlgorithm.Xor];
+    [ObservableProperty]
+    private CryptoAlgorithm _selectedCryptoAlgorithm;
 
     [ObservableProperty] private string _businessSoftwareProcessName;
 
@@ -205,6 +212,9 @@ public partial class SettingsDialogViewModel : ViewModelBase
 
         if (CryptoSoftPath != null && CryptoSoftPath != SettingsService.GetInstance.Settings.CryptoSoftPath)
             SettingsService.GetInstance.SetCryptoSoftPath(CryptoSoftPath);
+
+        if (SelectedCryptoAlgorithm != SettingsService.GetInstance.Settings.CryptoAlgorithm)
+            SettingsService.GetInstance.SetCryptoAlgorithm(SelectedCryptoAlgorithm);
 
         if (MaxTransferSizeForParallel != SettingsService.GetInstance.Settings.MaxTransferSizeForParallel)
             SettingsService.GetInstance.SetMaxTransferSizeForParallel(MaxTransferSizeForParallel);

@@ -157,6 +157,18 @@
                 <Border Padding="16" CornerRadius="8" Background="{StaticResource BackgroundBrush}"
                         BorderBrush="{StaticResource BorderSoftBrush}" BorderThickness="1">
                     <StackPanel Spacing="10">
+                        <TextBlock Text="{DynamicResource cryptoAlgorithm}" FontWeight="SemiBold"
+                                   Foreground="{StaticResource TextPrimaryBrush}" />
+                        <TextBlock Text="{DynamicResource cryptoAlgorithmText}"
+                                   Foreground="{StaticResource TextSecondaryBrush}" />
+                        <ComboBox ItemsSource="{Binding CryptoAlgorithms}" SelectedItem="{Binding SelectedCryptoAlgorithm}"
+                                  PlaceholderText="{DynamicResource selectCryptoAlgorithm}" HorizontalAlignment="Stretch" />
+                    </StackPanel>
+                </Border>
+
+                <Border Padding="16" CornerRadius="8" Background="{StaticResource BackgroundBrush}"
+                        BorderBrush="{StaticResource BorderSoftBrush}" BorderThickness="1">
+                    <StackPanel Spacing="10">
                         <TextBlock Text="{DynamicResource maxTransferSize}" FontWeight="SemiBold"
                                    Foreground="{StaticResource TextPrimaryBrush}" />
                         <TextBlock Text="{DynamicResource maxTransferSizeText}"
