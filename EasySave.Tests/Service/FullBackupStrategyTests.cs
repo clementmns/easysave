@@ -61,8 +61,9 @@ public class FullBackupStrategyTests
         try
         {
             var job = new BackupJob(1, "J", src, dst, BackupType.Full);
-            new FullBackupStrategy().Execute(job);
+            var result = new FullBackupStrategy().Execute(job);
 
+            Assert.True(result, $"Backup failed. Progression: {job.State.Progression}, RemainingFiles: {job.State.RemainingFiles}");
             Assert.Equal(100, job.State.Progression);
         }
         finally
@@ -114,8 +115,9 @@ public class FullBackupStrategyTests
         try
         {
             var job = new BackupJob(1, "J", src, dst, BackupType.Full);
-            new FullBackupStrategy().Execute(job);
+            var result = new FullBackupStrategy().Execute(job);
 
+            Assert.True(result, $"Backup failed. Progression: {job.State.Progression}, RemainingFiles: {job.State.RemainingFiles}");
             Assert.Equal(100, job.State.Progression);
         }
         finally
