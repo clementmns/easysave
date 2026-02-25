@@ -40,6 +40,15 @@ jobs:
             -r ${{ matrix.runtime }} \
             --self-contained true \
             -o out/${{ matrix.runtime }}
+
+      # publish also cryptosoft
+      - name: Publish cryptosoft
+        run: |
+          dotnet publish ./CryptoSoft/Cryptosoft.csproj \
+            -c Release \
+            -r ${{ matrix.runtime }} \
+            --self-contained true \
+            -o out/${{ matrix.runtime }}/cryptosoft
       
       # zip each runtime 
       - name: Archive artifacts
@@ -48,12 +57,25 @@ jobs:
           cd out
           zip -r ../artifacts/easysave-gui-${{ matrix.runtime }}.zip ${{ matrix.runtime }}
 
+      # zip cryptosoft
+      - name: Archive cryptosoft
+        run: |
+          cd out/${{ matrix.runtime }}/cryptosoft
+          zip -r ../../../../artifacts/cryptosoft-${{ matrix.runtime }}.zip .
+
       # upload artifacts
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: easysave-${{ matrix.runtime }}
           path: artifacts/easysave-gui-${{ matrix.runtime }}.zip
+
+      # upload cryptosoft
+      - name: Upload cryptosoft
+        uses: actions/upload-artifact@v4
+        with:
+          name: cryptosoft-${{ matrix.runtime }}
+          path: artifacts/cryptosoft-${{ matrix.runtime }}.zip
 
   create-release:
     needs: build-and-release
