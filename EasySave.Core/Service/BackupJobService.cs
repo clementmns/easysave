@@ -120,6 +120,8 @@ public class BackupJobService : IRealTimeStateObserver
                     throw new Exception("Failed to execute job");
 
                 job.State.Status = RealTimeState.RealTimeStatus.Done;
+                job.State.RemainingFiles = 0;
+                job.State.RemainingFilesSize = 0;
 
                 sw.Stop();
 
@@ -231,9 +233,6 @@ public class BackupJobService : IRealTimeStateObserver
             }
             else
             {
-                var fileSizeAndCount = FileUtils.GetFileSizeAndCount(job.SourcePath);
-                existingJob.State.UpdateFileSize(fileSizeAndCount.fileSize, fileSizeAndCount.count);
-
                 existingJob.Name = job.Name;
                 existingJob.SourcePath = job.SourcePath;
                 existingJob.DestinationPath = job.DestinationPath;
