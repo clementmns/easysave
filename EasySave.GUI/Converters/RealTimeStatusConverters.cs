@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using Avalonia;
 using Avalonia.Controls;
@@ -17,6 +18,7 @@ internal static class RealTimeStatusPalette
     private const string DoneKey = "StatusDone";
     private const string ErrorKey = "StatusError";
     private const string OnGoingKey = "StatusOnGoing";
+    private const string PausedKey = "StatusPaused";
 
     private static readonly Lazy<TagColors> Ready = new(() => new TagColors(
         new SolidColorBrush(Color.Parse("#FFF8E1")),
@@ -42,11 +44,18 @@ internal static class RealTimeStatusPalette
         new SolidColorBrush(Color.Parse("#166534")),
         OnGoingKey));
 
+    private static readonly Lazy<TagColors> Paused = new(() => new TagColors(
+        new SolidColorBrush(Color.Parse("#F3F0FF")),
+        new SolidColorBrush(Color.Parse("#7C3AED")),
+        new SolidColorBrush(Color.Parse("#5B21B6")),
+        PausedKey));
+
     private static TagColors GetPalette(RealTimeState.RealTimeStatus status) => status switch
     {
         RealTimeState.RealTimeStatus.Done => Done.Value,
         RealTimeState.RealTimeStatus.Error => Error.Value,
         RealTimeState.RealTimeStatus.OnGoing => OnGoing.Value,
+        RealTimeState.RealTimeStatus.Paused => Paused.Value,
         _ => Ready.Value
     };
 
@@ -91,5 +100,15 @@ public class RealTimeStatusToTextConverter : IValueConverter
         var palette = RealTimeStatusPalette.From(value);
         return Application.Current?.FindResource(palette.TextResourceKey) ?? palette.TextResourceKey;
     }
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => BindingOperations.DoNothing;
+}
+
+public class StatusToPlayPauseIconConverter : IValueConverter
+{
+    public static readonly StatusToPlayPauseIconConverter Instance = new();
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+        => value is RealTimeState.RealTimeStatus.OnGoing || value is true
+            ? "/Assets/svg/pause.svg"
+            : "/Assets/svg/play.svg";
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => BindingOperations.DoNothing;
 }

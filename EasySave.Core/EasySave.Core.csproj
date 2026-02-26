@@ -5,10 +5,23 @@
         <TargetFramework>net10.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <!-- Publish options -->
         <PublishSingleFile>true</PublishSingleFile>
         <SelfContained>true</SelfContained>
+        <Version>3.0.0</Version>
         <RootNamespace>EasySave.Core</RootNamespace>
-        <Version>1.1.0</Version>
+        <!-- Branding -->
+        <Authors>ProSoft</Authors>
+        <Company>ProSoft</Company>
+        <Product>EasySave.Core</Product>
+        <Copyright>Copyright © 2026 ProSoft</Copyright>
+        <AssemblyTitle>EasySave.CLI</AssemblyTitle>
+        <AssemblyDescription>Backup your files</AssemblyDescription>
+        <AssemblyCompany>ProSoft</AssemblyCompany>
+        <AssemblyProduct>EasySave.CLI</AssemblyProduct>
+        <AssemblyCopyright>Copyright © 2026 ProSoft</AssemblyCopyright>
+        <PublishAot>False</PublishAot>
+        <SignAssembly>False</SignAssembly>
     </PropertyGroup>
 
     <ItemGroup>

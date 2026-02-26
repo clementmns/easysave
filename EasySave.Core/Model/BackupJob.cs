@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Text.Json.Serialization;
 
 namespace EasySave.Core.Model;
 
@@ -14,6 +15,12 @@ public class BackupJob : INotifyPropertyChanged
     private string _destinationPath = string.Empty;
     private BackupType _type;
     private RealTimeState _state = new();
+    
+    [JsonIgnore]
+    public ManualResetEventSlim PauseGate { get; } = new(true);
+    
+    [JsonIgnore]
+    public CancellationTokenSource CancellationTokenSource { get; private set; } = new();
 
     public int Id
     {
@@ -51,6 +58,8 @@ public class BackupJob : INotifyPropertyChanged
         set => SetField(ref _state, value);
     }
 
+    public BackupJob() { }
+
     public BackupJob(int id, string name, string sourcePath, string destinationPath, BackupType type)
     {
         _id = id;
@@ -64,6 +73,12 @@ public class BackupJob : INotifyPropertyChanged
     public override string ToString()
     {
         return $"BackupJob(Id={Id}, Name={Name}, SourcePath={SourcePath}, DestinationPath={DestinationPath}, Type={Type}, State={State})";
+    }
+    
+    public void ResetCancellation()
+    {
+        CancellationTokenSource = new CancellationTokenSource();
+        PauseGate.Set(); // ensure gate is open
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;

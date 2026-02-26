@@ -9,6 +9,18 @@
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
         <RootNamespace>EasySave.GUI</RootNamespace>
+        <!-- Branding -->
+        <Authors>ProSoft</Authors>
+        <Company>ProSoft</Company>
+        <Product>EasySave.GUI</Product>
+        <Copyright>Copyright © 2026 ProSoft</Copyright>
+        <AssemblyTitle>EasySave.GUI</AssemblyTitle>
+        <AssemblyDescription>Backup your files</AssemblyDescription>
+        <AssemblyCompany>ProSoft</AssemblyCompany>
+        <AssemblyProduct>EasySave.GUI</AssemblyProduct>
+        <AssemblyCopyright>Copyright © 2026 ProSoft</AssemblyCopyright>
+        <PublishAot>False</PublishAot>
+        <SignAssembly>False</SignAssembly>
     </PropertyGroup>
 
     <ItemGroup>

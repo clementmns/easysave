@@ -185,6 +185,12 @@
     <data name="remove" xml:space="preserve">
         <value>Supprimer</value>
     </data>
+    <data name="priorityExtensions" xml:space="preserve">
+        <value>Extensions prioritaires</value>
+    </data>
+    <data name="choosePriorityExt" xml:space="preserve">
+        <value>Choisissez les extensions à traiter en priorité lors des sauvegardes :</value>
+    </data>
     <data name="selectSource" xml:space="preserve">
         <value>Choisir la source</value>
     </data>
@@ -210,13 +216,13 @@
         <value>Prêt</value>
     </data>
     <data name="Software" xml:space="preserve">
-        <value>Définissez le nom du processus du logiciel métier à surveiller (par exemple, 'calc' pour la calculatrice).</value>
+        <value>Définissez le(s) nom(s) de processus des logiciels métiers à surveiller (par exemple, 'calc, notepad').</value>
     </data>
     <data name="SoftwareTitle" xml:space="preserve">
         <value>Titre du logiciel</value>
     </data>
     <data name="SoftwareProcessName" xml:space="preserve">
-        <value>Entrer le nom du processus</value>
+        <value>Entrer le(s) nom(s) du processus</value>
     </data>
     <data name="BackupBlocked" xml:space="preserve">
         <value>Sauvegarde bloquée pour la tâche</value>
@@ -229,5 +235,74 @@
     </data>
     <data name="SelectSourcePathFolder" xml:space="preserve">
         <value>Sélectionner le dossier source</value>
+    </data>
+    <data name="StatusPaused" xml:space="preserve">
+        <value>En pause</value>
+    </data>
+    <data name="pause" xml:space="preserve">
+        <value>Pause</value>
+    </data>
+    <data name="resume" xml:space="preserve">
+        <value>Reprendre</value>
+    </data>
+    <data name="stop" xml:space="preserve">
+        <value>Arrêter</value>
+    </data>
+    <data name="selectFile" xml:space="preserve">
+        <value>Sélectionner un fichier</value>
+    </data>
+    <data name="selectFolder" xml:space="preserve">
+        <value>Sélectionner un dossier</value>
+    </data>
+    <data name="Blocked" xml:space="preserve">
+        <value>Logiciel professionnel détecté. L'exécution de la sauvegarde est bloquée pendant son fonctionnement.</value>
+    </data>
+    <data name="cryptoSoftPath" xml:space="preserve">
+        <value>Chemin CryptoSoft</value>
+    </data>
+    <data name="cryptoSoftPathText" xml:space="preserve">
+        <value>Indiquez le chemin d'accès cryptoSoft vers les fichiers cryptés avec les extensions sélectionnées.</value>
+    </data>
+    <data name="logMode" xml:space="preserve">
+        <value>Mode journal</value>
+    </data>
+    <data name="logModeText" xml:space="preserve">
+        <value>Sélectionnez l'emplacement où les journaux sont enregistrés.</value>
+    </data>
+    <data name="remoteHost" xml:space="preserve">
+        <value>Hôte distant</value>
+    </data>
+    <data name="remotePort" xml:space="preserve">
+        <value>Port distant</value>
+    </data>
+    <data name="remoteServer" xml:space="preserve">
+        <value>Serveur distant de connexion</value>
+    </data>
+    <data name="remoteServerText" xml:space="preserve">
+        <value>Sélectionnez le serveur distant où les journaux seront enregistrés.</value>
+    </data>
+    <data name="selectLogFormat" xml:space="preserve">
+        <value>Sélectionner le format du journal</value>
+    </data>
+    <data name="selectLogMode" xml:space="preserve">
+        <value>Sélectionner le mode journal</value>
+    </data>
+    <data name="maxTransferSize" xml:space="preserve">
+        <value>Taille maximale de transfert (Ko)</value>
+    </data>
+    <data name="maxTransferSizeText" xml:space="preserve">
+        <value>Taille maximale des fichiers pour le transfert parallèle (Ko)</value>
+    </data>
+    <data name="ChoiceExtension" xml:space="preserve">
+        <value>par exemple, .pdf ou pdf</value>
+    </data>
+    <data name="cryptoAlgorithm" xml:space="preserve">
+        <value>Algorithme de chiffrement</value>
+    </data>
+    <data name="cryptoAlgorithmText" xml:space="preserve">
+        <value>Choisissez l'algorithme de chiffrement utilisé par CryptoSoft (AES ou XOR)</value>
+    </data>
+    <data name="selectCryptoAlgorithm" xml:space="preserve">
+        <value>Sélectionner un algorithme</value>
     </data>
 </root>

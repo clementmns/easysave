@@ -13,7 +13,8 @@ public class RealTimeState : INotifyPropertyChanged
         Ready,
         Done,
         Error,
-        OnGoing
+        OnGoing,
+        Paused
     }
 
     private readonly List<IRealTimeStateObserver> _stateObservers = [];
@@ -67,12 +68,32 @@ public class RealTimeState : INotifyPropertyChanged
         set => SetField(ref field, value);
     }
 
+    public string CurrentFileName
+    {
+        get;
+        set => SetField(ref field, value);
+    } = string.Empty;
+
+    public long CurrentFileSize
+    {
+        get;
+        set => SetField(ref field, value);
+    }
+
     public void Reset()
     {
         LastUpdate = DateTime.Now;
         IsActive = false;
-        RemainingFiles = 0;
-        RemainingFilesSize = 0;
+        CurrentFileName = string.Empty;
+        CurrentFileSize = 0;
+    }
+
+    public void UpdateFileSize(long fileSize, int totalFiles)
+    {
+        FileSize = fileSize;
+        TotalFiles = totalFiles;
+        RemainingFiles = totalFiles;
+        RemainingFilesSize = fileSize;
     }
     
     private void NotifyStateObservers()
@@ -151,6 +172,6 @@ public class RealTimeState : INotifyPropertyChanged
 
     public override string ToString()
     {
-        return $"RealTimeState(LastUpdate={LastUpdate}, IsActive={IsActive}, TotalFiles={TotalFiles}, FileSize={FileSize}, Progression={Progression}, RemainingFiles={RemainingFiles}, RemainingFilesSize={RemainingFilesSize})";
+        return $"RealTimeState(LastUpdate={LastUpdate}, IsActive={IsActive}, TotalFiles={TotalFiles}, FileSize={FileSize}, Progression={Progression}, RemainingFiles={RemainingFiles}, RemainingFilesSize={RemainingFilesSize}, CurrentFileName={CurrentFileName}, CurrentFileSize={CurrentFileSize})";
     }
 }

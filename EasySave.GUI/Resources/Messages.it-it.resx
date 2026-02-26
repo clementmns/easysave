@@ -230,4 +230,79 @@
     <data name="StatusReady" xml:space="preserve">
         <value>Pronto</value>
     </data>
+    <data name="StatusPaused" xml:space="preserve">
+        <value>In pausa</value>
+    </data>
+    <data name="pause" xml:space="preserve">
+        <value>Pausa</value>
+    </data>
+    <data name="resume" xml:space="preserve">
+        <value>Riprendi</value>
+    </data>
+    <data name="stop" xml:space="preserve">
+        <value>Ferma</value>
+    </data>
+    <data name="selectFile" xml:space="preserve">
+        <value>Selezionare un file</value>
+    </data>
+    <data name="selectFolder" xml:space="preserve">
+        <value>Selezionare una cartella</value>
+    </data>
+    <data name="Blocked" xml:space="preserve">
+        <value>Rilevato software aziendale. L'esecuzione del backup è bloccata mentre è in esecuzione.</value>
+    </data>
+    <data name="choosePriorityExt" xml:space="preserve">
+        <value>Scegli le estensioni da elaborare con priorità durante i backup:</value>
+    </data>
+    <data name="cryptoSoftPath" xml:space="preserve">
+        <value>Percorso CryptoSoft</value>
+    </data>
+    <data name="cryptoSoftPathText" xml:space="preserve">
+        <value>Inserisci il percorso cryptoSoft nei file crittografati con le estensioni selezionate</value>
+    </data>
+    <data name="logMode" xml:space="preserve">
+        <value>Modalità registro</value>
+    </data>
+    <data name="logModeText" xml:space="preserve">
+        <value>Seleziona dove salvare i registri</value>
+    </data>
+    <data name="priorityExtensions" xml:space="preserve">
+        <value>Estensioni prioritarie</value>
+    </data>
+    <data name="remoteHost" xml:space="preserve">
+        <value>Host remoto</value>
+    </data>
+    <data name="remotePort" xml:space="preserve">
+        <value>Porta remota</value>
+    </data>
+    <data name="remoteServer" xml:space="preserve">
+        <value>Accedi al server remoto</value>
+    </data>
+    <data name="remoteServerText" xml:space="preserve">
+        <value>Selezionare il server remoto su cui salvare i registri</value>
+    </data>
+    <data name="selectLogFormat" xml:space="preserve">
+        <value>Seleziona formato registro</value>
+    </data>
+    <data name="selectLogMode" xml:space="preserve">
+        <value>Seleziona modalità registro</value>
+    </data>
+    <data name="maxTransferSize" xml:space="preserve">
+        <value>Dimensione massima di trasferimento (KB)</value>
+    </data>
+    <data name="maxTransferSizeText" xml:space="preserve">
+        <value>Dimensione massima del file per il trasferimento parallelo (KB)</value>
+    </data>
+    <data name="ChoiceExtension" xml:space="preserve">
+        <value>ad esempio, .pdf o pdf</value>
+    </data>
+    <data name="cryptoAlgorithm" xml:space="preserve">
+        <value>Algoritmo di cifratura</value>
+    </data>
+    <data name="cryptoAlgorithmText" xml:space="preserve">
+        <value>Scegli l'algoritmo di cifratura utilizzato da CryptoSoft (AES o XOR)</value>
+    </data>
+    <data name="selectCryptoAlgorithm" xml:space="preserve">
+        <value>Seleziona algoritmo</value>
+    </data>
 </root>

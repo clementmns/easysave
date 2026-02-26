@@ -207,6 +207,12 @@
     <data name="remove" xml:space="preserve">
         <value>Remove</value>
     </data>
+    <data name="priorityExtensions" xml:space="preserve">
+        <value>Priority Extensions</value>
+    </data>
+    <data name="choosePriorityExt" xml:space="preserve">
+        <value>Choose extensions to be processed with priority during backups:</value>
+    </data>
     <data name="easysave" xml:space="preserve">
         <value>EasySave Backup</value>
     </data>
@@ -220,10 +226,10 @@
         <value>Software Title</value>
     </data>
     <data name="Software" xml:space="preserve">
-        <value>Define the process name of the business software to monitor (e.g., 'calc' for calculator)</value>
+        <value>Define the process name(s) of the business software to monitor (e.g., 'calc, notepad').</value>
     </data>
     <data name="SoftwareProcessName" xml:space="preserve">
-        <value>Enter process name</value>
+        <value>Enter process name(s)</value>
     </data>
     <data name="BusinessSoftwareDetected" xml:space="preserve">
         <value>Business software detected. Backup execution is blocked while it is running.</value>
@@ -239,5 +245,71 @@
     </data>
     <data name="UnknownBackupType" xml:space="preserve">
         <value>Unknown Backup type</value>
+    </data>
+    <data name="selectLogFormat" xml:space="preserve">
+        <value>Select Log Format</value>
+    </data>
+    <data name="logMode" xml:space="preserve">
+        <value>Log Mode</value>
+    </data>
+    <data name="logModeText" xml:space="preserve">
+        <value>Select where logs are saved</value>
+    </data>
+    <data name="selectLogMode" xml:space="preserve">
+        <value>Select Log Mode</value>
+    </data>
+    <data name="remoteServer" xml:space="preserve">
+        <value>Log Remote Server</value>
+    </data>
+    <data name="remoteServerText" xml:space="preserve">
+        <value>Select remote server where logs will be saved</value>
+    </data>
+    <data name="remoteHost" xml:space="preserve">
+        <value>Remote Host</value>
+    </data>
+    <data name="remotePort" xml:space="preserve">
+        <value>Remote Port</value>
+    </data>
+    <data name="cryptoSoftPath" xml:space="preserve">
+        <value>CryptoSoft path</value>
+    </data>
+    <data name="cryptoSoftPathText" xml:space="preserve">
+        <value>Put the cryptoSoft path to crypt files with selected extensions</value>
+    </data>
+    <data name="StatusPaused" xml:space="preserve">
+        <value>Paused</value>
+    </data>
+    <data name="pause" xml:space="preserve">
+        <value>Pause</value>
+    </data>
+    <data name="resume" xml:space="preserve">
+        <value>Resume</value>
+    </data>
+    <data name="stop" xml:space="preserve">
+        <value>Stop</value>
+    </data>
+    <data name="selectFile" xml:space="preserve">
+        <value>Select a file</value>
+    </data>
+    <data name="selectFolder" xml:space="preserve">
+        <value>Select folder</value>
+    </data>
+    <data name="maxTransferSize" xml:space="preserve">
+        <value>Max Transfer Size (KB)</value>
+    </data>
+    <data name="maxTransferSizeText" xml:space="preserve">
+        <value>Maximum file size for parallel transfer (KB)</value>
+    </data>
+    <data name="ChoiceExtension" xml:space="preserve">
+        <value>e.g., .pdf or pdf</value>
+    </data>
+    <data name="cryptoAlgorithm" xml:space="preserve">
+        <value>Encryption Algorithm</value>
+    </data>
+    <data name="cryptoAlgorithmText" xml:space="preserve">
+        <value>Choose the encryption algorithm used by CryptoSoft (AES or XOR)</value>
+    </data>
+    <data name="selectCryptoAlgorithm" xml:space="preserve">
+        <value>Select algorithm</value>
     </data>
 </root>

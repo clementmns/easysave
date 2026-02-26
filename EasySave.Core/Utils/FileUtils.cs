@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace EasySave.Core.Utils;
 
@@ -8,13 +9,9 @@ namespace EasySave.Core.Utils;
 public static class FileUtils
 {
     /// <summary>
-    /// Copy a file to a new location.
+    /// Copy a file to a new location with progress reporting.
     /// </summary>
-    /// <param name="sourceFile">SourceFile</param>
-    /// <param name="destinationDir">Destination Directory</param>
-    /// <param name="sourceRoot">Source root</param>
-    /// <returns></returns>
-    public static (bool, long) CopyFile(string sourceFile, string destinationDir, string? sourceRoot = null) // path/to/text.txt -> path/to/dir 
+    public static (bool, long) CopyFile(string sourceFile, string destinationDir, string? sourceRoot, Action<long, long>? onProgress)
     {
         try
         {
@@ -44,8 +41,32 @@ public static class FileUtils
                 }
             }
             
-            // Use the Path.Combine method to safely append the file name to the path.
-            File.Copy(sourceFile, destinationFileName, true); // true if the destination file should be replaced if it already exists; otherwise, false
+            var fileSize = new FileInfo(sourceFile).Length;
+
+            // size threshold for progress reporting (1 MB)
+            if (onProgress != null && fileSize > 1024 * 1024)
+            {
+                const int bufferSize = 1024 * 1024;
+                var buffer = new byte[bufferSize];
+                
+                using var sourceStream = new FileStream(sourceFile, FileMode.Open, FileAccess.Read);
+                using var destinationStream = new FileStream(destinationFileName, FileMode.Create, FileAccess.Write);
+                
+                long totalBytesRead = 0;
+                int bytesRead;
+                
+                while ((bytesRead = sourceStream.Read(buffer, 0, bufferSize)) > 0)
+                {
+                    destinationStream.Write(buffer, 0, bytesRead);
+                    totalBytesRead += bytesRead;
+                    onProgress(totalBytesRead, fileSize);
+                }
+            }
+            else
+            {
+                File.Copy(sourceFile, destinationFileName, true);
+            }
+            
             return (true, ms);
         }
         catch
@@ -93,23 +114,36 @@ public static class FileUtils
 
             var root = Path.GetPathRoot(fullPath);
 
-            // If the root is not a drive (no “:”), it cannot be converted simply.
-            if (string.IsNullOrEmpty(root) || !root.Contains(':'))
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                throw new ArgumentException("The path is not a valid absolute");
+                if (string.IsNullOrEmpty(root) || !root.Contains(':'))
+                {
+                    throw new ArgumentException("The path is not a valid absolute");
+                }
+
+                var driveLetter = root.Replace(":", "$").TrimEnd('\\');
+                var pathWithoutRoot = fullPath.Substring(root.Length);
+                var machineName = Environment.MachineName;
+
+                return $@"\\{machineName}\{driveLetter}\{pathWithoutRoot}";
             }
+            else
+            {
+                if (string.IsNullOrEmpty(root) || root != "/")
+                {
+                    throw new ArgumentException("The path is not a valid absolute Unix path");
+                }
 
-            var driveLetter = root.Replace(":", "$").TrimEnd('\\');
-            var pathWithoutRoot = fullPath.Substring(root.Length); // Retrieve the rest of the path (without the root)
-            var machineName = Environment.MachineName;
+                var pathWithoutRoot = fullPath.TrimStart('/');
+                var machineName = Environment.MachineName;
 
-            return $@"\\{machineName}\{driveLetter}\{pathWithoutRoot}";
+                return $@"//{machineName}/{pathWithoutRoot}";
+            }
         }
         catch
         {
             return null;
         }
-        
     }
 
     /// <summary>
@@ -169,6 +203,26 @@ public static class FileUtils
             return 0;
         }
     }
+
+    /// <summary>
+    /// Get the total size of a directory and the number of files in it.
+    /// </summary>
+    /// <param name="path">Path of the job</param>
+    /// <returns>File Size and Count</returns>
+    public static (long fileSize, int count) GetFileSizeAndCount(string path)
+    {
+        try
+        {
+            if (File.Exists(path)) return (GetFileSize(path), 1);
+
+            var files = GetAllFiles(path);
+            return (files.Sum(f => f.Length), files.Count);
+        }
+        catch
+        {
+            return (0, 0);
+        }
+    }
     
     /// <summary>
     /// Check if a path is a directory.
@@ -185,6 +239,71 @@ public static class FileUtils
         catch
         {
             return null;
+        }
+    }
+
+    /// <summary>
+    /// Check if a file has a priority extension.
+    /// </summary>
+    /// <param name="filePath">File path</param>
+    /// <param name="priorityExtensions">List of priority extensions</param>
+    /// <returns></returns>
+    private static bool HasPriorityExtension(string filePath, List<string> priorityExtensions)
+    {
+        try
+        {
+            var extension = Path.GetExtension(filePath);
+            return priorityExtensions.Contains(extension, StringComparer.OrdinalIgnoreCase);
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Separate files into priority and non-priority lists.
+    /// </summary>
+    /// <param name="files">List of files</param>
+    /// <param name="priorityExtensions">List of priority extensions</param>
+    /// <returns>Tuple of (priorityFiles, nonPriorityFiles)</returns>
+    public static (List<FileInfo> priorityFiles, List<FileInfo> nonPriorityFiles) SeparatePriorityFiles(
+        List<FileInfo> files,
+        List<string> priorityExtensions)
+    {
+        var priorityFiles = new List<FileInfo>();
+        var nonPriorityFiles = new List<FileInfo>();
+
+        foreach (var file in files)
+        {
+            if (HasPriorityExtension(file.FullName, priorityExtensions)) priorityFiles.Add(file);
+            else nonPriorityFiles.Add(file);
+        }
+
+        return (priorityFiles, nonPriorityFiles);
+    }
+
+    /// <summary>
+    /// Check if a job has any priority files in its source path.
+    /// </summary>
+    /// <param name="sourcePath">Source path (file or directory)</param>
+    /// <param name="priorityExtensions">List of priority extensions</param>
+    /// <returns></returns>
+    public static bool HasPriorityFiles(string sourcePath, List<string> priorityExtensions)
+    {
+        try
+        {
+            if (priorityExtensions.Count == 0) return false;
+
+            if (File.Exists(sourcePath)) return HasPriorityExtension(sourcePath, priorityExtensions);
+
+            if (!Directory.Exists(sourcePath)) return false;
+            var files = GetAllFiles(sourcePath);
+            return files.Any(f => HasPriorityExtension(f.FullName, priorityExtensions));
+        }
+        catch
+        {
+            return false;
         }
     }
 }

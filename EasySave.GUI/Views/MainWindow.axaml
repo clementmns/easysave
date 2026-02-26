@@ -18,6 +18,8 @@
         <converters:RealTimeStatusToBorderBrushConverter x:Key="RealTimeStatusToBorderBrushConverter" />
         <converters:RealTimeStatusToForegroundConverter x:Key="RealTimeStatusToForegroundConverter" />
         <converters:RealTimeStatusToTextConverter x:Key="RealTimeStatusToTextConverter" />
+        <converters:FileSizeConverter x:Key="FileSizeConverter" />
+        <converters:FileProgressConverter x:Key="FileProgressConverter" />
     </Window.Resources>
 
     <Grid RowDefinitions="Auto, Auto, *">
@@ -97,16 +99,20 @@
                 </Button>
                 <Rectangle Width="1" Fill="{StaticResource BorderSoftBrush}" Margin="6,0" VerticalAlignment="Stretch" />
                 <Button Classes="primary"
-                        Command="{Binding ExecuteSelectedJobs}">
-                    <Svg Path="/Assets/svg/play.svg"
+                        Command="{Binding TogglePlayPauseSelectedJobsCommand}"
+                        ToolTip.Tip="{DynamicResource execute}">
+                    <Svg Path="{Binding HasAnyOnGoingSelectedJob, Converter={x:Static converters:StatusToPlayPauseIconConverter.Instance}}"
                          Width="16"
                          Height="16" />
                 </Button>
-                <!-- <Button Classes="ghost" IsEnabled="False"> -->
-                <!--     <Svg Path="/Assets/svg/pause.svg" -->
-                <!--          Width="16" -->
-                <!--          Height="16" /> -->
-                <!-- </Button> -->
+                <Button Classes="danger"
+                        Command="{Binding StopSelectedJobsCommand}"
+                        IsEnabled="{Binding HasAnyActiveSelectedJob}"
+                        ToolTip.Tip="{DynamicResource stop}">
+                    <Svg Path="/Assets/svg/stop.svg"
+                         Width="16"
+                         Height="16" />
+                </Button>
                 <Button Classes="danger"
                         Command="{Binding DeleteSelectedJobsCommand}">
                     <Svg Path="/Assets/svg/trash.svg"
@@ -217,9 +223,25 @@
                                                 Width="3*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <ProgressBar Margin="20 10" Height="20"
-                                                 Minimum="0" Maximum="100" Value="{Binding State.Progression}"
-                                                 ShowProgressText="True" />
+                                    <StackPanel Margin="20 10">
+                                        <ProgressBar Height="20"
+                                                     Minimum="0" Maximum="100" Value="{Binding State.Progression}" />
+                                        <TextBlock Margin="0,4,0,0" FontSize="11"
+                                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                                   HorizontalAlignment="Center">
+                                            <TextBlock.Text>
+                                                <MultiBinding Converter="{StaticResource FileProgressConverter}">
+                                                    <Binding Path="State.TotalFiles" />
+                                                    <Binding Path="State.RemainingFiles" />
+                                                    <Binding Path="State.FileSize" />
+                                                    <Binding Path="State.RemainingFilesSize" />
+                                                    <Binding Path="State.Progression" />
+                                                    <Binding Path="State.CurrentFileName" />
+                                                    <Binding Path="State.CurrentFileSize" />
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </StackPanel>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -281,15 +303,26 @@
                                                        Foreground="{StaticResource TextPrimaryBrush}" />
                                         </StackPanel>
 
-                                        <Border Grid.Column="1" Background="{StaticResource AccentMutedBrush}"
-                                                CornerRadius="6" Padding="10,5"
-                                                VerticalAlignment="Top">
-                                            <StackPanel Orientation="Horizontal" Spacing="8">
-                                                <Svg Path="/Assets/svg/info.svg" Width="16" Height="16" />
-                                                <TextBlock Text="{Binding Type}" FontWeight="SemiBold"
-                                                           Foreground="{StaticResource TextPrimaryBrush}" />
-                                            </StackPanel>
-                                        </Border>
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="10" VerticalAlignment="Top">
+
+                                            <Border Background="#F3F4F6" CornerRadius="6" Padding="10,5">
+                                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                                    <Svg Path="/Assets/svg/info.svg" Width="16" Height="16" />
+                                                    <TextBlock Text="{Binding Type}" FontWeight="SemiBold" Foreground="#555" />
+                                                </StackPanel>
+                                            </Border>
+
+                                            <Border Background="#F3F4F6" CornerRadius="6" Padding="10,5">
+                                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                                    <Svg Path="/Assets/svg/folder.svg" Width="16" Height="16" />
+
+                                                    <TextBlock Text="{Binding State.FileSize, Converter={StaticResource FileSizeConverter}}"
+                                                               FontWeight="SemiBold"
+                                                               Foreground="#555" />
+                                                </StackPanel>
+                                            </Border>
+
+                                        </StackPanel>
                                     </Grid>
 
                                     <Grid Grid.Row="1" ColumnDefinitions="*, Auto, *" Margin="0,0,0,20"
@@ -330,7 +363,6 @@
 
                                     <Border Grid.Row="2" Padding="0,15,0,0">
                                         <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Right">
-
                                             <Button
                                                 Command="{Binding ((vm:MainViewModel)DataContext).OpenEditJobDialogCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                                 CommandParameter="{Binding .}">

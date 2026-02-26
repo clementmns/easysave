@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
 using Avalonia.Controls;
+using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Core.Model;
@@ -33,13 +36,21 @@ public partial class MainViewModel : ViewModelBase, IProgressionObserver, IDispo
     
     [ObservableProperty] private ObservableCollection<BackupJob> _selectedJobs = [];
     
+    public bool HasAnyActiveSelectedJob =>
+        SelectedJobs.Any(j =>
+            j.State.Status is RealTimeState.RealTimeStatus.OnGoing
+                           or RealTimeState.RealTimeStatus.Paused);
+
+    public bool HasAnyOnGoingSelectedJob =>
+        SelectedJobs.Any(j => j.State.Status is RealTimeState.RealTimeStatus.OnGoing);
+
     public MainViewModel()
     {
         _jobService = new BackupJobService();
         
         // Initialize timer for business software monitoring
         _businessSoftwareTimer = new Timer(2000); // Check every 2 seconds
-        _businessSoftwareTimer.Elapsed += (sender, e) => RefreshBusinessSoftwareStatus();
+        _businessSoftwareTimer.Elapsed += (sender, e) => Dispatcher.UIThread.Post(RefreshBusinessSoftwareStatus);
         _businessSoftwareTimer.AutoReset = true;
         _businessSoftwareTimer.Start();
         
@@ -47,7 +58,36 @@ public partial class MainViewModel : ViewModelBase, IProgressionObserver, IDispo
         OnPropertyChanged(nameof(Jobs));
         
         RefreshBusinessSoftwareStatus();
+
+        // Keep HasAnyActiveSelectedJob in sync when the selection changes.
+        _selectedJobs.CollectionChanged += OnSelectedJobsCollectionChanged;
     }
+
+    private void OnSelectedJobsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        if (e.NewItems != null)
+            foreach (BackupJob job in e.NewItems)
+                job.State.PropertyChanged += OnSelectedJobStateChanged;
+        
+        if (e.OldItems != null)
+            foreach (BackupJob job in e.OldItems)
+                job.State.PropertyChanged -= OnSelectedJobStateChanged;
+
+        RefreshActiveState();
+    }
+
+    private void OnSelectedJobStateChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(RealTimeState.Status))
+            RefreshActiveState();
+    }
+
+    private void RefreshActiveState() =>
+        Dispatcher.UIThread.Post(() =>
+        {
+            OnPropertyChanged(nameof(HasAnyActiveSelectedJob));
+            OnPropertyChanged(nameof(HasAnyOnGoingSelectedJob));
+        });
 
     private void OnLanguageChanged()
     {
@@ -91,22 +131,34 @@ public partial class MainViewModel : ViewModelBase, IProgressionObserver, IDispo
         OnPropertyChanged(nameof(SelectedJobs));
     }
     
-    [RelayCommand]
+    [RelayCommand(AllowConcurrentExecutions = true)]
     public async Task ExecuteSelectedJobs()
     {
-        if (SelectedJobs.Count == 0) return;
-        RefreshBusinessSoftwareStatus();
-        foreach (var job in SelectedJobs.ToList())  await ExecuteJob(job, this);
+        if (SelectedJobs.Count == 0)
+            return;
+        
+        var pausedJobs = SelectedJobs.Where(j => j.State.Status == RealTimeState.RealTimeStatus.Paused).ToList();
+        foreach (var job in pausedJobs)
+            _jobService.ResumeJob(job);
+
+        var jobsToRun = SelectedJobs
+            .Where(j => j.State.Status is not (RealTimeState.RealTimeStatus.OnGoing or RealTimeState.RealTimeStatus.Paused))
+            .ToList();
+
+        if (jobsToRun.Count > 0)
+            await _jobService.ExecuteJobsAsync(jobsToRun, this);
     }
     
     [RelayCommand]
     public async Task ExecuteJobCommand(BackupJob job) => await ExecuteJob(job, this);
 
-    [RelayCommand]
+    [RelayCommand(AllowConcurrentExecutions = true)]
     public async Task ExecuteAllJobs()
     {
-        if (Jobs == null) return;
-        foreach (var job in Jobs.ToList()) await ExecuteJob(job, this);
+        if (Jobs == null || Jobs.Count == 0)
+            return;
+
+        await _jobService.ExecuteJobsAsync(Jobs.ToList(), this);
     }
 
     [RelayCommand]
@@ -117,6 +169,75 @@ public partial class MainViewModel : ViewModelBase, IProgressionObserver, IDispo
         SelectedJobs.Clear();
         OnPropertyChanged(nameof(AreAllJobsSelected));
         OnPropertyChanged(nameof(SelectedJobs));
+    }
+
+    [RelayCommand]
+    public void PauseJob(BackupJob job) => _jobService.PauseJob(job);
+
+    [RelayCommand]
+    public void ResumeJob(BackupJob job) => _jobService.ResumeJob(job);
+
+    [RelayCommand]
+    public void StopJob(BackupJob job) => _jobService.StopJob(job);
+    
+    [RelayCommand]
+    public void TogglePlayPauseJob(BackupJob job)
+    {
+        switch (job.State.Status)
+        {
+            case RealTimeState.RealTimeStatus.Ready:
+            case RealTimeState.RealTimeStatus.Done:
+            case RealTimeState.RealTimeStatus.Error:
+                _ = ExecuteJob(job, this);
+                break;
+            case RealTimeState.RealTimeStatus.OnGoing:
+                _jobService.PauseJob(job);
+                break;
+            case RealTimeState.RealTimeStatus.Paused:
+                _jobService.ResumeJob(job);
+                break;
+        }
+    }
+
+    [RelayCommand]
+    public void PauseSelectedJobs()
+    {
+        foreach (var job in SelectedJobs.ToList()) _jobService.PauseJob(job);
+    }
+
+    [RelayCommand]
+    public void ResumeSelectedJobs()
+    {
+        foreach (var job in SelectedJobs.ToList()) _jobService.ResumeJob(job);
+    }
+
+    [RelayCommand]
+    public void StopSelectedJobs()
+    {
+        foreach (var job in SelectedJobs.ToList()) _jobService.StopJob(job);
+    }
+    
+    [RelayCommand]
+    public void TogglePlayPauseSelectedJobs()
+    {
+        var jobs = SelectedJobs.ToList();
+
+        // If any job is OnGoing → pause all ongoing jobs
+        if (jobs.Any(j => j.State.Status == RealTimeState.RealTimeStatus.OnGoing))
+        {
+            foreach (var job in jobs.Where(j => j.State.Status == RealTimeState.RealTimeStatus.OnGoing))
+                _jobService.PauseJob(job);
+            return;
+        }
+
+        // If all active jobs are Paused → resume them
+        if (jobs.Any(j => j.State.Status == RealTimeState.RealTimeStatus.Paused))
+        {
+            foreach (var job in jobs.Where(j => j.State.Status == RealTimeState.RealTimeStatus.Paused))
+                _jobService.ResumeJob(job);
+            return;
+        }
+        _ = ExecuteSelectedJobs();
     }
 
     [RelayCommand]
@@ -143,7 +264,7 @@ public partial class MainViewModel : ViewModelBase, IProgressionObserver, IDispo
             Title = Messages.editJob,
             Content = new DialogEditJob(),
             Width = 1000,
-            Height = 400,
+            Height = 450,
             WindowStartupLocation = WindowStartupLocation.CenterOwner,
         };
         
@@ -190,8 +311,8 @@ public partial class MainViewModel : ViewModelBase, IProgressionObserver, IDispo
     
     public async Task<bool> ExecuteJob(BackupJob job, IProgressionObserver? progressionObserver = null)
     {
-        var result = await _jobService.ExecuteJobAsync(job, progressionObserver);
-        return result;
+        var result = await _jobService.ExecuteJobsAsync(new[] { job }, progressionObserver);
+        return result.TryGetValue(job, out var success) && success;
     }
 
     public void UpdateJob(BackupJob job)
@@ -210,62 +331,58 @@ public partial class MainViewModel : ViewModelBase, IProgressionObserver, IDispo
     /// <summary>
     /// Execute jobs from command line arguments.
     /// </summary>
-    /// <param name="args">1-3 for 1 to 3 or 1;3 for 1 and 3</param>
+    /// <param name="args">1-3 for 1 to 3 or 1,3 for 1 and 3</param>
     /// <returns></returns>
-    public Dictionary<int, bool> ExecuteJobsFromArgs(string? args)
+    public async Task<Dictionary<int, bool>> ExecuteJobsFromArgs(string? args)
     {
-        // use a dictionary to return the result of each job
         var resultMap = new Dictionary<int, bool>();
-        try
+
+        if (string.IsNullOrWhiteSpace(args) || Jobs == null)
+            return resultMap;
+
+        var requestedIndices = new List<int>();
+        var parts = args.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+        foreach (var part in parts)
         {
-            if (string.IsNullOrWhiteSpace(args)) return resultMap;
-
-            var requestedIndices = new List<int>();
-            var parts = args.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-
-            foreach (var part in parts)
+            if (part.Contains('-'))
             {
-                // check for a list of indices
-                if (part.Contains('-'))
+                var range = part.Split('-');
+                if (range.Length == 2 &&
+                    int.TryParse(range[0], out var start) &&
+                    int.TryParse(range[1], out var end))
                 {
-                    var range = part.Split('-');
-                    if (range.Length != 2 || !int.TryParse(range[0], out var start) ||
-                        !int.TryParse(range[1], out var end)) continue;
                     for (var i = start; i <= end; i++)
-                    {
                         if (i > 0) requestedIndices.Add(i);
-                    }
-                }
-                else if (int.TryParse(part, out var jobNumber) && jobNumber > 0)
-                {
-                    requestedIndices.Add(jobNumber);
                 }
             }
-
-            foreach (var idx in requestedIndices)
+            else if (int.TryParse(part, out var value) && value > 0)
             {
-                var jobIdx = idx - 1;
-                if (Jobs != null && jobIdx >= 0 && jobIdx < Jobs.Count)
-                {
-                    // execute job and store result in the map
-                    resultMap[idx] = _jobService.ExecuteJobAsync(Jobs[jobIdx]).GetAwaiter().GetResult();
-                }
-                else
-                {
-                    resultMap[idx] = false;
-                }
+                requestedIndices.Add(value);
             }
-            return resultMap;
         }
-        catch (Exception)
+
+        var jobsToExecute = requestedIndices
+            .Select(idx => (idx, jobIdx: idx - 1))
+            .Where(x => x.jobIdx >= 0 && x.jobIdx < Jobs.Count)
+            .ToList();
+
+        var jobs = jobsToExecute.Select(x => Jobs[x.jobIdx]).ToList();
+
+        var executionResults = await _jobService.ExecuteJobsAsync(jobs, this);
+
+        foreach (var (idx, jobIdx) in jobsToExecute)
         {
-            return resultMap;
+            var job = Jobs[jobIdx];
+            resultMap[idx] = executionResults.TryGetValue(job, out var success) && success;
         }
+
+        return resultMap;
     }
     
     public void Dispose()
     {
-        _businessSoftwareTimer?.Stop();
+        _businessSoftwareTimer.Stop();
         _businessSoftwareTimer?.Dispose();
     }
 }

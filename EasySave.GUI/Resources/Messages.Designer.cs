@@ -150,6 +150,15 @@ namespace EasySave.GUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to e.g., .pdf or pdf.
+        /// </summary>
+        public static string ChoiceExtension {
+            get {
+                return ResourceManager.GetString("ChoiceExtension", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Choose how backup logs are stored.
         /// </summary>
         public static string chooseBackupText {
@@ -164,6 +173,15 @@ namespace EasySave.GUI.Resources {
         public static string chooseExt {
             get {
                 return ResourceManager.GetString("chooseExt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose extensions to be processed with priority during backups:.
+        /// </summary>
+        public static string choosePriorityExt {
+            get {
+                return ResourceManager.GetString("choosePriorityExt", resourceCulture);
             }
         }
         
@@ -209,6 +227,24 @@ namespace EasySave.GUI.Resources {
         public static string cryptedExtensions {
             get {
                 return ResourceManager.GetString("cryptedExtensions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CryptoSoft path.
+        /// </summary>
+        public static string cryptoSoftPath {
+            get {
+                return ResourceManager.GetString("cryptoSoftPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Put the cryptoSoft path to crypt files with selected extensions.
+        /// </summary>
+        public static string cryptoSoftPathText {
+            get {
+                return ResourceManager.GetString("cryptoSoftPathText", resourceCulture);
             }
         }
         
@@ -438,6 +474,42 @@ namespace EasySave.GUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Log Mode.
+        /// </summary>
+        public static string logMode {
+            get {
+                return ResourceManager.GetString("logMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select where logs are saved.
+        /// </summary>
+        public static string logModeText {
+            get {
+                return ResourceManager.GetString("logModeText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max Transfer Size (KB).
+        /// </summary>
+        public static string maxTransferSize {
+            get {
+                return ResourceManager.GetString("maxTransferSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum file size for parallel transfer (KB).
+        /// </summary>
+        public static string maxTransferSizeText {
+            get {
+                return ResourceManager.GetString("maxTransferSizeText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         public static string name {
@@ -465,11 +537,65 @@ namespace EasySave.GUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pause.
+        /// </summary>
+        public static string pause {
+            get {
+                return ResourceManager.GetString("pause", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Priority Extensions.
+        /// </summary>
+        public static string priorityExtensions {
+            get {
+                return ResourceManager.GetString("priorityExtensions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Progression.
         /// </summary>
         public static string progression {
             get {
                 return ResourceManager.GetString("progression", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remote Host.
+        /// </summary>
+        public static string remoteHost {
+            get {
+                return ResourceManager.GetString("remoteHost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remote Port.
+        /// </summary>
+        public static string remotePort {
+            get {
+                return ResourceManager.GetString("remotePort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Remote Server.
+        /// </summary>
+        public static string remoteServer {
+            get {
+                return ResourceManager.GetString("remoteServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select remote server where logs will be saved.
+        /// </summary>
+        public static string remoteServerText {
+            get {
+                return ResourceManager.GetString("remoteServerText", resourceCulture);
             }
         }
         
@@ -510,6 +636,15 @@ namespace EasySave.GUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Resume.
+        /// </summary>
+        public static string resume {
+            get {
+                return ResourceManager.GetString("resume", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
         public static string save {
@@ -546,6 +681,24 @@ namespace EasySave.GUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select a file.
+        /// </summary>
+        public static string selectFile {
+            get {
+                return ResourceManager.GetString("selectFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select folder.
+        /// </summary>
+        public static string selectFolder {
+            get {
+                return ResourceManager.GetString("selectFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select a job from the list above to view its details..
         /// </summary>
         public static string selectJobText {
@@ -560,6 +713,24 @@ namespace EasySave.GUI.Resources {
         public static string selectLanguage {
             get {
                 return ResourceManager.GetString("selectLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Log Format.
+        /// </summary>
+        public static string selectLogFormat {
+            get {
+                return ResourceManager.GetString("selectLogFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Log Mode.
+        /// </summary>
+        public static string selectLogMode {
+            get {
+                return ResourceManager.GetString("selectLogMode", resourceCulture);
             }
         }
         
@@ -618,7 +789,7 @@ namespace EasySave.GUI.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Define the process name of the business software to monitor (e.g., &apos;calc&apos; for calculator).
+        ///   Looks up a localized string similar to Define the process name(s) of the business software to monitor (e.g., &apos;calc, notepad&apos;)..
         /// </summary>
         public static string Software {
             get {
@@ -627,7 +798,7 @@ namespace EasySave.GUI.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter process name.
+        ///   Looks up a localized string similar to Enter process name(s).
         /// </summary>
         public static string SoftwareProcessName {
             get {
@@ -708,11 +879,29 @@ namespace EasySave.GUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Paused.
+        /// </summary>
+        public static string StatusPaused {
+            get {
+                return ResourceManager.GetString("StatusPaused", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ready.
         /// </summary>
         public static string StatusReady {
             get {
                 return ResourceManager.GetString("StatusReady", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop.
+        /// </summary>
+        public static string stop {
+            get {
+                return ResourceManager.GetString("stop", resourceCulture);
             }
         }
         

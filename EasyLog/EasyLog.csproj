@@ -5,6 +5,18 @@
         <TargetFramework>net10.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <!-- Branding -->
+        <Authors>ProSoft</Authors>
+        <Company>ProSoft</Company>
+        <Product>EasyLog</Product>
+        <Copyright>Copyright © 2026 ProSoft</Copyright>
+        <AssemblyTitle>EasyLog</AssemblyTitle>
+        <AssemblyDescription>Local log system for EasySave</AssemblyDescription>
+        <AssemblyCompany>ProSoft</AssemblyCompany>
+        <AssemblyProduct>EasyLog</AssemblyProduct>
+        <AssemblyCopyright>Copyright © 2026 ProSoft</AssemblyCopyright>
+        <PublishAot>False</PublishAot>
+        <SignAssembly>False</SignAssembly>
     </PropertyGroup>
 
 </Project>

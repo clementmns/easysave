@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <!-- Publish options -->
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <RootNamespace>EasyLog.Server</RootNamespace>
+        <!-- Branding -->
+        <Authors>ProSoft</Authors>
+        <Company>ProSoft</Company>
+        <Product>EasyLog.Server</Product>
+        <Copyright>Copyright © 2026 ProSoft</Copyright>
+        <AssemblyTitle>EasyLog.Server</AssemblyTitle>
+        <AssemblyDescription>Centralize your logs in remote</AssemblyDescription>
+        <AssemblyCompany>ProSoft</AssemblyCompany>
+        <AssemblyProduct>EasyLog.Server</AssemblyProduct>
+        <AssemblyCopyright>Copyright © 2026 ProSoft</AssemblyCopyright>
+        <PublishAot>False</PublishAot>
+        <SignAssembly>False</SignAssembly>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Content Include="..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
+    </ItemGroup>
+
+</Project>

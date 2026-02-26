@@ -8,7 +8,9 @@ namespace EasySave.Core.Service;
 public class BackupExecutor
 {
     public async Task<bool> ExecuteJobAsync(BackupJob job)
-    {
+    { 
+        job.ResetCancellation();
+
         return await Task.Run(() =>
         {
             // Check if business software is running
@@ -17,10 +19,10 @@ public class BackupExecutor
                 Logger.Instance.Write(new LogEntry(Errors.BackupBlocked, job, isError: true));
                 return false;
             }
-            
+
             var strategy = GetStrategy(job);
             return strategy.Execute(job);
-        });
+        }, job.CancellationTokenSource.Token);
     }
 
     private static IBackupStrategy GetStrategy(BackupJob job)
