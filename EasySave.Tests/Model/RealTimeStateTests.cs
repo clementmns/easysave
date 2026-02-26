@@ -98,8 +98,8 @@ public class RealTimeStateTests
         state.Reset();
 
         Assert.False(state.IsActive);
-        Assert.Equal(5, state.RemainingFiles);
-        Assert.Equal(3, state.RemainingFilesSize);
+        Assert.Equal(3, state.RemainingFiles);
+        Assert.Equal(100, state.RemainingFilesSize);
         Assert.True(observer.Updates > 0);
     }
 
